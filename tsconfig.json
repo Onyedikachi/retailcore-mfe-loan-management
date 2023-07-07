@@ -1,0 +1,14 @@
+{
+  "extends": "ts-config-single-spa",
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "declarationDir": "dist",
+    "skipLibCheck": true,
+    "paths": {
+      "@sterlingAuth/*": ["./src/*"]
+    }
+  },
+  "files": ["src/Sterling-boilerplate.tsx"],
+  "include": ["src/**/*"],
+  "exclude": ["src/**/*.test*"]
+}

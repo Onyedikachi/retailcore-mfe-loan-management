@@ -1,0 +1,47 @@
+name: Test, Build, Deploy
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, closed]
+    branches:
+      - dev
+      - dev2
+      - qa
+      - staging
+      - main
+
+jobs:
+  # code_quality:
+  # uses: sterling-retailcore-team/workflow-templates/.github/workflows/code_quality.yml@main
+  # secrets: inherit
+  # container_scan:
+  # uses: sterling-retailcore-team/workflow-templates/.github/workflows/container_scan.yml@main
+  #secrets: inherit
+  build_and_push_image:
+    uses: sterling-retailcore-team/workflow-templates/.github/workflows/build.yml@main
+    #     needs: [code_quality, container_scan]
+    with:
+      GITHUB_REPOSITORY: ${GITHUB_REPOSITORY}
+      GITHUB_BASE_REF: ${GITHUB_BASE_REF}
+      GITHUB_SHA: ${GITHUB_SHA::8}
+      GITHUB_EVENT_NAME: ${GITHUB_EVENT_NAME}
+      USE_BUILDTIME_ARGS: true # toggle to use buildtime variables
+    secrets:
+      BUILDTIME_ARGS: ${{ secrets.DEV_ENV_DATA }} # if using buildtime variables, specify secrets in this format "${{ secrets.example }}"
+
+  deploy_microservice:
+    uses: sterling-retailcore-team/workflow-templates/.github/workflows/deploy.yml@main
+    with:
+      GITHUB_REPOSITORY: ${GITHUB_REPOSITORY}
+      GITHUB_BASE_REF: ${GITHUB_BASE_REF}
+      GITHUB_SHA: ${GITHUB_SHA::8}
+      GITHUB_REPOSITORY_OWNER: ${GITHUB_REPOSITORY_OWNER}
+      GITHUB_EVENT_NAME: ${GITHUB_EVENT_NAME}
+    secrets: inherit
+    needs: build_and_push_image
+
+  smoke_test:
+    uses: sterling-retailcore-team/workflow-templates/.github/workflows/smoke_tests.yml@main
+    with:
+      MICROSERVICE_URL: ${{ needs.deploy_microservice.outputs.MICROSERVICE_URL }}
+    secrets: inherit
+    needs: deploy_microservice
