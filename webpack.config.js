@@ -1,10 +1,13 @@
 const { merge } = require("webpack-merge");
+const dotenv = require("dotenv").config({ path: __dirname + "/.env" });
+const path = require("path");
+const DefinePlugin = require("webpack").DefinePlugin;
 const singleSpaDefaults = require("webpack-config-single-spa-react-ts");
 
 module.exports = (webpackConfigEnv, argv) => {
   const defaultConfig = singleSpaDefaults({
     orgName: "Sterling",
-    projectName: "boilerplate",
+    projectName: "product-factory",
     webpackConfigEnv,
     argv,
   });
@@ -27,7 +30,7 @@ module.exports = (webpackConfigEnv, argv) => {
     },
     resolve: {
       alias: {
-        "@sterlingAuth": path.resolve(__dirname, "src"),
+        "@app": path.resolve(__dirname, "src"),
       },
     },
     plugins: [

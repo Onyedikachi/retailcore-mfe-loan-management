@@ -1,14 +1,26 @@
 {
   "extends": "ts-config-single-spa",
   "compilerOptions": {
+    "target": "ES5",
+    "lib": ["DOM", "DOM.Iterable", "ESNext"],
     "jsx": "react-jsx",
     "declarationDir": "dist",
+    "declaration": true,
     "skipLibCheck": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "typeRoots": [
+      "node_modules/@types",
+      "src/index.d.ts",
+      "src/@types"
+    ],
+    "resolveJsonModule": true,
+    "moduleResolution": "Node",
     "paths": {
-      "@sterlingAuth/*": ["./src/*"]
+      "@app/*": ["./src/*"]
     }
   },
-  "files": ["src/Sterling-boilerplate.tsx"],
+  "files": ["src/Sterling-product-factory.tsx"],
   "include": ["src/**/*"],
   "exclude": ["src/**/*.test*"]
 }
