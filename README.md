@@ -1,30 +1,54 @@
-# retailcore-mfe-auth
+# @Sterling/product-factory
 
-## Run Quality Check locally with SonarQube
+This repository contains the source code for the Sterling Product Factory application.
 
-### Implement Sonarqube Locally
+## Setup
 
-1. [Download Java 11](https://adoptium.net/releases.html?variant=openjdk11&jvmVariant=hotspot) and run `java --version` to check if installation is successful
-2. [Download Sonarqube](https://www.sonarqube.org/downloads/) and run `ls -l sonarqube-9.6.1.59531.zip` to unzip the file
-3. Move the unzipped sonarqube to a new folder by running `udo mv sonarqube-9.6.1.59531 /opt/sonarqube`
-4. Start Sonarqube by running the command `/opt/sonarqube/bin/macosx-universal-64/sonar.sh console`
-5. Visit [http://localhost:9000/](http://localhost:9000/) and use _admin_ and _admin_ as username and password respectively. You'll be prompted to change the password afterwards.
-6. Once logged in create a project on Sonaqube by clicking "Manually"
-7. Enter Project name and Project key as the current project name eg 'retailcore-mfe-auth' and click Setup
-8. Click 'Locally' on the this page and generate a token on the next and click on Next
-9. Click "Other(For JS, TS, Python, PHP, ...)
-10. Select your current OS
-11. Install Sonar Reporter and Scanner if they don't already exist as devDependencies in the package.json by runnine `yarn add -D jest-sonar-reporter sonarqube-scanner`
-12. Rune `yarn sonar-scanner \
--Dsonar.projectKey=retailcore-mfe-auth \
--Dsonar.sources=. \
--Dsonar.host.url=http://localhost:9000 \
--Dsonar.token=sqp_d15c36f3894f8fa79c7c2c4da4080507354cb987`
+To set up the application on your local system, follow these steps:
 
-where `sqp_d15c36f3894f8fa79c7c2c4da4080507354cb987` is the token generated in step 8
+1. **Clone the repository:**
 
-### Running Docker
+   Clone the repository by running the following command:
 
-`docker build -t retailcore-auth .`
-`docker run -p 8080:80 retailcore-auth`
-To clean up your registry, run `docker builder prune --force`
+   `git clone https://github.com/sterling-retailcore-team/retailcore-mfe-product-factory.git `
+
+
+2. **Install dependencies:**
+
+    Navigate to the cloned repository's directory:
+
+    `cd retailcore-mfe-product-factory`
+
+    Install the required dependencies by running:
+
+    `npm install`
+
+3. **Start the application:**
+
+    Start the application in standalone mode by running:
+
+    `npm run start:standalone`
+
+    This will launch the application and you can access it in your browser at `http://localhost:8083/product/factory`.
+
+
+## Scripts
+------------
+
+The following scripts are available to run various tasks:
+
+-   `start`: Start the application using webpack server.
+-   `start:standalone`: Start the application in standalone mode.
+-   `build`: Build the application using webpack.
+-   `build:webpack`: Build the application in production mode.
+-   `analyze`: Build the application and analyze the generated bundle.
+-   `lint`: Run eslint to check and fix linting issues in source files.
+-   `lint:cache`: Run eslint using cache for faster linting.
+-   `format`: Format source files using Prettier.
+-   `check-format`: Check if source files are formatted correctly using Prettier.
+-   `test`: Run the test suite using Jest.
+-   `watch-tests`: Run the test suite in watch mode using Jest.
+-   `prepare`: Install husky git hooks.
+-   `pre-commit`: Run lint-staged before committing changes.
+-   `coverage`: Run tests and generate test coverage report.
+-   `build:types`: Generate TypeScript declaration files.
