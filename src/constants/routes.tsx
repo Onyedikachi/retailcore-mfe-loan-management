@@ -1,10 +1,8 @@
-import { Chip } from '@app/components/atoms/Chip';
-
 export const BasePath = '/product/factory';
 
 export const RouteMaps = {
    productList: {
-      element: <Chip color="success" label="Approved" />,
+      element: <></>,
       path: (type = '/:productType') => `${BasePath}/list${type}`,
    },
 };
