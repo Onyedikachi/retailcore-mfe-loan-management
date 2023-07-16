@@ -21,13 +21,13 @@ To set up the application on your local system, follow these steps:
 
     Install the required dependencies by running:
 
-    `npm install`
+    `yarn`
 
 3. **Start the application:**
 
     Start the application in standalone mode by running:
 
-    `npm run start:standalone`
+    `yarn start:standalone`
 
     This will launch the application and you can access it in your browser at `http://localhost:8083/product/factory`.
 
