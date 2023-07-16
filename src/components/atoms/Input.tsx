@@ -38,10 +38,7 @@ export const Input: React.FC<InputProps> = (props) => {
                      onChange={(e) => handleAllowed(e, form, props.allow)}
                      type={props.type || 'text'}
                      error={!!(form.errors[props.name] && form.touched[props.name])}
-                     inputProps={{
-                        autoComplete: 'off',
-                        maxLength: 12,
-                     }}
+                     inputProps={{ autoComplete: 'off' }}
                   />
                   <ErrorMessage
                      name={props.name}

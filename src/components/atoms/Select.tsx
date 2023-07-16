@@ -22,9 +22,7 @@ export const SelectInput: React.FC<SelectProps> = ({ children, ...props }) => {
                         {...props}
                         {...field}
                         displayEmpty
-                        inputProps={{
-                           id: props.name,
-                        }}
+                        inputProps={{ id: props.name }}
                         error={!!(form.errors[props.name] && form.touched[props.name])}
                      >
                         {children}
