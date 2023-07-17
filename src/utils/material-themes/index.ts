@@ -1,10 +1,16 @@
 import { Colors } from '@app/constants';
 import { createTheme } from '@mui/material';
 import { deepmerge } from '@mui/utils';
+import { ButtonTheme } from './mui-button';
+import { InputTheme } from './mui-input';
+import { MenuItemThem } from './mui-menu-item';
+import { SelectTheme } from './mui-select';
+import { MenuTheme } from './mui-menu';
+import { TooltipTheme } from './mui-tooltip';
 
-let materialTheme = createTheme();
+const materialTheme = createTheme();
 
-materialTheme = createTheme(
+export const GlobalTheme = createTheme(
    deepmerge(materialTheme, {
       typography: {
          fontFamily: 'Inter, Roboto, "Segoe UI", "Helvetica Neue", Arial, sans-serif',
@@ -48,6 +54,13 @@ materialTheme = createTheme(
          },
       },
       palette: {
+         primary: {
+            main: Colors.Primary,
+         },
+         secondary: {
+            main: Colors.LinearGradient,
+         },
+         text: { primary: Colors.TextGray },
          success: {
             main: Colors.Success,
          },
@@ -56,32 +69,12 @@ materialTheme = createTheme(
          },
       },
       components: {
-         MuiButton: {
-            styleOverrides: {
-               root: ({ ownerState }: any) => ({
-                  ...(ownerState.variant === 'contained' &&
-                     ownerState.color === 'primary' && {
-                        backgroundColor: Colors.LinearGradient,
-                        color: Colors.LightGray2,
-                     }),
-                  ...(ownerState.variant === 'contained' &&
-                     ownerState.color === 'primary' &&
-                     ownerState.disabled && {
-                        backgroundColor: Colors.LightGray,
-                        color: Colors.White,
-                        border: `1px solid ${Colors.LightGray1}`,
-                     }),
-                  ...(ownerState.variant === 'outlined' &&
-                     ownerState.color === 'grey' &&
-                     ownerState.disabled && {
-                        color: Colors.TextGray,
-                        border: `1px solid ${Colors.LightGray1}`,
-                     }),
-               }),
-            },
-         },
+         MuiButton: ButtonTheme,
+         MuiInput: InputTheme,
+         MuiSelect: SelectTheme,
+         MuiMenuItem: MenuItemThem,
+         MuiMenu: MenuTheme,
+         MuiTooltip: TooltipTheme,
       },
    })
 );
-
-export { materialTheme };

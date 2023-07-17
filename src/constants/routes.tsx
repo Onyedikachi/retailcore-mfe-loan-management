@@ -1,9 +1,8 @@
-import { TestStepper } from '@app/components/stepper/TestStepper';
 export const BasePath = '/product/factory';
 
 export const RouteMaps = {
    productList: {
-      element: <TestStepper />,
+      element: <></>,
       path: (type = '/:productType') => `${BasePath}/list${type}`,
    },
 };

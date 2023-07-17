@@ -1,10 +1,11 @@
-import { ThemeProvider } from '@mui/material';
+import { CssBaseline, ThemeProvider } from '@mui/material';
 import AppRoutes from './AppRoutes';
-import { materialTheme } from './utils';
+import { GlobalTheme } from '@app/utils';
 
 const App = () => {
    return (
-      <ThemeProvider theme={materialTheme}>
+      <ThemeProvider theme={GlobalTheme}>
+         <CssBaseline />
          <AppRoutes />
       </ThemeProvider>
    );
