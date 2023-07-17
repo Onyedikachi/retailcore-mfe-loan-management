@@ -14,7 +14,7 @@ export const GlobalTheme = createTheme(
    deepmerge(materialTheme, {
       typography: {
          fontFamily: 'Inter, Roboto, "Segoe UI", "Helvetica Neue", Arial, sans-serif',
-         fontSize: materialTheme.typography.pxToRem(16),
+         fontSize: 16,
          h1: {
             fontWeight: 700,
             fontSize: materialTheme.typography.pxToRem(38),
