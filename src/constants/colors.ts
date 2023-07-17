@@ -26,7 +26,7 @@ export const Colors = {
    BgCardSuccess: '#D4F7DC',
    /** For gray chip bg with {@linkcode Colors.DarkGray} text on it. */
    BgCardGray: '#E5E5EA',
-   LinearGradient: 'linear-gradient(90deg, #783B96 0%, #C5593C 100%))',
+   LinearGradient: 'linear-gradient(90deg, #783B96 0%, #C5593C 100%)',
 } as const;
 
 export const ColorMaps = {
