@@ -2,7 +2,7 @@ import React from 'react';
 import { ThemeProvider } from '@mui/material';
 import AppRoutes from './AppRoutes';
 import { materialTheme } from './utils';
-import Accordion from '@app/components/atoms/Accordion';
+import CustomAccordion from '@app/components/atoms/Accordion';
 import { Chip } from '@app/components/atoms/Chip';
 
 const App: React.FC = () => {
@@ -11,8 +11,10 @@ const App: React.FC = () => {
       <div>
         <AppRoutes />
       </div>
-      <Accordion text="Accordion 1" component={<Chip />} />
-      <Accordion text="Accordion 2" component={<Chip />} />
+      <CustomAccordion accordionLabels={['Label 1', 'Label 2']}>
+        <Chip />
+        <Chip />
+      </CustomAccordion>
     </ThemeProvider>
   );
 };

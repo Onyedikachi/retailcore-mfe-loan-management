@@ -1,74 +1,75 @@
 import React, { useState } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import { styled } from '@mui/material/styles';
 import {
   Accordion as MuiAccordion,
   AccordionSummary as MuiAccordionSummary,
   AccordionDetails as MuiAccordionDetails,
   Typography,
-} from '@material-ui/core';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+} from '@mui/material';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
-const useStyles = makeStyles((theme) => ({
-  accordion: {
-    borderRadius: '10px',
-    border: '1px solid #EEE',
-    background: '#FAFAFA',
-    boxShadow: '0px 0px 3px 0px rgba(0, 0, 0, 0.25)',
-  },
-  heading: {
-    color: '#6F6F6F',
-    fontFamily: 'Inter',
-    fontSize: '20px',
-    fontStyle: 'normal',
-    fontWeight: 500,
-    lineHeight: '32px',
+const Accordion = styled(MuiAccordion)(({ theme }) => ({
+  borderRadius: '10px',
+  border: '1px solid #EEE',
+  background: '#FAFAFA',
+  boxShadow: '0px 0px 3px 0px rgba(0, 0, 0, 0.25)',
+}));
 
+const AccordionSummary = styled(MuiAccordionSummary)(({ theme }) => ({
+  color: '#6F6F6F',
+  fontFamily: 'Inter',
+  fontSize: '20px',
+  fontStyle: 'normal',
+  fontWeight: 500,
+  lineHeight: '32px',
+  '&.Mui-expanded': {
+    '& .MuiAccordionSummary-content': {
+      margin: '12px 0', // Adjust margin as per your preference
+    },
   },
-  content: {
-    boxShadow: '0px 4px 6px 0px rgba(0, 0, 0, 0.10)',
-    borderLeft: '5px solid #D16A6A',
-    background: 'rgba(170, 170, 170, 0.07)',
+  '& .MuiAccordionSummary-content': {
+    alignItems: 'center',
+    gap: '8px', // Adjust gap as per your preference
   },
-  icon: {
+  '& .MuiSvgIcon-root': {
     color: '#D16A6A',
-    border: '2px solid #D16A6A',
-    borderRadius: '5px'
+    border: '1.5px solid #D16A6A',
+    borderRadius: '5px',
+    padding: '3px', // Add padding to the icon
   },
 }));
 
-interface AccordionProps {
-  text: string;
-  component: React.ReactNode;
+const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
+  boxShadow: '0px 4px 6px 0px rgba(0, 0, 0, 0.10)',
+  borderLeft: '4px solid #D16A6A',
+  background: 'rgba(170, 170, 170, 0.07)',
+  padding: theme.spacing(2), // Add desired padding
+}));
+
+interface CustomAccordionProps {
+  accordionLabels: string[];
+  children: React.ReactNode[];
 }
 
-const Accordion: React.FC<AccordionProps> = ({ text, component }) => {
-  const classes = useStyles();
-  const [expanded, setExpanded] = useState(false);
+const CustomAccordion: React.FC<CustomAccordionProps> = ({ accordionLabels, children }) => {
+  const [expanded, setExpanded] = useState<string | false>(false);
 
-  const handleAccordionChange = () => {
-    setExpanded(!expanded);
+  const handleAccordionChange = (panel: string) => (_event: React.SyntheticEvent, isExpanded: boolean) => {
+    setExpanded(isExpanded ? panel : false);
   };
 
   return (
-    <MuiAccordion
-      className={classes.accordion}
-      expanded={expanded}
-      onChange={handleAccordionChange}
-    >
-      <MuiAccordionSummary
-     expandIcon={<ExpandMoreIcon className={classes.icon} />}
-     aria-controls="accordion-content"
-     id="accordion-header"
-      >
-        <Typography variant="h6" className={classes.heading}>
-          {text}
-        </Typography>
-      </MuiAccordionSummary>
-      <MuiAccordionDetails className={classes.content}>
-        <div>{component}</div>
-      </MuiAccordionDetails>
-    </MuiAccordion>
+    <div>
+      {accordionLabels.map((label, index) => (
+        <Accordion key={index} expanded={expanded === `panel${index}`} onChange={handleAccordionChange(`panel${index}`)}>
+          <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls={`panel${index}-content`} id={`panel${index}-header`}>
+            <Typography variant="h6">{label}</Typography>
+          </AccordionSummary>
+          <AccordionDetails>{children[index]}</AccordionDetails>
+        </Accordion>
+      ))}
+    </div>
   );
 };
 
-export default Accordion;
+export default CustomAccordion;
