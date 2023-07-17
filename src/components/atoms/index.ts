@@ -4,3 +4,4 @@ export * from './Input';
 export * from './Select';
 export * from './SearchInput';
 export * from './LinearGradient';
+export * from './Switch';

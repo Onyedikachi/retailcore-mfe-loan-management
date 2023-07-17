@@ -1,15 +1,12 @@
 import { Colors } from '@app/constants';
 import { createTheme } from '@mui/material';
 import { deepmerge } from '@mui/utils';
-import { ButtonTheme } from './mui-button';
 import { InputBaseTheme, InputTheme } from './mui-input';
 import { MenuItemThem } from './mui-menu-item';
-import { SelectTheme } from './mui-select';
 import { MenuTheme } from './mui-menu';
 import { TooltipTheme } from './mui-tooltip';
 import { CheckBoxTheme } from './mui-checkbox';
 import { RadioTheme } from './mui-radio';
-import { SwitchTheme } from './mui-swtich';
 
 const materialTheme = createTheme();
 
@@ -72,15 +69,12 @@ export const GlobalTheme = createTheme(
          },
       },
       components: {
-         MuiButton: ButtonTheme,
          MuiInput: InputTheme,
-         MuiSelect: SelectTheme,
          MuiMenuItem: MenuItemThem,
          MuiMenu: MenuTheme,
          MuiTooltip: TooltipTheme,
          MuiCheckbox: CheckBoxTheme,
          MuiRadio: RadioTheme,
-         MuiSwitch: SwitchTheme,
          MuiInputBase: InputBaseTheme,
       },
    })

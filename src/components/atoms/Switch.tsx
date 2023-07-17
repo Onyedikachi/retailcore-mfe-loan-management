@@ -1,13 +1,12 @@
 import { Colors } from '@app/constants';
+import { styled, Switch as MuiSwitch } from '@mui/material';
 
-export const SwitchTheme = {
-   styleOverrides: {
-      root: {
-         width: 36,
-         height: 21,
-         padding: 0,
-      },
-      switchBase: {
+export const Switch = styled(MuiSwitch)(() => {
+   return {
+      width: 36,
+      height: 21,
+      padding: 0,
+      '.MuiSwitch-switchBase': {
          padding: 0,
          margin: 2,
          transitionDuration: '300ms',
@@ -20,7 +19,7 @@ export const SwitchTheme = {
             },
          },
       },
-      thumb: {
+      '.MuiSwitch-thumb': {
          width: 17,
          height: 17,
          display: 'flex',
@@ -37,10 +36,10 @@ export const SwitchTheme = {
             borderRadius: '100%',
          },
       },
-      track: {
+      '.MuiSwitch-track': {
          borderRadius: 21 / 2,
          backgroundColor: 'white',
          border: '1px solid brown',
       },
-   },
-};
+   };
+});
