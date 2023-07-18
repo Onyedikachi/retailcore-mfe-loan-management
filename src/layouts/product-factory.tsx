@@ -24,12 +24,12 @@ const QuickLinkExpandBox = styled(Box)(() => ({
       opacity: 1,
       height: 'fit-content',
       top: 70,
-      transition: 'all 0.3s'
+      transition: 'all 0.3s',
    },
    '& > div': {
       boxShadow: '0px 0px 30px rgba(0, 0, 0, 0.25)',
       border: `1px solid ${Colors.LightGray1}`,
-   }
+   },
 }));
 
 const QuickLinkToggle = styled('div')(() => ({
@@ -46,6 +46,7 @@ const QuickLinkToggle = styled('div')(() => ({
    top: 70,
    transition: 'border-radius 0.3s',
    color: 'white',
+   cursor: 'pointer',
    '.MuiSvgIcon-root': {
       transform: 'rotate(0deg)',
       transition: 'transform 0.3s',
@@ -61,7 +62,7 @@ const QuickLinkToggle = styled('div')(() => ({
 }));
 
 const ContentBox = styled(Box)(() => ({
-   padding: 10,
+   padding: '15px 30px',
    background: Colors.Gray50,
 }));
 
@@ -86,9 +87,11 @@ export const ProductFactoryLayout = ({ header, content, fullContent = false }: P
             <Box ref={stackHeaderRef}>{header}</Box>
             <ContentBox height={headerHeight && `calc(100% - ${headerHeight}px)`}>
                <Grid container height="100%" position="relative">
-                  <Grid item>{content}</Grid>
+                  <Grid xs item>
+                     {content}
+                  </Grid>
                   {!fullContent && (
-                     <Grid xs={3} height="100%" item>
+                     <Grid xs="auto" height="100%" item>
                         <QuickLink />
                      </Grid>
                   )}

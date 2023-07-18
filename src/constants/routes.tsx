@@ -1,16 +1,10 @@
-import { ProductFactoryLayout } from '@app/layouts/product-factory';
+import { CreatePersonalLoanCreditProduct } from '@app/pages/create/PersonalLoanCredit';
 
 export const BasePath = '/product/factory';
 
 export const RouteMaps = {
    productList: {
-      element: (
-         <ProductFactoryLayout
-            header={<div style={{ height: '150px' }}></div>}
-            content={<div style={{ height: '300px' }}></div>}
-            fullContent={true}
-         />
-      ),
+      element: <CreatePersonalLoanCreditProduct />,
       path: (type = '/:productType') => `${BasePath}/list${type}`,
    },
 };
