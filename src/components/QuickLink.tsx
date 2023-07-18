@@ -1,13 +1,17 @@
 import { Colors } from '@app/constants';
-import { Close, LaunchOutlined } from '@mui/icons-material';
+import { Close } from '@mui/icons-material';
 import { Box, Grid, IconButton, Typography, styled } from '@mui/material';
-import { Link } from 'react-router-dom';
+import { QuickLinkItem } from './QuickLinkItem';
 
 const QuickLinkBox = styled(Box)({
    padding: '15px 10px',
    borderRadius: '10px',
    width: '100%',
+   maxWidth: '290px',
    background: 'white',
+   height: 'max-content',
+   maxHeight: '100%',
+   overflowY: 'scroll',
 });
 
 const ContentBox = styled(Box)({
@@ -28,6 +32,14 @@ const ActivityMessageBox = styled(Box)(() => ({
    marginBottom: 10,
 }));
 
+const ActivityMessageHeader = styled(Box)({
+   display: 'flex',
+   alignItems: 'center',
+   justifyContent: 'space-between',
+   gap: 1,
+   marginBottom: 2,
+});
+
 export const QuickLink = () => {
    return (
       <QuickLinkBox>
@@ -36,14 +48,14 @@ export const QuickLink = () => {
          </TitleBox>
          <ContentBox>
             <ActivityMessageBox>
-               <Box sx={{ display: 'flex', justifyContent: 'space-between', gap: 2 }}>
+               <ActivityMessageHeader>
                   <Typography variant="body2" fontWeight={600} color={Colors.DarKGray1} flexGrow={1}>
                      Suggested from your activity
                   </Typography>
                   <IconButton>
-                     <Close />
+                     <Close fontSize="small" />
                   </IconButton>
-               </Box>
+               </ActivityMessageHeader>
                <Box>
                   <Typography variant="body2">
                      As you use the application, suggested items will automatically show up here.
@@ -51,20 +63,9 @@ export const QuickLink = () => {
                </Box>
             </ActivityMessageBox>
             <Box>
-               <Grid spacing={3} width="100%" marginLeft={0} container>
+               <Grid spacing={0} width="100%" marginLeft={0} container>
                   {Array.from(new Array(6)).map((_, index) => (
-                     <Grid item xs={6} key={index}>
-                        <Link to={'#'} style={{ textDecoration: 'none' }}>
-                           <IconButton sx={{ background: Colors.LightPrimary }}>
-                              <LaunchOutlined color="primary" />
-                           </IconButton>
-                           <Typography
-                              sx={(theme) => ({ color: theme.palette.text.primary })}
-                           >
-                              Link {index}
-                           </Typography>
-                        </Link>
-                     </Grid>
+                     <QuickLinkItem key={index} label={`Link ${index}`} href={'#'} />
                   ))}
                </Grid>
             </Box>

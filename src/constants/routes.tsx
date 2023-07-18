@@ -8,7 +8,7 @@ export const RouteMaps = {
          <ProductFactoryLayout
             header={<div style={{ height: '150px' }}></div>}
             content={<div style={{ height: '300px' }}></div>}
-            fullContent={false}
+            fullContent={true}
          />
       ),
       path: (type = '/:productType') => `${BasePath}/list${type}`,
