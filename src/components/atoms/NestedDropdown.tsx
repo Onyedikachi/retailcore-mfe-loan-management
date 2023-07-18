@@ -23,7 +23,7 @@ const NestedDropdown: React.FC = () => {
     fontWeight: 700,
     lineHeight: '48px',
     letterSpacing: '-0.836px',
-    marginRight: '30px', 
+    marginRight: '30px',
 
   };
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -60,7 +60,7 @@ const NestedDropdown: React.FC = () => {
     },
     {
       label: 'Investment',
-      subMenuOptions: [{ label: 'Non' }],
+      subMenuOptions: [{ label: 'Non', showRightArrow: true }],
     },
   ];
 
@@ -89,8 +89,8 @@ const NestedDropdown: React.FC = () => {
   };
 
   return (
-    <div style={{display:'flex'}}>
-      <Typography variant="inherit"  style={customStyle}>
+    <div style={{ display: 'flex' }}>
+      <Typography variant="inherit" style={customStyle}>
         Product Factory
       </Typography>
       <Button variant="contained" startIcon={<AddIcon />} onClick={handleButtonClick}>
@@ -112,11 +112,9 @@ const NestedDropdown: React.FC = () => {
         {mainMenuOptions.map((mainMenuOption) => (
           <MenuItem key={mainMenuOption.label} onClick={(event) => handleMainMenuClick(mainMenuOption.label, event)}>
             {mainMenuOption.label}
-            {mainMenuOption.subMenuOptions.some((item) => item.showRightArrow) && (
-              <ListItemIcon>
-                <ArrowRightIcon />
-              </ListItemIcon>
-            )}
+            <ListItemIcon>
+              <ArrowRightIcon />
+            </ListItemIcon>
           </MenuItem>
         ))}
       </Menu>
