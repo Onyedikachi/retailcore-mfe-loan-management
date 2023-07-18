@@ -52,16 +52,16 @@ interface CustomAccordionProps {
 }
 
 const CustomAccordion: React.FC<CustomAccordionProps> = ({ accordionLabels, children }) => {
-  const [expanded, setExpanded] = useState<string | false>(false);
+  const [expanded, setExpanded] = useState<number | false>(false);
 
-  const handleAccordionChange = (panel: string) => (_event: React.SyntheticEvent, isExpanded: boolean) => {
-    setExpanded(isExpanded ? panel : false);
+  const handleAccordionChange = (index: number) => (_event: React.SyntheticEvent, isExpanded: boolean) => {
+    setExpanded(isExpanded ? index : false);
   };
 
   return (
     <div>
       {accordionLabels.map((label, index) => (
-        <Accordion key={index} expanded={expanded === `panel${index}`} onChange={handleAccordionChange(`panel${index}`)}>
+        <Accordion key={index} expanded={expanded === index} onChange={handleAccordionChange(index)}>
           <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls={`panel${index}-content`} id={`panel${index}-header`}>
             <Typography variant="h6">{label}</Typography>
           </AccordionSummary>
