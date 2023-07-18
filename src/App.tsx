@@ -1,11 +1,8 @@
 import { CssBaseline, ThemeProvider } from '@mui/material';
 import AppRoutes from './AppRoutes';
 import { GlobalTheme } from '@app/utils';
-import Accordion from './components/atoms/Accordion'
-import {Chip} from './components/atoms/Chip'
-import NestedDropdown from './components/atoms/NestedDropdown'
-
-
+import Accordion from './components/accordion/Accordion';
+import { Chip } from './components/atoms/Chip';
 
 const App = () => {
    return (
@@ -13,11 +10,9 @@ const App = () => {
          <CssBaseline />
          <AppRoutes />
          <Accordion accordionLabels={['Label 1', 'Label 2']}>
-        <Chip />
-        <Chip />
-      </Accordion>
-
-      <NestedDropdown />
+            <Chip />
+            <Chip />
+         </Accordion>
       </ThemeProvider>
    );
 };
