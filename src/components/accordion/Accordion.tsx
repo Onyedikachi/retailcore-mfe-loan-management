@@ -5,69 +5,72 @@ import {
    AccordionSummary as MuiAccordionSummary,
    AccordionDetails as MuiAccordionDetails,
    Typography,
+   AccordionProps as MuiAccordionProps,
 } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { Colors } from '@app/constants';
 
-const CustomAccordion = styled(MuiAccordion)(({ theme }) => ({
-   borderRadius: '10px',
-   border: '1px solid #EEE',
-   background: '#FAFAFA',
-   boxShadow: '0px 0px 3px 0px rgba(0, 0, 0, 0.25)',
-}));
-
-const AccordionSummary = styled(MuiAccordionSummary)(({ theme }) => ({
-   color: '#6F6F6F',
-   fontFamily: 'Inter',
-   fontSize: '20px',
-   fontStyle: 'normal',
-   fontWeight: 500,
-   lineHeight: '32px',
+const CustomAccordion = styled(MuiAccordion)(() => ({
+   background: 'white',
+   boxShadow: 'unset',
    '&.Mui-expanded': {
+      margin: 0,
       '& .MuiAccordionSummary-content': {
-         margin: '12px 0',
+         margin: 0,
       },
    },
-   '& .MuiAccordionSummary-content': {
-      alignItems: 'center',
-      gap: '8px',
+   '&::before': {
+      height: 0,
    },
+}));
+
+const AccordionSummary = styled(MuiAccordionSummary)(() => ({
+   fontSize: '20px',
+   fontWeight: 500,
+   lineHeight: '32px',
+   borderRadius: '10px',
+   paddingLeft: 32,
+   paddingRight: 40,
+   boxShadow: '0px 0px 3px 0px rgba(0, 0, 0, 0.25)',
+   zIndex: 1,
+   background: 'white',
    '& .MuiSvgIcon-root': {
-      color: '#D16A6A',
-      border: '1.5px solid #D16A6A',
+      border: `1.5px solid ${Colors.Primary}`,
       borderRadius: '5px',
       padding: '3px',
    },
 }));
 
 const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
-   boxShadow: '0px 4px 6px 0px rgba(0, 0, 0, 0.10)',
-   borderLeft: '4px solid #D16A6A',
-   background: 'rgba(170, 170, 170, 0.07)',
-   padding: theme.spacing(2), // Add desired padding
+   borderLeft: `4px solid ${Colors.Primary}`,
+   padding: theme.spacing(3, 2),
+   marginTop: '-7px',
 }));
 
-interface AccordionProps {
+interface AccordionProps extends MuiAccordionProps {
    accordionLabels: string[];
    children: React.ReactNode[];
 }
 
-const Accordion: React.FC<AccordionProps> = ({ accordionLabels, children }) => {
+const Accordion: React.FC<AccordionProps> = ({ accordionLabels, children, ...otherProps }) => {
    const [expanded, setExpanded] = useState<number | false>(false);
 
-   const handleAccordionChange = (index: number) => (_event: React.SyntheticEvent, isExpanded: boolean) => {
+   const handleChange = (index: number) => (_event: React.SyntheticEvent, isExpanded: boolean) => {
       setExpanded(isExpanded ? index : false);
    };
 
    return (
-      <div>
+      <>
          {accordionLabels.map((label, index) => (
             <CustomAccordion
-               key={index}
+               onChange={handleChange(index)}
                expanded={expanded === index}
-               onChange={handleAccordionChange(index)}
+               key={label}
+               {...otherProps}
             >
                <AccordionSummary
-                  expandIcon={<ExpandMoreIcon />}
+                  key={index}
+                  expandIcon={<ExpandMoreIcon color="primary" />}
                   aria-controls={`panel${index}-content`}
                   id={`panel${index}-header`}
                >
@@ -76,7 +79,7 @@ const Accordion: React.FC<AccordionProps> = ({ accordionLabels, children }) => {
                <AccordionDetails>{children[index]}</AccordionDetails>
             </CustomAccordion>
          ))}
-      </div>
+      </>
    );
 };
 
