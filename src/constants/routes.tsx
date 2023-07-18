@@ -1,8 +1,16 @@
+import { ProductFactoryLayout } from '@app/layouts/product-factory';
+
 export const BasePath = '/product/factory';
 
 export const RouteMaps = {
    productList: {
-      element: <></>,
+      element: (
+         <ProductFactoryLayout
+            header={<div style={{ height: '150px' }}></div>}
+            content={<div style={{ height: '300px' }}></div>}
+            fullContent={false}
+         />
+      ),
       path: (type = '/:productType') => `${BasePath}/list${type}`,
    },
 };
