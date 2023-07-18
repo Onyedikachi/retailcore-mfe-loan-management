@@ -1,22 +1,25 @@
-import React from 'react';
-import { ThemeProvider } from '@mui/material';
+import { CssBaseline, ThemeProvider } from '@mui/material';
 import AppRoutes from './AppRoutes';
-import { materialTheme } from './utils';
-import CustomAccordion from '@app/components/atoms/Accordion';
-import { Chip } from '@app/components/atoms/Chip';
+import { GlobalTheme } from '@app/utils';
+import Accordion from './components/atoms/Accordion'
+import {Chip} from './components/atoms/Chip'
+import NestedDropdown from './components/atoms/NestedDropdown'
 
-const App: React.FC = () => {
-  return (
-    <ThemeProvider theme={materialTheme}>
-      <div>
-        <AppRoutes />
-      </div>
-      <CustomAccordion accordionLabels={['Label 1', 'Label 2']}>
+
+
+const App = () => {
+   return (
+      <ThemeProvider theme={GlobalTheme}>
+         <CssBaseline />
+         <AppRoutes />
+         <Accordion accordionLabels={['Label 1', 'Label 2']}>
         <Chip />
         <Chip />
-      </CustomAccordion>
-    </ThemeProvider>
-  );
+      </Accordion>
+
+      <NestedDropdown />
+      </ThemeProvider>
+   );
 };
 
 export default App;
