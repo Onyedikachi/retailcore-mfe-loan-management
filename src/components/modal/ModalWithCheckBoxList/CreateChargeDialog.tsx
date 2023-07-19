@@ -20,7 +20,11 @@ export const CreateChargeDialog: React.FC<CreateChargeDialogProps> = ({ open, on
 
   const handleClose = () => {
     setChargeName('');
-    // onClose();
+    onClose();
+  };
+
+  const handleClear = () => {
+    setChargeName('');
   };
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -40,7 +44,7 @@ export const CreateChargeDialog: React.FC<CreateChargeDialogProps> = ({ open, on
             <IconButton onClick={handleCreateCharge}>
               <CheckCustomIcon />
             </IconButton>
-            <IconButton onClick={handleClose}>
+            <IconButton onClick={handleClear}>
               <CloseCustomIcon />
             </IconButton>
           </Box>
