@@ -28,19 +28,17 @@ describe('Component <Accordion />', () => {
             <AccordionContent index={2} />
          </Accordion>
       );
-      
+
       let accordionSummary = container.querySelectorAll('.MuiAccordionSummary-root');
       fireEvent.click(accordionSummary.item(0));
       accordionSummary = container.querySelectorAll('.MuiAccordionSummary-root');
       expect(accordionSummary.item(0).classList.contains('Mui-expanded')).toBe(true);
       expect(accordionSummary.item(1).classList.contains('Mui-expanded')).toBe(false);
 
-
       fireEvent.click(accordionSummary.item(1));
       accordionSummary = container.querySelectorAll('.MuiAccordionSummary-root');
       expect(accordionSummary.item(0).classList.contains('Mui-expanded')).toBe(false);
       expect(accordionSummary.item(1).classList.contains('Mui-expanded')).toBe(true);
-
    });
 });
 

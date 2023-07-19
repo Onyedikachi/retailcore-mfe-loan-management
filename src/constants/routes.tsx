@@ -1,4 +1,4 @@
-import ProductInfo from '@app/components/create-product/credit_personal_loan/product_info/product_info';
+import ProductInfo from '@app/components/create-product/credit-personal-loan/product-info/ProductInformation';
 
 export const BasePath = '/product/factory';
 
