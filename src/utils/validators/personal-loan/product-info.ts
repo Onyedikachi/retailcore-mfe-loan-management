@@ -65,8 +65,6 @@ export const productInfoValidator = () =>
                const { minLoanPrincipal } = this.parent;
                const maxPrincipal = Number(value.replace(/,/g, ''));
                const minPrincipal = Number(minLoanPrincipal.replace(/,/g, ''));
-               // const currencyRegex = /^\d{1,3}(,\d{3})*(\.\d{1,2})?$/;
-               // return currencyRegex.test(value.replace(/,/g, ''));
                return maxPrincipal > minPrincipal;
             }
          ),
