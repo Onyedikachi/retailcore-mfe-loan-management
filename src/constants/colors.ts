@@ -15,6 +15,7 @@ export const Colors = {
    LightGray1: '#D8DAE5',
    LightGray3: '#8F8F8F',
    LightGray4: '#BCBBBB',
+   Gray50: '#F7F7F7',
    /** For white text on dark Bg. */
    LightGray2: '#F6F8F9',
    Gray: '#808080',

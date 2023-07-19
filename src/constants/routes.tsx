@@ -1,8 +1,10 @@
+import { CreatePersonalLoanCreditProduct } from '@app/pages/create/PersonalLoanCredit';
+
 export const BasePath = '/product/factory';
 
 export const RouteMaps = {
    productList: {
-      element: <></>,
+      element: <CreatePersonalLoanCreditProduct />,
       path: (type = '/:productType') => `${BasePath}/list${type}`,
    },
 };
