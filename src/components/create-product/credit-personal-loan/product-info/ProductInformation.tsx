@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import * as FormMeta from '@app/utils/validators/personal-loan/product-info';
-import FormContainer from '../../../form_container';
+import FormContainer from '../../../forms/FormContainer';
 import FormControlWrapper from '@app/components/forms/FormControlWrapper';
 import { Box, Divider, Grid, Typography } from '@mui/material';
 import { Button } from '@app/components/atoms';
@@ -13,11 +13,10 @@ import { TenureControl } from '@app/components/forms/TenureControl';
 import { ProductCurrencyControl } from '@app/components/forms/ProductCurrencyControl';
 type inputValue = { [key: string]: any };
 
-const ProductInformation: React.FC = () => {
+export const ProductInformation: React.FC = () => {
    const { InputFieldNames, ToolTipText } = FormMeta;
    // eslint-disable-next-line @typescript-eslint/no-empty-function
-   const onSubmit = (values: inputValue) => {
-   };
+   const onSubmit = (values: inputValue) => {};
 
    return (
       <FormContainer>
@@ -96,5 +95,3 @@ const ProductInformation: React.FC = () => {
       </FormContainer>
    );
 };
-
-export default ProductInformation;

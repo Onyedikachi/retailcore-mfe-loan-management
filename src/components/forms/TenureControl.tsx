@@ -1,7 +1,7 @@
 import { Grid, InputAdornment } from '@mui/material';
 import FormControlWrapper from './FormControlWrapper';
 import { FormControlBase } from './FormControl';
-import ValueIncrementDecrement from '../value-increase-decrease';
+import ValueIncrementDecrement from '../ValueIncreaseDecrease';
 import { FormikProps } from 'formik';
 import { LoanTenurePeriod } from '@app/constants';
 

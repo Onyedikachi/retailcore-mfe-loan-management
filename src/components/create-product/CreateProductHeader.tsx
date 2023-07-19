@@ -23,7 +23,7 @@ export interface CreateProductHeaderProps {
 }
 
 export const CreateProductHeader = () => {
-   const { productType = 'Credit', productSubtype = 'Personal Loan' } = useParams();
+   const { productType = 'Credit', loanType = 'Personal Loan' } = useParams();
    return (
       <StyledContainer>
          <Typography
@@ -38,7 +38,7 @@ export const CreateProductHeader = () => {
                   <ArrowBackRounded></ArrowBackRounded>
                </IconButton>
             </Link>
-            {[productType, productSubtype, 'Product Factory'].map((message, index) => (
+            {[productType, loanType, 'Product Factory'].map((message, index) => (
                <Fragment key={index}>
                   <Typography sx={{ ...(index < 2 && { color: Colors.LightGray3 }) }}>{message}</Typography>
                   {index !== 2 && <KeyboardArrowLeft sx={{ color: Colors.TextGray }} />}

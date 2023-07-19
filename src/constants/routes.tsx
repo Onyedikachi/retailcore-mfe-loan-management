@@ -1,11 +1,16 @@
-import ProductInfo from '@app/components/create-product/credit-personal-loan/product-info/ProductInformation';
+import { CreatePersonalLoanCreditProduct } from '@app/pages/CreateLoan';
 
 export const BasePath = '/product/factory';
 
 export const RouteMaps = {
    productList: {
-      element: <ProductInfo />,
+      element: <CreatePersonalLoanCreditProduct />,
       path: (type = '/:productType') => `${BasePath}/list${type}`,
+   },
+   createCreditPersonalLoan: {
+      element: <CreatePersonalLoanCreditProduct />,
+      path: (productType = '/:productType', loanType = '/:loanType') =>
+         `${BasePath}/create${productType}${loanType}`,
    },
 };
 

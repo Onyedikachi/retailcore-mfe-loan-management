@@ -79,6 +79,19 @@ export const GlobalTheme = createTheme(
          MuiCheckbox: CheckBoxTheme,
          MuiRadio: RadioTheme,
          MuiInputBase: InputBaseTheme,
+         MuiCssBaseline: {
+            styleOverrides: () => ({
+               '.fancy-scrollbar': {
+                  '&::-webkit-scrollbar-thumb': {
+                     background: Colors.LinearGradient,
+                     borderRadius: 10,
+                  },
+                  '::-webkit-scrollbar': {
+                     width: 5,
+                  },
+               },
+            }),
+         },
       },
    })
 );
