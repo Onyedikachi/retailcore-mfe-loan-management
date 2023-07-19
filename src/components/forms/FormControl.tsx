@@ -1,5 +1,14 @@
 import React from 'react';
-import { InputProps, Input, SelectInput, SelectProps, SwitchProps, Switch } from '../atoms';
+import {
+   InputProps,
+   Input,
+   SelectInput,
+   SelectProps,
+   SwitchProps,
+   Switch,
+   RadioGroupProps,
+   RadioGroup,
+} from '../atoms';
 
 type ExtendedInputProps = InputProps & {
    control: 'input';
@@ -13,8 +22,16 @@ type ExtendedSwitchProps = SwitchProps & {
    control: 'switch';
    children?: React.ReactNode;
 };
+type ExtendedRadioProps = RadioGroupProps & {
+   control: 'radio';
+   children?: React.ReactNode;
+};
 
-type FormControlBaseProp = ExtendedInputProps | ExtendedSelectProps | ExtendedSwitchProps;
+type FormControlBaseProp =
+   | ExtendedInputProps
+   | ExtendedSelectProps
+   | ExtendedSwitchProps
+   | ExtendedRadioProps;
 
 export const FormControlBase: React.FC<FormControlBaseProp> = ({ control = 'input', children, ...props }) => {
    switch (control) {
@@ -22,6 +39,8 @@ export const FormControlBase: React.FC<FormControlBaseProp> = ({ control = 'inpu
          return <SelectInput children={children} {...(props as SelectProps)} />;
       case 'switch':
          return <Switch {...(props as SwitchProps)} />;
+      case 'radio':
+         return <RadioGroup {...(props as RadioGroupProps)} />;
       default:
          return <Input {...(props as InputProps)} />;
    }

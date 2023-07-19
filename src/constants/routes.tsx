@@ -1,10 +1,10 @@
-import ProductInfo from '@app/components/create-product/credit-personal-loan/product-info/ProductInformation';
+import EligibilityCriteria from '@app/components/create-product/credit-personal-loan/eligibility-criteria/eligibility-criteria';
 
 export const BasePath = '/product/factory';
 
 export const RouteMaps = {
    productList: {
-      element: <ProductInfo />,
+      element: <EligibilityCriteria />,
       path: (type = '/:productType') => `${BasePath}/list${type}`,
    },
 };
