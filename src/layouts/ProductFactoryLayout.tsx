@@ -87,7 +87,7 @@ export const ProductFactoryLayout = ({ header, content, fullContent = false }: P
             <Box ref={stackHeaderRef}>{header}</Box>
             <ContentBox height={headerHeight && `calc(100% - ${headerHeight}px)`}>
                <Grid container height="100%" position="relative">
-                  <Grid xs item>
+                  <Grid height="100%" xs item>
                      {content}
                   </Grid>
                   {!fullContent && (

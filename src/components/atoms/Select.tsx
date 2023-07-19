@@ -1,6 +1,5 @@
-import { FormControl, Select, SelectProps as MuiSelectProps, styled } from '@mui/material';
+import { FormControl, Select, SelectProps as MuiSelectProps, styled, MenuItem } from '@mui/material';
 import { Field, ErrorMessage, FieldProps } from 'formik';
-import { ReactNode } from 'react';
 import { InputErrorText } from '../forms/InputFieldError';
 import { Colors } from '@app/constants/colors';
 
@@ -17,10 +16,11 @@ const StyledSelect = styled(Select)(({ variant }) => ({
 export interface SelectProps extends MuiSelectProps {
    name: string;
    padding?: string;
-   children?: ReactNode;
+   options: string[];
+   placeholder: string;
 }
 
-export const SelectInput: React.FC<SelectProps> = ({ children, ...props }) => {
+export const SelectInput: React.FC<SelectProps> = ({ options, placeholder, ...props }) => {
    return (
       <Field name={props.name}>
          {({ field, form }: FieldProps) => {
@@ -31,11 +31,19 @@ export const SelectInput: React.FC<SelectProps> = ({ children, ...props }) => {
                         variant="standard"
                         {...props}
                         {...field}
+                        defaultValue=""
                         displayEmpty
                         inputProps={{ id: props.name }}
                         error={!!(form.errors[props.name] && form.touched[props.name])}
+                        renderValue={(value: unknown) =>
+                           value ? value : <SelectPlaceholder text={placeholder} />
+                        }
                      >
-                        {children}
+                        {options.map((option, id) => (
+                           <MenuItem value={option} key={id}>
+                              {option}
+                           </MenuItem>
+                        ))}
                      </StyledSelect>
                      <ErrorMessage
                         name={props.name}
