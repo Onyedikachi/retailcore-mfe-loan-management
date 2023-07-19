@@ -64,6 +64,9 @@ export const GlobalTheme = createTheme(
          success: {
             main: Colors.Success,
          },
+         gray: {
+            main: Colors.LightGray5,
+         },
          info: {
             main: Colors.Info,
          },

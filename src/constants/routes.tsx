@@ -1,8 +1,10 @@
+import ProductInfo from '@app/components/create-product/credit_personal_loan/product_info/product_info';
+
 export const BasePath = '/product/factory';
 
 export const RouteMaps = {
    productList: {
-      element: <></>,
+      element: <ProductInfo />,
       path: (type = '/:productType') => `${BasePath}/list${type}`,
    },
 };
