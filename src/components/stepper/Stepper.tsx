@@ -145,7 +145,10 @@ export const Stepper = ({
             >
                {children.map((_, index) => (
                   <Step key={stepLabels[index]}>
-                     <StepLabel StepIconComponent={StepperIndicator(index, onStepClick)}>
+                     <StepLabel
+                        sx={{ textTransform: 'uppercase' }}
+                        StepIconComponent={StepperIndicator(index, onStepClick)}
+                     >
                         {stepLabels[index]}
                      </StepLabel>
                   </Step>

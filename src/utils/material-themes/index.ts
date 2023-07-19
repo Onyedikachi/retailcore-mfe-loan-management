@@ -26,13 +26,13 @@ export const GlobalTheme = createTheme(
             lineHeight: materialTheme.typography.pxToRem(43),
          },
          h3: {
-            fontWeight: 600,
-            fontSize: materialTheme.typography.pxToRem(30),
+            fontWeight: 700,
+            fontSize: materialTheme.typography.pxToRem(28),
             lineHeight: materialTheme.typography.pxToRem(38),
          },
          h4: {
-            fontWeight: 600,
-            fontSize: materialTheme.typography.pxToRem(26),
+            fontWeight: 700,
+            fontSize: materialTheme.typography.pxToRem(24),
             lineHeight: materialTheme.typography.pxToRem(33),
          },
          h5: {
