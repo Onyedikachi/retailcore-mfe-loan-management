@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, IconButton, Typography,styled } from '@mui/material';
+import { Box, IconButton, Typography, styled } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 
 interface ModalHeaderProps {

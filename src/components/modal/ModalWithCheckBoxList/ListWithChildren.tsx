@@ -17,7 +17,7 @@ interface ListWithChildrenProps {
 
 export const ListWithChildren: React.FC<ListWithChildrenProps> = ({ listData, onCheckboxToggle, onChildCheckboxToggle }) => {
     return (
-        <Box sx={{ maxHeight: '20vh', overflowY: 'auto',  margin: "5% 0% "   }}>
+        <Box sx={{ maxHeight: '20vh', overflowY: 'auto', margin: "5% 0%" }}>
             {listData.map((item) => (
                 <Box key={item.labelName}>
                     <Box sx={{ display: 'flex', alignItems: 'center' }}>
