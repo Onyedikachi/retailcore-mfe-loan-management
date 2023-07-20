@@ -8,7 +8,7 @@ const StyledMenuItem = styled(MuiMenuItem)(() => ({
    '&:hover:not(.Mui-disabled):not(.Mui-selected)': {
       backgroundColor: '#f6f6f6',
    },
-   '&.Mui-selected': {
+   '&.activeList': {
       backgroundColor: Colors.LightPrimary,
    },
    '&.Mui-focusVisible': {
@@ -24,10 +24,12 @@ export interface MenuItemProps extends Omit<MuiMenuItemProps, 'onClick'> {
 }
 
 export const MenuItem = ({ label, href, children, onClick, ...restProps }: MenuItemProps) => {
-   const Anchor = href ? Link : React.Fragment;
+   const Anchor = (href ? Link : React.Fragment) as React.ElementType;
    return (
       <StyledMenuItem onClick={(event) => onClick?.(event, { label: label ?? '', href })} {...restProps}>
-         <Anchor style={{ textDecoration: 'none' }} to={href ?? ''}>
+         <Anchor
+            {...(href ? { style: { textDecoration: 'none', color: Colors.TextGray }, to: href ?? '' } : {})}
+         >
             {children ?? label}
          </Anchor>
       </StyledMenuItem>

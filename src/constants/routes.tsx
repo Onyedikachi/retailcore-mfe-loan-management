@@ -1,8 +1,10 @@
+import NestedDropdown from '@app/components/NestedDropdown';
+
 export const BasePath = '/product/factory';
 
 export const RouteMaps = {
    productList: {
-      element: <></>,
+      element: <NestedDropdown />,
       path: (type = '/:productType') => `${BasePath}/list${type}`,
    },
 };

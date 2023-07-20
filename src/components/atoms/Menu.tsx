@@ -1,5 +1,6 @@
 import { Menu as MuiMenu, MenuProps as MuiMenuProps, styled } from '@mui/material';
 import { MenuItem, MenuItemProps } from './MenuItems';
+import { useState } from 'react';
 
 const StyledMenu = styled(MuiMenu)({
    'MuiPaper-root': {
@@ -13,10 +14,20 @@ export interface MenuProps extends MuiMenuProps {
 }
 
 export const Menu = ({ open = false, items, ...restProps }: MenuProps) => {
+   const [activeItem, setActiveItem] = useState(0);
+
    return (
       <StyledMenu open={open} {...restProps}>
-         {items.map((item) => (
-            <MenuItem {...item} />
+         {items.map((item, index) => (
+            <MenuItem
+               className={`${item.className ?? ''} ${activeItem === index ? 'activeList' : ''}`}
+               {...item}
+               onClick={(...args) => {
+                  item?.onClick?.(...args);
+                  setActiveItem(index);
+               }}
+               key={`${index}${item.label}`}
+            />
          ))}
       </StyledMenu>
    );

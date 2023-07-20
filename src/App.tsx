@@ -3,8 +3,6 @@ import AppRoutes from './AppRoutes';
 import { GlobalTheme } from '@app/utils';
 import Accordion from './components/accordion/Accordion';
 import { Chip } from './components/atoms/Chip';
-import NestedDropdown from './components/NestedDropdown';
-import AddIcon from '@mui/icons-material/Add';
 import LinearGradient from './components/atoms/LinearGradient';
 
 const App = () => {
@@ -18,8 +16,6 @@ const App = () => {
          </Accordion>
          <CssBaseline />
          <LinearGradient />
-
-         <NestedDropdown />
       </ThemeProvider>
    );
 };
