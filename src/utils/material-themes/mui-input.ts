@@ -23,7 +23,7 @@ export const InputBaseTheme = {
    styleOverrides: {
       root: {
          '&.MuiOutlinedInput-root': {
-            padding: '7px',
+            padding: '10px',
             '& fieldset': {
                borderColor: Colors.LightGray3,
             },
