@@ -7,19 +7,13 @@ interface ModalHeaderProps {
   headerText: string;
 }
 
-const HeaderText = styled(Typography)({
-    fontFamily: 'Roboto', 
-    fontWeight: 700, 
-    lineHeight: '23px', 
-    letterSpacing: '0em',
-    textAlign: 'left', 
-  });
+
 
 
 const ModalHeader: React.FC<ModalHeaderProps> = ({ onClose, headerText }) => {
   return (
     <Box display="flex" alignItems="center" justifyContent="space-between">
-      <HeaderText sx={{ color: 'gray' }}>{headerText}</HeaderText>
+      <Typography variant="h4">{headerText}</Typography>
       <IconButton color="primary" onClick={onClose}>
         <CloseIcon />
       </IconButton>

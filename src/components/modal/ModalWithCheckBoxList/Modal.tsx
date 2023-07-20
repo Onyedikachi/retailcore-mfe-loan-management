@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Modal } from '@mui/material';
 import ModalHeader from './ModalHeader';
 import ModalContent from './ModalContent';
-import {CreateChargeDialog} from './CreateChargeDialog';
+import {ModalAddNewDialog} from './ModalAddNewDialog';
 
 interface ReusableModalProps {
   open: boolean;
@@ -16,7 +16,7 @@ interface ReusableModalProps {
   onCheckboxToggle: (labelName: string) => void;
   onChildCheckboxToggle: (labelName: string, childIndex: number) => void;
   headerText: string; 
-  createChargeText: string; 
+  addButtonText: string; 
 }
 
 const ReusableModal: React.FC<ReusableModalProps> = ({
@@ -27,7 +27,7 @@ const ReusableModal: React.FC<ReusableModalProps> = ({
   onCheckboxToggle,
   onChildCheckboxToggle,
   headerText, 
-  createChargeText, 
+  addButtonText, 
 }) => {
   const [searchValue, setSearchValue] = useState('');
   const [showCreateCharge, setShowCreateCharge] = useState(false);
@@ -57,11 +57,11 @@ const ReusableModal: React.FC<ReusableModalProps> = ({
           initialListData={initialListData}
           onCheckboxToggle={onCheckboxToggle}
           onChildCheckboxToggle={onChildCheckboxToggle}
-          createChargeText={createChargeText} 
+          addButtonText={addButtonText} 
           modalHeader={<ModalHeader headerText={headerText} onClose={onClose} />} 
         />
       </Modal>
-      <CreateChargeDialog
+      <ModalAddNewDialog
         open={showCreateCharge}
         onClose={handleCloseCreateCharge}
         onAddCharge={onAddCharge}

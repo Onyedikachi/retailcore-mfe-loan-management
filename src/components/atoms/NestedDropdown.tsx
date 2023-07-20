@@ -3,6 +3,8 @@ import { Menu, MenuItem, ListItemIcon, Popover, Typography } from '@mui/material
 import AddIcon from '@mui/icons-material/Add';
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import { Button } from './Button';
+import { Colors } from '@app/constants';
+
 
 interface SubMenuOption {
   label: string;
@@ -16,7 +18,7 @@ interface MainMenuOption {
 
 const NestedDropdown: React.FC = () => {
   const customStyle: React.CSSProperties = {
-    color: '#636363',
+    color: Colors.TextGray,
     fontFamily: 'Inter',
     fontSize: '38px',
     fontStyle: 'normal',

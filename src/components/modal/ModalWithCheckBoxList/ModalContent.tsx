@@ -4,7 +4,7 @@ import { Button } from '../../atoms/Button';
 import { SearchInput } from '../../atoms/SearchInput';
 import { ListWithChildren } from './ListWithChildren';
 import AddIcon from '@mui/icons-material/Add';
-
+import { Colors } from '@app/constants';
 
 
 const AddNewChargeBox = styled(Box)({
@@ -18,7 +18,7 @@ const AddNewChargeBox = styled(Box)({
 });
 
 const AddIconBackground = styled(Box)({
-  backgroundColor: '#636363',
+  backgroundColor: Colors.TextGray,
   borderRadius: '50%',
   marginRight: '5px',
   width: 'auto',
@@ -32,7 +32,7 @@ const CreateNewChargeText = styled(Typography)({
   lineHeight: '18px',
   letterSpacing: '0em',
   textAlign: 'left',
-  color: '#636363',
+  color: Colors.TextGray,
 });
 
 interface ModalContentProps {
@@ -45,7 +45,7 @@ interface ModalContentProps {
   }[];
   onCheckboxToggle: (labelName: string) => void;
   onChildCheckboxToggle: (labelName: string, childIndex: number) => void;
-  createChargeText: string;
+  addButtonText: string;
   modalHeader: React.ReactNode; 
 }
 
@@ -55,7 +55,7 @@ const ModalContent: React.FC<ModalContentProps> = ({
   initialListData,
   onCheckboxToggle,
   onChildCheckboxToggle,
-  createChargeText,
+  addButtonText,
   modalHeader, 
 }) => {
   return (
@@ -79,9 +79,9 @@ const ModalContent: React.FC<ModalContentProps> = ({
       <Box mt={2} display="flex" alignItems="center">
         <AddNewChargeBox onClick={onAddChargeClick}>
           <AddIconBackground>
-            <AddIcon sx={{color:"#ffffff"}} />
+            <AddIcon sx={{color:"white"}} />
           </AddIconBackground>
-          <CreateNewChargeText>{createChargeText}</CreateNewChargeText>
+          <CreateNewChargeText>{addButtonText}</CreateNewChargeText>
         </AddNewChargeBox>
       </Box>
 

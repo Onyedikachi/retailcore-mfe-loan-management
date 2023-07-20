@@ -3,14 +3,14 @@ import { Dialog, DialogContent, Box, IconButton, TextField,styled } from '@mui/m
 import CloseCustomIcon from '../../atoms/Icons/Close';
 import CheckCustomIcon from '../../atoms/Icons/Check';
 
-interface CreateChargeDialogProps {
+interface ModalAddNewDialogProps {
   open: boolean;
   onClose: () => void;
   onAddCharge: (chargeName: string) => void;
 }
 
 
-export const CreateChargeDialog: React.FC<CreateChargeDialogProps> = ({ open, onClose, onAddCharge }) => {
+export const ModalAddNewDialog: React.FC<ModalAddNewDialogProps> = ({ open, onClose, onAddCharge }) => {
   const [chargeName, setChargeName] = useState('');
 
   const handleCreateCharge = () => {

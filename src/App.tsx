@@ -193,7 +193,7 @@ const App = () => {
         onCheckboxToggle={handleCheckboxToggle}
         onChildCheckboxToggle={handleChildCheckboxToggle}
         headerText="Your Modal Header Text"
-        createChargeText="Your Create Charge Text"
+        addButtonText="Your Create Charge Text"
       />
     </ThemeProvider >
   )
