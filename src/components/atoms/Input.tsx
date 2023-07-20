@@ -8,11 +8,12 @@ export type InputProps = TextFieldProps & {
    allow?: string;
    children?: ReactNode;
    currency?: boolean;
+   decimal?: boolean;
    extraLeft?: ReactNode;
    extraRight?: ReactNode;
 };
 
-export const Input: React.FC<InputProps> = ({ extraLeft, extraRight, currency, ...props }) => {
+export const Input: React.FC<InputProps> = ({ extraLeft, decimal, extraRight, currency, ...props }) => {
    const handleChange = (
       e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
       form: FieldProps['form']
@@ -30,6 +31,11 @@ export const Input: React.FC<InputProps> = ({ extraLeft, extraRight, currency, .
          const formattedValue = parts.length === 2 ? `${integerPart}.${parts[1]}` : integerPart;
          input = formattedValue;
       }
+      if (decimal) {
+         const decimalRegex = /[^-+\d.]/g;
+         input = input.replace(decimalRegex, '');
+      }
+
       form.handleChange(e);
       form.setFieldValue(props.name, input);
    };
@@ -40,7 +46,7 @@ export const Input: React.FC<InputProps> = ({ extraLeft, extraRight, currency, .
             return (
                <>
                   <Box display="flex" alignItems="end">
-                     {extraLeft && <Typography mr={2}>{extraLeft}</Typography>}
+                     {extraLeft && <Typography mr={1}>{extraLeft}</Typography>}
                      <FormControl fullWidth>
                         <TextField
                            variant="standard"
@@ -54,7 +60,7 @@ export const Input: React.FC<InputProps> = ({ extraLeft, extraRight, currency, .
                            inputProps={{ autoComplete: 'off' }}
                         />
                      </FormControl>
-                     {extraRight && <Typography ml={2}>{extraRight}</Typography>}
+                     {extraRight && <Typography ml={1}>{extraRight}</Typography>}
                   </Box>
                   <ErrorMessage
                      name={props.name}

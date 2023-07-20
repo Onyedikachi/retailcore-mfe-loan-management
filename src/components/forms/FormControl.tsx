@@ -8,6 +8,8 @@ import {
    Switch,
    RadioGroupProps,
    RadioGroup,
+   CheckBoxGroup,
+   CheckBoxGroupProps,
 } from '../atoms';
 
 type ExtendedInputProps = InputProps & {
@@ -26,12 +28,17 @@ type ExtendedRadioProps = RadioGroupProps & {
    control: 'radio';
    children?: React.ReactNode;
 };
+type ExtendedCheckboxProps = CheckBoxGroupProps & {
+   control: 'checkboxGroup';
+   children?: React.ReactNode;
+};
 
 type FormControlBaseProp =
    | ExtendedInputProps
    | ExtendedSelectProps
    | ExtendedSwitchProps
-   | ExtendedRadioProps;
+   | ExtendedRadioProps
+   | ExtendedCheckboxProps;
 
 export const FormControlBase: React.FC<FormControlBaseProp> = ({ control = 'input', children, ...props }) => {
    switch (control) {
@@ -41,6 +48,8 @@ export const FormControlBase: React.FC<FormControlBaseProp> = ({ control = 'inpu
          return <Switch {...(props as SwitchProps)} />;
       case 'radio':
          return <RadioGroup {...(props as RadioGroupProps)} />;
+      case 'checkboxGroup':
+         return <CheckBoxGroup {...(props as CheckBoxGroupProps)} />;
       default:
          return <Input {...(props as InputProps)} />;
    }

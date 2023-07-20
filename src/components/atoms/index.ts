@@ -6,3 +6,5 @@ export * from './SearchInput';
 export * from './LinearGradient';
 export * from './Switch';
 export * from './Radio';
+export * from './CheckBoxGroup';
+export * from './Dialog';

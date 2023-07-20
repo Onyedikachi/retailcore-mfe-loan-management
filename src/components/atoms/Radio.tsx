@@ -10,8 +10,7 @@ import { InputErrorText } from '../forms/InputFieldError';
 
 export interface RadioGroupProps extends MuiRadioGroupProps {
    name: string;
-   padding?: string;
-   options: string[];
+   options: { label: string; value: string }[];
 }
 
 export const RadioGroup: React.FC<RadioGroupProps> = ({ options, ...props }) => {
@@ -23,7 +22,13 @@ export const RadioGroup: React.FC<RadioGroupProps> = ({ options, ...props }) => 
                   <FormControl fullWidth>
                      <MuiRadioGroup defaultValue="" row {...props} {...field} id={props.name}>
                         {options.map((option, id) => (
-                           <FormControlLabel key={id} value={option} control={<Radio />} label={option} />
+                           <FormControlLabel
+                              sx={{ mr: 5 }}
+                              key={id}
+                              value={option.value}
+                              control={<Radio />}
+                              label={option.label}
+                           />
                         ))}
                      </MuiRadioGroup>
                      <ErrorMessage

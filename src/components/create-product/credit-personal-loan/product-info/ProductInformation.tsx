@@ -16,8 +16,7 @@ type inputValue = { [key: string]: any };
 const ProductInformation: React.FC = () => {
    const { InputFieldNames, ToolTipText } = FormMeta;
    // eslint-disable-next-line @typescript-eslint/no-empty-function
-   const onSubmit = (values: inputValue) => {
-   };
+   const onSubmit = (values: inputValue) => {};
 
    return (
       <FormContainer>

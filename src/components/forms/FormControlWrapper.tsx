@@ -15,9 +15,10 @@ interface WrapperProps extends InputLabelProps {
 }
 
 const FormControlWrapper: React.FC<WrapperProps> = (props) => {
-   const flexStyles = props.layout == 'horizontal' ? { display: 'flex', ...props.layoutStyles } : {};
+   const flexStyles =
+      props.layout == 'horizontal' ? { display: 'flex', alignItems: 'center', ...props.layoutStyles } : {};
    return (
-      <Box sx={{ mb: 3, ...props.sx, ...flexStyles }}>
+      <Box sx={{ mb: 4, ...props.sx, ...flexStyles }}>
          {props.label && (
             <Box>
                <Box display="flex">

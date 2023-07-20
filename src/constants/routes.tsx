@@ -1,4 +1,4 @@
-import EligibilityCriteria from '@app/components/create-product/credit-personal-loan/eligibility-criteria/eligibility-criteria';
+import EligibilityCriteria from '@app/components/create-product/credit-personal-loan/eligibility-criteria/EligibilityCriteria';
 
 export const BasePath = '/product/factory';
 
