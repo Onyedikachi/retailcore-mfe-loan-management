@@ -5,3 +5,5 @@ export * from './Select';
 export * from './SearchInput';
 export * from './LinearGradient';
 export * from './Switch';
+export * from './MenuItems';
+export * from './Menu';

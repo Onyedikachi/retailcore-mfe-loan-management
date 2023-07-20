@@ -6,7 +6,7 @@ import { PersonalLoanCreditContent } from './CreateLoanPages/CreditPersonalLoan'
 
 const CreateLoanPages: Record<string, Record<string, JSX.Element>> = {
    credit: {
-      'personal-loan': <PersonalLoanCreditContent />,
+      'personal-loans': <PersonalLoanCreditContent />,
    },
 };
 

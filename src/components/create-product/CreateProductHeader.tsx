@@ -40,7 +40,11 @@ export const CreateProductHeader = () => {
             </Link>
             {[productType, loanType, 'Product Factory'].map((message, index) => (
                <Fragment key={index}>
-                  <Typography sx={{ ...(index < 2 && { color: Colors.LightGray3 }) }}>{message}</Typography>
+                  <Typography
+                     sx={{ textTransform: 'capitalize', ...(index < 2 && { color: Colors.LightGray3 }) }}
+                  >
+                     {message.toLowerCase()}
+                  </Typography>
                   {index !== 2 && <KeyboardArrowLeft sx={{ color: Colors.TextGray }} />}
                </Fragment>
             ))}
