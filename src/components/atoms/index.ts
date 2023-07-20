@@ -8,3 +8,4 @@ export * from './Switch';
 export * from './Radio';
 export * from './CheckBoxGroup';
 export * from './Dialog';
+export * from './DragContainer';

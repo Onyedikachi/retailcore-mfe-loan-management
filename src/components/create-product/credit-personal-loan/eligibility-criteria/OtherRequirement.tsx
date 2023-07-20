@@ -37,7 +37,7 @@ const OtherRequirement: React.FC<{ formik: any }> = ({ formik }) => {
                </Box>
             </>
          )}
-         <Dialog open={open} handleClose={handleClose} title="ADD OTHER ELIGIBILITY REQUIREMENTS">
+         <Dialog open={true} handleClose={handleClose} title="ADD OTHER ELIGIBILITY REQUIREMENTS">
             <AddOtherRequirements requirements={[]} />
          </Dialog>
       </>
