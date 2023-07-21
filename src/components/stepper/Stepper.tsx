@@ -106,7 +106,9 @@ const StepperIndicator = (index: number, onStepClick?: (step: number) => void) =
 export interface StepperProps extends Omit<MuiStepperProps, 'activeStep'> {
    children: Array<React.ReactNode>;
    childrenWrapper?: React.ElementType;
+   childrenWrapperProps?: React.HTMLProps<HTMLElement>;
    stepperWrapper?: React.ElementType;
+   stepperWrapperProps?: React.HTMLProps<HTMLElement>;
    onStepClick?: (step: number) => void;
    stepLabels: Array<string>;
 }
@@ -118,6 +120,8 @@ export const Stepper = ({
    alternativeLabel = true,
    stepLabels,
    onStepClick,
+   childrenWrapperProps,
+   stepperWrapperProps,
    ...restProp
 }: StepperProps) => {
    const stepperContext = React.useContext(StepperContext);
@@ -135,7 +139,7 @@ export const Stepper = ({
 
    return (
       <>
-         <StepperWrapper>
+         <StepperWrapper {...stepperWrapperProps}>
             <MuiStepper
                alternativeLabel={alternativeLabel}
                activeStep={activeStep}
@@ -145,14 +149,17 @@ export const Stepper = ({
             >
                {children.map((_, index) => (
                   <Step key={stepLabels[index]}>
-                     <StepLabel StepIconComponent={StepperIndicator(index, onStepClick)}>
+                     <StepLabel
+                        sx={{ textTransform: 'uppercase' }}
+                        StepIconComponent={StepperIndicator(index, onStepClick)}
+                     >
                         {stepLabels[index]}
                      </StepLabel>
                   </Step>
                ))}
             </MuiStepper>
          </StepperWrapper>
-         <ChildrenWrapper>
+         <ChildrenWrapper {...childrenWrapperProps}>
             {children[activeStep < children.length ? activeStep : children.length]}
          </ChildrenWrapper>
       </>

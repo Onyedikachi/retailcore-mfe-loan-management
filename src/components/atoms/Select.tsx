@@ -1,34 +1,50 @@
-import { FormControl, Select, SelectProps as MuiSelectProps } from '@mui/material';
+import { FormControl, Select, SelectProps as MuiSelectProps, styled, MenuItem } from '@mui/material';
 import { Field, ErrorMessage, FieldProps } from 'formik';
-import { ReactNode } from 'react';
 import { InputErrorText } from '../forms/InputFieldError';
 import { Colors } from '@app/constants/colors';
+
+const StyledSelect = styled(Select)(({ variant }) => ({
+   ...(variant === 'standard' && {
+      '&::placeholder': { color: Colors.LightGray4 },
+      '&:focus': { borderBottomColor: 'red', background: 'transparent' },
+   }),
+   '.MuiSelect-icon': {
+      fontSize: '30px',
+   },
+}));
 
 export interface SelectProps extends MuiSelectProps {
    name: string;
    padding?: string;
-   children?: ReactNode;
+   options: string[];
+   placeholder: string;
 }
 
-export const SelectInput: React.FC<SelectProps> = ({ children, ...props }) => {
+export const SelectInput: React.FC<SelectProps> = ({ options, placeholder, ...props }) => {
    return (
       <Field name={props.name}>
          {({ field, form }: FieldProps) => {
             return (
                <>
                   <FormControl fullWidth>
-                     <Select
+                     <StyledSelect
                         variant="standard"
                         {...props}
                         {...field}
+                        defaultValue=""
                         displayEmpty
-                        inputProps={{
-                           id: props.name,
-                        }}
+                        inputProps={{ id: props.name }}
                         error={!!(form.errors[props.name] && form.touched[props.name])}
+                        renderValue={(value: unknown) =>
+                           value ? value : <SelectPlaceholder text={placeholder} />
+                        }
                      >
-                        {children}
-                     </Select>
+                        {options.map((option, id) => (
+                           <MenuItem value={option} key={id}>
+                              {option}
+                           </MenuItem>
+                        ))}
+                     </StyledSelect>
                      <ErrorMessage
                         name={props.name}
                         children={(error: string) => <InputErrorText errorText={error} />}

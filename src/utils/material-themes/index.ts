@@ -1,12 +1,12 @@
 import { Colors } from '@app/constants';
 import { createTheme } from '@mui/material';
 import { deepmerge } from '@mui/utils';
-import { ButtonTheme } from './mui-button';
-import { InputTheme } from './mui-input';
+import { InputBaseTheme, InputTheme } from './mui-input';
 import { MenuItemThem } from './mui-menu-item';
-import { SelectTheme } from './mui-select';
 import { MenuTheme } from './mui-menu';
 import { TooltipTheme } from './mui-tooltip';
+import { CheckBoxTheme } from './mui-checkbox';
+import { RadioTheme } from './mui-radio';
 
 const materialTheme = createTheme();
 
@@ -26,13 +26,13 @@ export const GlobalTheme = createTheme(
             lineHeight: materialTheme.typography.pxToRem(43),
          },
          h3: {
-            fontWeight: 600,
-            fontSize: materialTheme.typography.pxToRem(30),
+            fontWeight: 700,
+            fontSize: materialTheme.typography.pxToRem(28),
             lineHeight: materialTheme.typography.pxToRem(38),
          },
          h4: {
-            fontWeight: 600,
-            fontSize: materialTheme.typography.pxToRem(26),
+            fontWeight: 700,
+            fontSize: materialTheme.typography.pxToRem(24),
             lineHeight: materialTheme.typography.pxToRem(33),
          },
          h5: {
@@ -64,17 +64,34 @@ export const GlobalTheme = createTheme(
          success: {
             main: Colors.Success,
          },
+         gray: {
+            main: Colors.LightGray5,
+         },
          info: {
             main: Colors.Info,
          },
       },
       components: {
-         MuiButton: ButtonTheme,
          MuiInput: InputTheme,
-         MuiSelect: SelectTheme,
          MuiMenuItem: MenuItemThem,
          MuiMenu: MenuTheme,
          MuiTooltip: TooltipTheme,
+         MuiCheckbox: CheckBoxTheme,
+         MuiRadio: RadioTheme,
+         MuiInputBase: InputBaseTheme,
+         MuiCssBaseline: {
+            styleOverrides: () => ({
+               '.fancy-scrollbar': {
+                  '&::-webkit-scrollbar-thumb': {
+                     background: Colors.LinearGradient,
+                     borderRadius: 10,
+                  },
+                  '::-webkit-scrollbar': {
+                     width: 5,
+                  },
+               },
+            }),
+         },
       },
    })
 );

@@ -1,25 +1,35 @@
 import React, { ReactNode } from 'react';
 import { Field, ErrorMessage, FieldProps } from 'formik';
 import { InputErrorText } from '../forms/InputFieldError';
-import { FormControl, TextField, TextFieldProps } from '@mui/material';
+import { Box, FormControl, TextField, TextFieldProps, Typography } from '@mui/material';
 
 export type InputProps = TextFieldProps & {
    name: string;
    allow?: string;
    children?: ReactNode;
+   currency?: boolean;
+   extraLeft?: ReactNode;
+   extraRight?: ReactNode;
 };
 
-export const Input: React.FC<InputProps> = (props) => {
-   const handleAllowed = (
+export const Input: React.FC<InputProps> = ({ extraLeft, extraRight, currency, ...props }) => {
+   const handleChange = (
       e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-      form: FieldProps['form'],
-      allow?: string
+      form: FieldProps['form']
    ) => {
       const target = e.target as HTMLInputElement;
 
-      const re = /\D/g;
+      const re = /[^.0-9]/g;
       let input = target.value;
-      if (allow === FORM_ALLOWED.NUMBER) input = input.replace(re, '');
+      if (props.allow === FORM_ALLOWED.NUMBER) input = input.replace(re, '');
+      if (currency) {
+         const rawValue = e.target.value.replace(/[^\d.]/g, '');
+         const parts = rawValue.split('.');
+         if (parts.length > 2) return;
+         const integerPart = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+         const formattedValue = parts.length === 2 ? `${integerPart}.${parts[1]}` : integerPart;
+         input = formattedValue;
+      }
       form.handleChange(e);
       form.setFieldValue(props.name, input);
    };
@@ -28,26 +38,29 @@ export const Input: React.FC<InputProps> = (props) => {
       <Field name={props.name}>
          {({ field, form }: FieldProps) => {
             return (
-               <FormControl fullWidth>
-                  <TextField
-                     variant="standard"
-                     id={props.name}
-                     {...props}
-                     {...field}
-                     label={props.label && props.placeholder}
-                     onChange={(e) => handleAllowed(e, form, props.allow)}
-                     type={props.type || 'text'}
-                     error={!!(form.errors[props.name] && form.touched[props.name])}
-                     inputProps={{
-                        autoComplete: 'off',
-                        maxLength: 12,
-                     }}
-                  />
+               <>
+                  <Box display="flex" alignItems="end">
+                     {extraLeft && <Typography mr={2}>{extraLeft}</Typography>}
+                     <FormControl fullWidth>
+                        <TextField
+                           variant="standard"
+                           id={props.name}
+                           {...props}
+                           {...field}
+                           label={props.label && props.placeholder}
+                           onChange={(e) => handleChange(e, form)}
+                           type={props.type || 'text'}
+                           error={!!(form.errors[props.name] && form.touched[props.name])}
+                           inputProps={{ autoComplete: 'off' }}
+                        />
+                     </FormControl>
+                     {extraRight && <Typography ml={2}>{extraRight}</Typography>}
+                  </Box>
                   <ErrorMessage
                      name={props.name}
                      children={(error: string) => <InputErrorText errorText={error} />}
                   />
-               </FormControl>
+               </>
             );
          }}
       </Field>

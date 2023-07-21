@@ -19,3 +19,30 @@ export const InputTheme = {
       },
    },
 };
+export const InputBaseTheme = {
+   styleOverrides: {
+      root: {
+         '&.MuiOutlinedInput-root': {
+            padding: '10px',
+            '& fieldset': {
+               borderColor: Colors.LightGray3,
+            },
+            '&:hover fieldset': {
+               borderColor: Colors.LightGray3,
+            },
+            '&.Mui-focused fieldset': {
+               borderColor: Colors.LightGray3,
+            },
+            '&:before': {
+               borderColor: Colors.LightGray3,
+            },
+            '&:after': {
+               borderColor: Colors.LightGray3,
+            },
+            '&.Mui-error:after': {
+               borderColor: Colors.Danger,
+            },
+         },
+      },
+   },
+};

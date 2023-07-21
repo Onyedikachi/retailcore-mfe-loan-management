@@ -1,32 +1,30 @@
-import { Box, Grid, InputLabel, InputLabelProps, Typography } from '@mui/material';
-import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
+import { Box, InputLabel, InputLabelProps, SxProps, Theme, Typography } from '@mui/material';
 import React from 'react';
 import InfoTooltip from '../atoms/Tooltip';
 import { Colors } from '@app/constants';
+import RequiredIndicator from '../atoms/RequiredIndicator';
 
 interface WrapperProps extends InputLabelProps {
    name: string;
-   label?: string;
+   label?: React.ReactNode;
    labelDescription?: string;
    children: React.ReactNode;
    tooltipText?: string;
    layout?: 'vertical' | 'horizontal';
+   layoutStyles?: SxProps<Theme>;
 }
 
 const FormControlWrapper: React.FC<WrapperProps> = (props) => {
+   const flexStyles = props.layout == 'horizontal' ? { display: 'flex', ...props.layoutStyles } : {};
    return (
-      <Grid container alignItems="end">
+      <Box sx={{ mb: 3, ...props.sx, ...flexStyles }}>
          {props.label && (
-            <Grid item xs={props.layout == 'vertical' ? 6 : 12}>
+            <Box>
                <Box display="flex">
                   <InputLabel htmlFor={props.name} sx={{ fontWeight: '500' }}>
                      {props.label}
                   </InputLabel>
-                  {props.required && (
-                     <FiberManualRecordIcon
-                        sx={{ color: 'primary.main', width: '8px', height: '10px', ml: 0.2 }}
-                     />
-                  )}
+                  {props.required && <RequiredIndicator />}
                   {props.tooltipText && <InfoTooltip text={props.tooltipText} />}
                </Box>
                {props.labelDescription && (
@@ -34,12 +32,10 @@ const FormControlWrapper: React.FC<WrapperProps> = (props) => {
                      {props.labelDescription}
                   </Typography>
                )}
-            </Grid>
+            </Box>
          )}
-         <Grid item xs={props.layout == 'vertical' ? 6 : 12}>
-            {props.children}
-         </Grid>
-      </Grid>
+         <Box>{props.children}</Box>
+      </Box>
    );
 };
 export default FormControlWrapper;

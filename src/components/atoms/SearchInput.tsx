@@ -1,17 +1,15 @@
-import { InputAdornment, IconButton, TextField, FormControl } from '@mui/material';
+import { InputAdornment, IconButton, TextField, FormControl, TextFieldProps } from '@mui/material';
 import { Box } from '@mui/system';
 import SearchIcon from '@mui/icons-material/Search';
 import React, { useEffect } from 'react';
 import useDebounce from '@app/hooks/useDebounce';
-interface SearchProps {
+export type SearchProps = TextFieldProps & {
    handleSearch: (searchBy: string) => void;
-   width?: string;
-   borderRadius?: string;
-}
+};
 
 const SEARCH_BY = 'searchBy';
 
-export const SearchInput: React.FC<SearchProps> = ({ handleSearch, width, borderRadius }) => {
+export const SearchInput: React.FC<SearchProps> = ({ handleSearch, placeholder }) => {
    const { debouncedValue, setDebouncedValue } = useDebounce<string>(1000);
    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
       setDebouncedValue(event.target.value);
@@ -22,24 +20,11 @@ export const SearchInput: React.FC<SearchProps> = ({ handleSearch, width, border
    }, [debouncedValue]);
 
    return (
-      <Box
-         sx={{
-            width: width ?? '300px',
-            '& input ': { p: '5px', pl: 0 },
-         }}
-      >
-         <FormControl
-            fullWidth
-            sx={{
-               '& .MuiOutlinedInput-root': {
-                  '& fieldset': { borderColor: 'black' },
-                  borderRadius: borderRadius ?? '5px',
-                  '& ::placeholder': { fontSize: '14px' },
-               },
-            }}
-         >
+      <Box>
+         <FormControl fullWidth>
             <TextField
-               placeholder="Search"
+               variant="standard"
+               placeholder={placeholder}
                name={SEARCH_BY}
                type="text"
                onChange={handleChange}
@@ -47,7 +32,7 @@ export const SearchInput: React.FC<SearchProps> = ({ handleSearch, width, border
                   startAdornment: (
                      <InputAdornment position="start">
                         <IconButton edge="start">
-                           <SearchIcon sx={{ color: 'black' }} />
+                           <SearchIcon sx={{ color: 'black', opacity: '0.77' }} />
                         </IconButton>
                      </InputAdornment>
                   ),
