@@ -5,7 +5,8 @@ export const CommonFormFieldNames = {
    MIN_LOAN_PRINCIPAL: 'min_loan_principal',
    MAX_LOAN_PRINCIPAL: 'max_loan_principal',
    DESCRIPTION: 'product_description',
-   PRODUCT_CURRENCY: 'currency_id',
+   PRODUCT_CURRENCY: 'currency',
+   PRODUCT_CURRENCY_ID: 'currency_id',
 } as const;
 
 export const CommonTooltipText = {

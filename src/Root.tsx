@@ -12,7 +12,8 @@ export const Root = () => {
 
    const checkUserAuthentication = useCallback(() => {
       const isAuthenticated = isTokenValid();
-      let newPathName = pathname === BasePath ? RouteMaps.productList.path('/deposit') : '';
+      let newPathName =
+         pathname === BasePath ? RouteMaps.createCreditPersonalLoan.path('/credit', '/personal-loans') : '';
 
       if (checkPermission(['']) || isSuperAdmin) {
          pathnameRef.current = newPathName || pathname;
@@ -27,5 +28,5 @@ export const Root = () => {
       authLoaded && checkUserAuthentication();
    }, [checkUserAuthentication, authLoaded]);
 
-   return nextPathname ? <Navigate to={nextPathname ?? '/login'} state={{ expired: true }} /> : <Outlet />;
+   return nextPathname ? <Navigate to={nextPathname} state={{ expired: true }} /> : <Outlet />;
 };

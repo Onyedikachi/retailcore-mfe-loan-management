@@ -1,7 +1,7 @@
 import * as FormMeta from '@app/utils/validators/personal-loan/product-info';
 import FormContainer from '../../../forms/FormContainer';
 import FormControlWrapper from '@app/components/forms/FormControlWrapper';
-import React from 'react';
+import React, { useState } from 'react';
 import { Box, Divider, Grid, Typography } from '@mui/material';
 import { Button } from '@app/components/atoms';
 import { CreateProductContext } from '@app/providers/create-product';
@@ -12,14 +12,17 @@ import { ProductCurrencyControl } from '@app/components/forms/ProductCurrencyCon
 import { ProductDescriptionControl } from '@app/components/forms/ProductDescriptionControl';
 import { ProductNameControl } from '@app/components/forms/ProductNameControl';
 import { TenureControl } from '@app/components/forms/TenureControl';
-import { useRequest } from 'react-http-query';
-import { API_PATH, CommonFormFieldNames } from '@app/constants';
+import { useRequest, useRequestData } from 'react-http-query';
+import { API_PATH, CommonFormFieldNames, REQUEST_NAMES } from '@app/constants';
 import { StepperContext } from '@app/providers';
 import { ProductInformation as ProductInformationType } from '@app/@types/create-credit-product';
 import { currencyToNumber } from '@app/helper/currency-converter';
+import { CurrencyListResponse } from '@app/@types';
 
 export const ProductInformation: React.FC = () => {
    const { InputFieldNames, ToolTipText } = FormMeta;
+   const [isDraft, setIsDraft] = useState(false);
+
    const createProductContext = React.useContext(CreateProductContext);
    const stepperContext = React.useContext(StepperContext);
    if (!createProductContext || !stepperContext) return <></>;
@@ -27,11 +30,13 @@ export const ProductInformation: React.FC = () => {
 
    const [, postProductInfo] = useRequest({ onSuccess: () => handleNavigation('next') });
    const [, checkNameAvailability] = useRequest({ onSuccess: () => handleNavigation('next') });
+   const currencyList = useRequestData<CurrencyListResponse>(REQUEST_NAMES.CURRENCY_LIST);
 
    const { setCurrency, productMeta, addProductStep } = createProductContext;
 
    const onSubmit = (values: ProductInformationType) => {
-      const { MAX_LOAN_PRINCIPAL, MIN_LOAN_PRINCIPAL } = CommonFormFieldNames;
+      const { MAX_LOAN_PRINCIPAL, MIN_LOAN_PRINCIPAL, PRODUCT_CURRENCY_ID, PRODUCT_CURRENCY } =
+         CommonFormFieldNames;
 
       addProductStep('productInformation', values);
       postProductInfo(API_PATH.PRODUCT_INFO(), {
@@ -39,6 +44,11 @@ export const ProductInformation: React.FC = () => {
             ...values,
             [MAX_LOAN_PRINCIPAL]: currencyToNumber(values[MAX_LOAN_PRINCIPAL]),
             [MIN_LOAN_PRINCIPAL]: currencyToNumber(values[MIN_LOAN_PRINCIPAL]),
+            [PRODUCT_CURRENCY_ID]: currencyList?.results.find(
+               (currency) => currency.abbreviation === values[PRODUCT_CURRENCY]
+            )?.id,
+            // eslint-disable-next-line camelcase
+            is_draft: isDraft,
          },
       });
    };
@@ -105,15 +115,21 @@ export const ProductInformation: React.FC = () => {
 
                      <Divider />
                      <Box display="flex" justifyContent="end" mt={5} mb={2}>
-                        <Button variant="outlined">Save As Draft</Button>
-                        <Button
-                           type="submit"
-                           sx={{ ml: 2 }}
-                           color="primary"
-                           disabled={!formik.dirty || !formik.isValid}
-                        >
-                           Next
-                        </Button>
+                        {['draft', 'next'].map((type) => {
+                           const isNext = type === 'next';
+                           return (
+                              <Button
+                                 sx={{ ...(isNext && { ml: 2 }) }}
+                                 color={isNext ? 'primary' : undefined}
+                                 onClick={() => setIsDraft(!isNext)}
+                                 disabled={!formik.dirty || !formik.isValid}
+                                 type="submit"
+                                 variant={isNext ? 'contained' : 'outlined'}
+                              >
+                                 {isNext ? 'Next' : 'Save As Draft'}
+                              </Button>
+                           );
+                        })}
                      </Box>
                   </Form>
                );

@@ -1,7 +1,9 @@
-import { CommonFormFieldNames, CommonTooltipText } from '@app/constants';
+import { CommonFormFieldNames, CommonTooltipText, REQUEST_NAMES } from '@app/constants';
 import { FormControlBase } from './FormControl';
 import FormControlWrapper from './FormControlWrapper';
 import { SelectProps } from '../atoms';
+import { useRequestData } from 'react-http-query';
+import { CurrencyListResponse } from '@app/@types';
 
 export type ProductCurrencyControlProps = Partial<SelectProps> & {
    name?: string;
@@ -19,6 +21,8 @@ export const ProductCurrencyControl = ({
    placeholder,
    ...otherProps
 }: ProductCurrencyControlProps) => {
+   const value = useRequestData<CurrencyListResponse>(REQUEST_NAMES.CURRENCY_LIST);
+
    return (
       <FormControlWrapper
          name={name ?? CommonFormFieldNames.PRODUCT_CURRENCY}
@@ -31,7 +35,7 @@ export const ProductCurrencyControl = ({
             name={name ?? CommonFormFieldNames.PRODUCT_CURRENCY}
             placeholder={placeholder ?? 'Select a product currency'}
             {...otherProps}
-            options={['NG', 'USD', 'EUR']}
+            options={value?.results.map((currency) => currency.abbreviation) ?? []}
          />
       </FormControlWrapper>
    );

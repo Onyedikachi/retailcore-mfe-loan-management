@@ -23,7 +23,14 @@ export const APIRequestProvider = ({ children }: APIRequestProviderProps) => {
          interceptors={{
             request(payload) {
                setRequestUrl(payload.url);
-               return payload;
+               const authorizationToken = localStorage.getItem('@sterling_core_token');
+               return {
+                  ...payload,
+                  headers: {
+                     Authorization: `Bearer ${authorizationToken}`,
+                     'Content-Type': 'application/json',
+                  },
+               };
             },
          }}
          onLoading={(isLoading) => {
