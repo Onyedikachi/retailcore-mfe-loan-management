@@ -1,5 +1,5 @@
 {
-  "name": "@Sterling/product-factory",
+  "name": "@Sterling/create-credit-product",
   "private": true,
   "scripts": {
     "start": "cross-env NODE_ENV=development webpack serve",

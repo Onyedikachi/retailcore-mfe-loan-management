@@ -2,7 +2,7 @@ import React, { useCallback, useRef, useState } from 'react';
 import { Navigate, Outlet, useLocation } from 'react-router-dom';
 import { isTokenValid } from '@Sterling/shared';
 import { usePermission } from './hooks';
-import { BasePath, RouteMaps } from './constants';
+import { BasePath, RoutePaths } from './constants';
 
 export const Root = () => {
    const { pathname } = useLocation();
@@ -12,8 +12,7 @@ export const Root = () => {
 
    const checkUserAuthentication = useCallback(() => {
       const isAuthenticated = isTokenValid();
-      let newPathName =
-         pathname === BasePath ? RouteMaps.createCreditPersonalLoan.path('/credit', '/personal-loans') : '';
+      let newPathName = pathname === BasePath ? RoutePaths.PersonalLoan.absolute : '';
 
       if (checkPermission(['']) || isSuperAdmin) {
          pathnameRef.current = newPathName || pathname;

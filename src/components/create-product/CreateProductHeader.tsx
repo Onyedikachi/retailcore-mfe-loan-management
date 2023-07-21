@@ -1,8 +1,8 @@
-import { Colors } from '@app/constants';
+import { Colors, RoutePaths } from '@app/constants';
 import { ArrowBackRounded, KeyboardArrowLeft } from '@mui/icons-material';
 import { Box, IconButton, Typography, styled } from '@mui/material';
 import { Fragment } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 const StyledContainer = styled(Box)({
    backgroundColor: 'white',
@@ -23,7 +23,9 @@ export interface CreateProductHeaderProps {
 }
 
 export const CreateProductHeader = () => {
-   const { productType = 'Credit', loanType = 'Personal Loan' } = useParams();
+   const { pathname } = useLocation();
+   const applicationPathName = Object.values(RoutePaths).find(({ absolute }) => absolute === pathname)?.name;
+   
    return (
       <StyledContainer>
          <Typography
@@ -38,7 +40,7 @@ export const CreateProductHeader = () => {
                   <ArrowBackRounded></ArrowBackRounded>
                </IconButton>
             </Link>
-            {[productType, loanType, 'Product Factory'].map((message, index) => (
+            {['Credit', applicationPathName ?? '', 'Product Factory'].map((message, index) => (
                <Fragment key={index}>
                   <Typography
                      sx={{ textTransform: 'capitalize', ...(index < 2 && { color: Colors.LightGray3 }) }}

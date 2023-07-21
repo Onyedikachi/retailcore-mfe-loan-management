@@ -20,7 +20,7 @@
       "@app/*": ["./src/*"]
     }
   },
-  "files": ["src/Sterling-product-factory.tsx"],
+  "files": ["src/Sterling-create-credit-product.tsx"],
   "include": ["src/**/*"],
   "exclude": ["src/**/*.test*"]
 }

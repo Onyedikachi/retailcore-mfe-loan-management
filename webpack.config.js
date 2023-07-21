@@ -8,7 +8,7 @@ const singleSpaDefaults = require("webpack-config-single-spa-react-ts");
 module.exports = (webpackConfigEnv, argv) => {
   const defaultConfig = singleSpaDefaults({
     orgName: "Sterling",
-    projectName: "product-factory",
+    projectName: "create-credit-product",
     webpackConfigEnv,
     argv,
   });
