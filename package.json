@@ -1,5 +1,5 @@
 {
-  "name": "@Sterling/product-factory",
+  "name": "@Sterling/create-credit-product",
   "private": true,
   "scripts": {
     "start": "webpack serve",

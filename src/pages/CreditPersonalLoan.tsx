@@ -1,5 +1,7 @@
 import { Stepper } from '@app/components';
+import { CreateProductHeader } from '@app/components/create-product/CreateProductHeader';
 import { ProductInformation } from '@app/components/create-product/credit-personal-loan';
+import { ProductFactoryLayout } from '@app/layouts/ProductFactoryLayout';
 import { Box, styled } from '@mui/material';
 import React from 'react';
 
@@ -24,7 +26,7 @@ const StepperContentWrapper = styled(Box)({
    marginTop: 20,
 });
 
-export const PersonalLoanCreditContent = () => {
+const PersonalLoanCreditContent = () => {
    const stepperWrapperRef = React.useRef<HTMLElement>(null);
    const [headerHeight, setHeaderHeight] = React.useState<number>();
 
@@ -59,5 +61,15 @@ export const PersonalLoanCreditContent = () => {
             <></>
          </Stepper>
       </StyledContentWrapper>
+   );
+};
+
+export const CreditPersonalLoan =  () => {
+   return (
+            <ProductFactoryLayout
+               header={<CreateProductHeader />}
+               content={<PersonalLoanCreditContent />}
+               fullContent={true}
+            />
    );
 };
