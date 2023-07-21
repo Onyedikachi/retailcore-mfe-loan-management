@@ -2,7 +2,7 @@ import { InputAdornment, IconButton, TextField, FormControl, TextFieldProps } fr
 import { Box } from '@mui/system';
 import SearchIcon from '@mui/icons-material/Search';
 import React, { useEffect } from 'react';
-import useDebounce from '@app/hooks/debounce';
+import useDebounce from '@app/hooks/useDebounce';
 export type SearchProps = TextFieldProps & {
    handleSearch: (searchBy: string) => void;
 };
