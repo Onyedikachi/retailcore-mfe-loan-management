@@ -1,16 +1,11 @@
-import { CreatePersonalLoanCreditProduct } from '@app/pages/CreateLoan';
+import { CreditPersonalLoan } from '@app/pages/CreditPersonalLoan';
 
-export const BasePath = '/product/factory';
+export const BasePath = '/product/factory/create/credit';
 
 export const RouteMaps = {
-   productList: {
-      element: <CreatePersonalLoanCreditProduct />,
-      path: (type = '/:productType') => `${BasePath}/list${type}`,
-   },
    createCreditPersonalLoan: {
-      element: <CreatePersonalLoanCreditProduct />,
-      path: (productType = '/:productType', loanType = '/:loanType') =>
-         `${BasePath}/create${productType}${loanType}`,
+      element: <CreditPersonalLoan />,
+      path: (loanType = '/:loanType') => `${BasePath}${loanType}`,
    },
 };
 
@@ -18,3 +13,11 @@ export const Routes = Object.values(RouteMaps).map(({ element, path }) => ({
    element,
    path: typeof path === 'function' ? path() : path,
 }));
+
+export const RoutePaths = {
+   PersonalLoan: {
+      absolute: RouteMaps.createCreditPersonalLoan.path('/personal-loans'),
+      relative: '/personal-loans',
+      name: 'Personal Loans'
+   }
+};
