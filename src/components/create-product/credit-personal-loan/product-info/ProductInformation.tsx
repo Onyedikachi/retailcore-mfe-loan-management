@@ -1,22 +1,47 @@
-/* eslint-disable no-unused-vars */
 import * as FormMeta from '@app/utils/validators/personal-loan/product-info';
 import FormContainer from '../../../forms/FormContainer';
 import FormControlWrapper from '@app/components/forms/FormControlWrapper';
+import React from 'react';
 import { Box, Divider, Grid, Typography } from '@mui/material';
 import { Button } from '@app/components/atoms';
+import { CreateProductContext } from '@app/providers/create-product';
 import { Form, Formik } from 'formik';
 import { FormControlBase } from '@app/components/forms/FormControl';
 import { LoanPrincipalRangeControl } from '@app/components/forms/LoanPrincipalRangeControl';
+import { ProductCurrencyControl } from '@app/components/forms/ProductCurrencyControl';
 import { ProductDescriptionControl } from '@app/components/forms/ProductDescriptionControl';
 import { ProductNameControl } from '@app/components/forms/ProductNameControl';
 import { TenureControl } from '@app/components/forms/TenureControl';
-import { ProductCurrencyControl } from '@app/components/forms/ProductCurrencyControl';
-type inputValue = { [key: string]: any };
+import { useRequest } from 'react-http-query';
+import { API_PATH, CommonFormFieldNames } from '@app/constants';
+import { StepperContext } from '@app/providers';
+import { ProductInformation as ProductInformationType } from '@app/@types/create-credit-product';
+import { currencyToNumber } from '@app/helper/currency-converter';
 
 export const ProductInformation: React.FC = () => {
    const { InputFieldNames, ToolTipText } = FormMeta;
-   // eslint-disable-next-line @typescript-eslint/no-empty-function
-   const onSubmit = (values: inputValue) => {};
+   const createProductContext = React.useContext(CreateProductContext);
+   const stepperContext = React.useContext(StepperContext);
+   if (!createProductContext || !stepperContext) return <></>;
+   const { handleNavigation } = stepperContext;
+
+   const [, postProductInfo] = useRequest({ onSuccess: () => handleNavigation('next') });
+   const [, checkNameAvailability] = useRequest({ onSuccess: () => handleNavigation('next') });
+
+   const { setCurrency, productMeta, addProductStep } = createProductContext;
+
+   const onSubmit = (values: ProductInformationType) => {
+      const { MAX_LOAN_PRINCIPAL, MIN_LOAN_PRINCIPAL } = CommonFormFieldNames;
+
+      addProductStep('productInformation', values);
+      postProductInfo(API_PATH.PRODUCT_INFO(), {
+         body: {
+            ...values,
+            [MAX_LOAN_PRINCIPAL]: currencyToNumber(values[MAX_LOAN_PRINCIPAL]),
+            [MIN_LOAN_PRINCIPAL]: currencyToNumber(values[MIN_LOAN_PRINCIPAL]),
+         },
+      });
+   };
 
    return (
       <FormContainer>
@@ -33,14 +58,16 @@ export const ProductInformation: React.FC = () => {
                         <ProductDescriptionControl />
                         <Grid container>
                            <Grid item xs={4} pr={6}>
-                              <ProductCurrencyControl />
+                              <ProductCurrencyControl
+                                 onChange={(event) => setCurrency(event.target.value as string)}
+                              />
                            </Grid>
                            <Grid item xs={4} pr={6}>
                               <TenureControl
                                  fieldLabel={'Minimum Loan Tenure'}
                                  periodName={InputFieldNames.MIN_LOAN_TENURE_PERIOD}
                                  numberName={InputFieldNames.MIN_LOAN_TENURE_NUM}
-                                 periodTooltipText={ToolTipText.minLoanTenurePeriod}
+                                 periodTooltipText={ToolTipText.min_loan_tenure_period}
                                  formik={formik}
                               />
                            </Grid>
@@ -49,7 +76,7 @@ export const ProductInformation: React.FC = () => {
                                  fieldLabel={'Maximum Loan Tenure'}
                                  periodName={InputFieldNames.MAX_LOAN_TENURE_PERIOD}
                                  numberName={InputFieldNames.MAX_LOAN_TENURE_NUM}
-                                 periodTooltipText={ToolTipText.maxLoanTenurePeriod}
+                                 periodTooltipText={ToolTipText.max_loan_tenure_period}
                                  formik={formik}
                               />
                            </Grid>
@@ -57,7 +84,7 @@ export const ProductInformation: React.FC = () => {
 
                         <Grid container>
                            {/* Min loan principal */}
-                           <LoanPrincipalRangeControl />
+                           <LoanPrincipalRangeControl extraLeft={productMeta?.currency} />
                         </Grid>
 
                         {/* Allow Multiple */}
@@ -70,7 +97,7 @@ export const ProductInformation: React.FC = () => {
                               </Box>
                            }
                            layout="horizontal"
-                           tooltipText={ToolTipText.allowMultiple}
+                           tooltipText={ToolTipText.allow_multiple_req}
                         >
                            <FormControlBase sx={{ ml: 7 }} name={FormMeta.ALLOW_MULTIPLE} control="switch" />
                         </FormControlWrapper>
