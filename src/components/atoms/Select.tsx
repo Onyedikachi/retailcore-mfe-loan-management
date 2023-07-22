@@ -31,6 +31,10 @@ export const SelectInput: React.FC<SelectProps> = ({ options, placeholder, ...pr
                         variant="standard"
                         {...props}
                         {...field}
+                        onChange={(event) => {
+                           props?.onChange?.(event, props.children);
+                           field?.onChange?.(event);
+                        }}
                         defaultValue=""
                         displayEmpty
                         inputProps={{ id: props.name }}

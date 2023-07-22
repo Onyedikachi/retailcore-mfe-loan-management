@@ -22,7 +22,7 @@ export const QuickLinkItem = ({ label, href }: QuickLinkItemProps) => {
                <IconButton
                   sx={(theme) => ({
                      background: Colors.LightPrimary,
-                     padding: theme.spacing(3),
+                     padding: theme.spacing(2),
                      marginBottom: theme.spacing(1),
                   })}
                >

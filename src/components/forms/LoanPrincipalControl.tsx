@@ -1,22 +1,32 @@
 import { FormControlBase } from './FormControl';
 import FormControlWrapper from './FormControlWrapper';
 
-export interface LoanPrincipalControlProps {
+export type LoanPrincipalControlProps = {
    name: string;
    label: string;
    tooltipText?: string;
    required?: boolean;
-}
+   extraLeft?: string;
+};
 
-export const LoanPrincipalControl = (props: LoanPrincipalControlProps) => {
+export const LoanPrincipalControl = ({
+   name,
+   label,
+   tooltipText,
+   required,
+   extraLeft,
+   ...otherProps
+}: LoanPrincipalControlProps) => {
    return (
-      <FormControlWrapper
-         name={props.name}
-         label={props.label}
-         required={props.required ?? true}
-         tooltipText={props.tooltipText}
-      >
-         <FormControlBase name={props.name} currency control="input" placeholder="1" extraLeft="NGN" />
+      <FormControlWrapper name={name} label={label} required={required ?? true} tooltipText={tooltipText}>
+         <FormControlBase
+            name={name}
+            currency
+            placeholder="1"
+            extraLeft={extraLeft ?? 'NGN'}
+            {...otherProps}
+            control="input"
+         />
       </FormControlWrapper>
    );
 };

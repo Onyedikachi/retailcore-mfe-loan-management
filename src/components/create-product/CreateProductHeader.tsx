@@ -25,7 +25,7 @@ export interface CreateProductHeaderProps {
 export const CreateProductHeader = () => {
    const { pathname } = useLocation();
    const applicationPathName = Object.values(RoutePaths).find(({ absolute }) => absolute === pathname)?.name;
-   
+
    return (
       <StyledContainer>
          <Typography

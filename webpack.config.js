@@ -1,5 +1,6 @@
 const { merge } = require("webpack-merge");
-const dotenv = require("dotenv").config({ path: __dirname + "/.env" });
+const { NODE_ENV } = process.env;
+const dotenv = require("dotenv").config({ path: __dirname + `/.env${NODE_ENV ? '.' + NODE_ENV : ''}` });
 const path = require("path");
 const DefinePlugin = require("webpack").DefinePlugin;
 const singleSpaDefaults = require("webpack-config-single-spa-react-ts");

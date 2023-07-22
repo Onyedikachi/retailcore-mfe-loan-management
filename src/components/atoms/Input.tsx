@@ -31,6 +31,7 @@ export const Input: React.FC<InputProps> = ({ extraLeft, extraRight, currency, .
          input = formattedValue;
       }
       form.handleChange(e);
+      props?.onChange?.(e);
       form.setFieldValue(props.name, input);
    };
 

@@ -1,11 +1,12 @@
 export const LoanTenurePeriod = ['Hours', 'Days', 'Weeks', 'Months', 'Years'];
 
 export const CommonFormFieldNames = {
-   PRODUCT_NAME: 'productName',
-   MIN_LOAN_PRINCIPAL: 'minLoanPrincipal',
-   MAX_LOAN_PRINCIPAL: 'maxLoanPrincipal',
-   DESCRIPTION: 'description',
-   PRODUCT_CURRENCY: 'productCurrency',
+   PRODUCT_NAME: 'product_name',
+   MIN_LOAN_PRINCIPAL: 'min_loan_principal',
+   MAX_LOAN_PRINCIPAL: 'max_loan_principal',
+   DESCRIPTION: 'product_description',
+   PRODUCT_CURRENCY: 'currency',
+   PRODUCT_CURRENCY_ID: 'currency_id',
 } as const;
 
 export const CommonTooltipText = {

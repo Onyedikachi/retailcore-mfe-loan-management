@@ -2,17 +2,23 @@ import { CssBaseline, ThemeProvider } from '@mui/material';
 import AppRoutes from './AppRoutes';
 import { GlobalTheme } from '@app/utils';
 import LinearGradient from './components/atoms/LinearGradient';
+import { APIRequestProvider } from './providers/api-request';
 import { StepperProvider } from './providers';
+import { CreateProductProvider } from './providers/create-product';
 
 const App = () => {
    return (
       <ThemeProvider theme={GlobalTheme}>
-         <CssBaseline />
-         <StepperProvider>
-            <AppRoutes />
-         </StepperProvider>
-         <CssBaseline />
-         <LinearGradient />
+         <APIRequestProvider>
+            <CssBaseline />
+            <StepperProvider>
+               <CreateProductProvider>
+                  <AppRoutes />
+               </CreateProductProvider>
+            </StepperProvider>
+            <CssBaseline />
+            <LinearGradient />
+         </APIRequestProvider>
       </ThemeProvider>
    );
 };

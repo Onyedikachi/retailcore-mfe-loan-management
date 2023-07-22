@@ -10,6 +10,7 @@ export interface LoanPrincipalControlProps {
    required?: boolean;
    maxTooltipText?: string;
    minTooltipText?: string;
+   extraLeft?: string;
 }
 
 export const LoanPrincipalRangeControl = (props: LoanPrincipalControlProps) => {
@@ -21,6 +22,7 @@ export const LoanPrincipalRangeControl = (props: LoanPrincipalControlProps) => {
                label={props.minLabel ?? 'Minimum Loan Principal'}
                required={props.required}
                tooltipText={props.minTooltipText ?? CommonTooltipText.MIN_LOAN_PRINCIPAL}
+               extraLeft={props.extraLeft}
             />
          </Grid>
          <Grid item xs={4} pr={6}>
@@ -29,6 +31,7 @@ export const LoanPrincipalRangeControl = (props: LoanPrincipalControlProps) => {
                label={props.maxLabel ?? 'Maximum Loan Principal'}
                required={props.required}
                tooltipText={props.maxTooltipText ?? CommonTooltipText.MAX_LOAN_PRINCIPAL}
+               extraLeft={props.extraLeft}
             />
          </Grid>
       </>

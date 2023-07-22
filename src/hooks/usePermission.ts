@@ -5,6 +5,7 @@ import { AuthenticatedUserPayload } from '@app/@types/authenticated-user';
 export const usePermission = () => {
    const [authPayload, setAuthPayload] = React.useState<AuthenticatedUserPayload | null>(null);
    const [authLoaded, setAuthLoaded] = React.useState<boolean>(false);
+
    React.useEffect(() => {
       let sub: any;
       if (auth$) {
