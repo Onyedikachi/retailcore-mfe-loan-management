@@ -1,7 +1,7 @@
 import { InputAdornment } from '@mui/material';
 import { FormControlBase } from './FormControl';
 import FormControlWrapper from './FormControlWrapper';
-import ValueIncrementDecrement from '../value-increase-decrease';
+import ValueIncrementDecrement from '../ValueIncreaseDecrease';
 
 export interface CounterControlProps {
    name: string;

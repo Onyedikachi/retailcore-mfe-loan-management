@@ -42,25 +42,18 @@ export interface ProductInformation {
 }
 
 export interface EligibilityCriteria {
-   earnings?: PercentEligibilityCriteria | FixedEligibilityCriteria;
-   equityContribution?: ProductInformation | RangeContribution;
-   securityOptions: {
-      guarantors: string[];
-      collateralAssets: Array<{
-         name: string;
-         mmv: number;
-      }>;
-      others: string[];
-   };
-   others: Array<{
-      name: string;
-      periodicity: {
-         start?: number;
-         end?: number;
-         type: string;
-      };
-      acceptedFormats: string[];
-   }>;
+   product_info_id: string;
+   require_earning: boolean;
+   earn_type: string;
+   earn_value: number;
+   earn_period_value: string;
+   earn_period: string;
+   require_security: boolean;
+   require_other_elig_criteria: boolean;
+   is_draft: boolean;
+   equity_contrib_type: 'fixed' | 'range';
+   contrib_value_from: number;
+   contrib_value_to: number;
 }
 
 export interface CreateCreditProduct {

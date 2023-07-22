@@ -12,8 +12,7 @@ type inputValue = { [key: string]: any };
 
 const ConfigureRequirement: React.FC<{ title: string }> = ({ title }) => {
    const { InputFieldNames } = FormMeta;
-   const onSubmit = (values: inputValue) => {
-   };
+   const onSubmit = (values: inputValue) => {};
 
    return (
       <Box width="75%" mx="auto">
@@ -112,11 +111,7 @@ const ConfigureRequirement: React.FC<{ title: string }> = ({ title }) => {
                                        <Icon color="primary" sx={{ fontSize: '1rem' }} type="close" />
                                     </StyledInnerBox>
                                  </StyledOuterBox>
-                                 <Button
-                                    variant="text"
-                                    color="inherit"
-                                    sx={{ p: 2, pb: 0, pl:0}}
-                                 >
+                                 <Button variant="text" color="inherit" sx={{ p: 2, pb: 0, pl: 0 }}>
                                     <Icon type="add-circle" sx={{ mr: 1 }} /> Add more formats
                                  </Button>
                               </Grid>

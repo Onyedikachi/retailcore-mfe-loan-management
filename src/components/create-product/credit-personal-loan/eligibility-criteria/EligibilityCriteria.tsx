@@ -1,5 +1,4 @@
 import { Box, Divider } from '@mui/material';
-import FormContainer from '../../../form_container';
 import { Formik, Form } from 'formik';
 import * as FormMeta from '@app/utils/validators/personal-loan/eligibility-criteria';
 import Accordion from '@app/components/accordion/Accordion';
@@ -8,11 +7,11 @@ import { Button } from '@app/components/atoms';
 import EquityContribution from './EquityContribution';
 import Security from './Security';
 import OtherRequirement from './OtherRequirement';
+import FormContainer from '@app/components/forms/FormContainer';
 type inputValue = { [key: string]: any };
 
-const EligibilityCriteria: React.FC = () => {
+export const EligibilityCriteria: React.FC = () => {
    const onSubmit = (values: inputValue) => {
-      console.log(values);
    };
 
    return (
@@ -52,5 +51,3 @@ const EligibilityCriteria: React.FC = () => {
       </FormContainer>
    );
 };
-
-export default EligibilityCriteria;
