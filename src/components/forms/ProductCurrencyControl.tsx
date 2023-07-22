@@ -1,28 +1,41 @@
-import { CommonFormFieldNames, CommonTooltipText } from '@app/constants';
+import { CommonFormFieldNames, CommonTooltipText, REQUEST_NAMES } from '@app/constants';
 import { FormControlBase } from './FormControl';
 import FormControlWrapper from './FormControlWrapper';
+import { SelectProps } from '../atoms';
+import { useRequestData } from 'react-http-query';
+import { CurrencyListResponse } from '@app/@types/currency-list';
 
-export interface ProductCurrencyControlProps {
+export type ProductCurrencyControlProps = Partial<SelectProps> & {
    name?: string;
    required?: boolean;
    label?: string;
    tooltipText?: string;
    placeholder?: string;
-}
+};
 
-export const ProductCurrencyControl = (props: ProductCurrencyControlProps) => {
+export const ProductCurrencyControl = ({
+   name,
+   label,
+   required,
+   tooltipText,
+   placeholder,
+   ...otherProps
+}: ProductCurrencyControlProps) => {
+   const value = useRequestData<CurrencyListResponse>(REQUEST_NAMES.CURRENCY_LIST);
+
    return (
       <FormControlWrapper
-         name={props.name ?? CommonFormFieldNames.PRODUCT_CURRENCY}
-         label={props.label ?? 'Product Currency'}
-         required={props.required ?? true}
-         tooltipText={props.tooltipText ?? CommonTooltipText.PRODUCT_CURRENCY}
+         name={name ?? CommonFormFieldNames.PRODUCT_CURRENCY}
+         label={label ?? 'Product Currency'}
+         required={required ?? true}
+         tooltipText={tooltipText ?? CommonTooltipText.PRODUCT_CURRENCY}
       >
          <FormControlBase
             control="select"
-            name={props.name ?? CommonFormFieldNames.PRODUCT_CURRENCY}
-            placeholder={props.placeholder ?? 'Select a product currency'}
-            options={['NG', 'USD', 'EUR']}
+            name={name ?? CommonFormFieldNames.PRODUCT_CURRENCY}
+            placeholder={placeholder ?? 'Select a product currency'}
+            {...otherProps}
+            options={value?.results.map((currency) => currency.abbreviation) ?? []}
          />
       </FormControlWrapper>
    );

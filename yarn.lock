@@ -3157,7 +3157,7 @@ cosmiconfig@^7.0.0:
 
 cross-env@^7.0.3:
   version "7.0.3"
-  resolved "https://registry.npmjs.org/cross-env/-/cross-env-7.0.3.tgz"
+  resolved "https://registry.yarnpkg.com/cross-env/-/cross-env-7.0.3.tgz#865264b29677dc015ba8418918965dd232fc54cf"
   integrity sha512-+/HKd6EgcQCJGh2PSjZuUitQBQynKor4wrFbRg4DtAgS1aWO+gU52xpH7M9ScGgXSYmAVS9bIJ8EzuaGw0oNAw==
   dependencies:
     cross-spawn "^7.0.1"
@@ -6402,6 +6402,11 @@ react-fast-compare@^2.0.1:
   version "2.0.4"
   resolved "https://registry.yarnpkg.com/react-fast-compare/-/react-fast-compare-2.0.4.tgz#e84b4d455b0fec113e0402c329352715196f81f9"
   integrity sha512-suNP+J1VU1MWFKcyt7RtjiSWUjvidmQSlqu+eHslq+342xCbGTYmC0mEhPCOHxlW0CywylOC1u2DFAT+bv4dBw==
+
+react-http-query@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/react-http-query/-/react-http-query-1.1.1.tgz#1fda5bc7c00543af712b80000c75f0fc7e057442"
+  integrity sha512-at2M9AKHaoY3wimMxuOxnK4QHxpDOYhWuR1FLy40MB77j9jEhJDdwLdq6boZSA7MehwewGQZ9JrSiF91cBdwcw==
 
 react-is@^16.13.1, react-is@^16.7.0:
   version "16.13.1"

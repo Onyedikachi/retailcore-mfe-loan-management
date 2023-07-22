@@ -35,8 +35,8 @@ const StepperIndicatorWrapper = styled('div')(({ theme }) => ({
    display: 'flex',
    justifyContent: 'center',
    alignItems: 'center',
-   height: 33,
-   width: 33,
+   height: 30,
+   width: 30,
    fontSize: theme.typography.pxToRem(14),
    borderRadius: '100%',
    position: 'relative',
@@ -74,8 +74,8 @@ const StepperIndicatorWrapper = styled('div')(({ theme }) => ({
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'center',
-      height: '65%',
-      width: '65%',
+      height: '78%',
+      width: '78%',
       borderRadius: '100%',
    },
 }));
@@ -106,7 +106,9 @@ const StepperIndicator = (index: number, onStepClick?: (step: number) => void) =
 export interface StepperProps extends Omit<MuiStepperProps, 'activeStep'> {
    children: Array<React.ReactNode>;
    childrenWrapper?: React.ElementType;
+   childrenWrapperProps?: React.HTMLProps<HTMLElement>;
    stepperWrapper?: React.ElementType;
+   stepperWrapperProps?: React.HTMLProps<HTMLElement>;
    onStepClick?: (step: number) => void;
    stepLabels: Array<string>;
 }
@@ -118,6 +120,8 @@ export const Stepper = ({
    alternativeLabel = true,
    stepLabels,
    onStepClick,
+   childrenWrapperProps,
+   stepperWrapperProps,
    ...restProp
 }: StepperProps) => {
    const stepperContext = React.useContext(StepperContext);
@@ -135,7 +139,7 @@ export const Stepper = ({
 
    return (
       <>
-         <StepperWrapper>
+         <StepperWrapper {...stepperWrapperProps}>
             <MuiStepper
                alternativeLabel={alternativeLabel}
                activeStep={activeStep}
@@ -155,7 +159,7 @@ export const Stepper = ({
                ))}
             </MuiStepper>
          </StepperWrapper>
-         <ChildrenWrapper>
+         <ChildrenWrapper {...childrenWrapperProps}>
             {children[activeStep < children.length ? activeStep : children.length]}
          </ChildrenWrapper>
       </>

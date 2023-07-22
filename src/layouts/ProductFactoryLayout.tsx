@@ -16,7 +16,7 @@ const QuickLinkExpandBox = styled(Box)(() => ({
    height: 0,
    opacity: 0,
    transition: 'all 0.3s',
-   right: -50,
+   right: 0,
    top: 200,
    '&[aria-expanded=true]': {
       width: 'fit-content',
@@ -87,7 +87,7 @@ export const ProductFactoryLayout = ({ header, content, fullContent = false }: P
             <Box ref={stackHeaderRef}>{header}</Box>
             <ContentBox height={headerHeight && `calc(100% - ${headerHeight}px)`}>
                <Grid container height="100%" position="relative">
-                  <Grid xs item>
+                  <Grid height="100%" xs item>
                      {content}
                   </Grid>
                   {!fullContent && (

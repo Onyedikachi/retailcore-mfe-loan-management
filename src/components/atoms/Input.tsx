@@ -37,6 +37,7 @@ export const Input: React.FC<InputProps> = ({ extraLeft, decimal, extraRight, cu
       }
 
       form.handleChange(e);
+      props?.onChange?.(e);
       form.setFieldValue(props.name, input);
    };
 

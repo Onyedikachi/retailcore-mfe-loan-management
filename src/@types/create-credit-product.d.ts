@@ -27,14 +27,18 @@ export interface RangeContribution {
 }
 
 export interface ProductInformation {
-   productName: string;
-   description: string;
-   currency: string;
-   minLoanTenure: Tenure;
-   maxLoanTenure: Tenure;
-   minLoanPrincipal: number;
-   maxLoanPrincipal: number;
-   multipleLoanRequest: boolean;
+   product_name: string;
+   product_description: string;
+   currency?: string;
+   currency_id?: string;
+   min_loan_tenure: number;
+   min_loan_tenure_period: string;
+   max_loan_tenure: number;
+   max_loan_tenure_period: string;
+   min_loan_principal: string;
+   max_loan_principal: string;
+   allow_multiple_req: boolean;
+   is_draft?: boolean;
 }
 
 export interface EligibilityCriteria {

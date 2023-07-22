@@ -1,22 +1,65 @@
-/* eslint-disable no-unused-vars */
 import * as FormMeta from '@app/utils/validators/personal-loan/product-info';
-import FormContainer from '../../../form_container';
+import FormContainer from '../../../forms/FormContainer';
 import FormControlWrapper from '@app/components/forms/FormControlWrapper';
+import React, { useState } from 'react';
 import { Box, Divider, Grid, Typography } from '@mui/material';
 import { Button } from '@app/components/atoms';
+import { CreateProductContext } from '@app/providers/create-product';
 import { Form, Formik } from 'formik';
 import { FormControlBase } from '@app/components/forms/FormControl';
 import { LoanPrincipalRangeControl } from '@app/components/forms/LoanPrincipalRangeControl';
+import { ProductCurrencyControl } from '@app/components/forms/ProductCurrencyControl';
 import { ProductDescriptionControl } from '@app/components/forms/ProductDescriptionControl';
 import { ProductNameControl } from '@app/components/forms/ProductNameControl';
 import { TenureControl } from '@app/components/forms/TenureControl';
-import { ProductCurrencyControl } from '@app/components/forms/ProductCurrencyControl';
-type inputValue = { [key: string]: any };
+import { useRequest, useRequestData } from 'react-http-query';
+import { API_PATH, CommonFormFieldNames, REQUEST_NAMES } from '@app/constants';
+import { StepperContext } from '@app/providers';
+import { ProductInformation as ProductInformationType } from '@app/@types/create-credit-product';
+import { currencyToNumber } from '@app/helper/currency-converter';
+import { CurrencyListResponse } from '@app/@types/currency-list';
+import { useDebounceRequests } from '@app/hooks/useDebounceRequest';
 
-const ProductInformation: React.FC = () => {
+export const ProductInformation: React.FC = () => {
    const { InputFieldNames, ToolTipText } = FormMeta;
-   // eslint-disable-next-line @typescript-eslint/no-empty-function
-   const onSubmit = (values: inputValue) => {};
+   const [isDraft, setIsDraft] = useState(false);
+
+   const createProductContext = React.useContext(CreateProductContext);
+   const stepperContext = React.useContext(StepperContext);
+
+   if (!createProductContext || !stepperContext) {
+      throw Error('Create provider & Stepper Provider is required for personal loan creation.');
+   }
+
+   const { handleNavigation } = stepperContext;
+
+   const [, postProductInfo] = useRequest({ onSuccess: () => handleNavigation('next') });
+   const { setRequestPath: checkNameAvailability, response: availableResponse } = useDebounceRequests();
+   const currencyList = useRequestData<CurrencyListResponse>(REQUEST_NAMES.CURRENCY_LIST);
+   const { setCurrency, productMeta, addProductStep } = createProductContext;
+
+   const handleProductNameChange = (value: string) => {
+      checkNameAvailability(API_PATH.PRODUCT_NAME_AVAILABILITY(value));
+   };
+
+   const onSubmit = (values: ProductInformationType) => {
+      const { MAX_LOAN_PRINCIPAL, MIN_LOAN_PRINCIPAL, PRODUCT_CURRENCY_ID, PRODUCT_CURRENCY } =
+         CommonFormFieldNames;
+
+      addProductStep('productInformation', values);
+      postProductInfo(API_PATH.PRODUCT_INFO(), {
+         body: {
+            ...values,
+            [MAX_LOAN_PRINCIPAL]: currencyToNumber(values[MAX_LOAN_PRINCIPAL]),
+            [MIN_LOAN_PRINCIPAL]: currencyToNumber(values[MIN_LOAN_PRINCIPAL]),
+            [PRODUCT_CURRENCY_ID]: currencyList?.results.find(
+               (currency) => currency.abbreviation === values[PRODUCT_CURRENCY]
+            )?.id,
+            // eslint-disable-next-line camelcase
+            is_draft: isDraft,
+         },
+      });
+   };
 
    return (
       <FormContainer>
@@ -29,18 +72,25 @@ const ProductInformation: React.FC = () => {
                return (
                   <Form>
                      <Box sx={{ mb: 5 }}>
-                        <ProductNameControl maxTextLength={50} />
+                        <ProductNameControl
+                           isAvailable={availableResponse?.data?.isAVailable}
+                           availableMessage={availableResponse?.data?.message}
+                           onChange={(e) => handleProductNameChange(e.target.value)}
+                           maxTextLength={50}
+                        />
                         <ProductDescriptionControl />
                         <Grid container>
                            <Grid item xs={4} pr={6}>
-                              <ProductCurrencyControl />
+                              <ProductCurrencyControl
+                                 onChange={(event) => setCurrency(event.target.value as string)}
+                              />
                            </Grid>
                            <Grid item xs={4} pr={6}>
                               <TenureControl
                                  fieldLabel={'Minimum Loan Tenure'}
                                  periodName={InputFieldNames.MIN_LOAN_TENURE_PERIOD}
                                  numberName={InputFieldNames.MIN_LOAN_TENURE_NUM}
-                                 periodTooltipText={ToolTipText.minLoanTenurePeriod}
+                                 periodTooltipText={ToolTipText.min_loan_tenure_period}
                                  formik={formik}
                               />
                            </Grid>
@@ -49,7 +99,7 @@ const ProductInformation: React.FC = () => {
                                  fieldLabel={'Maximum Loan Tenure'}
                                  periodName={InputFieldNames.MAX_LOAN_TENURE_PERIOD}
                                  numberName={InputFieldNames.MAX_LOAN_TENURE_NUM}
-                                 periodTooltipText={ToolTipText.maxLoanTenurePeriod}
+                                 periodTooltipText={ToolTipText.max_loan_tenure_period}
                                  formik={formik}
                               />
                            </Grid>
@@ -57,7 +107,7 @@ const ProductInformation: React.FC = () => {
 
                         <Grid container>
                            {/* Min loan principal */}
-                           <LoanPrincipalRangeControl />
+                           <LoanPrincipalRangeControl extraLeft={productMeta?.currency} />
                         </Grid>
 
                         {/* Allow Multiple */}
@@ -70,7 +120,7 @@ const ProductInformation: React.FC = () => {
                               </Box>
                            }
                            layout="horizontal"
-                           tooltipText={ToolTipText.allowMultiple}
+                           tooltipText={ToolTipText.allow_multiple_req}
                         >
                            <FormControlBase sx={{ ml: 7 }} name={FormMeta.ALLOW_MULTIPLE} control="switch" />
                         </FormControlWrapper>
@@ -78,15 +128,21 @@ const ProductInformation: React.FC = () => {
 
                      <Divider />
                      <Box display="flex" justifyContent="end" mt={5} mb={2}>
-                        <Button variant="outlined">Save As Draft</Button>
-                        <Button
-                           type="submit"
-                           sx={{ ml: 2 }}
-                           color="primary"
-                           disabled={!formik.dirty || !formik.isValid}
-                        >
-                           Next
-                        </Button>
+                        {['draft', 'next'].map((type) => {
+                           const isNext = type === 'next';
+                           return (
+                              <Button
+                                 sx={{ ...(isNext && { ml: 2 }) }}
+                                 color={isNext ? 'primary' : undefined}
+                                 onClick={() => setIsDraft(!isNext)}
+                                 disabled={!formik.dirty || !formik.isValid}
+                                 type="submit"
+                                 variant={isNext ? 'contained' : 'outlined'}
+                              >
+                                 {isNext ? 'Next' : 'Save As Draft'}
+                              </Button>
+                           );
+                        })}
                      </Box>
                   </Form>
                );
@@ -95,5 +151,3 @@ const ProductInformation: React.FC = () => {
       </FormContainer>
    );
 };
-
-export default ProductInformation;

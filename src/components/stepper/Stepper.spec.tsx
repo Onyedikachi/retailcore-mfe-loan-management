@@ -17,9 +17,13 @@ describe('Component <Stepper />', () => {
          );
       };
 
-      expect(() => {
+      const renderStepper = () => {
          render(<StepperComponent />);
-      }).toThrow('Stepper must be wrapped around StepperProvider, to function properly.');
+      };
+
+      expect(() => renderStepper()).toThrow(
+         'Stepper must be wrapped around StepperProvider, to function properly.'
+      );
    });
 
    it('should render children correctly', () => {

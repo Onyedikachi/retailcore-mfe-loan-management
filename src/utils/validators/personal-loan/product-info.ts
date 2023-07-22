@@ -3,21 +3,21 @@ import { CommonFormFieldNames } from '@app/constants';
 import * as Yup from 'yup';
 
 export const InputFieldNames = {
-   MIN_LOAN_TENURE_NUM: 'minLoanTenureNum',
-   MAX_LOAN_TENURE_NUM: 'maxLoanTenureNum',
-   MIN_LOAN_TENURE_PERIOD: 'minLoanTenurePeriod',
-   MAX_LOAN_TENURE_PERIOD: 'maxLoanTenurePeriod',
+   MIN_LOAN_TENURE_NUM: 'min_loan_tenure',
+   MAX_LOAN_TENURE_NUM: 'max_loan_tenure',
+   MIN_LOAN_TENURE_PERIOD: 'min_loan_tenure_period',
+   MAX_LOAN_TENURE_PERIOD: 'max_loan_tenure_period',
 } as const;
 
-export const ALLOW_MULTIPLE = 'allowMultiple';
+export const ALLOW_MULTIPLE = 'allow_multiple_req';
 export const loanTenurePeriod = ['Hours', 'Days', 'Weeks', 'Months', 'Years'];
 
 export const productInfoInitialValues = () => ({
    [CommonFormFieldNames.PRODUCT_NAME]: '',
    [CommonFormFieldNames.DESCRIPTION]: '',
    [CommonFormFieldNames.PRODUCT_CURRENCY]: '',
-   [InputFieldNames.MIN_LOAN_TENURE_NUM]: '',
-   [InputFieldNames.MAX_LOAN_TENURE_NUM]: '',
+   [InputFieldNames.MIN_LOAN_TENURE_NUM]: 0,
+   [InputFieldNames.MAX_LOAN_TENURE_NUM]: 0,
    [InputFieldNames.MIN_LOAN_TENURE_PERIOD]: '',
    [InputFieldNames.MAX_LOAN_TENURE_PERIOD]: '',
    [CommonFormFieldNames.MIN_LOAN_PRINCIPAL]: '',
@@ -46,7 +46,9 @@ export const productInfoValidator = () =>
       [InputFieldNames.MAX_LOAN_TENURE_PERIOD]: Yup.string()
          .required('Field is required')
          .test(InputFieldNames.MAX_LOAN_TENURE_PERIOD, 'Must be greater than min tenure', function (value) {
-            const { minLoanTenurePeriod, minLoanTenureNum, maxLoanTenureNum } = this.parent;
+            const minLoanTenureNum = this.parent?.[InputFieldNames.MIN_LOAN_TENURE_NUM];
+            const minLoanTenurePeriod = this.parent?.[InputFieldNames.MIN_LOAN_TENURE_PERIOD];
+            const maxLoanTenureNum = this.parent?.[InputFieldNames.MAX_LOAN_TENURE_NUM];
             const max = loanTenurePeriod.indexOf(value);
             const min = loanTenurePeriod.indexOf(minLoanTenurePeriod);
             if (max == min && Number(maxLoanTenureNum) > Number(minLoanTenureNum)) {
@@ -62,7 +64,7 @@ export const productInfoValidator = () =>
             CommonFormFieldNames.MAX_LOAN_PRINCIPAL,
             'Max loan tenure must not be lesser than min loan tenure',
             function (value) {
-               const { minLoanPrincipal } = this.parent;
+               const minLoanPrincipal = this.parent?.[CommonFormFieldNames.MIN_LOAN_PRINCIPAL];
                const maxPrincipal = Number(value.replace(/,/g, ''));
                const minPrincipal = Number(minLoanPrincipal.replace(/,/g, ''));
                return maxPrincipal > minPrincipal;

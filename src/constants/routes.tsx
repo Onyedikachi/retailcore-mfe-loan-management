@@ -1,11 +1,12 @@
-import EligibilityCriteria from '@app/components/create-product/credit-personal-loan/eligibility-criteria/EligibilityCriteria';
+import { CreditPersonalLoan } from '@app/pages/CreditPersonalLoan';
+import { Permissions } from './permissions';
 
-export const BasePath = '/product/factory';
+export const BasePath = '/product/factory/create/credit';
 
 export const RouteMaps = {
-   productList: {
-      element: <EligibilityCriteria />,
-      path: (type = '/:productType') => `${BasePath}/list${type}`,
+   createCreditPersonalLoan: {
+      element: <CreditPersonalLoan />,
+      path: (loanType = '/:loanType') => `${BasePath}${loanType}`,
    },
 };
 
@@ -13,3 +14,12 @@ export const Routes = Object.values(RouteMaps).map(({ element, path }) => ({
    element,
    path: typeof path === 'function' ? path() : path,
 }));
+
+export const RoutePaths = {
+   PersonalLoan: {
+      absolute: RouteMaps.createCreditPersonalLoan.path('/personal-loans'),
+      relative: '/personal-loans',
+      name: 'Personal Loans',
+      permissions: [Permissions.CREATE_CREDIT_PRODUCT],
+   },
+};
