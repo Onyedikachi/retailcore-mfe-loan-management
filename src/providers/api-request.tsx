@@ -1,6 +1,6 @@
 import { AlertSnackbar } from '@app/components';
 import { Loader } from '@app/components/Loader';
-import { API_PATH } from '@app/constants';
+import { API_PATH, RETAIL_CORE_API_PATH } from '@app/constants';
 import { useState } from 'react';
 import { RequestProvider } from 'react-http-query';
 
@@ -9,7 +9,7 @@ interface APIRequestProviderProps {
 }
 
 // Add routes that you want not to show loader when API is being called here;
-const LOADING_IGNORED_ROUTE = [API_PATH.PRODUCT_NAME_AVAILABILITY('')];
+const LOADING_IGNORED_ROUTE = [API_PATH.PRODUCT_NAME_AVAILABILITY(''), RETAIL_CORE_API_PATH.GET_CURRENCY];
 
 // Add routes that you want error messages display to be ignored here.
 const ERROR_DISPLAYED_IGNORED_ROUTE = [API_PATH.PRODUCT_NAME_AVAILABILITY('')];

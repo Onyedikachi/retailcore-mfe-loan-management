@@ -8,15 +8,18 @@ export const Root = () => {
    const { pathname } = useLocation();
    const pathnameRef = useRef<string | null>(null);
    const [nextPathname, setNextPathname] = useState<string>('');
-   const { checkPermission, isSuperAdmin, authLoaded } = usePermission();
+   const { checkPermission, isSuperAdmin, authLoaded, user } = usePermission();
 
    const checkUserAuthentication = useCallback(() => {
       const isAuthenticated = isTokenValid();
       let newPathName = pathname === BasePath ? RoutePaths.PersonalLoan.absolute : '';
+      const permissions = Object.values(RoutePaths).find(
+         ({ absolute }) => absolute === pathname
+      )?.permissions;
 
-      if (checkPermission(['']) || isSuperAdmin) {
+      if (checkPermission(permissions ?? []) || isSuperAdmin) {
          pathnameRef.current = newPathName || pathname;
-      } else {
+      } else if (isAuthenticated && user) {
          newPathName = pathnameRef.current ?? '/login';
       }
 

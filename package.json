@@ -4,6 +4,7 @@
   "scripts": {
     "start": "cross-env NODE_ENV=development webpack serve",
     "start:standalone": "cross-env NODE_ENV=development webpack serve --env standalone",
+    "standalone:https": "yarn start:standalone --https && https-server -S -C cert.pem -K key.pem",
     "build": "cross-env NODE_ENV=production concurrently yarn:build:*",
     "build:webpack": "webpack --mode=production",
     "analyze": "webpack --mode=production --env analyze",

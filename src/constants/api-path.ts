@@ -9,10 +9,15 @@ export const API_PATH = {
       `${API_V1}/eligibility-document/security${param ? '/' + param : ''}`,
 };
 
-const RETAIL_CORE_BASE_URL = `${process.env.RETAIL_CORE_BASE_URL ?? ''}${API_V1}`;
+const RETAIL_CORE_BASE_URL = `${process.env?.RETAIL_CORE_BASE_URL ?? ''}${API_V1}`;
 
 export const RETAIL_CORE_API_PATH = {
    GET_CURRENCY: `${RETAIL_CORE_BASE_URL}/currency`,
+};
+
+const RETAIL_AUTH_BASE_URL = `${process.env?.RETAIL_AUTH_BASE_URL ?? ''}${API_V1}`;
+export const RETAIL_AUTH_API_PATH = {
+   REFRESH_TOKEN: `${RETAIL_AUTH_BASE_URL}/token/refresh`,
 };
 
 export const REQUEST_NAMES = {

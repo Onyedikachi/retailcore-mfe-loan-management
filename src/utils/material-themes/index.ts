@@ -13,45 +13,53 @@ const materialTheme = createTheme();
 export const GlobalTheme = createTheme(
    deepmerge(materialTheme, {
       typography: {
-         fontFamily: 'Inter, Roboto, "Segoe UI", "Helvetica Neue", Arial, sans-serif',
          fontSize: 16,
          h1: {
             fontWeight: 700,
             fontSize: materialTheme.typography.pxToRem(38),
             lineHeight: materialTheme.typography.pxToRem(48),
+            fontFamily: 'Inter',
          },
          h2: {
             fontWeight: 700,
             fontSize: materialTheme.typography.pxToRem(34),
             lineHeight: materialTheme.typography.pxToRem(43),
+            fontFamily: 'Inter',
          },
          h3: {
             fontWeight: 700,
             fontSize: materialTheme.typography.pxToRem(28),
             lineHeight: materialTheme.typography.pxToRem(38),
+            fontFamily: 'Inter',
          },
          h4: {
             fontWeight: 700,
             fontSize: materialTheme.typography.pxToRem(24),
             lineHeight: materialTheme.typography.pxToRem(33),
+            fontFamily: 'Inter',
          },
          h5: {
             fontWeight: 500,
             fontSize: materialTheme.typography.pxToRem(22),
             lineHeight: materialTheme.typography.pxToRem(28),
+            fontFamily: 'Inter',
          },
          body1: {
             fontWeight: 500,
             fontSize: materialTheme.typography.pxToRem(16),
+            fontFamily: 'Inter',
          },
          body2: {
             fontWeight: 400,
             fontSize: materialTheme.typography.pxToRem(14),
+            fontFamily: 'Inter',
          },
          caption: {
             fontWeight: 400,
             fontSize: materialTheme.typography.pxToRem(12),
+            fontFamily: 'Inter',
          },
+         fontFamily: ['Inter', 'Roboto', '"Segoe UI"', '"Helvetica Neue"', 'Arial', 'sans-serif'].join(','),
       },
       palette: {
          primary: {
@@ -81,6 +89,9 @@ export const GlobalTheme = createTheme(
          MuiInputBase: InputBaseTheme,
          MuiCssBaseline: {
             styleOverrides: () => ({
+               body: {
+                  fontFamily: 'Inter',
+               },
                '.fancy-scrollbar': {
                   '&::-webkit-scrollbar-thumb': {
                      background: Colors.LinearGradient,

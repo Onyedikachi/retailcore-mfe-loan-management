@@ -3,6 +3,7 @@ import { FormControlBase } from './FormControl';
 import FormControlWrapper from './FormControlWrapper';
 import { Colors, CommonFormFieldNames, CommonTooltipText } from '@app/constants';
 import { InputProps } from '../atoms';
+import { InputErrorText } from './InputFieldError';
 
 export type ProductNameProps = Partial<InputProps> & {
    name?: string;
@@ -11,6 +12,8 @@ export type ProductNameProps = Partial<InputProps> & {
    tooltipText?: string;
    placeholder?: string;
    maxTextLength?: number;
+   availableMessage?: string;
+   isAvailable?: boolean;
 };
 
 export const ProductNameControl = ({
@@ -20,6 +23,8 @@ export const ProductNameControl = ({
    tooltipText,
    placeholder,
    maxTextLength,
+   availableMessage,
+   isAvailable,
    ...otherProps
 }: ProductNameProps) => {
    return (
@@ -44,6 +49,7 @@ export const ProductNameControl = ({
             }}
             {...(otherProps as any)}
          />
+         {isAvailable === false && <InputErrorText errorText={availableMessage ?? ''} />}
       </FormControlWrapper>
    );
 };

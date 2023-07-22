@@ -2,10 +2,11 @@ import { useRequest } from 'react-http-query';
 import useDebounce from './useDebounce';
 import { useEffect, useState } from 'react';
 
-export const useDebounceRequests = (urlPath?: string, debounceTime = 2000, requestBody?: unknown) => {
-   const { debouncedValue, setDebouncedValue } = useDebounce(debounceTime);
+export const useDebounceRequests = (urlPath?: string, debounceTime = 3000) => {
+   const { debouncedValue: requestBody, setDebouncedValue: setRequestBody } = useDebounce(debounceTime);
    const { debouncedValue: requestPath = urlPath, setDebouncedValue: setRequestPath } =
       useDebounce(debounceTime);
+
    const [response, setResponse] = useState<any>();
    const [, makeDebounceRequest] = useRequest({
       onSuccess: (successResponse) => setResponse(successResponse),
@@ -13,10 +14,10 @@ export const useDebounceRequests = (urlPath?: string, debounceTime = 2000, reque
    });
 
    useEffect(() => {
-      if (requestPath && debouncedValue) {
+      if (requestPath) {
          makeDebounceRequest(requestPath as string, { body: requestBody as any });
       }
-   }, [debouncedValue, requestPath]);
+   }, [requestPath, requestBody]);
 
-   return { setDebouncedValue, setRequestPath, response };
+   return { setRequestBody, setRequestPath, response };
 };

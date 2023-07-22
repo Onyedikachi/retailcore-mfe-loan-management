@@ -17,7 +17,8 @@ import { API_PATH, CommonFormFieldNames, REQUEST_NAMES } from '@app/constants';
 import { StepperContext } from '@app/providers';
 import { ProductInformation as ProductInformationType } from '@app/@types/create-credit-product';
 import { currencyToNumber } from '@app/helper/currency-converter';
-import { CurrencyListResponse } from '@app/@types';
+import { CurrencyListResponse } from '@app/@types/currency-list';
+import { useDebounceRequests } from '@app/hooks/useDebounceRequest';
 
 export const ProductInformation: React.FC = () => {
    const { InputFieldNames, ToolTipText } = FormMeta;
@@ -25,14 +26,21 @@ export const ProductInformation: React.FC = () => {
 
    const createProductContext = React.useContext(CreateProductContext);
    const stepperContext = React.useContext(StepperContext);
-   if (!createProductContext || !stepperContext) return <></>;
+
+   if (!createProductContext || !stepperContext) {
+      throw Error('Create provider & Stepper Provider is required for personal loan creation.');
+   }
+
    const { handleNavigation } = stepperContext;
 
    const [, postProductInfo] = useRequest({ onSuccess: () => handleNavigation('next') });
-   const [, checkNameAvailability] = useRequest({ onSuccess: () => handleNavigation('next') });
+   const { setRequestPath: checkNameAvailability, response: availableResponse } = useDebounceRequests();
    const currencyList = useRequestData<CurrencyListResponse>(REQUEST_NAMES.CURRENCY_LIST);
-
    const { setCurrency, productMeta, addProductStep } = createProductContext;
+
+   const handleProductNameChange = (value: string) => {
+      checkNameAvailability(API_PATH.PRODUCT_NAME_AVAILABILITY(value));
+   };
 
    const onSubmit = (values: ProductInformationType) => {
       const { MAX_LOAN_PRINCIPAL, MIN_LOAN_PRINCIPAL, PRODUCT_CURRENCY_ID, PRODUCT_CURRENCY } =
@@ -64,7 +72,12 @@ export const ProductInformation: React.FC = () => {
                return (
                   <Form>
                      <Box sx={{ mb: 5 }}>
-                        <ProductNameControl maxTextLength={50} />
+                        <ProductNameControl
+                           isAvailable={availableResponse?.data?.isAVailable}
+                           availableMessage={availableResponse?.data?.message}
+                           onChange={(e) => handleProductNameChange(e.target.value)}
+                           maxTextLength={50}
+                        />
                         <ProductDescriptionControl />
                         <Grid container>
                            <Grid item xs={4} pr={6}>
