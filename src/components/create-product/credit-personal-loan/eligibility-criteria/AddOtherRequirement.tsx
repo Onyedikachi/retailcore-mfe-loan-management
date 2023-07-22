@@ -1,48 +1,54 @@
-import { SearchInput } from '@app/components/atoms';
-import DragContainer from '@app/components/atoms/DragContainer';
-import { Colors } from '@app/constants';
-import { Box, Divider, Grid, List, ListItem, Typography } from '@mui/material';
+import { Grid } from '@mui/material';
+import React from 'react';
+import { DragDropContext } from 'react-beautiful-dnd';
+import Requirements from './Requirements';
+import SelectedRequirements from './SelectedRequirements';
 
-interface AddOtherRequirementsProps {
-   requirements: [];
-}
-const AddOtherRequirements: React.FC<AddOtherRequirementsProps> = () => {
+const AddOtherRequirements: React.FC = () => {
+   const [items, setItems] = React.useState(dummyRequirements);
+   const [droppedItems, setDroppedItems] = React.useState<string[]>([]);
+
+   const handleDragEnd = (result: any) => {
+      if (!result.destination) return;
+      const { source, destination } = result;
+      if (source.droppableId === destination.droppableId) {
+         const newItems = Array.from(items);
+         const [reorderedItem] = newItems.splice(result.source.index, 1);
+         newItems.splice(result.destination.index, 0, reorderedItem);
+         setItems(newItems);
+      } else if (destination.droppableId === 'droppable-list-right') {
+         const draggedItem = items[result.source.index];
+         setItems((prev) => prev.filter((ele) => ele != draggedItem));
+         setDroppedItems((prev) => [...prev, draggedItem]);
+      }
+   };
+
    return (
-      <Grid container>
-         <Grid item xs={4} pr={5}>
-            <Requirements />
+      <DragDropContext onDragEnd={handleDragEnd}>
+         <Grid container>
+            <Grid item xs={4} pr={2}>
+               <Requirements
+                  requirements={items}
+                  handleSearch={(searchText) => {
+                     setItems(items.filter((item) => item.toLowerCase().includes(searchText.toLowerCase())));
+                  }}
+               />
+            </Grid>
+            <Grid item xs={8}>
+               <SelectedRequirements
+                  requirements={droppedItems}
+                  handleClearSelection={() => {
+                     setItems(dummyRequirements);
+                     setDroppedItems([]);
+                  }}
+               />
+            </Grid>
          </Grid>
-         <Grid item xs={8}>
-            oopo
-         </Grid>
-      </Grid>
+      </DragDropContext>
    );
 };
 
 export default AddOtherRequirements;
-
-const Requirements: React.FC = () => {
-   return (
-      <Box sx={{ border: `1px solid ${Colors.LightGray}`, py: 1,  borderRadius: '5px' }}>
-         <Box  sx={{px: 2}}>
-         <Typography fontWeight="bold">Drag & Drop Requirements</Typography>
-         <Divider sx={{ mt: 0.5, width: '80%' }} />
-         <Box py={2}>
-            <SearchInput placeholder="Search" handleSearch={(searchBy) => {}} />
-         </Box>
-         </Box>
-         <Box sx={{height: '400px',overflow: 'auto' }}>
-            <List className='fancy-scrollbar' sx={{px:2}} >
-               {dummyRequirements.map((item, index) => (
-                  <ListItem sx={{p:0}} key={index}>
-                     <DragContainer key={index} text={item} />
-                  </ListItem>
-               ))}
-            </List>
-         </Box>
-      </Box>
-   );
-};
 
 const dummyRequirements = [
    'Account Ownership',

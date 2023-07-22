@@ -9,12 +9,12 @@ import AddOtherRequirements from './AddOtherRequirement';
 
 const OtherRequirement: React.FC<{ formik: any }> = ({ formik }) => {
    const { InputFieldNames, ToolTipText } = FormMeta;
-   const [open, setOpen] = React.useState(false);
+   const [openRequirement, setOpenRequirement] = React.useState(false);
    const handleOpen = () => {
-      setOpen(true);
+      setOpenRequirement(true);
    };
    const handleClose = () => {
-      setOpen(false);
+      setOpenRequirement(false);
    };
 
    return (
@@ -37,8 +37,8 @@ const OtherRequirement: React.FC<{ formik: any }> = ({ formik }) => {
                </Box>
             </>
          )}
-         <Dialog open={true} handleClose={handleClose} title="ADD OTHER ELIGIBILITY REQUIREMENTS">
-            <AddOtherRequirements requirements={[]} />
+         <Dialog open={openRequirement} handleClose={handleClose} title="ADD OTHER ELIGIBILITY REQUIREMENTS">
+            <AddOtherRequirements />
          </Dialog>
       </>
    );

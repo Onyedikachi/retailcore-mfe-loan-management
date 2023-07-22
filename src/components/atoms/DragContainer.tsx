@@ -11,7 +11,7 @@ const StyledComponent = styled(Box)(() => ({
    alignItems: 'center',
    cursor: 'pointer',
    marginBottom: '8px',
-   width:'100%'
+   width: '100%',
 }));
 
 const DragContainer: React.FC<{ text: string }> = ({ text }) => {
