@@ -11,7 +11,7 @@ export interface TableHeaderData {
    element?: React.ReactNode;
    leftIconKey?: string;
    rightIconKey?: string;
-   iconKey: string;
+   iconKey?: string;
 }
 
 export interface TableHeaderProps extends TableHeadProps {
@@ -37,7 +37,7 @@ export const TableHeader = ({ data, onIconClick, ...restProps }: TableHeaderProp
                   const rightIcon = tableIcon(RightIcon, key, rightIconKey ?? iconKey, onIconClick);
                   const leftIcon = tableIcon(LeftIcon, key, leftIconKey ?? iconKey, onIconClick);
                   return (
-                     <TableCell>
+                     <TableCell key={key}>
                         {!isEmpty && (
                            <>
                               {leftIcon}
