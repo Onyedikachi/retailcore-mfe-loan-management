@@ -51,14 +51,22 @@ export interface SwitchProps extends MuiSwitchProps {
    padding?: string;
 }
 
-export const Switch: React.FC<SwitchProps> = ({ children, ...props }) => {
+export const Switch: React.FC<SwitchProps> = ({ children, onChange, ...props }) => {
    return (
       <Field name={props.name}>
          {({ field }: FieldProps) => {
             return (
                <>
                   <FormControl fullWidth>
-                     <StyledSwitch {...props} {...field} inputProps={{ id: props.name }}>
+                     <StyledSwitch
+                        {...props}
+                        {...field}
+                        onChange={(e) => {
+                           field.onChange?.(e);
+                           onChange?.(e, e.target.checked);
+                        }}
+                        inputProps={{ id: props.name }}
+                     >
                         {children}
                      </StyledSwitch>
                      <ErrorMessage

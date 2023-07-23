@@ -5,19 +5,21 @@ import DialogContent from '@mui/material/DialogContent';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 
-interface DialogProps extends MuiDialogProps {
+interface DialogProps extends Omit<MuiDialogProps, 'maxWidth'> {
    open: boolean;
    handleClose: () => void;
    children: React.ReactNode;
-   title: string;
+   title?: string;
+   maxWidth?: number | string;
+   minWidth?: number | string;
 }
-const Dialog: React.FC<DialogProps> = ({ open, handleClose, title, children }) => {
+const Dialog: React.FC<DialogProps> = ({ open, handleClose, title, children, maxWidth, minWidth }) => {
    return (
       <div>
          <MuiDialog
             onClose={handleClose}
             open={open}
-            PaperProps={{ style: { minWidth: '70%', padding: '10px 20px', overflow: 'hidden' } }}
+            PaperProps={{ style: { maxWidth, minWidth, padding: '10px 20px', overflow: 'hidden' } }}
             sx={{
                '& .MuiDialogContent-root': { padding: '10px 0px', marginTop: '12px' },
                '& .MuiBackdrop-root': {

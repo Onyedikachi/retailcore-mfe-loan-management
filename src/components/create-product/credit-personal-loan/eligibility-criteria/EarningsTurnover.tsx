@@ -3,11 +3,13 @@ import FormControlWrapper from '@app/components/forms/FormControlWrapper';
 import { Grid } from '@mui/material';
 import * as FormMeta from '@app/utils/validators/personal-loan/eligibility-criteria';
 import RequiredIndicator from '@app/components/atoms/RequiredIndicator';
-import { LoanTenurePeriod } from '@app/constants';
-import { CounterControl } from '@app/components/forms/CounterControl';
+import { EarningsControl } from '@app/components/forms/EarningsControls';
 
 const EarningsOrTurnover: React.FC<{ formik: any }> = ({ formik }) => {
    const { InputFieldNames, ToolTipText } = FormMeta;
+   const earningType = formik.values?.[InputFieldNames.EARNINGS_TYPE];
+   const isFixed = earningType === 'fixed';
+
    return (
       <>
          <FormControlWrapper
@@ -16,9 +18,16 @@ const EarningsOrTurnover: React.FC<{ formik: any }> = ({ formik }) => {
             layout="horizontal"
             tooltipText={ToolTipText.earnings}
          >
-            <FormControlBase sx={{ ml: 7 }} name={InputFieldNames.SET_EARNINGS} control="switch" />
+            <FormControlBase
+               sx={{ ml: 7 }}
+               control="switch"
+               onChange={(e: any) => {
+                  !e.target.checked && formik.setFieldValue(InputFieldNames.EARNINGS_TYPE, '');
+               }}
+               name={InputFieldNames.SET_EARNINGS}
+            />
          </FormControlWrapper>
-         {formik.values.setEarnings && (
+         {formik.values[InputFieldNames.SET_EARNINGS] && (
             <>
                <Grid container>
                   <Grid item xs={2}>
@@ -34,58 +43,18 @@ const EarningsOrTurnover: React.FC<{ formik: any }> = ({ formik }) => {
                            { label: '% of Loan Amount', value: 'percent' },
                         ]}
                      />
-                     {formik.values.earningType == 'fixed' && (
+                     {earningType && (
                         <Grid container sx={{ mb: 3 }}>
-                           <Grid item xs={4} pr={6}>
-                              <FormControlBase
-                                 name={InputFieldNames.FIXED_EARNING_AMOUNT}
-                                 currency
-                                 control="input"
-                                 placeholder="Enter a amount"
-                                 extraLeft="NGN"
-                              />
-                           </Grid>
-                           <Grid item xs={1}>
-                              over
-                           </Grid>
-                           <Grid item xs={3} pr={6}>
-                              <CounterControl name={InputFieldNames.FIXED_EARNING_NUM} formik={formik} />
-                           </Grid>
-                           <Grid item xs={3} pr={4}>
-                              <FormControlBase
-                                 control="select"
-                                 name={InputFieldNames.FIXED_EARNING_PERIOD}
-                                 placeholder="Select period"
-                                 options={LoanTenurePeriod}
-                              />
-                           </Grid>
-                        </Grid>
-                     )}
-                     {formik.values.earningType == 'percent' && (
-                        <Grid container sx={{ mb: 3 }}>
-                           <Grid item xs={4} pr={6}>
-                              <FormControlBase
-                                 name={InputFieldNames.PERCENTAGE_EARNING_PERCENT}
-                                 decimal
-                                 control="input"
-                                 placeholder="Enter a percentage"
-                                 extraRight="%"
-                              />
-                           </Grid>
-                           <Grid item xs={1}>
-                              over
-                           </Grid>
-                           <Grid item xs={3} pr={6}>
-                              <CounterControl name={InputFieldNames.PERCENTAGE_EARNING_NUM} formik={formik} />
-                           </Grid>
-                           <Grid item xs={3} pr={4}>
-                              <FormControlBase
-                                 control="select"
-                                 name={InputFieldNames.PERCENTAGE_EARNING_PERIOD}
-                                 placeholder="Select period"
-                                 options={LoanTenurePeriod}
-                              />
-                           </Grid>
+                           <EarningsControl
+                              firstName={InputFieldNames.EARNINGS_VALUE}
+                              secondName={InputFieldNames.EARNINGS_PERIOD_VALUE}
+                              thirdName={InputFieldNames.EARNINGS_PERIOD}
+                              firstPlaceHolder={isFixed ? 'Enter a amount' : 'Enter a percentage'}
+                              thirdPlaceHolder="Select period"
+                              formik={formik}
+                              bridgeWord="over"
+                              {...(isFixed ? { extraLeft: 'NGN' } : { extraRight: '%' })}
+                           />
                         </Grid>
                      )}
                   </Grid>

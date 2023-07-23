@@ -35,13 +35,13 @@ export const GlobalTheme = createTheme(
          h4: {
             fontWeight: 700,
             fontSize: materialTheme.typography.pxToRem(24),
-            lineHeight: materialTheme.typography.pxToRem(33),
+            lineHeight: materialTheme.typography.pxToRem(28),
             fontFamily: 'Inter',
          },
          h5: {
-            fontWeight: 500,
-            fontSize: materialTheme.typography.pxToRem(22),
-            lineHeight: materialTheme.typography.pxToRem(28),
+            fontWeight: 700,
+            fontSize: materialTheme.typography.pxToRem(20),
+            lineHeight: materialTheme.typography.pxToRem(24),
             fontFamily: 'Inter',
          },
          body1: {

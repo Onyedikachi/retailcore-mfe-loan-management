@@ -2,11 +2,29 @@ import { FormControlBase } from '@app/components/forms/FormControl';
 import FormControlWrapper from '@app/components/forms/FormControlWrapper';
 import { Box, Typography } from '@mui/material';
 import * as FormMeta from '@app/utils/validators/personal-loan/eligibility-criteria';
-import InfoTooltip from '@app/components/atoms/Tooltip';
-import { Button } from '@app/components';
+import { Button, InputErrorText, Tooltip } from '@app/components';
+import { useState } from 'react';
+import { SecurityOptions } from '@app/@types/create-credit-product';
+import { ModalWithCheckBoxList } from '@app/components/modal/ModalWithCheckBoxList/Modal';
+import { useSecurityAction } from '@app/hooks/useSecurityAction';
+import { SecurityOptionsTable } from './SecurityOptionsTable';
+import { EligibilitySecurity } from '@app/constants/eligibility-security';
+import { ErrorMessage, FieldArray } from 'formik';
 
 const Security: React.FC<{ formik: any }> = ({ formik }) => {
+   const [activeSecurityModal, setActiveSecurityModal] = useState<SecurityOptions | null>();
    const { InputFieldNames, ToolTipText } = FormMeta;
+   const { [InputFieldNames.SET_SECURITY]: setSecurity } = formik.values;
+
+   const { removeCheckItem, updateCheckedItems, securityDocuments, addNewSecurityValue } =
+      useSecurityAction(formik);
+
+   const getCheckedSecurity = (securityType: SecurityOptions) => {
+      return securityDocuments[securityType as SecurityOptions]
+         .filter(({ checked }) => checked)
+         .map(({ name, id }) => ({ name, id: id, ...(securityType === 'collateral' && { mmi: 100 }) }));
+   };
+
    return (
       <>
          <FormControlWrapper
@@ -18,12 +36,12 @@ const Security: React.FC<{ formik: any }> = ({ formik }) => {
          >
             <FormControlBase sx={{ ml: 7 }} name={InputFieldNames.SET_SECURITY} control="switch" />
          </FormControlWrapper>
-         {formik.values.setSecurity && (
+         {setSecurity && (
             <>
                <Box>
                   <Typography>
                      Security Options
-                     <InfoTooltip text={ToolTipText.security} />
+                     <Tooltip text={ToolTipText.security} />
                   </Typography>
                   <Box pl={1} py={2}>
                      <FormControlBase
@@ -31,26 +49,55 @@ const Security: React.FC<{ formik: any }> = ({ formik }) => {
                         name={InputFieldNames.SECURITY_OPTION}
                         placeholder="Select period"
                         options={FormMeta.securityOptions}
-                        actionComp={[
-                           <Box mb={1}>
-                              <Button variant="text" sx={{ pl: '22px', textDecoration: 'underline' }}>
-                                 Select applicable supporting documents
+                        actionComp={['guarantor', 'collateral', 'other'].map((securityType, index) => (
+                           <Box mb={1} key={index}>
+                              <Button
+                                 onClick={() => setActiveSecurityModal(securityType as SecurityOptions)}
+                                 variant="text"
+                                 sx={{ pl: '22px', textDecoration: 'underline' }}
+                              >
+                                 {EligibilitySecurity[securityType as SecurityOptions].actionButtonText}
                               </Button>
-                           </Box>,
-                           <Box mb={1}>
-                              <Button variant="text" sx={{ pl: '22px', textDecoration: 'underline' }}>
-                                 Select applicable collateral assets
-                              </Button>
-                           </Box>,
-                           <Box mb={1}>
-                              <Button variant="text" sx={{ pl: '22px', textDecoration: 'underline' }}>
-                                 Select applicable security requirements
-                              </Button>
-                           </Box>,
-                        ]}
+                              <ErrorMessage
+                                 name={EligibilitySecurity[securityType as SecurityOptions].formFieldName}
+                                 children={(error: string) => <InputErrorText errorText={error} />}
+                              />
+                              <FieldArray
+                                 name={EligibilitySecurity[securityType as SecurityOptions].formFieldName}
+                                 render={(arrayHelper) => (
+                                    <SecurityOptionsTable
+                                       type={securityType as SecurityOptions}
+                                       securities={getCheckedSecurity(securityType as SecurityOptions)}
+                                       onCancelClick={removeCheckItem}
+                                       arrayHelper={arrayHelper}
+                                       fieldName={
+                                          EligibilitySecurity[securityType as SecurityOptions].formFieldName
+                                       }
+                                    />
+                                 )}
+                              />
+                           </Box>
+                        ))}
                      />
                   </Box>
                </Box>
+               {!!activeSecurityModal && (
+                  <ModalWithCheckBoxList
+                     open={true}
+                     onClose={() => setActiveSecurityModal(null)}
+                     onSubmit={(checkedItems) => {
+                        activeSecurityModal && updateCheckedItems(activeSecurityModal, checkedItems);
+                        setActiveSecurityModal(null);
+                     }}
+                     items={securityDocuments[activeSecurityModal ?? 'other'].map(({ name, checked }) => ({
+                        labelName: name,
+                        checked,
+                     }))}
+                     onAddNewValue={(value) => addNewSecurityValue(activeSecurityModal, value)}
+                     headerText={EligibilitySecurity[activeSecurityModal ?? 'other'].modalTitle}
+                     addButtonText={EligibilitySecurity[activeSecurityModal ?? 'other'].modalButtonText}
+                  />
+               )}
             </>
          )}
       </>

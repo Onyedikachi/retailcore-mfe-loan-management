@@ -18,23 +18,23 @@ const EquityContribution: React.FC<{ formik: any }> = ({ formik }) => {
          >
             <FormControlBase sx={{ ml: 7 }} name={InputFieldNames.SET_EQUITY} control="switch" />
          </FormControlWrapper>
-         {formik.values.setEquity && (
+         {formik.values[InputFieldNames.SET_EQUITY] && (
             <>
                <Grid container>
-                  <Grid item xs={2}>
+                  <Grid item marginTop={0.5} xs={2}>
                      Contribution type <RequiredIndicator />
                   </Grid>
                   <Grid item xs={10}>
                      <FormControlBase
                         sx={{ mb: 3 }}
-                        name={InputFieldNames.EQUITY_CONTRIBUTION_TYPE}
+                        name={InputFieldNames.EQUITY_TYPE}
                         control="radio"
                         options={[
                            { label: 'Fixed', value: 'fixed' },
                            { label: 'Range', value: 'range' },
                         ]}
                      />
-                     {formik.values.equityContributionType && (
+                     {formik.values[InputFieldNames.EQUITY_TYPE] && (
                         <Grid container sx={{ mb: 3 }}>
                            <Grid item xs={4} pr={6}>
                               <Typography>
@@ -44,30 +44,13 @@ const EquityContribution: React.FC<{ formik: any }> = ({ formik }) => {
                                  Enter a number in the field
                               </Typography>
                            </Grid>
-
-                           {formik.values.equityContributionType == 'fixed' && (
+                           <Grid item xs={4} pr={6}>
+                              <PercentageControlControl name={InputFieldNames.EQUITY_VALUE_FROM} withChip />
+                           </Grid>
+                           {formik.values[InputFieldNames.EQUITY_TYPE] == 'range' && (
                               <Grid item xs={4} pr={6}>
-                                 <PercentageControlControl
-                                    name={InputFieldNames.FIXED_EQUITY_PERCENT}
-                                    withChip
-                                 />
+                                 <PercentageControlControl name={InputFieldNames.EQUITY_VALUE_TO} withChip />
                               </Grid>
-                           )}
-                           {formik.values.equityContributionType == 'range' && (
-                              <>
-                                 <Grid item xs={4} pr={6}>
-                                    <PercentageControlControl
-                                       name={InputFieldNames.RANGE_EQUITY_PERCENT_START}
-                                       withChip
-                                    />
-                                 </Grid>
-                                 <Grid item xs={4} pr={6}>
-                                    <PercentageControlControl
-                                       name={InputFieldNames.RANGE_EQUITY_PERCENT_END}
-                                       withChip
-                                    />
-                                 </Grid>
-                              </>
                            )}
                         </Grid>
                      )}
