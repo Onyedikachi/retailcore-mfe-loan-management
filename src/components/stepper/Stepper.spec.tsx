@@ -1,5 +1,5 @@
 import { act, fireEvent, render } from '@testing-library/react';
-import { StepperContext, StepperContextProps, StepperProvider } from '../../providers';
+import { StepperContextProps, StepperProvider, useStepperContext } from '../../providers';
 import { Stepper } from './Stepper';
 import React from 'react';
 
@@ -22,7 +22,7 @@ describe('Component <Stepper />', () => {
       };
 
       expect(() => renderStepper()).toThrow(
-         'Stepper must be wrapped around StepperProvider, to function properly.'
+         'To use stepper, Component has to be a descendant of StepperProvider.'
       );
    });
 
@@ -54,8 +54,8 @@ describe('Component <Stepper />', () => {
       const stepLabels = ['Step 1', 'Step 2', 'Step 3'];
 
       const StepperComponent = () => {
-         const stepperContext = React.useContext(StepperContext);
-         handleNavigation = stepperContext?.handleNavigation ?? null;
+         const stepperContext = useStepperContext();
+         handleNavigation = stepperContext.handleNavigation;
 
          return (
             <Stepper stepLabels={stepLabels}>
@@ -111,9 +111,9 @@ describe('Component <Stepper />', () => {
       let activeStep: null | number = null;
 
       const StepperComponent = () => {
-         const stepperContext = React.useContext(StepperContext);
-         handleNavigation = stepperContext?.handleNavigation ?? null;
-         activeStep = stepperContext?.activeStep ?? null;
+         const stepperContext = useStepperContext();
+         handleNavigation = stepperContext.handleNavigation;
+         activeStep = stepperContext.activeStep;
 
          return (
             <Stepper stepLabels={stepLabels}>

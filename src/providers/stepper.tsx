@@ -12,7 +12,14 @@ export interface StepperContextProps {
    setActiveStep: React.Dispatch<React.SetStateAction<number>>;
 }
 
-export const StepperContext = React.createContext<StepperContextProps | null>(null);
+const StepperContext = React.createContext<StepperContextProps | null>(null);
+
+export const useStepperContext = () => {
+   const stepperContext = React.useContext(StepperContext);
+
+   if (!stepperContext) throw Error('To use stepper, Component has to be a descendant of StepperProvider.');
+   return stepperContext;
+};
 
 export const StepperProvider = ({ children, defaultStep = 0 }: StepperProviderProps) => {
    const [activeStep, setActiveStep] = React.useState(defaultStep < 0 ? 0 : defaultStep);

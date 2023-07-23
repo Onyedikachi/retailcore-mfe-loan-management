@@ -1,10 +1,10 @@
 import * as FormMeta from '@app/utils/validators/personal-loan/product-info';
 import FormContainer from '../../../forms/FormContainer';
 import FormControlWrapper from '@app/components/forms/FormControlWrapper';
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { Box, Divider, Grid, Typography } from '@mui/material';
 import { Button } from '@app/components/atoms';
-import { CreateProductContext } from '@app/providers/create-product';
+import { useCreateProductContext } from '@app/providers/create-product';
 import { Form, Formik } from 'formik';
 import { FormControlBase } from '@app/components/forms/FormControl';
 import { LoanPrincipalRangeControl } from '@app/components/forms/LoanPrincipalRangeControl';
@@ -13,30 +13,69 @@ import { ProductDescriptionControl } from '@app/components/forms/ProductDescript
 import { ProductNameControl } from '@app/components/forms/ProductNameControl';
 import { TenureControl } from '@app/components/forms/TenureControl';
 import { useRequest, useRequestData } from 'react-http-query';
-import { API_PATH, CommonFormFieldNames, REQUEST_NAMES } from '@app/constants';
-import { StepperContext } from '@app/providers';
-import { ProductInformation as ProductInformationType } from '@app/@types/create-credit-product';
+import { API_PATH, CommonFormFieldNames, PRODUCT_ID_PARAM_NAME, REQUEST_NAMES } from '@app/constants';
+import { useStepperContext } from '@app/providers';
+import {
+   ProductInformationApiResponse,
+   ProductInformation as ProductInformationType,
+} from '@app/@types/create-credit-product';
 import { currencyToNumber } from '@app/helper/currency-converter';
 import { CurrencyListResponse } from '@app/@types/currency-list';
 import { useDebounceRequests } from '@app/hooks/useDebounceRequest';
+import { useSearchParams } from 'react-router-dom';
 
 export const ProductInformation: React.FC = () => {
    const { InputFieldNames, ToolTipText } = FormMeta;
    const [isDraft, setIsDraft] = useState(false);
 
-   const createProductContext = React.useContext(CreateProductContext);
-   const stepperContext = React.useContext(StepperContext);
+   const { setCurrency, productMeta, addProductStep } = useCreateProductContext();
+   const stepperContext = useStepperContext();
 
-   if (!createProductContext || !stepperContext) {
-      throw Error('Create provider & Stepper Provider is required for personal loan creation.');
-   }
+   const [searchParams, setSearchParams] = useSearchParams();
 
    const { handleNavigation } = stepperContext;
 
-   const [, postProductInfo] = useRequest({ onSuccess: () => handleNavigation('next') });
+   const handleOnSubmitSuccess = (response: ProductInformationApiResponse) => {
+      setSearchParams((params) => {
+         params.set(PRODUCT_ID_PARAM_NAME, response.data.productInfo.id);
+         return params;
+      });
+
+      handleNavigation('next');
+   };
+
+   const [, postProductInfo] = useRequest({ onSuccess: (response) => handleOnSubmitSuccess(response) });
+   const [{ data: initialProductInfo }, refetchProductInfo] = useRequest();
+
+   // Retrieves saved value from the endpoints.
+   React.useEffect(() => {
+      const productId = searchParams.get(PRODUCT_ID_PARAM_NAME);
+      if (productId) {
+         refetchProductInfo(API_PATH.PRODUCT_INFO(productId));
+      }
+   }, []);
+
+   const initialValues = useMemo(() => {
+      if (initialProductInfo?.data) {
+         const { data } = initialProductInfo;
+         setCurrency(data[CommonFormFieldNames.PRODUCT_CURRENCY]);
+
+         return {
+            ...data,
+            [CommonFormFieldNames.MAX_LOAN_PRINCIPAL]: parseFloat(
+               data[CommonFormFieldNames.MAX_LOAN_PRINCIPAL]
+            ),
+            [CommonFormFieldNames.MIN_LOAN_PRINCIPAL]: parseFloat(
+               data[CommonFormFieldNames.MIN_LOAN_PRINCIPAL]
+            ),
+         };
+      }
+
+      return FormMeta.productInfoInitialValues();
+   }, [initialProductInfo]);
+
    const { setRequestPath: checkNameAvailability, response: availableResponse } = useDebounceRequests();
    const currencyList = useRequestData<CurrencyListResponse>(REQUEST_NAMES.CURRENCY_LIST);
-   const { setCurrency, productMeta, addProductStep } = createProductContext;
 
    const handleProductNameChange = (value: string) => {
       checkNameAvailability(API_PATH.PRODUCT_NAME_AVAILABILITY(value));
@@ -46,8 +85,8 @@ export const ProductInformation: React.FC = () => {
       const { MAX_LOAN_PRINCIPAL, MIN_LOAN_PRINCIPAL, PRODUCT_CURRENCY_ID, PRODUCT_CURRENCY } =
          CommonFormFieldNames;
 
-      addProductStep('productInformation', values);
-      postProductInfo(API_PATH.PRODUCT_INFO(), {
+      const productId = searchParams.get(PRODUCT_ID_PARAM_NAME);
+      postProductInfo(API_PATH.PRODUCT_INFO(productId ?? undefined), {
          body: {
             ...values,
             [MAX_LOAN_PRINCIPAL]: currencyToNumber(values[MAX_LOAN_PRINCIPAL]),
@@ -58,13 +97,17 @@ export const ProductInformation: React.FC = () => {
             // eslint-disable-next-line camelcase
             is_draft: isDraft,
          },
+         method: productId ? 'PATCH' : 'POST',
       });
+
+      addProductStep('productInformation', values);
    };
 
    return (
       <FormContainer>
          <Formik
-            initialValues={FormMeta.productInfoInitialValues()}
+            initialValues={initialValues}
+            enableReinitialize={true}
             validationSchema={FormMeta.productInfoValidator()}
             onSubmit={onSubmit}
          >

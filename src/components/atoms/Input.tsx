@@ -2,10 +2,11 @@ import React, { ReactNode } from 'react';
 import { Field, ErrorMessage, FieldProps } from 'formik';
 import { InputErrorText } from '../forms/InputFieldError';
 import { Box, FormControl, TextField, TextFieldProps, Typography } from '@mui/material';
+import { FormAcceptType } from '@app/@types';
 
 export type InputProps = TextFieldProps & {
    name: string;
-   allow?: string;
+   allow?: FormAcceptType;
    children?: ReactNode;
    currency?: boolean;
    decimal?: boolean;
@@ -22,7 +23,10 @@ export const Input: React.FC<InputProps> = ({ extraLeft, decimal, extraRight, cu
 
       const re = /[^.0-9]/g;
       let input = target.value;
-      if (props.allow === FORM_ALLOWED.NUMBER) input = input.replace(re, '');
+      const { allow } = props;
+      if (props.allow === 'number') input = input.replace(re, '');
+      else if (allow === 'percent' || allow === 'ratio')
+         input = input.replace(/^.*?(\d+(\.\d*)?%?).*$/, '$1');
       if (currency) {
          const rawValue = e.target.value.replace(/[^\d.]/g, '');
          const parts = rawValue.split('.');

@@ -1,15 +1,15 @@
-import { ClickAwayListener, Tooltip } from '@mui/material';
+import { ClickAwayListener, Tooltip as MuiTooltip } from '@mui/material';
 import React from 'react';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 interface TooltipProps {
    text: React.ReactNode;
 }
-const InfoTooltip: React.FC<TooltipProps> = ({ text }) => {
+export const Tooltip: React.FC<TooltipProps> = ({ text }) => {
    const [open, setOpen] = React.useState(false);
 
    return (
       <ClickAwayListener onClickAway={() => setOpen(false)}>
-         <Tooltip
+         <MuiTooltip
             arrow
             PopperProps={{
                disablePortal: true,
@@ -26,9 +26,7 @@ const InfoTooltip: React.FC<TooltipProps> = ({ text }) => {
                sx={{ width: '15px', ml: 0.5, fontWeight: '600', cursor: 'pointer' }}
                onClick={() => setOpen(!open)}
             />
-         </Tooltip>
+         </MuiTooltip>
       </ClickAwayListener>
    );
 };
-
-export default InfoTooltip;

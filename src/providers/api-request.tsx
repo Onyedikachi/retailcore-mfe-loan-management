@@ -14,6 +14,12 @@ const LOADING_IGNORED_ROUTE = [API_PATH.PRODUCT_NAME_AVAILABILITY(''), RETAIL_CO
 // Add routes that you want error messages display to be ignored here.
 const ERROR_DISPLAYED_IGNORED_ROUTE = [API_PATH.PRODUCT_NAME_AVAILABILITY('')];
 
+// Add routes that you want success messages display to be ignored here.
+const SUCCESS_DISPLAYED_IGNORED_ROUTE = [
+   API_PATH.PRODUCT_NAME_AVAILABILITY(''),
+   RETAIL_CORE_API_PATH.GET_CURRENCY,
+];
+
 export const APIRequestProvider = ({ children }: APIRequestProviderProps) => {
    const baseUrl = process.env.API_URL ?? '';
    const [requestUrl, setRequestUrl] = useState('');
@@ -46,6 +52,11 @@ export const APIRequestProvider = ({ children }: APIRequestProviderProps) => {
                   errorMessage = errorMessage.join(', ');
                }
                return <AlertSnackbar alertType="error" message={errorMessage} />;
+            }
+         }}
+         onSuccess={(reponse) => {
+            if (!SUCCESS_DISPLAYED_IGNORED_ROUTE.some((route) => requestUrl.includes(route))) {
+               return <AlertSnackbar alertType="success" message={reponse.message ?? 'Request Successful'} />;
             }
          }}
          baseUrl={baseUrl}

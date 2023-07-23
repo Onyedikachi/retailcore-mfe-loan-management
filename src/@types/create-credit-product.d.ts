@@ -9,6 +9,8 @@ export interface FixedEligibilityCriteria {
    period: Tenure;
 }
 
+export type SecurityOptions = 'guarantor' | 'collateral' | 'other';
+
 export interface PercentEligibilityCriteria {
    earnings: 'percent';
    percentage: number;
@@ -41,24 +43,35 @@ export interface ProductInformation {
    is_draft?: boolean;
 }
 
+export interface ProductInformationApiResponse {
+   data: {
+      productInfo: ProductInformation & { id: string };
+   };
+}
+
 export interface EligibilityCriteria {
    product_info_id: string;
    require_earning: boolean;
    earn_type: string;
-   earn_value: number;
+   earn_value: number | string;
    earn_period_value: string;
    earn_period: string;
    require_security: boolean;
+
+   guarantor_ids: Array<string>;
+   collateral_asset_ids: Array<string>;
+   other_security_requirement_ids: Array<string>;
+   require_contrib: boolean;
    require_other_elig_criteria: boolean;
    is_draft: boolean;
-   equity_contrib_type: 'fixed' | 'range';
-   contrib_value_from: number;
-   contrib_value_to: number;
+   equity_contrib_type: string;
+   contrib_value_from: number | string;
+   contrib_value_to: number | string;
 }
 
 export interface CreateCreditProduct {
-   productInformation?: ProductInformation;
-   eligibityCriteria?: EligibilityCriteria;
+   productInformation?: Partial<ProductInformation>;
+   eligibityCriteria?: Partial<EligibilityCriteria>;
 }
 export interface ProductInformation {
    product_name: string;

@@ -15,5 +15,7 @@ export interface MenuItemContentsProps {
    href?: string;
 }
 
+export type FormAcceptType = 'currency' | 'number' | 'ratio' | 'percent';
+
 export type SecurityEligibilityDocumentType = 'guarantor' | 'collateral-assets' | 'other-sec-requirements';
 export type ObjectAny = { [key: string]: any };
