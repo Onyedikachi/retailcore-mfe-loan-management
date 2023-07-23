@@ -1,22 +1,23 @@
 import { FormControlBase } from '@app/components/forms/FormControl';
 import FormControlWrapper from '@app/components/forms/FormControlWrapper';
-import { Box } from '@mui/material';
+import { Box, Grid } from '@mui/material';
 import * as FormMeta from '@app/utils/validators/personal-loan/eligibility-criteria';
 import { Button } from '@app/components';
 import React from 'react';
 import Dialog from '@app/components/atoms/Dialog';
-import AddOtherRequirements from './AddOtherRequirement';
+import { useOtherRequirementContext } from '@app/providers/eligibility-criteria-other-requirement-provider';
+import Requirements from './Requirements';
+import SelectedRequirements from './SelectedRequirements';
 
 const OtherRequirement: React.FC<{ formik: any }> = ({ formik }) => {
    const { InputFieldNames, ToolTipText } = FormMeta;
-   const [openRequirement, setOpenRequirement] = React.useState(false);
-   const handleOpen = () => {
-      setOpenRequirement(true);
-   };
-   const handleClose = () => {
-      setOpenRequirement(false);
-   };
 
+   const [openRequirement, setOpenRequirement] = React.useState(false);
+   const handleOpen = () => setOpenRequirement(true);
+   const handleClose = () => setOpenRequirement(false);
+   
+   const { configuredRequirements } = useOtherRequirementContext();
+   console.log(configuredRequirements);
    return (
       <>
          <FormControlWrapper
@@ -37,8 +38,20 @@ const OtherRequirement: React.FC<{ formik: any }> = ({ formik }) => {
                </Box>
             </>
          )}
-         <Dialog open={openRequirement} handleClose={handleClose} title="ADD OTHER ELIGIBILITY REQUIREMENTS">
-            <AddOtherRequirements />
+         <Dialog
+            minWidth="75%"
+            open={openRequirement}
+            handleClose={handleClose}
+            title="ADD OTHER ELIGIBILITY REQUIREMENTS"
+         >
+            <Grid container>
+               <Grid item xs={4} pr={2}>
+                  <Requirements />
+               </Grid>
+               <Grid item xs={8}>
+                  <SelectedRequirements onCompleted={handleClose} />
+               </Grid>
+            </Grid>
          </Dialog>
       </>
    );

@@ -7,6 +7,7 @@ export const API_PATH = {
    PRODUCT_NAME_AVAILABILITY: (name: string) => `${API_V1}/product-info/available/${name}`,
    SECURITY_ELIGIBILITY_DOCUMENT: (param?: SecurityEligibilityDocumentType | string) =>
       `${API_V1}/eligibility-document/security${param ? '/' + param : ''}`,
+   OTHER_ELIGIBILTY_REQUIREMENT: `${API_V1}/other-eligibility-req`,
 };
 
 const RETAIL_CORE_BASE_URL = `${process.env?.RETAIL_CORE_BASE_URL ?? ''}${API_V1}`;

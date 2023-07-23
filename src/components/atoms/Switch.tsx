@@ -2,6 +2,7 @@ import { Colors } from '@app/constants';
 import { styled, Switch as MuiSwitch, SwitchProps as MuiSwitchProps, FormControl } from '@mui/material';
 import { Field, FieldProps, ErrorMessage } from 'formik';
 import { InputErrorText } from '../forms/InputFieldError';
+import { useState } from 'react';
 
 export const StyledSwitch = styled(MuiSwitch)(() => {
    return {
@@ -58,7 +59,12 @@ export const Switch: React.FC<SwitchProps> = ({ children, ...props }) => {
             return (
                <>
                   <FormControl fullWidth>
-                     <StyledSwitch {...props} {...field} inputProps={{ id: props.name }}>
+                     <StyledSwitch
+                        {...props}
+                        {...field}
+                        value={field.value ?? false}
+                        inputProps={{ id: props.name }}
+                     >
                         {children}
                      </StyledSwitch>
                      <ErrorMessage

@@ -80,6 +80,11 @@ export const GlobalTheme = createTheme(
          },
       },
       components: {
+         MuiTypography: {
+            styleOverrides: {
+               root: { fontFamily: 'Inter' },
+            },
+         },
          MuiInput: InputTheme,
          MuiMenuItem: MenuItemThem,
          MuiMenu: MenuTheme,

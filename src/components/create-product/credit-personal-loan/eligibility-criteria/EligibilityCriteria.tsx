@@ -8,11 +8,11 @@ import EquityContribution from './EquityContribution';
 import Security from './Security';
 import OtherRequirement from './OtherRequirement';
 import FormContainer from '@app/components/forms/FormContainer';
+import { OtherRequirementProvider } from '@app/providers/eligibility-criteria-other-requirement-provider';
 type inputValue = { [key: string]: any };
 
 export const EligibilityCriteria: React.FC = () => {
-   const onSubmit = (values: inputValue) => {
-   };
+   const onSubmit = (values: inputValue) => {};
 
    return (
       <FormContainer>
@@ -29,7 +29,9 @@ export const EligibilityCriteria: React.FC = () => {
                            <EarningsOrTurnover formik={formik} />
                            <EquityContribution formik={formik} />
                            <Security formik={formik} />
-                           <OtherRequirement formik={formik} />
+                           <OtherRequirementProvider>
+                              <OtherRequirement formik={formik} />
+                           </OtherRequirementProvider>
                         </Accordion>
                      </Box>
                      <Divider />
