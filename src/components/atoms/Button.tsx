@@ -1,5 +1,5 @@
 import { Colors } from '@app/constants';
-import { ButtonProps, Button as MuiButton, styled } from '@mui/material';
+import { ButtonProps, IconButton, Button as MuiButton, styled } from '@mui/material';
 import React from 'react';
 
 const StyledButton = styled(MuiButton)(({ variant, color, disabled }) => ({
@@ -29,3 +29,11 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       return <StyledButton color={color} variant={variant ?? 'contained'} ref={ref} {...restProp} />;
    }
 );
+
+export const BoxShadowIconButton = styled(IconButton)(() => ({
+   backgroundColor: Colors.White,
+   boxShadow: '0px 2px 8px rgba(0, 0, 0, 0.25)',
+   borderRadius: '5px',
+   width: 30,
+   height: 30,
+}));

@@ -1,8 +1,8 @@
 import { Box, InputLabel, InputLabelProps, SxProps, Theme, Typography } from '@mui/material';
 import React from 'react';
-import InfoTooltip from '../atoms/Tooltip';
 import { Colors } from '@app/constants';
 import RequiredIndicator from '../atoms/RequiredIndicator';
+import { Tooltip } from '../atoms';
 
 interface WrapperProps extends InputLabelProps {
    name: string;
@@ -15,9 +15,10 @@ interface WrapperProps extends InputLabelProps {
 }
 
 const FormControlWrapper: React.FC<WrapperProps> = (props) => {
-   const flexStyles = props.layout == 'horizontal' ? { display: 'flex', ...props.layoutStyles } : {};
+   const flexStyles =
+      props.layout == 'horizontal' ? { display: 'flex', alignItems: 'center', ...props.layoutStyles } : {};
    return (
-      <Box sx={{ mb: 3, ...props.sx, ...flexStyles }}>
+      <Box sx={{ mb: 4, ...props.sx, ...flexStyles }}>
          {props.label && (
             <Box>
                <Box display="flex">
@@ -25,7 +26,7 @@ const FormControlWrapper: React.FC<WrapperProps> = (props) => {
                      {props.label}
                   </InputLabel>
                   {props.required && <RequiredIndicator />}
-                  {props.tooltipText && <InfoTooltip text={props.tooltipText} />}
+                  {props.tooltipText && <Tooltip text={props.tooltipText} />}
                </Box>
                {props.labelDescription && (
                   <Typography sx={{ fontSize: '14px', color: Colors.LightGray }}>

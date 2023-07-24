@@ -25,7 +25,7 @@ const CustomAccordion = styled(MuiAccordion)(() => ({
 }));
 
 const AccordionSummary = styled(MuiAccordionSummary)(() => ({
-   fontSize: '20px',
+   fontSize: '18px',
    fontWeight: 500,
    lineHeight: '32px',
    borderRadius: '10px',
@@ -74,7 +74,9 @@ const Accordion: React.FC<AccordionProps> = ({ accordionLabels, children, ...oth
                   aria-controls={`panel${index}-content`}
                   id={`panel${index}-header`}
                >
-                  <Typography variant="h6">{label}</Typography>
+                  <Typography variant="h6" fontSize="19px">
+                     {label}
+                  </Typography>
                </AccordionSummary>
                <AccordionDetails>{children[index]}</AccordionDetails>
             </CustomAccordion>

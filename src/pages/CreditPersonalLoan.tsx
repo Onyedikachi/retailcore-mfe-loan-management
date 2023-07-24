@@ -1,6 +1,6 @@
 import { Stepper } from '@app/components';
 import { CreateProductHeader } from '@app/components/create-product/CreateProductHeader';
-import { ProductInformation } from '@app/components/create-product/credit-personal-loan';
+import { EligibilityCriteria, ProductInformation } from '@app/components/create-product/credit-personal-loan';
 import { REQUEST_NAMES, RETAIL_CORE_API_PATH } from '@app/constants';
 import { ProductFactoryLayout } from '@app/layouts/ProductFactoryLayout';
 import { Box, styled } from '@mui/material';
@@ -57,7 +57,7 @@ const PersonalLoanCreditContent = () => {
             ]}
          >
             <ProductInformation />
-            <>1</>
+            <EligibilityCriteria />
             <>2</>
             <>3</>
             <>4</>

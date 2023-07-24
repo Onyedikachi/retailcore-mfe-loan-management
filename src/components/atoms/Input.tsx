@@ -2,17 +2,19 @@ import React, { ReactNode } from 'react';
 import { Field, ErrorMessage, FieldProps } from 'formik';
 import { InputErrorText } from '../forms/InputFieldError';
 import { Box, FormControl, TextField, TextFieldProps, Typography } from '@mui/material';
+import { FormAcceptType } from '@app/@types';
 
 export type InputProps = TextFieldProps & {
    name: string;
-   allow?: string;
+   allow?: FormAcceptType;
    children?: ReactNode;
    currency?: boolean;
+   decimal?: boolean;
    extraLeft?: ReactNode;
    extraRight?: ReactNode;
 };
 
-export const Input: React.FC<InputProps> = ({ extraLeft, extraRight, currency, ...props }) => {
+export const Input: React.FC<InputProps> = ({ extraLeft, decimal, extraRight, currency, ...props }) => {
    const handleChange = (
       e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
       form: FieldProps['form']
@@ -21,7 +23,12 @@ export const Input: React.FC<InputProps> = ({ extraLeft, extraRight, currency, .
 
       const re = /[^.0-9]/g;
       let input = target.value;
-      if (props.allow === FORM_ALLOWED.NUMBER) input = input.replace(re, '');
+      const { allow } = props;
+      if (props.allow === 'number') input = input.replace(re, '');
+      else if (allow === 'percent' || allow === 'ratio') {
+         input = `${input.replace(/[^\d.]/g, '') || 0}%`;
+         e.target.value = input;
+      }
       if (currency) {
          const rawValue = e.target.value.replace(/[^\d.]/g, '');
          const parts = rawValue.split('.');
@@ -30,6 +37,11 @@ export const Input: React.FC<InputProps> = ({ extraLeft, extraRight, currency, .
          const formattedValue = parts.length === 2 ? `${integerPart}.${parts[1]}` : integerPart;
          input = formattedValue;
       }
+      if (decimal) {
+         const decimalRegex = /[^-+\d.]/g;
+         input = input.replace(decimalRegex, '');
+      }
+
       form.handleChange(e);
       props?.onChange?.(e);
       form.setFieldValue(props.name, input);
@@ -41,7 +53,7 @@ export const Input: React.FC<InputProps> = ({ extraLeft, extraRight, currency, .
             return (
                <>
                   <Box display="flex" alignItems="end">
-                     {extraLeft && <Typography mr={2}>{extraLeft}</Typography>}
+                     {extraLeft && <Typography mr={1}>{extraLeft}</Typography>}
                      <FormControl fullWidth>
                         <TextField
                            variant="standard"
@@ -55,7 +67,7 @@ export const Input: React.FC<InputProps> = ({ extraLeft, extraRight, currency, .
                            inputProps={{ autoComplete: 'off' }}
                         />
                      </FormControl>
-                     {extraRight && <Typography ml={2}>{extraRight}</Typography>}
+                     {extraRight && <Typography ml={1}>{extraRight}</Typography>}
                   </Box>
                   <ErrorMessage
                      name={props.name}

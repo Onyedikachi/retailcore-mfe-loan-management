@@ -12,14 +12,33 @@ interface ProductMeta {
 
 interface CreateProductContextProps {
    productMeta: ProductMeta | null;
+   submitted: {
+      productInformation: boolean;
+      eligibilityCriteria: boolean;
+   };
    addProductStep: <T extends keyof CreateCreditProduct>(stepKey: T, values: CreateCreditProduct[T]) => void;
    setCurrency: (currency: string) => void;
+   updateProductStepState: (step: keyof CreateCreditProduct, isSubmitted: boolean) => void;
 }
 
-export const CreateProductContext = React.createContext<null | CreateProductContextProps>(null);
+const CreateProductContext = React.createContext<null | CreateProductContextProps>(null);
+
+export const useCreateProductContext = () => {
+   const createProductContext = React.useContext(CreateProductContext);
+
+   if (!createProductContext) {
+      throw Error('Component needs to be a descendant of CreateProductProvider');
+   }
+
+   return createProductContext;
+};
 
 export const CreateProductProvider = ({ children }: CreateProductProviderProps) => {
    const [productMeta, setProductMeta] = useState<null | ProductMeta>(null);
+   const [{ productInformationSubmitted, eligibilityCriteriaSubmitted }, setProductStepState] = useState({
+      productInformationSubmitted: false,
+      eligibilityCriteriaSubmitted: false,
+   });
 
    const addProductStep = <T extends keyof CreateCreditProduct>(
       stepKey: T,
@@ -41,8 +60,27 @@ export const CreateProductProvider = ({ children }: CreateProductProviderProps) 
       }));
    };
 
+   /** this is used to set if a step has been submitted. */
+   const updateProductStepState = (step: keyof CreateCreditProduct, isSubmitted: boolean) => {
+      setProductStepState((initial) => ({
+         ...initial,
+         [step]: isSubmitted,
+      }));
+   };
+
    return (
-      <CreateProductContext.Provider value={{ setCurrency, addProductStep, productMeta }}>
+      <CreateProductContext.Provider
+         value={{
+            submitted: {
+               productInformation: productInformationSubmitted,
+               eligibilityCriteria: eligibilityCriteriaSubmitted,
+            },
+            setCurrency,
+            addProductStep,
+            productMeta,
+            updateProductStepState,
+         }}
+      >
          {children}
       </CreateProductContext.Provider>
    );

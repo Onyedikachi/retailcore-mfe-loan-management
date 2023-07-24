@@ -9,7 +9,7 @@ import {
    darken,
    StepConnector,
 } from '@mui/material';
-import { StepperContext } from '@app/providers';
+import { useStepperContext } from '@app/providers';
 
 const connectorColor = '#CCCCCC';
 
@@ -124,10 +124,7 @@ export const Stepper = ({
    stepperWrapperProps,
    ...restProp
 }: StepperProps) => {
-   const stepperContext = React.useContext(StepperContext);
-   if (!stepperContext) {
-      throw Error('Stepper must be wrapped around StepperProvider, to function properly.');
-   }
+   const stepperContext = useStepperContext();
 
    const { activeStep, setStepperContentCount } = stepperContext;
    const ChildrenWrapper = childrenWrapper ?? Fragment;

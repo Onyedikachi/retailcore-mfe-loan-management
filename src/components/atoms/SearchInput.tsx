@@ -5,12 +5,13 @@ import React, { useEffect } from 'react';
 import useDebounce from '@app/hooks/useDebounce';
 export type SearchProps = TextFieldProps & {
    handleSearch: (searchBy: string) => void;
+   debounceTime?: number;
 };
 
 const SEARCH_BY = 'searchBy';
 
-export const SearchInput: React.FC<SearchProps> = ({ handleSearch, placeholder }) => {
-   const { debouncedValue, setDebouncedValue } = useDebounce<string>(1000);
+export const SearchInput: React.FC<SearchProps> = ({ handleSearch, placeholder, debounceTime = 1000 }) => {
+   const { debouncedValue, setDebouncedValue } = useDebounce<string>(debounceTime);
    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
       setDebouncedValue(event.target.value);
    };

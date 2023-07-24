@@ -22,7 +22,7 @@ export const LoanPrincipalControl = ({
          <FormControlBase
             name={name}
             currency
-            placeholder="1"
+            placeholder="0"
             extraLeft={extraLeft ?? 'NGN'}
             {...otherProps}
             control="input"
