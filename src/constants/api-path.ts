@@ -1,5 +1,9 @@
 import { SecurityEligibilityDocumentType } from '@app/@types';
 
+export const API_URL = 'https://loan-management-api.dev.bepeerless.co';
+export const RETAIL_CORE_BASE_URL = 'https://dev2-retailcore-accounting-api.dev.bepeerless.co';
+export const RETAIL_AUTH_BASE_URL = 'https://dev2-retailcore-auth-api.dev.bepeerless.co';
+
 const API_V1 = '/api/v1';
 
 export const API_PATH = {
@@ -10,14 +14,14 @@ export const API_PATH = {
    ELIGIBILITY_CRITERIA: (param?: string) => `${API_V1}/eligibility-criteria${param ? '/' + param : ''}`,
 };
 
-const RETAIL_CORE_BASE_URL = `${process.env?.RETAIL_CORE_BASE_URL ?? ''}${API_V1}`;
+const RETAIL_CORE_V1 = `${RETAIL_CORE_BASE_URL ?? ''}${API_V1}`;
 export const RETAIL_CORE_API_PATH = {
-   GET_CURRENCY: `${RETAIL_CORE_BASE_URL}/currency`,
+   GET_CURRENCY: `${RETAIL_CORE_V1}/currency`,
 };
 
-const RETAIL_AUTH_BASE_URL = `${process.env?.RETAIL_AUTH_BASE_URL ?? ''}${API_V1}`;
+const RETAIL_AUTH_V1 = `${RETAIL_AUTH_BASE_URL ?? ''}${API_V1}`;
 export const RETAIL_AUTH_API_PATH = {
-   REFRESH_TOKEN: `${RETAIL_AUTH_BASE_URL}/token/refresh`,
+   REFRESH_TOKEN: `${RETAIL_AUTH_V1}/token/refresh`,
 };
 
 export const REQUEST_NAMES = {
