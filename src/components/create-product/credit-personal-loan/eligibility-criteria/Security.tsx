@@ -9,15 +9,17 @@ import { ModalWithCheckBoxList } from '@app/components/modal/ModalWithCheckBoxLi
 import { useSecurityAction } from '@app/hooks/useSecurityAction';
 import { SecurityOptionsTable } from './SecurityOptionsTable';
 import { EligibilitySecurity } from '@app/constants/eligibility-security';
-import { ErrorMessage, FieldArray } from 'formik';
+import { ErrorMessage, FieldArray, FormikProps } from 'formik';
 
-const Security: React.FC<{ formik: any }> = ({ formik }) => {
+const Security: React.FC<{ formik: FormikProps<any> }> = ({ formik }) => {
    const [activeSecurityModal, setActiveSecurityModal] = useState<SecurityOptions | null>();
    const { InputFieldNames, ToolTipText } = FormMeta;
    const { [InputFieldNames.SET_SECURITY]: setSecurity } = formik.values;
 
    const { removeCheckItem, updateCheckedItems, securityDocuments, addNewSecurityValue } =
       useSecurityAction(formik);
+
+   console.log(formik);
 
    const getCheckedSecurity = (securityType: SecurityOptions) => {
       return securityDocuments[securityType as SecurityOptions]
@@ -87,6 +89,11 @@ const Security: React.FC<{ formik: any }> = ({ formik }) => {
                      onClose={() => setActiveSecurityModal(null)}
                      onSubmit={(checkedItems) => {
                         activeSecurityModal && updateCheckedItems(activeSecurityModal, checkedItems);
+                        formik.setFieldTouched(
+                           EligibilitySecurity[activeSecurityModal].formFieldName,
+                           true,
+                           true
+                        );
                         setActiveSecurityModal(null);
                      }}
                      items={securityDocuments[activeSecurityModal ?? 'other'].map(({ name, checked }) => ({
