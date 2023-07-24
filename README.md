@@ -52,4 +52,3 @@ The following scripts are available to run various tasks:
 -   `pre-commit`: Run lint-staged before committing changes.
 -   `coverage`: Run tests and generate test coverage report.
 -   `build:types`: Generate TypeScript declaration files.
--   
