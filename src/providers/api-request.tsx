@@ -22,7 +22,7 @@ const SUCCESS_DISPLAYED_IGNORED_ROUTE = [
 ];
 
 export const APIRequestProvider = ({ children }: APIRequestProviderProps) => {
-   console.log({ env: process.env });
+   console.log({ env: process.env }, '¬¬¬¬¬');
    const baseUrl = process.env.API_URL ?? '';
    const [requestUrl, setRequestUrl] = useState('');
 
