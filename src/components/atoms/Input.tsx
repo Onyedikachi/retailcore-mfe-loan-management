@@ -25,8 +25,10 @@ export const Input: React.FC<InputProps> = ({ extraLeft, decimal, extraRight, cu
       let input = target.value;
       const { allow } = props;
       if (props.allow === 'number') input = input.replace(re, '');
-      else if (allow === 'percent' || allow === 'ratio')
-         input = input.replace(/^.*?(\d+(\.\d*)?%?).*$/, '$1');
+      else if (allow === 'percent' || allow === 'ratio') {
+         input = `${input.replace(/[^\d.]/g, '') || 0}%`;
+         e.target.value = input;
+      }
       if (currency) {
          const rawValue = e.target.value.replace(/[^\d.]/g, '');
          const parts = rawValue.split('.');

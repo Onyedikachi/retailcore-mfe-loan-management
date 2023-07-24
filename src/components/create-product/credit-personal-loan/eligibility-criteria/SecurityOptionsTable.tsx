@@ -43,8 +43,8 @@ export const SecurityOptionsTable = <T extends SecurityOptions>({
                ...(type === 'collateral' && {
                   mmi: (
                      <FormControlBase
-                        value={(security as any).mmi}
-                        name={`${fieldName}.${index}`}
+                        defaultValue={(security as any).mmi}
+                        name={`${fieldName}.${index}.mmi`}
                         control="input"
                         allow="ratio"
                      />

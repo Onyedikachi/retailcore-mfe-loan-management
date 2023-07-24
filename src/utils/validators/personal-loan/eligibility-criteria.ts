@@ -128,24 +128,24 @@ export const securities = {
    [InputFieldNames.SECURITY_COLLATERAL_VALUES]: Yup.array().when(
       InputFieldNames.SECURITY_OPTION,
       (securityOptions, field) => {
-         return securityOptions.includes(EligibilitySecurity.collateral.optionValue) && !field.length
-            ? field.min(1, 'Add At least one security option')
+         return securityOptions.flat().includes(EligibilitySecurity.collateral.optionValue)
+            ? field.min(1, 'Add At least one security option.')
             : field;
       }
    ),
    [InputFieldNames.SECURITY_GUARANTOR_VALUES]: Yup.array().when(
       InputFieldNames.SECURITY_OPTION,
       (securityOptions, field) => {
-         return securityOptions.includes(EligibilitySecurity.guarantor.optionValue) && !field.length
-            ? field.min(1, 'Add At least one security option')
+         return securityOptions.flat().includes(EligibilitySecurity.guarantor.optionValue)
+            ? field.min(1, 'Add At least one security option.')
             : field;
       }
    ),
    [InputFieldNames.SECURITY_OTHER_VALUES]: Yup.array().when(
       InputFieldNames.SECURITY_OPTION,
       (securityOptions, field) => {
-         return securityOptions.includes(EligibilitySecurity.other.optionValue) && !field.length
-            ? field.min(1, 'Add At least one security option')
+         return securityOptions.flat().includes(EligibilitySecurity.other.optionValue)
+            ? field.min(1, 'Add At least one security option.')
             : field;
       }
    ),
