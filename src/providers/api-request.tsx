@@ -1,6 +1,6 @@
 import { AlertSnackbar } from '@app/components';
 import { Loader } from '@app/components/Loader';
-import { API_PATH, RETAIL_CORE_API_PATH } from '@app/constants';
+import { API_PATH, API_URL, RETAIL_CORE_API_PATH } from '@app/constants';
 import { useState } from 'react';
 import { RequestProvider } from 'react-http-query';
 
@@ -23,7 +23,7 @@ const SUCCESS_DISPLAYED_IGNORED_ROUTE = [
 
 export const APIRequestProvider = ({ children }: APIRequestProviderProps) => {
    console.log({ env: process.env }, '¬¬¬¬¬');
-   const baseUrl = process.env.API_URL ?? '';
+   const baseUrl = API_URL ?? '';
    const [requestUrl, setRequestUrl] = useState('');
 
    return (
