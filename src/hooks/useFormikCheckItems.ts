@@ -1,8 +1,9 @@
 import { FormikProps } from 'formik';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 export const useFormikCheckItems = <T>(
    initialItems: Array<T>,
+   defaultSelectedItems: Array<T>,
    itemKey?: keyof T,
    formikProps?: {
       formik: FormikProps<any>;
@@ -11,6 +12,10 @@ export const useFormikCheckItems = <T>(
 ) => {
    const [formikItems, setFormikItems] = useState(initialItems.map((item) => ({ ...item, checked: false })));
    const [checkedItems, setCheckedItems] = useState<Array<Omit<T, 'checked'>>>([]);
+
+   useEffect(() => {
+      setCheckedItems(defaultSelectedItems);
+   }, []);
 
    const [key, setKey] = useState(itemKey);
 

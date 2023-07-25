@@ -41,8 +41,10 @@ export const useSecurityAction = <T>(formik: FormikProps<T>) => {
                checked: false,
             })) ?? [],
          guarantor:
-            apiSecurityDocuments?.guarantor?.map((item: SecurityDocument) => ({ ...item, checked: false })) ??
-            [],
+            apiSecurityDocuments?.guarantor?.map((item: SecurityDocument) => ({
+               ...item,
+               checked: false,
+            })) ?? [],
          other:
             apiSecurityDocuments?.other?.map((item: SecurityDocument) => ({ ...item, checked: false })) ?? [],
       });

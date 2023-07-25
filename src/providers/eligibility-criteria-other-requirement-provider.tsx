@@ -29,12 +29,16 @@ export const OtherRequirementProvider: React.FC<{ children: React.ReactNode }> =
 
    const [, getRequirements] = useRequest({
       onSuccess: (response) => {
-         setAllRequirements(response);
+         setAllRequirements(
+            response?.other_eligibility_reqs?.map((item: OtherRequirementDocument) => ({
+               ...item,
+               accepted_format: item.accepted_format?.join(','),
+            })) ?? []
+         );
       },
    });
 
    React.useEffect(() => {
-      //setAllRequirements(dummyData);
       getRequirements(API_PATH.OTHER_ELIGIBILTY_REQUIREMENT);
    }, []);
 

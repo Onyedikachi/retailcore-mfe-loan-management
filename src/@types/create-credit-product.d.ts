@@ -45,7 +45,7 @@ export interface ProductInformation {
 
 export interface ProductInformationApiResponse {
    data: {
-      productInfo: ProductInformation & { id: string };
+      product_info: ProductInformation & { id: string };
    };
 }
 
@@ -100,7 +100,7 @@ export interface OtherRequirementDocument {
    title: string;
    status: string;
    description: string;
-   accepted_format: string;
+   accepted_format: string[];
    is_doc_required: boolean;
    period_from: number;
    period_to: number;

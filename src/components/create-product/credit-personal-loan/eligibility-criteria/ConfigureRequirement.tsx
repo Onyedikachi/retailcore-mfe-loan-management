@@ -35,7 +35,8 @@ const ConfigureRequirementForm: React.FC<{
       setOpenAddFormat(false);
    };
 
-   let formats = getFieldValue(InputFieldNames.ADD_FORMAT) ?? requirement[InputFieldNames.ADD_FORMAT];
+   let formats =
+      getFieldValue(InputFieldNames.ADD_FORMAT) ?? requirement[InputFieldNames.ADD_FORMAT];
    const setFormat = getFieldValue(InputFieldNames.SET_FORMAT);
 
    const updateSelectedFormat = (formik: any, item: string) => {

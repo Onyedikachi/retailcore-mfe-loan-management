@@ -37,14 +37,13 @@ export const ProductInformation: React.FC = () => {
 
    const handleOnSubmitSuccess = (response: ProductInformationApiResponse) => {
       setSearchParams((params) => {
-         params.set(PRODUCT_ID_PARAM_NAME, response.data.productInfo.id);
+         params.set(PRODUCT_ID_PARAM_NAME, response.data.product_info.id);
          return params;
       });
-
       handleNavigation('next');
    };
 
-   const [, postProductInfo] = useRequest({ onSuccess: (response) => handleOnSubmitSuccess(response) });
+   const [, postProductInfo] = useRequest({ onSuccess: handleOnSubmitSuccess });
    const [{ data: initialProductInfo }, refetchProductInfo] = useRequest();
 
    // Retrieves saved value from the endpoints.
@@ -91,11 +90,12 @@ export const ProductInformation: React.FC = () => {
             ...values,
             [MAX_LOAN_PRINCIPAL]: currencyToNumber(values[MAX_LOAN_PRINCIPAL]),
             [MIN_LOAN_PRINCIPAL]: currencyToNumber(values[MIN_LOAN_PRINCIPAL]),
+            [FormMeta.ALLOW_MULTIPLE]: Number(values[FormMeta.ALLOW_MULTIPLE]),
             [PRODUCT_CURRENCY_ID]: currencyList?.results.find(
                (currency) => currency.abbreviation === values[PRODUCT_CURRENCY]
             )?.id,
             // eslint-disable-next-line camelcase
-            is_draft: isDraft,
+            is_draft: Number(isDraft),
          },
          method: productId ? 'PATCH' : 'POST',
       });

@@ -19,8 +19,6 @@ const Security: React.FC<{ formik: FormikProps<any> }> = ({ formik }) => {
    const { removeCheckItem, updateCheckedItems, securityDocuments, addNewSecurityValue } =
       useSecurityAction(formik);
 
-   console.log(formik);
-
    const getCheckedSecurity = (securityType: SecurityOptions) => {
       return securityDocuments[securityType as SecurityOptions]
          .filter(({ checked }) => checked)

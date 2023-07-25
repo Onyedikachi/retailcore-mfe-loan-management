@@ -23,15 +23,20 @@ import * as FormMeta from '@app/utils/validators/personal-loan/eligibility-crite
 import { OtherRequirementDocument } from '@app/@types/create-credit-product';
 
 const Requirements: React.FC<{ formik: FormikProps<any> }> = ({ formik }) => {
-   const { allRequirements, handleSelectRequirement } = useOtherRequirementContext();
+   const { allRequirements, handleSelectRequirement, selectedRequirements } = useOtherRequirementContext();
    const { InputFieldNames } = FormMeta;
    const [requirement, setRequirement] = useState<OtherRequirementDocument[]>(allRequirements);
 
    const [openCreateRequirement, setOpenCreateRequirement] = React.useState(false);
-   const { checkedItems, itemToggle, updateFormikState } = useFormikCheckItems(allRequirements, 'title', {
-      formik,
-      fieldBaseName: InputFieldNames.OTHER_REQUIREMENT_VALUES,
-   });
+   const { checkedItems, itemToggle, updateFormikState } = useFormikCheckItems(
+      allRequirements,
+      selectedRequirements,
+      'title',
+      {
+         formik,
+         fieldBaseName: InputFieldNames.OTHER_REQUIREMENT_VALUES,
+      }
+   );
 
    const handleChange = ({ target: { name } }: React.ChangeEvent<HTMLInputElement>) => {
       itemToggle(name);
