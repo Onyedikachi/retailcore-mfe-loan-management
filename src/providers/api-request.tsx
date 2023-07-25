@@ -4,7 +4,6 @@ import { API_PATH, API_URL, RETAIL_CORE_API_PATH } from '@app/constants';
 import { useState } from 'react';
 import { RequestProvider } from 'react-http-query';
 
-//check configuration set up
 interface APIRequestProviderProps {
    children: React.ReactNode;
 }

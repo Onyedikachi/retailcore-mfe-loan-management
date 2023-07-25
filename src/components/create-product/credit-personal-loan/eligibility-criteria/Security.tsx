@@ -19,8 +19,6 @@ const Security: React.FC<{ formik: FormikProps<any> }> = ({ formik }) => {
    const { removeCheckItem, updateCheckedItems, securityDocuments, addNewSecurityValue } =
       useSecurityAction(formik);
 
-   console.log(formik);
-
    const getCheckedSecurity = (securityType: SecurityOptions) => {
       return securityDocuments[securityType as SecurityOptions]
          .filter(({ checked }) => checked)
@@ -96,10 +94,13 @@ const Security: React.FC<{ formik: FormikProps<any> }> = ({ formik }) => {
                         );
                         setActiveSecurityModal(null);
                      }}
-                     items={securityDocuments[activeSecurityModal ?? 'other'].map(({ name, checked }) => ({
-                        labelName: name,
-                        checked,
-                     }))}
+                     items={securityDocuments[activeSecurityModal ?? 'other'].map(
+                        ({ name, checked, status }) => ({
+                           labelName: name,
+                           checked,
+                           status,
+                        })
+                     )}
                      onAddNewValue={(value) => addNewSecurityValue(activeSecurityModal, value)}
                      headerText={EligibilitySecurity[activeSecurityModal ?? 'other'].modalTitle}
                      addButtonText={EligibilitySecurity[activeSecurityModal ?? 'other'].modalButtonText}

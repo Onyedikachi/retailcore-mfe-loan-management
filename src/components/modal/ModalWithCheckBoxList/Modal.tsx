@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Box } from '@mui/material';
 import { ModalAddNewDialog } from './AddNewDialog';
 import { Button, SearchInput } from '@app/components/atoms';
@@ -7,6 +7,7 @@ import { AddCircle } from '@mui/icons-material';
 import { ModalWithCheckBoxItemChildren } from '@app/@types/security-document';
 import Dialog from '@app/components/atoms/Dialog';
 import { stringContains } from '@app/helper/compare';
+import { objectDiff } from '@app/helper/object-diff';
 
 interface ReusableModalProps {
    open: boolean;
@@ -36,7 +37,7 @@ export const ModalWithCheckBoxList: React.FC<ReusableModalProps> = ({
    const [showAddNew, setShowAddNew] = useState(false);
 
    const handleSearch = (searchBy: string) => {
-      if (!searchBy) setRenderedItems(allItems);
+      if (!searchBy) setRenderedItems([...allItems]);
       else {
          const searchedItems = allItems.filter(
             ({ labelName, children }) =>
@@ -47,6 +48,19 @@ export const ModalWithCheckBoxList: React.FC<ReusableModalProps> = ({
       }
       setSearchValue(searchBy);
    };
+
+   useEffect(() => {
+      const { baseDiff, compareDiff, actionType } = objectDiff(items, allItems, 'labelName');
+      if (actionType === 'add') {
+         setAllItems((allItems) => [baseDiff[0], ...allItems]);
+      } else if (actionType === 'remove') {
+         setAllItems((allItems) =>
+            allItems.filter(({ labelName }) => compareDiff[0]?.labelName !== labelName)
+         );
+      }
+   }, [items]);
+
+   useEffect(() => handleSearch(searchValue), [allItems]);
 
    const onCheckboxToggle = (labelName: string, childLabelName?: string) => {
       const _allItems = [...allItems];

@@ -25,7 +25,7 @@ export const useSecurityAction = <T>(formik: FormikProps<T>) => {
             setSecurityDocuments((documents) => ({
                ...documents,
                [createdSecurityType]: [
-                  { checked: false, ...response.data },
+                  { checked: false, ...response.data?.security_document },
                   ...documents[createdSecurityType],
                ],
             }));
