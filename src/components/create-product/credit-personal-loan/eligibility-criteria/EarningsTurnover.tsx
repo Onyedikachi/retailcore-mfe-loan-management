@@ -38,6 +38,9 @@ const EarningsOrTurnover: React.FC<{ formik: any }> = ({ formik }) => {
                         sx={{ mb: 3 }}
                         name={InputFieldNames.EARNINGS_TYPE}
                         control="radio"
+                        onChange={() => {
+                           formik.setFieldValue(InputFieldNames.EARNINGS_VALUE, '');
+                        }}
                         options={[
                            { label: 'Fixed', value: 'fixed' },
                            { label: '% of Loan Amount', value: 'percent' },
@@ -52,6 +55,7 @@ const EarningsOrTurnover: React.FC<{ formik: any }> = ({ formik }) => {
                               firstPlaceHolder={isFixed ? 'Enter a amount' : 'Enter a percentage'}
                               thirdPlaceHolder="Select period"
                               formik={formik}
+                              isCurrency={isFixed}
                               bridgeWord="over"
                               {...(isFixed ? { extraLeft: 'NGN' } : { extraRight: '%' })}
                            />

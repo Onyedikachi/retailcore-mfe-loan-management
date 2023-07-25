@@ -14,6 +14,7 @@ interface EarningsControlProps {
    thirdName: string;
    formik: FormikProps<any>;
    bridgeWord?: string;
+   isCurrency?: boolean;
 }
 export const EarningsControl = ({
    bridgeWord,
@@ -25,13 +26,15 @@ export const EarningsControl = ({
    thirdPlaceHolder,
    firstPlaceHolder,
    formik,
+   isCurrency,
 }: EarningsControlProps) => {
    return (
       <>
          <Grid item xs={4} pr={6}>
             <FormControlBase
                name={firstName}
-               decimal
+               currency={isCurrency}
+               decimal={!isCurrency}
                control="input"
                placeholder={firstPlaceHolder}
                extraRight={extraRight}

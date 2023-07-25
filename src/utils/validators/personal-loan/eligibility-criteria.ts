@@ -17,6 +17,13 @@ export const InputFieldNames = {
    SECURITY_GUARANTOR_VALUES: EligibilitySecurity.guarantor.formFieldName,
    SECURITY_COLLATERAL_VALUES: EligibilitySecurity.collateral.formFieldName,
    SET_OTHER_REQUIREMENT: 'require_other_elig_criteria',
+   OTHER_REQUIREMENT_VALUES: 'other_eligibility_requirement_ids',
+
+   PERIODICITY_NUM_START: 'period_from',
+   PERIODICITY_NUM_END: 'period_to',
+   PERIODICITY_PERIOD: 'period',
+   SET_FORMAT: 'is_doc_required',
+   ADD_FORMAT: 'accepted_format',
 } as const;
 
 export const accordionLabels = [
@@ -47,6 +54,7 @@ export const eligibilityInitialValues = () => ({
    [InputFieldNames.SECURITY_COLLATERAL_VALUES]: [],
    [InputFieldNames.SECURITY_GUARANTOR_VALUES]: [],
    [InputFieldNames.SECURITY_OTHER_VALUES]: [],
+   [InputFieldNames.OTHER_REQUIREMENT_VALUES]: [],
 });
 
 export const eligibilityValidator = () =>
@@ -54,32 +62,38 @@ export const eligibilityValidator = () =>
       ...earningsOrTurnover,
       ...equityContributions,
       ...securities,
-      [InputFieldNames.SET_OTHER_REQUIREMENT]: Yup.boolean(),
+      ...otherEligibiltyCriteria,
    });
 
 const earningsOrTurnover = {
    [InputFieldNames.SET_EARNINGS]: Yup.boolean(),
-   [InputFieldNames.EARNINGS_TYPE]: Yup.string().when(InputFieldNames.SET_EARNINGS, (setEarnings, field) =>
-      setEarnings ? field.required('Select earnings type') : field
+   [InputFieldNames.EARNINGS_TYPE]: Yup.string().when(InputFieldNames.SET_EARNINGS, (setEarnings, field) => {
+      return setEarnings?.[0] ? field.required('Select earnings type') : field;
+   }),
+   [InputFieldNames.EARNINGS_VALUE]: Yup.string().when(InputFieldNames.EARNINGS_TYPE, (earningType, field) =>
+      earningType[0] == 'fixed'
+         ? field
+              .required('Field is required')
+              .test(InputFieldNames.EARNINGS_VALUE, 'Must be greater 0', function (value) {
+                 if (value) {
+                    return Number(value.replace(/,/g, '')) > 0;
+                 }
+              })
+         : field
    ),
-   [InputFieldNames.EARNINGS_VALUE]: Yup.string()
-      .when(InputFieldNames.EARNINGS_TYPE, (earningType, field) =>
-         earningType[0] == 'fixed' ? field.required('Enter an amount') : field
-      )
-      .test(InputFieldNames.EARNINGS_VALUE, 'Must be greater 0', function (value) {
-         if (value) {
-            return Number(value.replace(/,/g, '')) > 0;
-         }
-      }),
-   [InputFieldNames.EARNINGS_PERIOD_VALUE]: Yup.string()
-      .when(InputFieldNames.EARNINGS_TYPE, (earningType, field) =>
-         earningType[0] == 'fixed' ? field.required('Field is required') : field
-      )
-      .test(InputFieldNames.EARNINGS_PERIOD_VALUE, 'Must be greater 0', function (value) {
-         if (value) {
-            return Number(value) > 0;
-         }
-      }),
+   [InputFieldNames.EARNINGS_PERIOD_VALUE]: Yup.string().when(
+      InputFieldNames.EARNINGS_TYPE,
+      (earningType, field) =>
+         earningType[0] == 'fixed'
+            ? field
+                 .required('Field is required')
+                 .test(InputFieldNames.EARNINGS_PERIOD_VALUE, 'Must be greater 0', function (value) {
+                    if (value) {
+                       return Number(value) > 0;
+                    }
+                 })
+            : field
+   ),
    [InputFieldNames.EARNINGS_PERIOD]: Yup.string().when(InputFieldNames.EARNINGS_TYPE, (earningType, field) =>
       earningType[0] == 'fixed' ? field.required('Field is required') : field
    ),
@@ -88,41 +102,73 @@ const earningsOrTurnover = {
 const equityContributions = {
    [InputFieldNames.SET_EQUITY]: Yup.boolean(),
    [InputFieldNames.EQUITY_TYPE]: Yup.string().when(InputFieldNames.SET_EQUITY, (setEquity, field) =>
-      setEquity ? field.required('Select contribution type') : field
+      setEquity?.[0] ? field.required('Select contribution type') : field
    ),
-   [InputFieldNames.EQUITY_VALUE_FROM]: Yup.string()
-      .when(InputFieldNames.EQUITY_TYPE, (equityContributionType, field) =>
-         equityContributionType[0] == 'fixed' ? field.required('Enter a percentage') : field
-      )
-      .test(InputFieldNames.EQUITY_VALUE_FROM, 'Must be greater 0', function (value) {
-         if (value) {
-            return Number(value) > 0;
-         }
-      }),
-   [InputFieldNames.EQUITY_VALUE_TO]: Yup.string()
-      .when(InputFieldNames.EARNINGS_TYPE, (equityContributionType, field) =>
-         equityContributionType[0] == 'range' ? field.required('Enter max percentage') : field
-      )
-      .test(InputFieldNames.EQUITY_VALUE_TO, 'Must be greater 0', function (value) {
-         if (value) {
-            return Number(value) > 0;
-         }
-      })
-      .test(InputFieldNames.EQUITY_VALUE_TO, 'Must be greater than min percentage', function (value) {
-         const {
-            [InputFieldNames.EQUITY_TYPE]: equityContributionType,
-            [InputFieldNames.EQUITY_VALUE_FROM]: rangeEquityPercentStart,
-         } = this.parent;
+   [InputFieldNames.EQUITY_VALUE_FROM]: Yup.string().when(
+      InputFieldNames.EQUITY_TYPE,
+      (equityContributionType, field) =>
+         equityContributionType[0] == 'fixed'
+            ? field
+                 .required('Enter a percentage')
+                 .test(InputFieldNames.EQUITY_VALUE_FROM, 'Must be greater 0', function (value) {
+                    if (value) {
+                       return Number(value) > 0;
+                    }
+                 })
+            : equityContributionType[0] == 'range'
+            ? field
+                 .required('Enter max percentage')
+                 .test(InputFieldNames.EQUITY_VALUE_FROM, 'Must be greater 0', function (value) {
+                    if (value) {
+                       return Number(value) > 0;
+                    }
+                 })
+            : field
+   ),
+   [InputFieldNames.EQUITY_VALUE_TO]: Yup.string().when(
+      InputFieldNames.EQUITY_TYPE,
+      (equityContributionType, field) =>
+         equityContributionType[0] == 'range'
+            ? field
+                 .required('Enter max percentage')
+                 .test(InputFieldNames.EQUITY_VALUE_TO, 'Must be greater 0', function (value) {
+                    if (value) {
+                       return Number(value) > 0;
+                    }
+                 })
+                 .test(
+                    InputFieldNames.EQUITY_VALUE_TO,
+                    'Must be greater than min percentage',
+                    function (value) {
+                       const { [InputFieldNames.EQUITY_VALUE_FROM]: rangeEquityPercentStart } = this.parent;
 
-         if (equityContributionType == 'range' && value)
-            return Number(value) > Number(rangeEquityPercentStart);
-      }),
+                       if (value) return Number(value) > Number(rangeEquityPercentStart);
+                    }
+                 )
+            : field
+   ),
 };
 export const securities = {
    [InputFieldNames.SET_SECURITY]: Yup.boolean(),
    [InputFieldNames.SECURITY_OPTION]: Yup.array().when(InputFieldNames.SET_SECURITY, (setSecurity, field) =>
-      setSecurity
-         ? field.min(1, 'Select at least one security option').of(Yup.string().oneOf(securityOptions))
+      setSecurity?.[0]
+         ? field
+              .min(1, 'Select at least one security option')
+              .of(Yup.string().oneOf(securityOptions))
+              .test(InputFieldNames.SECURITY_OPTION, '', function (value) {
+                 const {
+                    [InputFieldNames.SECURITY_GUARANTOR_VALUES]: G,
+                    [InputFieldNames.SECURITY_COLLATERAL_VALUES]: C,
+                    [InputFieldNames.SECURITY_OTHER_VALUES]: O,
+                 } = this.parent;
+                 if (value?.includes(securityOptions[0])) {
+                    return G.length > 0;
+                 } else if (value?.includes(securityOptions[1])) {
+                    return C.length > 0;
+                 } else if (value?.includes(securityOptions[2])) {
+                    return O.length > 0;
+                 }
+              })
          : field
    ),
    [InputFieldNames.SECURITY_COLLATERAL_VALUES]: Yup.array().when(
@@ -148,6 +194,55 @@ export const securities = {
             ? field.min(1, 'Add At least one security option')
             : field;
       }
+   ),
+};
+
+const otherEligibiltyCriteria = {
+   [InputFieldNames.SET_OTHER_REQUIREMENT]: Yup.boolean(),
+   [InputFieldNames.OTHER_REQUIREMENT_VALUES]: Yup.array().when(
+      InputFieldNames.SET_OTHER_REQUIREMENT,
+      (setOtherRequirement, field) =>
+         setOtherRequirement?.[0]
+            ? field
+                 .min(1, 'Select at least one other requirement')
+                 .of(
+                    Yup.object().shape({
+                       [InputFieldNames.PERIODICITY_NUM_START]: Yup.number().test(
+                          InputFieldNames.PERIODICITY_NUM_START,
+                          'Must be greater 0',
+                          function (value) {
+                             if (value) return value > 0;
+                          }
+                       ),
+                       [InputFieldNames.PERIODICITY_NUM_END]: Yup.number()
+                          .when(InputFieldNames.PERIODICITY_NUM_START, (periodicityNumStart, field) =>
+                             periodicityNumStart ? field.required('Field is required') : field
+                          )
+                          .test(InputFieldNames.PERIODICITY_NUM_END, 'Must be greater 0', function (value) {
+                             if (value) return value > 0;
+                          })
+                          .test(
+                             InputFieldNames.PERIODICITY_NUM_END,
+                             'Must be greater than start periodicity',
+                             function (value) {
+                                if (value) {
+                                   const { [InputFieldNames.PERIODICITY_NUM_START]: periodicityNumStart } =
+                                      this.parent;
+                                   return Number(value) > Number(periodicityNumStart);
+                                }
+                             }
+                          ),
+                       [InputFieldNames.PERIODICITY_PERIOD]: Yup.string(),
+                       [InputFieldNames.SET_FORMAT]: Yup.boolean(),
+                       [InputFieldNames.ADD_FORMAT]: Yup.string().when(
+                          InputFieldNames.SET_FORMAT,
+                          (setFormat, field) =>
+                             setFormat ? field.required('Add at least one document format') : field
+                       ),
+                    })
+                 )
+                 .required('Configure all selected requirements as required')
+            : field
    ),
 };
 export const ToolTipText = {

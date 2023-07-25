@@ -35,7 +35,8 @@ export const SelectInput: React.FC<SelectProps> = ({ options, placeholder, ...pr
                            props?.onChange?.(event, props.children);
                            field?.onChange?.(event);
                         }}
-                        defaultValue=""
+                        value={field.value ?? ''}
+                        defaultValue={props.defaultValue ?? ''}
                         displayEmpty
                         inputProps={{ id: props.name }}
                         error={!!(form.errors[props.name] && form.touched[props.name])}
@@ -43,8 +44,8 @@ export const SelectInput: React.FC<SelectProps> = ({ options, placeholder, ...pr
                            value ? value : <SelectPlaceholder text={placeholder} />
                         }
                      >
-                        {options.map((option, id) => (
-                           <MenuItem value={option} key={id}>
+                        {options.map((option) => (
+                           <MenuItem value={option} key={option}>
                               {option}
                            </MenuItem>
                         ))}

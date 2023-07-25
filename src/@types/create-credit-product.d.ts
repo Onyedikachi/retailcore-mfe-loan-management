@@ -94,3 +94,25 @@ export interface ConfigureRequirement {
    period_to: number;
    period: string;
 }
+
+export interface OtherRequirementDocument {
+   id: string;
+   title: string;
+   status: string;
+   description: string;
+   accepted_format: string;
+   is_doc_required: boolean;
+   period_from: number;
+   period_to: number;
+   period: string;
+   tenant_id: string;
+   created_by: string;
+   created_by_id: string;
+   created_at: string;
+   updated_by: string | null;
+   updated_by_id: string | null;
+   updated_at: string | null;
+   deleted_by: string | null;
+   deleted_by_id: string | null;
+   deleted_at: string | null;
+}

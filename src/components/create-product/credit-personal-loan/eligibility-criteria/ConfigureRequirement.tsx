@@ -1,23 +1,27 @@
 import { FormControlBase } from '@app/components/forms/FormControl';
 import FormControlWrapper from '@app/components/forms/FormControlWrapper';
 import { Box, Grid } from '@mui/material';
-import * as FormMeta from '@app/utils/validators/personal-loan/configure-requirement';
+import * as FormMeta from '@app/utils/validators/personal-loan/eligibility-criteria';
 import { Button } from '@app/components/atoms/Button';
 import RequiredIndicator from '@app/components/atoms/RequiredIndicator';
 import { CounterControl } from '@app/components/forms/CounterControl';
 import { Periodicity } from '@app/constants';
 import { Icon } from '@app/components/atoms/Icon';
-import React from 'react';
+import React, { useEffect } from 'react';
 import Dialog from '@app/components/atoms/Dialog';
 import AddDocumentFormat from './AddDocumentFormat';
 import { DocumentFormatContainer, DocumentFormat } from '@app/components/atoms/DocumentFormat';
 import { useFormikValue } from '@app/hooks';
 import { InputErrorText } from '@app/components';
+import { ObjectAny } from '@app/@types';
+import { FormikProps } from 'formik';
+import { capitalizeString } from '@app/helper/string';
 
 const ConfigureRequirementForm: React.FC<{
    name: string;
-   formik: any;
-}> = ({ name, formik }) => {
+   formik: FormikProps<any>;
+   requirement: ObjectAny;
+}> = ({ name, formik, requirement }) => {
    const { InputFieldNames } = FormMeta;
    const getFieldValue = useFormikValue(formik, name);
 
@@ -26,16 +30,32 @@ const ConfigureRequirementForm: React.FC<{
    const handleOpen = () => {
       setOpenAddFormat(true);
    };
+
    const handleClose = () => {
       setOpenAddFormat(false);
    };
-   let formats = getFieldValue(InputFieldNames.ADD_FORMAT);
+
+   let formats = getFieldValue(InputFieldNames.ADD_FORMAT) ?? requirement[InputFieldNames.ADD_FORMAT];
    const setFormat = getFieldValue(InputFieldNames.SET_FORMAT);
+
    const updateSelectedFormat = (formik: any, item: string) => {
       const format = formats.split(',').filter((e: string) => e != item);
       formik.setFieldValue(`${name}${InputFieldNames.ADD_FORMAT}`, format.toString());
       formats = getFieldValue(InputFieldNames.ADD_FORMAT);
    };
+   const allFields = [
+      InputFieldNames.SET_FORMAT,
+      InputFieldNames.PERIODICITY_NUM_START,
+      InputFieldNames.PERIODICITY_NUM_END,
+      InputFieldNames.ADD_FORMAT,
+   ];
+   useEffect(() => {
+      allFields.forEach((e) => formik.setFieldValue(`${name}${e}`, requirement[e]));
+      formik.setFieldValue(
+         `${name}${InputFieldNames.PERIODICITY_PERIOD}`,
+         capitalizeString(requirement[InputFieldNames.PERIODICITY_PERIOD])
+      );
+   }, []);
 
    return (
       <Box>
@@ -46,17 +66,26 @@ const ConfigureRequirementForm: React.FC<{
                </Grid>
 
                <Grid item xs={2} pr={2}>
-                  <CounterControl name={`${name}${InputFieldNames.PERIODICITY_NUM_START}`} formik={formik} />
+                  <CounterControl
+                     defaultValue={requirement[InputFieldNames.PERIODICITY_NUM_START]}
+                     name={`${name}${InputFieldNames.PERIODICITY_NUM_START}`}
+                     formik={formik}
+                  />
                </Grid>
                <Grid item xs={0.5}>
                   -
                </Grid>
                <Grid item xs={2.5} pr={2}>
-                  <CounterControl name={`${name}${InputFieldNames.PERIODICITY_NUM_END}`} formik={formik} />
+                  <CounterControl
+                     defaultValue={requirement[InputFieldNames.PERIODICITY_NUM_END]}
+                     name={`${name}${InputFieldNames.PERIODICITY_NUM_END}`}
+                     formik={formik}
+                  />
                </Grid>
                <Grid item xs={3} pr={2}>
                   <FormControlBase
                      control="select"
+                     defaultValue={requirement[InputFieldNames.PERIODICITY_PERIOD]}
                      name={`${name}${InputFieldNames.PERIODICITY_PERIOD}`}
                      placeholder="Select period"
                      options={Periodicity}
@@ -65,6 +94,7 @@ const ConfigureRequirementForm: React.FC<{
             </Grid>
             <FormControlWrapper
                sx={{ mb: 4 }}
+               defaultValue={requirement[InputFieldNames.SET_FORMAT]}
                name={`${name}${InputFieldNames.SET_FORMAT}`}
                label="Are documents required for this eligibility requirement?"
                layout="horizontal"

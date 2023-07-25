@@ -13,30 +13,34 @@ import {
    FormControlLabel,
    FormGroup,
 } from '@mui/material';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import CreateOtherRequirement from './CreateOtherRequirement';
 import Dialog from '@app/components/atoms/Dialog';
 import { useOtherRequirementContext } from '@app/providers/eligibility-criteria-other-requirement-provider';
-import { ObjectAny } from '@app/@types';
+import { FormikProps } from 'formik';
+import { useFormikCheckItems } from '@app/hooks/useFormikCheckItems';
+import * as FormMeta from '@app/utils/validators/personal-loan/eligibility-criteria';
+import { OtherRequirementDocument } from '@app/@types/create-credit-product';
 
-const Requirements: React.FC = () => {
-   const { allRequirements, selectedRequirements, handleSelectRequirement } =
-      useOtherRequirementContext();
+const Requirements: React.FC<{ formik: FormikProps<any> }> = ({ formik }) => {
+   const { allRequirements, handleSelectRequirement } = useOtherRequirementContext();
+   const { InputFieldNames } = FormMeta;
+   const [requirement, setRequirement] = useState<OtherRequirementDocument[]>(allRequirements);
 
-   const [requirement, setRequirement] = useState<ObjectAny[]>(allRequirements);
-   
-   const [checkedItems, setCheckedItems] = useState<string[]>(selectedRequirements?.map((e) => e.name) ?? []);
    const [openCreateRequirement, setOpenCreateRequirement] = React.useState(false);
-   const handleChange = ({ target: { checked, name } }: React.ChangeEvent<HTMLInputElement>) => {
-      let _checkItems = [...checkedItems];
-      if (checked) {
-         _checkItems.push(name);
-      } else {
-         _checkItems = checkedItems.filter((item) => item !== name);
-      }
-      handleSelectRequirement(requirement.filter((e) => _checkItems.includes(e.title)));
-      setCheckedItems(_checkItems);
+   const { checkedItems, itemToggle, updateFormikState } = useFormikCheckItems(allRequirements, 'title', {
+      formik,
+      fieldBaseName: InputFieldNames.OTHER_REQUIREMENT_VALUES,
+   });
+
+   const handleChange = ({ target: { name } }: React.ChangeEvent<HTMLInputElement>) => {
+      itemToggle(name);
    };
+
+   useEffect(() => {
+      handleSelectRequirement(checkedItems);
+      updateFormikState('id', { indexKey: 'id' });
+   }, [checkedItems]);
 
    const handleSearch = (searchText: string) => {
       searchText
@@ -45,6 +49,7 @@ const Requirements: React.FC = () => {
            )
          : setRequirement(allRequirements);
    };
+
    return (
       <Box sx={{ border: `1px solid ${Colors.LightGray}`, py: 1, borderRadius: '5px' }}>
          <Box sx={{ px: 2 }}>
@@ -58,29 +63,31 @@ const Requirements: React.FC = () => {
             <List sx={{ px: 2 }}>
                <FormControl component="fieldset">
                   <FormGroup>
-                     {requirement
-                        .map((e) => e.title)
-                        .map((option, index) => (
-                           <ListItem
-                              sx={{
-                                 p: 0,
-                                 '& .MuiFormControlLabel-label': { fontSize: '14px', fontWeight: 'normal' },
-                              }}
-                              key={option + index}
-                           >
-                              <FormControlLabel
-                                 control={
-                                    <Checkbox
-                                       sx={{ mr: 1 }}
-                                       checked={checkedItems.includes(option)}
-                                       onChange={handleChange}
-                                       name={option}
-                                    />
-                                 }
-                                 label={option}
-                              />
-                           </ListItem>
-                        ))}
+                     {requirement?.map(({ title }, index) => (
+                        <ListItem
+                           sx={{
+                              p: 0,
+                              '& .MuiFormControlLabel-label': { fontSize: '14px', fontWeight: 'normal' },
+                           }}
+                           key={title + index}
+                        >
+                           <FormControlLabel
+                              control={
+                                 <Checkbox
+                                    sx={{ mr: 1 }}
+                                    checked={
+                                       !!checkedItems.find(
+                                          ({ title: checkedTitle }) => checkedTitle === title
+                                       )
+                                    }
+                                    onChange={handleChange}
+                                    name={title}
+                                 />
+                              }
+                              label={title}
+                           />
+                        </ListItem>
+                     ))}
                   </FormGroup>
                </FormControl>
             </List>

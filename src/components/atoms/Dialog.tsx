@@ -4,7 +4,6 @@ import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
-import { string } from 'yup';
 
 interface DialogProps extends Omit<MuiDialogProps, 'maxWidth'> {
    open: boolean;
@@ -20,8 +19,9 @@ const Dialog: React.FC<DialogProps> = ({ open, handleClose, title, children, max
          <MuiDialog
             onClose={handleClose}
             open={open}
-            PaperProps={{ style: { maxWidth,  minWidth: minWidth ?? '70%',
-             padding: '10px 20px', overflow: 'hidden' } }}
+            PaperProps={{
+               style: { maxWidth, minWidth: minWidth ?? '70%', padding: '10px 20px', overflow: 'hidden' },
+            }}
             sx={{
                '& .MuiDialogContent-root': { padding: '10px 0px', marginTop: '12px' },
                '& .MuiBackdrop-root': {
@@ -50,4 +50,4 @@ const Dialog: React.FC<DialogProps> = ({ open, handleClose, title, children, max
       </div>
    );
 };
-export default Dialog;
+export default React.memo(Dialog);

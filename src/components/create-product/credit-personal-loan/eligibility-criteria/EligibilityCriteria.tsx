@@ -53,6 +53,7 @@ export const EligibilityCriteria: React.FC = () => {
    return (
       <FormContainer>
          <Formik
+            enableReinitialize={true}
             initialValues={FormMeta.eligibilityInitialValues()}
             validationSchema={FormMeta.eligibilityValidator()}
             onSubmit={onSubmit}
@@ -84,9 +85,10 @@ export const EligibilityCriteria: React.FC = () => {
                               const isNext = type === 'next';
                               return (
                                  <Button
+                                    key={type}
                                     color={isNext ? 'primary' : undefined}
                                     onClick={() => setIsDraft(!isNext)}
-                                    disabled={!formik.dirty || !formik.isValid}
+                                    disabled={!formik.isValid}
                                     type="submit"
                                     variant={isNext ? 'contained' : 'outlined'}
                                  >
