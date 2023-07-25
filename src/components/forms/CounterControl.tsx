@@ -9,6 +9,7 @@ export interface CounterControlProps {
    label?: string;
    tooltipText?: string;
    placeholder?: string;
+   defaultValue?: any;
    formik: any;
 }
 
@@ -24,6 +25,7 @@ export const CounterControl = (props: CounterControlProps) => {
             name={props.name}
             control="input"
             allow="number"
+            defaultValue={props.defaultValue}
             placeholder={props.placeholder ?? '0'}
             InputProps={{
                endAdornment: (

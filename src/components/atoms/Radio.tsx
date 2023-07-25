@@ -20,7 +20,17 @@ export const RadioGroup: React.FC<RadioGroupProps> = ({ options, ...props }) => 
             return (
                <>
                   <FormControl fullWidth>
-                     <MuiRadioGroup defaultValue="" row {...props} {...field} id={props.name}>
+                     <MuiRadioGroup
+                        defaultValue=""
+                        row
+                        {...props}
+                        {...field}
+                        onChange={(e) => {
+                           field?.onChange(e);
+                           props.onChange?.(e, e.target.value);
+                        }}
+                        id={props.name}
+                     >
                         {options.map((option, id) => (
                            <FormControlLabel
                               sx={{ mr: 5 }}

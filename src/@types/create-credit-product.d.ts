@@ -45,7 +45,7 @@ export interface ProductInformation {
 
 export interface ProductInformationApiResponse {
    data: {
-      productInfo: ProductInformation & { id: string };
+      product_info: ProductInformation & { id: string };
    };
 }
 
@@ -72,4 +72,47 @@ export interface EligibilityCriteria {
 export interface CreateCreditProduct {
    productInformation?: Partial<ProductInformation>;
    eligibityCriteria?: Partial<EligibilityCriteria>;
+}
+export interface ProductInformation {
+   product_name: string;
+   product_description: string;
+   currency?: string;
+   currency_id?: string;
+   min_loan_tenure: number;
+   min_loan_tenure_period: string;
+   max_loan_tenure: number;
+   max_loan_tenure_period: string;
+   min_loan_principal: string;
+   max_loan_principal: string;
+   allow_multiple_req: boolean;
+   is_draft?: boolean;
+}
+export interface ConfigureRequirement {
+   accepted_format: string;
+   is_doc_required: boolean;
+   period_from: number;
+   period_to: number;
+   period: string;
+}
+
+export interface OtherRequirementDocument {
+   id: string;
+   title: string;
+   status: string;
+   description: string;
+   accepted_format: string[];
+   is_doc_required: boolean;
+   period_from: number;
+   period_to: number;
+   period: string;
+   tenant_id: string;
+   created_by: string;
+   created_by_id: string;
+   created_at: string;
+   updated_by: string | null;
+   updated_by_id: string | null;
+   updated_at: string | null;
+   deleted_by: string | null;
+   deleted_by_id: string | null;
+   deleted_at: string | null;
 }

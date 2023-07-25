@@ -10,17 +10,20 @@ export const useFetchAllSecurities = () => {
    useRequest({
       onMount: (makeRequest) => makeRequest(API_PATH.SECURITY_ELIGIBILITY_DOCUMENT('collateral-assets')),
       memoryStorage: true,
-      onSuccess: (reponse) => setState((documents) => ({ ...documents, collateral: reponse.data })),
+      onSuccess: (reponse) =>
+         setState((documents) => ({ ...documents, collateral: reponse.data?.security_document ?? [] })),
    });
    useRequest({
       onMount: (makeRequest) => makeRequest(API_PATH.SECURITY_ELIGIBILITY_DOCUMENT('guarantor')),
       memoryStorage: true,
-      onSuccess: (reponse) => setState((documents) => ({ ...documents, guarantor: reponse.data })),
+      onSuccess: (reponse) =>
+         setState((documents) => ({ ...documents, guarantor: reponse.data?.security_document ?? [] })),
    });
    useRequest({
       onMount: (makeRequest) => makeRequest(API_PATH.SECURITY_ELIGIBILITY_DOCUMENT('other-sec-requirements')),
       memoryStorage: true,
-      onSuccess: (reponse) => setState((documents) => ({ ...documents, other: reponse.data })),
+      onSuccess: (reponse) =>
+         setState((documents) => ({ ...documents, other: reponse.data?.security_document ?? [] })),
    });
 
    return state;

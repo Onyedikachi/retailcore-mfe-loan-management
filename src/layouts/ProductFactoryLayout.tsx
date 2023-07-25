@@ -17,6 +17,7 @@ const QuickLinkExpandBox = styled(Box)(() => ({
    opacity: 0,
    transition: 'all 0.3s',
    right: 0,
+   zIndex: 88,
    '&[aria-expanded=true]': {
       width: 'fit-content',
       right: 55,

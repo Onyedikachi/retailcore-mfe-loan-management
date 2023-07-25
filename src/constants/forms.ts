@@ -1,4 +1,6 @@
 export const LoanTenurePeriod = ['Hours', 'Days', 'Weeks', 'Months', 'Years'];
+export const Periodicity = ['Daily', 'Weekly', 'Monthly', 'Quarterly', 'Annually'];
+export const DocumentFomat = ['PDF', 'PNG', 'JPEG', 'XML', 'FIG', 'MS Word', 'PSD'];
 
 export const CommonFormFieldNames = {
    PRODUCT_NAME: 'product_name',

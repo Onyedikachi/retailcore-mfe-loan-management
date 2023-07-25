@@ -1,8 +1,8 @@
 import React, { useCallback, useRef, useState } from 'react';
 import { Navigate, Outlet, useLocation } from 'react-router-dom';
 import { isTokenValid } from '@Sterling/shared';
-import { usePermission } from './hooks';
 import { BasePath, RoutePaths } from './constants';
+import { usePermission } from './hooks/usePermission';
 
 export const Root = () => {
    const { pathname } = useLocation();

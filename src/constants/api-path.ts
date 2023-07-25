@@ -11,6 +11,7 @@ export const API_PATH = {
    PRODUCT_NAME_AVAILABILITY: (name: string) => `${API_V1}/product-info/available/${name}`,
    SECURITY_ELIGIBILITY_DOCUMENT: (param?: SecurityEligibilityDocumentType) =>
       `${API_V1}/eligibility-document/security${param ? '/' + param : ''}`,
+   OTHER_ELIGIBILTY_REQUIREMENT: `${API_V1}/other-eligibility-req`,
    ELIGIBILITY_CRITERIA: (param?: string) => `${API_V1}/eligibility-criteria${param ? '/' + param : ''}`,
 };
 

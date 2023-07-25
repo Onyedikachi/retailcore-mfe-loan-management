@@ -19,7 +19,9 @@ const Dialog: React.FC<DialogProps> = ({ open, handleClose, title, children, max
          <MuiDialog
             onClose={handleClose}
             open={open}
-            PaperProps={{ style: { maxWidth, minWidth, padding: '10px 20px', overflow: 'hidden' } }}
+            PaperProps={{
+               style: { maxWidth, minWidth: minWidth ?? '70%', padding: '10px 20px', overflow: 'hidden' },
+            }}
             sx={{
                '& .MuiDialogContent-root': { padding: '10px 0px', marginTop: '12px' },
                '& .MuiBackdrop-root': {
@@ -48,4 +50,4 @@ const Dialog: React.FC<DialogProps> = ({ open, handleClose, title, children, max
       </div>
    );
 };
-export default Dialog;
+export default React.memo(Dialog);

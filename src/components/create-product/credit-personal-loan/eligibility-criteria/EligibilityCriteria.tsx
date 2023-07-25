@@ -8,6 +8,7 @@ import EquityContribution from './EquityContribution';
 import Security from './Security';
 import OtherRequirement from './OtherRequirement';
 import FormContainer from '@app/components/forms/FormContainer';
+import { OtherRequirementProvider } from '@app/providers/eligibility-criteria-other-requirement-provider';
 import { useState } from 'react';
 import { useStepperContext } from '@app/providers';
 import { useSearchParams } from 'react-router-dom';
@@ -52,6 +53,7 @@ export const EligibilityCriteria: React.FC = () => {
    return (
       <FormContainer>
          <Formik
+            enableReinitialize={true}
             initialValues={FormMeta.eligibilityInitialValues()}
             validationSchema={FormMeta.eligibilityValidator()}
             onSubmit={onSubmit}
@@ -64,7 +66,9 @@ export const EligibilityCriteria: React.FC = () => {
                            <EarningsOrTurnover formik={formik} />
                            <EquityContribution formik={formik} />
                            <Security formik={formik} />
-                           <OtherRequirement formik={formik} />
+                           <OtherRequirementProvider>
+                              <OtherRequirement formik={formik} />
+                           </OtherRequirementProvider>
                         </Accordion>
                      </Box>
                      <Divider />
@@ -81,9 +85,10 @@ export const EligibilityCriteria: React.FC = () => {
                               const isNext = type === 'next';
                               return (
                                  <Button
+                                    key={type}
                                     color={isNext ? 'primary' : undefined}
                                     onClick={() => setIsDraft(!isNext)}
-                                    disabled={!formik.dirty || !formik.isValid}
+                                    disabled={!formik.isValid}
                                     type="submit"
                                     variant={isNext ? 'contained' : 'outlined'}
                                  >

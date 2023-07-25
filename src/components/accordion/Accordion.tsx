@@ -11,6 +11,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { Colors } from '@app/constants';
 
 const CustomAccordion = styled(MuiAccordion)(() => ({
+   fontFamily: 'Inter',
    background: 'white',
    boxShadow: 'unset',
    '&.Mui-expanded': {
@@ -25,6 +26,7 @@ const CustomAccordion = styled(MuiAccordion)(() => ({
 }));
 
 const AccordionSummary = styled(MuiAccordionSummary)(() => ({
+   fontFamily: 'Inter',
    fontSize: '18px',
    fontWeight: 500,
    lineHeight: '32px',
@@ -33,6 +35,7 @@ const AccordionSummary = styled(MuiAccordionSummary)(() => ({
    paddingRight: 40,
    boxShadow: '0px 0px 3px 0px rgba(0, 0, 0, 0.25)',
    zIndex: 1,
+   margin: 0,
    background: 'white',
    '& .MuiSvgIcon-root': {
       border: `1.5px solid ${Colors.Primary}`,
@@ -74,9 +77,7 @@ const Accordion: React.FC<AccordionProps> = ({ accordionLabels, children, ...oth
                   aria-controls={`panel${index}-content`}
                   id={`panel${index}-header`}
                >
-                  <Typography variant="h6" fontSize="19px">
-                     {label}
-                  </Typography>
+                  <Typography fontSize="18px">{label}</Typography>
                </AccordionSummary>
                <AccordionDetails>{children[index]}</AccordionDetails>
             </CustomAccordion>

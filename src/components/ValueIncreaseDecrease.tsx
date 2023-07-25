@@ -8,7 +8,7 @@ const ValueIncrementDecrement: React.FC<{ formik: any; fieldName: string }> = ({
          <KeyboardArrowUpIcon
             sx={{ cursor: 'pointer' }}
             onClick={() => {
-               const value = Number(formik.values[fieldName]);
+               const value = Number(formik.getFieldProps(fieldName)?.value ?? 0);
                const newValue = value + 1;
                formik.setFieldValue(fieldName, newValue);
             }}
@@ -16,7 +16,7 @@ const ValueIncrementDecrement: React.FC<{ formik: any; fieldName: string }> = ({
          <KeyboardArrowDownIcon
             sx={{ marginTop: '-13px', cursor: 'pointer' }}
             onClick={() => {
-               const value = Number(formik.values[fieldName]);
+               const value = Number(formik.getFieldProps(fieldName)?.value ?? 0);
                const newValue = value > 0 ? value - 1 : value;
                formik.setFieldValue(fieldName, newValue);
             }}

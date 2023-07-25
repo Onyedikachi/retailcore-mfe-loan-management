@@ -61,6 +61,8 @@ export const Switch: React.FC<SwitchProps> = ({ children, onChange, ...props }) 
                      <StyledSwitch
                         {...props}
                         {...field}
+                        checked={props?.value ?? props?.checked ?? field.checked ?? field.value ?? false}
+                        value={props?.value ?? props?.checked ?? field.checked ?? field.value ?? false}
                         onChange={(e) => {
                            field.onChange?.(e);
                            onChange?.(e, e.target.checked);
