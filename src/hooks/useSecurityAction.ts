@@ -62,7 +62,13 @@ export const useSecurityAction = <T>(formik: FormikProps<T>) => {
          documents[securityOption]
             .filter(({ checked }) => checked)
             .forEach(({ id }, index) => {
-               formik.setFieldValue(`${EligibilitySecurity[securityOption].formFieldName}.${index}`, id);
+               formik.setFieldValue(`${EligibilitySecurity[securityOption].formFieldName}.${index}.id`, id);
+               if (securityOption === 'collateral') {
+                  formik.setFieldValue(
+                     `${EligibilitySecurity[securityOption].formFieldName}.${index}.unit`,
+                     'percent'
+                  );
+               }
             });
 
          setSecurityDocuments(documents);
@@ -71,9 +77,9 @@ export const useSecurityAction = <T>(formik: FormikProps<T>) => {
    );
 
    const removeCheckItem = useCallback(
-      (securityOption: SecurityOptions, label: string) => {
+      (securityOption: SecurityOptions, id: string) => {
          const items = securityDocuments[securityOption];
-         const item = items.find((item) => item.name === label);
+         const item = items.find((item) => item.id === id);
          if (item) item.checked = false;
 
          setSecurityDocuments((documents) => ({ ...documents, [securityOption]: items }));

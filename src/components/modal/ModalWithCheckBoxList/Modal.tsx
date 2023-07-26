@@ -54,20 +54,18 @@ export const ModalWithCheckBoxList: React.FC<ReusableModalProps> = ({
       if (actionType === 'add') {
          setAllItems((allItems) => [baseDiff[0], ...allItems]);
       } else if (actionType === 'remove') {
-         setAllItems((allItems) =>
-            allItems.filter(({ labelName }) => compareDiff[0]?.labelName !== labelName)
-         );
+         setAllItems((allItems) => allItems.filter(({ id }) => compareDiff[0]?.id !== id));
       }
    }, [items]);
 
    useEffect(() => handleSearch(searchValue), [allItems]);
 
-   const onCheckboxToggle = (labelName: string, childLabelName?: string) => {
+   const onCheckboxToggle = (id: string, childLabelId?: string) => {
       const _allItems = [...allItems];
-      const item = _allItems.find((item) => item.labelName === labelName);
+      const item = _allItems.find((item) => item.id === id);
 
-      if (childLabelName) {
-         const childItem = item?.children?.find((child) => child.labelName === childLabelName);
+      if (childLabelId) {
+         const childItem = item?.children?.find((child) => child.id === childLabelId);
          if (childItem) {
             childItem.checked = !childItem.checked;
          }

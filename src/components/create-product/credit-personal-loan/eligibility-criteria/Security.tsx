@@ -95,10 +95,11 @@ const Security: React.FC<{ formik: FormikProps<any> }> = ({ formik }) => {
                         setActiveSecurityModal(null);
                      }}
                      items={securityDocuments[activeSecurityModal ?? 'other'].map(
-                        ({ name, checked, status }) => ({
+                        ({ name, checked, status, id }) => ({
                            labelName: name,
                            checked,
                            status,
+                           id,
                         })
                      )}
                      onAddNewValue={(value) => addNewSecurityValue(activeSecurityModal, value)}

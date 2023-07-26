@@ -10,18 +10,12 @@ export interface ListWithChildrenProps {
 }
 
 export const ListWithChildren: React.FC<ListWithChildrenProps> = ({ items, onCheckboxToggle }) => {
-   const renderListItem = (
-      label: string,
-      checked: boolean,
-      status?: string,
-      isChild?: boolean,
-      childLabel?: string
-   ) => {
+   const renderListItem = (item: ModalWithCheckBoxItemChildren, childLabelId?: string) => {
       return (
-         <Box sx={{ display: 'flex', alignItems: 'center', ...(isChild && { ml: 2 }) }}>
-            <Checkbox checked={checked} onChange={() => onCheckboxToggle(label, childLabel)} />
-            <Typography>{label}</Typography>
-            {status === 'Added' && (
+         <Box sx={{ display: 'flex', alignItems: 'center', ...(childLabelId && { ml: 2 }) }}>
+            <Checkbox checked={item.checked} onChange={() => onCheckboxToggle(item.id, childLabelId)} />
+            <Typography>{item.labelName}</Typography>
+            {item.status === 'Added' && (
                <Typography marginLeft={0.7} variant="caption" color={Colors.Info}>
                   [Added]
                </Typography>
@@ -33,18 +27,9 @@ export const ListWithChildren: React.FC<ListWithChildrenProps> = ({ items, onChe
    return (
       <Box sx={{ maxHeight: '20vh', overflowY: 'auto', margin: '5% 0%' }}>
          {items.map((item) => (
-            <Box key={item.labelName}>
-               {renderListItem(item.labelName, item.checked, item.status)}
-               {item.children &&
-                  item.children.map((childItems) =>
-                     renderListItem(
-                        childItems.labelName,
-                        childItems.checked,
-                        item.status,
-                        true,
-                        item.labelName
-                     )
-                  )}
+            <Box key={item.id}>
+               {renderListItem(item)}
+               {item.children && item.children.map((childItems) => renderListItem(childItems, childItems.id))}
             </Box>
          ))}
       </Box>

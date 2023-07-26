@@ -36,7 +36,7 @@ export const SecurityOptionsTable = <T extends SecurityOptions>({
             rows: securities.map((security, index) => ({
                [type]: security.name,
                cancel: (
-                  <BoxShadowIconButton onClick={() => handleRemoveItem(security.name, index)}>
+                  <BoxShadowIconButton onClick={() => handleRemoveItem(security.id, index)}>
                      <Icon type="close" color="primary" />
                   </BoxShadowIconButton>
                ),
@@ -44,7 +44,7 @@ export const SecurityOptionsTable = <T extends SecurityOptions>({
                   mmi: (
                      <FormControlBase
                         defaultValue={(security as any).mmi}
-                        name={`${fieldName}.${index}.mmi`}
+                        name={`${fieldName}.${index}.value`}
                         control="input"
                         allow="ratio"
                      />

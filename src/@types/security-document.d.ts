@@ -15,6 +15,7 @@ export interface SecurityDocument {
 }
 
 export interface ModalWithCheckBoxItem {
+   id: string;
    labelName: string;
    checked: boolean;
    status?: string;
