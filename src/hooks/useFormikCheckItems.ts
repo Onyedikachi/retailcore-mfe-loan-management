@@ -1,5 +1,5 @@
 import { FormikProps } from 'formik';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 
 export const useFormikCheckItems = <T>(
    initialItems: Array<T>,
@@ -11,11 +11,8 @@ export const useFormikCheckItems = <T>(
    }
 ) => {
    const [formikItems, setFormikItems] = useState(initialItems.map((item) => ({ ...item, checked: false })));
-   const [checkedItems, setCheckedItems] = useState<Array<Omit<T, 'checked'>>>([]);
-
-   useEffect(() => {
-      setCheckedItems(defaultSelectedItems);
-   }, []);
+   const [checkedItems, setCheckedItems] = useState<Array<Omit<T, 'checked'>>>(defaultSelectedItems ?? []);
+   const [updateItem, setUpdateItem] = useState<T & { checked?: boolean }>();
 
    const [key, setKey] = useState(itemKey);
 
@@ -26,6 +23,7 @@ export const useFormikCheckItems = <T>(
          const foundItem = _formikItems.find((item) => item[key] === searchValue);
          if (foundItem) foundItem.checked = checkState ?? !foundItem.checked;
 
+         setUpdateItem({ ...(foundItem as any) });
          setCheckedItems(
             _formikItems
                .filter(({ checked }) => checked)
@@ -40,63 +38,37 @@ export const useFormikCheckItems = <T>(
    const updateFormikState = useCallback(
       (fieldName?: string, result?: { indexKey?: string; value?: unknown }) => {
          if (!formikProps?.formik) return;
-         const { values } = formikProps.formik;
+         const {
+            formik: { values, setFieldValue },
+            fieldBaseName,
+         } = formikProps;
 
-         const isRemoval = checkedItems.length < values[formikProps.fieldBaseName].length;
-         const isAddition = checkedItems.length > values[formikProps.fieldBaseName].length;
-
-         if (isRemoval) removeItemsFromFormik(fieldName, result?.indexKey);
-         if (isAddition) addItemsToFormik(fieldName, result);
+         if (updateItem) {
+            const newValue = result?.indexKey ? (updateItem as any)[result.indexKey] : result?.value;
+            if (updateItem.checked) {
+               setFieldValue(fieldBaseName, [
+                  ...values[fieldBaseName],
+                  fieldName ? { [fieldName]: newValue } : newValue,
+               ]);
+            } else {
+               setFieldValue(
+                  fieldBaseName,
+                  (values[fieldBaseName] ?? []).filter(
+                     (value: any) => (fieldName ? value[fieldName] : value) !== newValue
+                  )
+               );
+            }
+         }
       },
-      [formikItems, formikProps, checkedItems]
+      [formikItems, formikProps, checkedItems, updateItem]
    );
 
-   const removeItemsFromFormik = (fieldName?: string, itemKey?: string) => {
-      if (!formikProps?.formik) return;
-
-      const {
-         fieldBaseName,
-         formik: { values: formikValues, setValues },
-      } = formikProps;
-
-      setValues({
-         ...formikValues,
-         [fieldBaseName]: formikValues[fieldBaseName].filter((formikValue: any) => {
-            return checkedItems.some(
-               (item) =>
-                  (typeof item === 'object' ? (item as any)[itemKey ?? (key as string) ?? ''] : item) ===
-                  (fieldName ? formikValue[fieldName] : formikValue)
-            );
-         }),
-      });
+   const clearCheckedItems = () => {
+      setCheckedItems([]);
+      if (formikProps?.formik) {
+         formikProps.formik.setFieldValue(formikProps.fieldBaseName, []);
+      }
    };
 
-   const addItemsToFormik = (fieldName?: string, result?: { indexKey?: string; value?: unknown }) => {
-      if (!formikProps?.formik) return;
-
-      const {
-         fieldBaseName,
-         formik: { values: formikValues, setValues },
-      } = formikProps;
-
-      // Find item that is not in the formikValues
-      const itemToAdd = checkedItems.find(
-         (item) =>
-            !formikValues[fieldBaseName].some(
-               (formikValue: any) =>
-                  (typeof item === 'object'
-                     ? (item as any)[result?.indexKey ?? (key as string) ?? '']
-                     : item) === (fieldName ? formikValue[fieldName] : formikValue)
-            )
-      );
-
-      const addValue = result?.value ?? (itemToAdd as any)?.[result?.indexKey ?? ''];
-
-      setValues({
-         ...formikValues,
-         [fieldBaseName]: [...formikValues[fieldBaseName], fieldName ? { [fieldName]: addValue } : addValue],
-      });
-   };
-
-   return { formikItems, setKey, itemToggle, updateFormikState, checkedItems };
+   return { formikItems, setKey, itemToggle, updateFormikState, checkedItems, clearCheckedItems };
 };

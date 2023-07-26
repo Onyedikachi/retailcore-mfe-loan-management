@@ -13,13 +13,20 @@ import { Icon } from '@app/components/atoms/Icon';
 import { OtherRequirementDocument } from '@app/@types/create-credit-product';
 
 const OtherRequirement: React.FC<{ formik: any }> = ({ formik }) => {
-   const { allRequirements } = useOtherRequirementContext();
+   const { handleSelectRequirement, selectedRequirements } = useOtherRequirementContext();
    const { InputFieldNames, ToolTipText } = FormMeta;
 
    const [openRequirement, setOpenRequirement] = React.useState(false);
    const handleOpen = () => setOpenRequirement(true);
    const handleClose = () => {
       setOpenRequirement(false);
+   };
+
+   const removeRequirementItems = (id: string) => {
+      const newValue = formik.values[InputFieldNames.OTHER_REQUIREMENT_VALUES].filter((e: any) => e.id != id);
+      formik.setFieldValue(InputFieldNames.OTHER_REQUIREMENT_VALUES, [...newValue]);
+
+      handleSelectRequirement(selectedRequirements.filter(({ id: itemId }) => itemId !== id));
    };
 
    return (
@@ -40,7 +47,7 @@ const OtherRequirement: React.FC<{ formik: any }> = ({ formik }) => {
                      Select applicable collateral assets
                   </Button>
                </Box>
-               {formik.values[InputFieldNames.OTHER_REQUIREMENT_VALUES].length > 0 && (
+               {selectedRequirements.length > 0 && (
                   <Table
                      headerProps={{
                         data: [
@@ -53,29 +60,14 @@ const OtherRequirement: React.FC<{ formik: any }> = ({ formik }) => {
                         ],
                      }}
                      bodyProps={{
-                        rows: formik.values[InputFieldNames.OTHER_REQUIREMENT_VALUES].map(
-                           (requirement: OtherRequirementDocument) => {
-                              const name = allRequirements.find((e) => e.id == requirement.id)?.title;
-
-                              return {
-                                 [InputFieldNames.OTHER_REQUIREMENT_VALUES]: name,
-                                 cancel: (
-                                    <BoxShadowIconButton
-                                       onClick={() => {
-                                          const newValue = formik.values[
-                                             InputFieldNames.OTHER_REQUIREMENT_VALUES
-                                          ].filter((e: any) => e.id != requirement.id);
-                                          formik.setFieldValue(InputFieldNames.OTHER_REQUIREMENT_VALUES, [
-                                             ...newValue,
-                                          ]);
-                                       }}
-                                    >
-                                       <Icon type="close" color="primary" />
-                                    </BoxShadowIconButton>
-                                 ),
-                              };
-                           }
-                        ),
+                        rows: selectedRequirements.map(({ title, id }: OtherRequirementDocument) => ({
+                           [InputFieldNames.OTHER_REQUIREMENT_VALUES]: title,
+                           cancel: (
+                              <BoxShadowIconButton onClick={() => removeRequirementItems(id)}>
+                                 <Icon type="close" color="primary" />
+                              </BoxShadowIconButton>
+                           ),
+                        })),
                      }}
                   />
                )}

@@ -28,7 +28,7 @@ const Requirements: React.FC<{ formik: FormikProps<any> }> = ({ formik }) => {
    const [requirement, setRequirement] = useState<OtherRequirementDocument[]>(allRequirements);
 
    const [openCreateRequirement, setOpenCreateRequirement] = React.useState(false);
-   const { checkedItems, itemToggle, updateFormikState } = useFormikCheckItems(
+   const { checkedItems, itemToggle, updateFormikState, clearCheckedItems } = useFormikCheckItems(
       allRequirements,
       selectedRequirements,
       'title',
@@ -46,6 +46,12 @@ const Requirements: React.FC<{ formik: FormikProps<any> }> = ({ formik }) => {
       handleSelectRequirement(checkedItems);
       updateFormikState('id', { indexKey: 'id' });
    }, [checkedItems]);
+
+   useEffect(() => {
+      if (!selectedRequirements.length && checkedItems.length) {
+         clearCheckedItems();
+      }
+   }, [selectedRequirements]);
 
    const handleSearch = (searchText: string) => {
       searchText

@@ -34,7 +34,8 @@ export const Input: React.FC<InputProps> = ({ extraLeft, decimal, extraRight, cu
          const parts = rawValue.split('.');
          if (parts.length > 2) return;
          const integerPart = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-         const formattedValue = parts.length === 2 ? `${integerPart}.${parts[1]}` : integerPart;
+         const formattedValue =
+            parts.length === 2 ? `${integerPart}.${parts[1].substring(0, 2)}` : integerPart;
          input = formattedValue;
       }
       if (decimal) {

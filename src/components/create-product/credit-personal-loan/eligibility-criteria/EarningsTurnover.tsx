@@ -4,9 +4,11 @@ import { Grid } from '@mui/material';
 import * as FormMeta from '@app/utils/validators/personal-loan/eligibility-criteria';
 import RequiredIndicator from '@app/components/atoms/RequiredIndicator';
 import { EarningsControl } from '@app/components/forms/EarningsControls';
+import { useCreateProductContext } from '@app/providers/create-product';
 
 const EarningsOrTurnover: React.FC<{ formik: any }> = ({ formik }) => {
    const { InputFieldNames, ToolTipText } = FormMeta;
+   const { productMeta } = useCreateProductContext();
    const earningType = formik.values?.[InputFieldNames.EARNINGS_TYPE];
    const isFixed = earningType === 'fixed';
 
@@ -57,7 +59,9 @@ const EarningsOrTurnover: React.FC<{ formik: any }> = ({ formik }) => {
                               formik={formik}
                               isCurrency={isFixed}
                               bridgeWord="over"
-                              {...(isFixed ? { extraLeft: 'NGN' } : { extraRight: '%' })}
+                              {...(isFixed
+                                 ? { extraLeft: productMeta?.currency ?? 'NGN' }
+                                 : { extraRight: '%' })}
                            />
                         </Grid>
                      )}

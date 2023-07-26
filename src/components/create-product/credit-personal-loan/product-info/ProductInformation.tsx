@@ -70,6 +70,10 @@ export const ProductInformation: React.FC = () => {
          };
       }
 
+      if (productMeta?.productDetails?.productInformation) {
+         return productMeta.productDetails.productInformation;
+      }
+
       return FormMeta.productInfoInitialValues();
    }, [initialProductInfo]);
 
@@ -83,6 +87,8 @@ export const ProductInformation: React.FC = () => {
    const onSubmit = (values: ProductInformationType) => {
       const { MAX_LOAN_PRINCIPAL, MIN_LOAN_PRINCIPAL, PRODUCT_CURRENCY_ID, PRODUCT_CURRENCY } =
          CommonFormFieldNames;
+
+         console.log({ values });
 
       const productId = searchParams.get(PRODUCT_ID_PARAM_NAME);
       postProductInfo(API_PATH.PRODUCT_INFO(productId ?? undefined), {
