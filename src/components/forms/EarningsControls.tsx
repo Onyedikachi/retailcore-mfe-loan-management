@@ -34,7 +34,7 @@ export const EarningsControl = ({
             <FormControlBase
                name={firstName}
                currency={isCurrency}
-               decimal={!isCurrency}
+               ratio={!isCurrency}
                control="input"
                placeholder={firstPlaceHolder}
                extraRight={extraRight}

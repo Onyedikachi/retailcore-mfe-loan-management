@@ -16,15 +16,19 @@ const Security: React.FC<{ formik: FormikProps<any> }> = ({ formik }) => {
    const { InputFieldNames, ToolTipText } = FormMeta;
    const { [InputFieldNames.SET_SECURITY]: setSecurity } = formik.values;
 
-   const { removeCheckItem, updateCheckedItems, securityDocuments, addNewSecurityValue } =
-      useSecurityAction(formik);
+   const {
+      removeCheckItem,
+      updateCheckedItems,
+      securityDocuments,
+      addNewSecurityValue,
+      removeSecurityDocument,
+   } = useSecurityAction(formik);
 
    const getCheckedSecurity = (securityType: SecurityOptions) => {
       return securityDocuments[securityType as SecurityOptions]
          .filter(({ checked }) => checked)
-         .map(({ name, id }) => ({ name, id: id, ...(securityType === 'collateral' && { mmi: 100 }) }));
+         .map(({ name, id }) => ({ name, id: id }));
    };
-
    return (
       <>
          <FormControlWrapper
@@ -85,6 +89,7 @@ const Security: React.FC<{ formik: FormikProps<any> }> = ({ formik }) => {
                   <ModalWithCheckBoxList
                      open={true}
                      onClose={() => setActiveSecurityModal(null)}
+                     onRemoveItem={(documentId) => removeSecurityDocument(activeSecurityModal, documentId)}
                      onSubmit={(checkedItems) => {
                         activeSecurityModal && updateCheckedItems(activeSecurityModal, checkedItems);
                         formik.setFieldTouched(

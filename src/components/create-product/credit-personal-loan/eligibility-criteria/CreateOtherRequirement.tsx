@@ -31,15 +31,22 @@ const CreateOtherRequirement: React.FC<{ onCompleted: () => void }> = ({ onCompl
       formik.setFieldValue(InputFieldNames.ADD_FORMAT, format.toString());
    };
 
-   const [{ data }, postCreateOtherRequirement] = useRequest();
+   const [, postCreateOtherRequirement] = useRequest({
+      onSuccess(response) {
+         const data = response.other_eligibility_req;
+         // eslint-disable-next-line camelcase
+         handleAddNewRequirement({ ...data, accepted_format: data.accepted_format.join(',') });
+      },
+   });
    const onSubmit = (values: ObjectAny) => {
       postCreateOtherRequirement(API_PATH.OTHER_ELIGIBILTY_REQUIREMENT, {
          body: {
             ...values,
+            [InputFieldNames.ADD_FORMAT]: values[InputFieldNames.ADD_FORMAT].split(','),
             [InputFieldNames.PERIODICITY_PERIOD]: values[InputFieldNames.PERIODICITY_PERIOD].toLowerCase(),
          },
       });
-      handleAddNewRequirement(data);
+
       onCompleted();
    };
    return (

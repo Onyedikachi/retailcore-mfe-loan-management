@@ -111,17 +111,13 @@ const equityContributions = {
             ? field
                  .required('Enter a percentage')
                  .test(InputFieldNames.EQUITY_VALUE_FROM, 'Must be greater 0', function (value) {
-                    if (value) {
-                       return Number(value) > 0;
-                    }
+                    if (value) return Number(value) > 0;
                  })
             : equityContributionType[0] == 'range'
             ? field
-                 .required('Enter max percentage')
+                 .required('Enter a percentage')
                  .test(InputFieldNames.EQUITY_VALUE_FROM, 'Must be greater 0', function (value) {
-                    if (value) {
-                       return Number(value) > 0;
-                    }
+                    if (value) return Number(value) > 0;
                  })
             : field
    ),
@@ -132,9 +128,7 @@ const equityContributions = {
             ? field
                  .required('Enter max percentage')
                  .test(InputFieldNames.EQUITY_VALUE_TO, 'Must be greater 0', function (value) {
-                    if (value) {
-                       return Number(value) > 0;
-                    }
+                    if (value) return Number(value) > 0;
                  })
                  .test(
                     InputFieldNames.EQUITY_VALUE_TO,
@@ -175,7 +169,7 @@ export const securities = {
       InputFieldNames.SECURITY_OPTION,
       (securityOptions, field) => {
          return securityOptions.flat().includes(EligibilitySecurity.collateral.optionValue)
-            ? field.min(1, 'Add At least one security option.')
+            ? field.min(1, 'Add at least one collateral asset.')
             : field;
       }
    ),
@@ -183,7 +177,7 @@ export const securities = {
       InputFieldNames.SECURITY_OPTION,
       (securityOptions, field) => {
          return securityOptions.flat().includes(EligibilitySecurity.guarantor.optionValue)
-            ? field.min(1, 'Add At least one security option.')
+            ? field.min(1, 'Add At least one supporting document.')
             : field;
       }
    ),
@@ -191,7 +185,7 @@ export const securities = {
       InputFieldNames.SECURITY_OPTION,
       (securityOptions, field) => {
          return securityOptions.flat().includes(EligibilitySecurity.other.optionValue)
-            ? field.min(1, 'Add At least one security option.')
+            ? field.min(1, 'Add at least one security requirement.')
             : field;
       }
    ),

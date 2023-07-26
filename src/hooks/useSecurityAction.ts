@@ -13,6 +13,7 @@ interface CheckSecurityDocument extends SecurityDocument {
 
 export const useSecurityAction = <T>(formik: FormikProps<T>) => {
    const [createdSecurityType, setCreatedSecurityType] = useState<SecurityOptions>();
+   const [deleteId, setDeleteId] = useState<string>();
 
    const [securityDocuments, setSecurityDocuments] = useState<
       Record<SecurityOptions, Array<CheckSecurityDocument>>
@@ -28,6 +29,17 @@ export const useSecurityAction = <T>(formik: FormikProps<T>) => {
                   { checked: false, ...response.data?.security_document },
                   ...documents[createdSecurityType],
                ],
+            }));
+         }
+      },
+   });
+
+   const [, deleteSecurityDocument] = useRequest({
+      onSuccess: () => {
+         if (createdSecurityType) {
+            setSecurityDocuments((documents) => ({
+               ...documents,
+               [createdSecurityType]: documents[createdSecurityType].filter(({ id }) => id !== deleteId),
             }));
          }
       },
@@ -62,12 +74,11 @@ export const useSecurityAction = <T>(formik: FormikProps<T>) => {
          documents[securityOption]
             .filter(({ checked }) => checked)
             .forEach(({ id }, index) => {
-               formik.setFieldValue(`${EligibilitySecurity[securityOption].formFieldName}.${index}.id`, id);
+               const indexName = `${EligibilitySecurity[securityOption].formFieldName}.${index}`;
+               formik.setFieldValue(`${indexName}.id`, id);
                if (securityOption === 'collateral') {
-                  formik.setFieldValue(
-                     `${EligibilitySecurity[securityOption].formFieldName}.${index}.unit`,
-                     'percent'
-                  );
+                  formik.setFieldValue(`${indexName}.unit`, 'percent');
+                  formik.setFieldValue(`${indexName}.value`, 100 + '%');
                }
             });
 
@@ -94,5 +105,17 @@ export const useSecurityAction = <T>(formik: FormikProps<T>) => {
       });
    };
 
-   return { removeCheckItem, updateCheckedItems, securityDocuments, addNewSecurityValue };
+   const removeSecurityDocument = (securityOption: SecurityOptions, id: string) => {
+      setCreatedSecurityType(securityOption);
+      setDeleteId(id);
+      deleteSecurityDocument(API_PATH.SECURITY_ELIGIBILITY_DOCUMENT(id), { method: 'DELETE' });
+   };
+
+   return {
+      removeCheckItem,
+      updateCheckedItems,
+      securityDocuments,
+      addNewSecurityValue,
+      removeSecurityDocument,
+   };
 };

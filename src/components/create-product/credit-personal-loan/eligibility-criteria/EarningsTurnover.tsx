@@ -42,6 +42,8 @@ const EarningsOrTurnover: React.FC<{ formik: any }> = ({ formik }) => {
                         control="radio"
                         onChange={() => {
                            formik.setFieldValue(InputFieldNames.EARNINGS_VALUE, '');
+                           formik.setFieldError(InputFieldNames.EARNINGS_VALUE, '');
+                           formik.setFieldTouched(InputFieldNames.EARNINGS_VALUE, false, false);
                         }}
                         options={[
                            { label: 'Fixed', value: 'fixed' },
