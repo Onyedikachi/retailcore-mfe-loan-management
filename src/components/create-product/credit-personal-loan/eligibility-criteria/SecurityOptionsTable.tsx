@@ -41,14 +41,7 @@ export const SecurityOptionsTable = <T extends SecurityOptions>({
                   </BoxShadowIconButton>
                ),
                ...(type === 'collateral' && {
-                  mmi: (
-                     <FormControlBase
-                        defaultValue={(security as any).mmi}
-                        name={`${fieldName}.${index}.value`}
-                        control="input"
-                        allow="ratio"
-                     />
-                  ),
+                  mmi: <FormControlBase name={`${fieldName}.${index}.value`} control="input" percentage />,
                }),
             })),
          }}

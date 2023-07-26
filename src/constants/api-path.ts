@@ -9,7 +9,7 @@ const API_V1 = '/api/v1';
 export const API_PATH = {
    PRODUCT_INFO: (param?: string) => `${API_V1}/product-info${param ? '/' + param : ''}`,
    PRODUCT_NAME_AVAILABILITY: (name: string) => `${API_V1}/product-info/available/${name}`,
-   SECURITY_ELIGIBILITY_DOCUMENT: (param?: SecurityEligibilityDocumentType) =>
+   SECURITY_ELIGIBILITY_DOCUMENT: (param?: SecurityEligibilityDocumentType | string) =>
       `${API_V1}/eligibility-document/security${param ? '/' + param : ''}`,
    OTHER_ELIGIBILTY_REQUIREMENT: `${API_V1}/other-eligibility-req`,
    ELIGIBILITY_CRITERIA: (param?: string) => `${API_V1}/eligibility-criteria${param ? '/' + param : ''}`,

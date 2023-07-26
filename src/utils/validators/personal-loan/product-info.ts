@@ -15,10 +15,10 @@ export const loanTenurePeriod = ['Hours', 'Days', 'Weeks', 'Months', 'Years'];
 export const productInfoInitialValues = () => ({
    [CommonFormFieldNames.PRODUCT_NAME]: '',
    [CommonFormFieldNames.DESCRIPTION]: '',
-   [CommonFormFieldNames.PRODUCT_CURRENCY]: '',
-   [InputFieldNames.MIN_LOAN_TENURE_NUM]: 0,
+   [CommonFormFieldNames.PRODUCT_CURRENCY]: 'NGN',
+   [InputFieldNames.MIN_LOAN_TENURE_NUM]: 1,
    [InputFieldNames.MAX_LOAN_TENURE_NUM]: 0,
-   [InputFieldNames.MIN_LOAN_TENURE_PERIOD]: '',
+   [InputFieldNames.MIN_LOAN_TENURE_PERIOD]: 'Days',
    [InputFieldNames.MAX_LOAN_TENURE_PERIOD]: '',
    [CommonFormFieldNames.MIN_LOAN_PRINCIPAL]: '',
    [CommonFormFieldNames.MAX_LOAN_PRINCIPAL]: '',
@@ -45,29 +45,33 @@ export const productInfoValidator = () =>
       [InputFieldNames.MIN_LOAN_TENURE_PERIOD]: Yup.string().required('Field is required'),
       [InputFieldNames.MAX_LOAN_TENURE_PERIOD]: Yup.string()
          .required('Field is required')
-         .test(InputFieldNames.MAX_LOAN_TENURE_PERIOD, 'Must be greater than min tenure', function (value) {
-            const minLoanTenureNum = this.parent?.[InputFieldNames.MIN_LOAN_TENURE_NUM];
-            const minLoanTenurePeriod = this.parent?.[InputFieldNames.MIN_LOAN_TENURE_PERIOD];
-            const maxLoanTenureNum = this.parent?.[InputFieldNames.MAX_LOAN_TENURE_NUM];
-            const max = loanTenurePeriod.indexOf(value);
-            const min = loanTenurePeriod.indexOf(minLoanTenurePeriod);
-            if (max == min && Number(maxLoanTenureNum) > Number(minLoanTenureNum)) {
-               return true;
-            } else if (max > min && Number(maxLoanTenureNum)) {
-               return true;
-            } else return false;
-         }),
+         .test(
+            InputFieldNames.MAX_LOAN_TENURE_PERIOD,
+            'Must not be lesser than min tenure',
+            function (value) {
+               const minLoanTenureNum = Number(this.parent?.[InputFieldNames.MIN_LOAN_TENURE_NUM]);
+               const minLoanTenurePeriod = this.parent?.[InputFieldNames.MIN_LOAN_TENURE_PERIOD];
+               const maxLoanTenureNum = Number(this.parent?.[InputFieldNames.MAX_LOAN_TENURE_NUM]);
+               const max = loanTenurePeriod.indexOf(value);
+               const min = loanTenurePeriod.indexOf(minLoanTenurePeriod);
+               if (max == min && maxLoanTenureNum >= minLoanTenureNum) {
+                  return true;
+               } else if (max >= min && maxLoanTenureNum) {
+                  return true;
+               } else return false;
+            }
+         ),
       [CommonFormFieldNames.MIN_LOAN_PRINCIPAL]: Yup.string().required('Min loan principal is required'),
       [CommonFormFieldNames.MAX_LOAN_PRINCIPAL]: Yup.string()
          .required('Max loan principal is required')
          .test(
             CommonFormFieldNames.MAX_LOAN_PRINCIPAL,
-            'Max loan tenure must not be lesser than min loan tenure',
+            'Must not be lesser than min loan principal',
             function (value) {
                const minLoanPrincipal = this.parent?.[CommonFormFieldNames.MIN_LOAN_PRINCIPAL];
                const maxPrincipal = Number(value.replace(/,/g, ''));
                const minPrincipal = Number(minLoanPrincipal.replace(/,/g, ''));
-               return maxPrincipal > minPrincipal;
+               return maxPrincipal >= minPrincipal;
             }
          ),
       [ALLOW_MULTIPLE]: Yup.boolean(),

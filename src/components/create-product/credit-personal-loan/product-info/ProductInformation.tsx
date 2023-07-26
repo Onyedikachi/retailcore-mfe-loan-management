@@ -49,7 +49,7 @@ export const ProductInformation: React.FC = () => {
    // Retrieves saved value from the endpoints.
    React.useEffect(() => {
       const productId = searchParams.get(PRODUCT_ID_PARAM_NAME);
-      if (productId) {
+      if (productId && !productMeta?.productDetails?.productInformation) {
          refetchProductInfo(API_PATH.PRODUCT_INFO(productId));
       }
    }, []);
@@ -74,6 +74,7 @@ export const ProductInformation: React.FC = () => {
          return productMeta.productDetails.productInformation;
       }
 
+      setCurrency('NGN');
       return FormMeta.productInfoInitialValues();
    }, [initialProductInfo]);
 
@@ -87,8 +88,6 @@ export const ProductInformation: React.FC = () => {
    const onSubmit = (values: ProductInformationType) => {
       const { MAX_LOAN_PRINCIPAL, MIN_LOAN_PRINCIPAL, PRODUCT_CURRENCY_ID, PRODUCT_CURRENCY } =
          CommonFormFieldNames;
-
-         console.log({ values });
 
       const productId = searchParams.get(PRODUCT_ID_PARAM_NAME);
       postProductInfo(API_PATH.PRODUCT_INFO(productId ?? undefined), {
@@ -126,6 +125,7 @@ export const ProductInformation: React.FC = () => {
                            availableMessage={availableResponse?.data?.message}
                            onChange={(e) => handleProductNameChange(e.target.value)}
                            maxTextLength={50}
+                           formik={formik}
                         />
                         <ProductDescriptionControl />
                         <Grid container>
@@ -184,7 +184,7 @@ export const ProductInformation: React.FC = () => {
                                  sx={{ ...(isNext && { ml: 2 }) }}
                                  color={isNext ? 'primary' : undefined}
                                  onClick={() => setIsDraft(!isNext)}
-                                 disabled={!formik.dirty || !formik.isValid}
+                                 disabled={Object.entries(formik.errors).length !== 0 || !formik.isValid}
                                  type="submit"
                                  variant={isNext ? 'contained' : 'outlined'}
                               >

@@ -14,7 +14,7 @@ import { OtherRequirementDocument } from '@app/@types/create-credit-product';
 
 const OtherRequirement: React.FC<{ formik: any }> = ({ formik }) => {
    const { handleSelectRequirement, selectedRequirements } = useOtherRequirementContext();
-   const { InputFieldNames, ToolTipText } = FormMeta;
+   const { InputFieldNames } = FormMeta;
 
    const [openRequirement, setOpenRequirement] = React.useState(false);
    const handleOpen = () => setOpenRequirement(true);
@@ -36,7 +36,6 @@ const OtherRequirement: React.FC<{ formik: any }> = ({ formik }) => {
             name={InputFieldNames.SET_OTHER_REQUIREMENT}
             label="Are there other eligibility requirements?"
             layout="horizontal"
-            tooltipText={ToolTipText.otherSecurity}
          >
             <FormControlBase sx={{ ml: 7 }} name={InputFieldNames.SET_OTHER_REQUIREMENT} control="switch" />
          </FormControlWrapper>
@@ -44,7 +43,7 @@ const OtherRequirement: React.FC<{ formik: any }> = ({ formik }) => {
             <>
                <Box>
                   <Button variant="text" sx={{ pl: 0, textDecoration: 'underline' }} onClick={handleOpen}>
-                     Select applicable collateral assets
+                     Add Eligibility Requirement
                   </Button>
                </Box>
                {selectedRequirements.length > 0 && (

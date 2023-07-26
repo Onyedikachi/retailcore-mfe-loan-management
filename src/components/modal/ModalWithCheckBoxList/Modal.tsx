@@ -19,6 +19,8 @@ interface ReusableModalProps {
    addButtonText?: string;
    searchPlaceholder?: string;
    onAddNewValue?: (value: string) => void;
+
+   onRemoveItem?: (id: string, labelName: string) => void;
 }
 
 export const ModalWithCheckBoxList: React.FC<ReusableModalProps> = ({
@@ -30,6 +32,7 @@ export const ModalWithCheckBoxList: React.FC<ReusableModalProps> = ({
    searchPlaceholder,
    addButtonText,
    onAddNewValue,
+   onRemoveItem,
 }) => {
    const [renderedItems, setRenderedItems] = useState([...items]);
    const [searchValue, setSearchValue] = useState('');
@@ -105,7 +108,11 @@ export const ModalWithCheckBoxList: React.FC<ReusableModalProps> = ({
                      {addButtonText ?? 'Add New'}
                   </Button>
                </Box>
-               <ListWithChildren items={renderedItems} onCheckboxToggle={onCheckboxToggle} />
+               <ListWithChildren
+                  onRemoveItem={onRemoveItem}
+                  items={renderedItems}
+                  onCheckboxToggle={onCheckboxToggle}
+               />
                <Box mt={2} display="flex" justifyContent="center">
                   <Button
                      disabled={allItems.every((item) => !item.checked)}

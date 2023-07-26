@@ -23,7 +23,7 @@ export const PercentageControlControl = (props: PercentageControlProps) => {
          <FormControlBase
             name={props.name}
             control="input"
-            decimal
+            ratio
             placeholder={props.placeholder ?? '0'}
             InputProps={{
                ...(props.withChip && {

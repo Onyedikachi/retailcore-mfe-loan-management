@@ -29,6 +29,11 @@ const EquityContribution: React.FC<{ formik: any }> = ({ formik }) => {
                         sx={{ mb: 3 }}
                         name={InputFieldNames.EQUITY_TYPE}
                         control="radio"
+                        onChange={() => {
+                           formik.setFieldValue(InputFieldNames.EQUITY_VALUE_FROM, '');
+                           formik.setFieldError(InputFieldNames.EQUITY_VALUE_FROM, '');
+                           formik.setFieldTouched(InputFieldNames.EQUITY_VALUE_FROM, false, false);
+                        }}
                         options={[
                            { label: 'Fixed', value: 'fixed' },
                            { label: 'Range', value: 'range' },

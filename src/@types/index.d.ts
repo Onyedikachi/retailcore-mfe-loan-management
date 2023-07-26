@@ -6,7 +6,8 @@ export type IconType =
    | 'three-bar'
    | 'block'
    | 'add-circle'
-   | 'close';
+   | 'close'
+   | 'check-circle';
 
 export * from './currency-list';
 

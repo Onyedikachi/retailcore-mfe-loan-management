@@ -9,25 +9,30 @@ export type InputProps = TextFieldProps & {
    allow?: FormAcceptType;
    children?: ReactNode;
    currency?: boolean;
-   decimal?: boolean;
+   percentage?: boolean;
+   ratio?: boolean;
    extraLeft?: ReactNode;
    extraRight?: ReactNode;
 };
 
-export const Input: React.FC<InputProps> = ({ extraLeft, decimal, extraRight, currency, ...props }) => {
+export const Input: React.FC<InputProps> = ({
+   extraLeft,
+   percentage,
+   extraRight,
+   currency,
+   ratio,
+   ...props
+}) => {
    const handleChange = (
       e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
       form: FieldProps['form']
    ) => {
       const target = e.target as HTMLInputElement;
-
-      const re = /[^.0-9]/g;
       let input = target.value;
-      const { allow } = props;
-      if (props.allow === 'number') input = input.replace(re, '');
-      else if (allow === 'percent' || allow === 'ratio') {
-         input = `${input.replace(/[^\d.]/g, '') || 0}%`;
-         e.target.value = input;
+
+      if (props.allow === 'number') {
+         const re = /(?:\b0(?:\.0*|$))|[^\d]/g;
+         input = input.replace(re, '');
       }
       if (currency) {
          const rawValue = e.target.value.replace(/[^\d.]/g, '');
@@ -38,9 +43,11 @@ export const Input: React.FC<InputProps> = ({ extraLeft, decimal, extraRight, cu
             parts.length === 2 ? `${integerPart}.${parts[1].substring(0, 2)}` : integerPart;
          input = formattedValue;
       }
-      if (decimal) {
-         const decimalRegex = /[^-+\d.]/g;
-         input = input.replace(decimalRegex, '');
+      if ((percentage || ratio) && (e.nativeEvent as any).data) {
+         const value = input.replace(/[^\d.]/g, '');
+         const sign = percentage ? '%' : '';
+         input = `${Number(value) <= 100 ? value : value.substring(0, value.length - 1)}${sign}`;
+         e.target.value = input;
       }
 
       form.handleChange(e);
@@ -65,7 +72,7 @@ export const Input: React.FC<InputProps> = ({ extraLeft, decimal, extraRight, cu
                            onChange={(e) => handleChange(e, form)}
                            type={props.type || 'text'}
                            error={!!(form.errors[props.name] && form.touched[props.name])}
-                           inputProps={{ autoComplete: 'off' }}
+                           inputProps={{ autoComplete: 'off', ...props.inputProps }}
                         />
                      </FormControl>
                      {extraRight && <Typography ml={1}>{extraRight}</Typography>}
