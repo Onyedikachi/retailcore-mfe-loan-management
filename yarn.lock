@@ -1922,6 +1922,11 @@
   resolved "https://registry.npmjs.org/@types/node/-/node-20.4.0.tgz"
   integrity sha512-jfT7iTf/4kOQ9S7CHV9BIyRaQqHu67mOjsIQBC3BKZvzvUB6zLxEwJ6sBE3ozcvP8kF6Uk5PXN0Q+c0dfhGX0g==
 
+"@types/object-mapper@^6.2.0":
+  version "6.2.0"
+  resolved "https://registry.yarnpkg.com/@types/object-mapper/-/object-mapper-6.2.0.tgz#e5b444779a9443807649020025f30436fa1df60a"
+  integrity sha512-EAi0jqnCRZsZBUrX1Jcg030JAeY6lLUCHc/02QPpmpY/db7p+gGEE5Ckku7WLnB95GDsRk0Ktsjsw5Hlqdw2kw==
+
 "@types/parse-json@^4.0.0":
   version "4.0.0"
   resolved "https://registry.npmjs.org/@types/parse-json/-/parse-json-4.0.0.tgz"
@@ -5928,6 +5933,11 @@ object-keys@^1.1.1:
   version "1.1.1"
   resolved "https://registry.npmjs.org/object-keys/-/object-keys-1.1.1.tgz"
   integrity sha512-NuAESUOUMrlIXOfHKzD6bpPu3tYt3xvjNdRIQ+FeT0lNb4K8WR70CaDxhuNguS2XG+GjkyMwOzsN5ZktImfhLA==
+
+object-mapper@^6.2.0:
+  version "6.2.0"
+  resolved "https://registry.yarnpkg.com/object-mapper/-/object-mapper-6.2.0.tgz#f12b097081a97da953adafbc1f7f41b3ff615cae"
+  integrity sha512-kGa23lcUwnTbT0W2GqRipoiPax734TbXVTUF3vaWlAXY5baMQES323B9NHJODvxhn9sVMZmzeenD74PnCZZuHA==
 
 object.assign@^4.1.4:
   version "4.1.4"
