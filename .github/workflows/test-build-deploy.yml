@@ -10,15 +10,19 @@ on:
       - main
 
 jobs:
-  # code_quality:
-  # uses: sterling-retailcore-team/workflow-templates/.github/workflows/code_quality.yml@main
-  # secrets: inherit
-  # container_scan:
-  # uses: sterling-retailcore-team/workflow-templates/.github/workflows/container_scan.yml@main
-  #secrets: inherit
+  code_quality:
+    uses: sterling-retailcore-team/workflow-templates/.github/workflows/code_quality.yml@main
+    secrets: inherit
+  container_scan:
+    uses: sterling-retailcore-team/workflow-templates/.github/workflows/container_scan.yml@main
+    secrets: inherit
   build_and_push_image:
     uses: sterling-retailcore-team/workflow-templates/.github/workflows/build.yml@main
-    #     needs: [code_quality, container_scan]
+    needs: [code_quality, container_scan]
+    if: |
+      always() &&
+      (!contains(needs.code_quality.result, 'failure') || !contains(needs.code_quality.result, 'cancelled')) &&
+      (!contains(needs.container_scan.result, 'failure') || !contains(needs.container_scan.result, 'cancelled'))
     with:
       GITHUB_REPOSITORY: ${GITHUB_REPOSITORY}
       GITHUB_BASE_REF: ${GITHUB_BASE_REF}
@@ -47,7 +51,6 @@ jobs:
     secrets: inherit
     needs: build_and_push_image
     if: |
-      always() &&
       (!contains(needs.build_and_push_image.result, 'failure') ||
       !contains(needs.build_and_push_image.result, 'cancelled'))
 
