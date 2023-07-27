@@ -19,7 +19,7 @@ import {
    ProductInformationApiResponse,
    ProductInformation as ProductInformationType,
 } from '@app/@types/create-credit-product';
-import { currencyToNumber } from '@app/helper/currency-converter';
+import { currencyToNumber } from '@app/helper/currency-helper';
 import { CurrencyListResponse } from '@app/@types/currency-list';
 import { useDebounceRequests } from '@app/hooks/useDebounceRequest';
 import { useSearchParams } from 'react-router-dom';
@@ -101,6 +101,7 @@ export const ProductInformation: React.FC = () => {
             )?.id,
             // eslint-disable-next-line camelcase
             is_draft: Number(isDraft),
+            ...(productId && {id: productId})
          },
          method: productId ? 'PATCH' : 'POST',
       });

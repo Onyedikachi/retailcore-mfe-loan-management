@@ -5,10 +5,13 @@ import * as FormMeta from '@app/utils/validators/personal-loan/eligibility-crite
 import RequiredIndicator from '@app/components/atoms/RequiredIndicator';
 import { EarningsControl } from '@app/components/forms/EarningsControls';
 import { useCreateProductContext } from '@app/providers/create-product';
+import { FormikProps } from 'formik';
+import { useFormikHelper } from '@app/hooks/useFormikHelper';
 
-const EarningsOrTurnover: React.FC<{ formik: any }> = ({ formik }) => {
+const EarningsOrTurnover: React.FC<{ formik: FormikProps<any> }> = ({ formik }) => {
    const { InputFieldNames, ToolTipText } = FormMeta;
    const { productMeta } = useCreateProductContext();
+   const { resetFieldState } = useFormikHelper(formik);
    const earningType = formik.values?.[InputFieldNames.EARNINGS_TYPE];
    const isFixed = earningType === 'fixed';
 
@@ -24,7 +27,12 @@ const EarningsOrTurnover: React.FC<{ formik: any }> = ({ formik }) => {
                sx={{ ml: 7 }}
                control="switch"
                onChange={(e: any) => {
-                  !e.target.checked && formik.setFieldValue(InputFieldNames.EARNINGS_TYPE, '');
+                  if (!e.target.checked) {
+                     resetFieldState(InputFieldNames.EARNINGS_TYPE);
+                     resetFieldState(InputFieldNames.EARNINGS_VALUE);
+                     resetFieldState(InputFieldNames.EARNINGS_PERIOD_VALUE);
+                     resetFieldState(InputFieldNames.EARNINGS_PERIOD);
+                  }
                }}
                name={InputFieldNames.SET_EARNINGS}
             />
@@ -41,9 +49,7 @@ const EarningsOrTurnover: React.FC<{ formik: any }> = ({ formik }) => {
                         name={InputFieldNames.EARNINGS_TYPE}
                         control="radio"
                         onChange={() => {
-                           formik.setFieldValue(InputFieldNames.EARNINGS_VALUE, '');
-                           formik.setFieldError(InputFieldNames.EARNINGS_VALUE, '');
-                           formik.setFieldTouched(InputFieldNames.EARNINGS_VALUE, false, false);
+                           resetFieldState(InputFieldNames.EARNINGS_VALUE);
                         }}
                         options={[
                            { label: 'Fixed', value: 'fixed' },

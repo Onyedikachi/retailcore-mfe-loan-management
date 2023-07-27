@@ -5,9 +5,11 @@ import * as FormMeta from '@app/utils/validators/personal-loan/eligibility-crite
 import RequiredIndicator from '@app/components/atoms/RequiredIndicator';
 import { Colors } from '@app/constants';
 import { PercentageControlControl } from '@app/components/forms/PercentageControl';
+import { useFormikHelper } from '@app/hooks/useFormikHelper';
 
 const EquityContribution: React.FC<{ formik: any }> = ({ formik }) => {
    const { InputFieldNames, ToolTipText } = FormMeta;
+   const { resetFieldState } = useFormikHelper(formik);
    return (
       <>
          <FormControlWrapper
@@ -16,7 +18,18 @@ const EquityContribution: React.FC<{ formik: any }> = ({ formik }) => {
             layout="horizontal"
             tooltipText={ToolTipText.equity}
          >
-            <FormControlBase sx={{ ml: 7 }} name={InputFieldNames.SET_EQUITY} control="switch" />
+            <FormControlBase
+               sx={{ ml: 7 }}
+               onChange={(e: any) => {
+                  if (!e.target.checked) {
+                     resetFieldState(InputFieldNames.EQUITY_TYPE);
+                     resetFieldState(InputFieldNames.EQUITY_VALUE_FROM);
+                     resetFieldState(InputFieldNames.EQUITY_VALUE_TO);
+                  }
+               }}
+               name={InputFieldNames.SET_EQUITY}
+               control="switch"
+            />
          </FormControlWrapper>
          {formik.values[InputFieldNames.SET_EQUITY] && (
             <>
@@ -30,9 +43,7 @@ const EquityContribution: React.FC<{ formik: any }> = ({ formik }) => {
                         name={InputFieldNames.EQUITY_TYPE}
                         control="radio"
                         onChange={() => {
-                           formik.setFieldValue(InputFieldNames.EQUITY_VALUE_FROM, '');
-                           formik.setFieldError(InputFieldNames.EQUITY_VALUE_FROM, '');
-                           formik.setFieldTouched(InputFieldNames.EQUITY_VALUE_FROM, false, false);
+                           resetFieldState(InputFieldNames.EQUITY_VALUE_FROM);
                         }}
                         options={[
                            { label: 'Fixed', value: 'fixed' },

@@ -30,7 +30,7 @@ export const ProductNameControl = ({
    formik: { values },
    ...otherProps
 }: ProductNameProps) => {
-   const length = values[name ?? CommonFormFieldNames.PRODUCT_NAME].length;
+   const length = values[name ?? CommonFormFieldNames.PRODUCT_NAME]?.length;
    const isGreater = maxTextLength && length >= maxTextLength;
    return (
       <FormControlWrapper
