@@ -3,6 +3,7 @@ import { Field, ErrorMessage, FieldProps } from 'formik';
 import { InputErrorText } from '../forms/InputFieldError';
 import { Box, FormControl, TextField, TextFieldProps, Typography } from '@mui/material';
 import { FormAcceptType } from '@app/@types';
+import { currencyInputFormatter, percentageInputFormatter } from '@app/helper/currency-helper';
 
 export type InputProps = TextFieldProps & {
    name: string;
@@ -35,18 +36,12 @@ export const Input: React.FC<InputProps> = ({
          input = input.replace(re, '');
       }
       if (currency) {
-         const rawValue = e.target.value.replace(/[^\d.]/g, '');
-         const parts = rawValue.split('.');
-         if (parts.length > 2) return;
-         const integerPart = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-         const formattedValue =
-            parts.length === 2 ? `${integerPart}.${parts[1].substring(0, 2)}` : integerPart;
-         input = formattedValue;
+         const { currency: formattedCurrency } = currencyInputFormatter(e.target.value);
+         input = formattedCurrency;
       }
       if ((percentage || ratio) && (e.nativeEvent as any).data) {
-         const value = input.replace(/[^\d.]/g, '');
-         const sign = percentage ? '%' : '';
-         input = `${Number(value) <= 100 ? value : value.substring(0, value.length - 1)}${sign}`;
+         const { percentage: percentageValue, ratio: ratioValue } = percentageInputFormatter(e.target.value);
+         input = percentage ? percentageValue : ratioValue;
          e.target.value = input;
       }
 
