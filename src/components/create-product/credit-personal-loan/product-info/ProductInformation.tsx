@@ -23,6 +23,7 @@ import { currencyToNumber } from '@app/helper/currency-converter';
 import { CurrencyListResponse } from '@app/@types/currency-list';
 import { useDebounceRequests } from '@app/hooks/useDebounceRequest';
 import { useSearchParams } from 'react-router-dom';
+import { productInfoMapper } from '@app/mappers/creditProductInformation';
 
 export const ProductInformation: React.FC = () => {
    const { InputFieldNames, ToolTipText } = FormMeta;
@@ -55,27 +56,14 @@ export const ProductInformation: React.FC = () => {
    }, []);
 
    const initialValues = useMemo(() => {
-      if (initialProductInfo?.data) {
-         const { data } = initialProductInfo;
-         setCurrency(data[CommonFormFieldNames.PRODUCT_CURRENCY]);
-
-         return {
-            ...data,
-            [CommonFormFieldNames.MAX_LOAN_PRINCIPAL]: parseFloat(
-               data[CommonFormFieldNames.MAX_LOAN_PRINCIPAL]
-            ),
-            [CommonFormFieldNames.MIN_LOAN_PRINCIPAL]: parseFloat(
-               data[CommonFormFieldNames.MIN_LOAN_PRINCIPAL]
-            ),
-         };
-      }
-
-      if (productMeta?.productDetails?.productInformation) {
-         return productMeta.productDetails.productInformation;
-      }
-
-      setCurrency('NGN');
-      return FormMeta.productInfoInitialValues();
+      if (initialProductInfo?.data)
+         setCurrency(initialProductInfo.data[CommonFormFieldNames.PRODUCT_CURRENCY]);
+      else if (!productMeta?.productDetails?.productInformation) setCurrency('NGN');
+      return productInfoMapper(
+         initialProductInfo?.data ??
+            productMeta?.productDetails?.productInformation ??
+            FormMeta.productInfoInitialValues()
+      );
    }, [initialProductInfo]);
 
    const { setRequestPath: checkNameAvailability, response: availableResponse } = useDebounceRequests();
