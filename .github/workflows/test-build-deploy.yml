@@ -38,6 +38,9 @@ jobs:
       GITHUB_EVENT_NAME: ${GITHUB_EVENT_NAME}
     secrets: inherit
     needs: build_and_push_image
+    if: |
+      (!contains(needs.build_and_push_image.result, 'failure') ||
+      !contains(needs.build_and_push_image.result, 'cancelled'))
 
   smoke_test:
     uses: sterling-retailcore-team/workflow-templates/.github/workflows/smoke_tests.yml@main
