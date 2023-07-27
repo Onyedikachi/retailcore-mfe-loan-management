@@ -1,10 +1,11 @@
 {
-  "name": "@Sterling/product-factory",
+  "name": "@Sterling/create-credit-product",
   "private": true,
   "scripts": {
-    "start": "webpack serve",
-    "start:standalone": "webpack serve --env standalone",
-    "build": "concurrently yarn:build:*",
+    "start": "cross-env NODE_ENV=development webpack serve",
+    "start:standalone": "cross-env NODE_ENV=development webpack serve --env standalone",
+    "standalone:https": "yarn start:standalone --https && https-server -S -C cert.pem -K key.pem",
+    "build": "cross-env NODE_ENV=production concurrently yarn:build:*",
     "build:webpack": "webpack --mode=production",
     "analyze": "webpack --mode=production --env analyze",
     "lint": "eslint \"src/**/*.+{js|ts|jsx|tsx}\" --quiet --fix",
@@ -27,8 +28,9 @@
     "@babel/preset-typescript": "^7.15.0",
     "@babel/runtime": "^7.15.3",
     "@testing-library/jest-dom": "^5.14.1",
-    "@testing-library/react": "^12.0.0",
+    "@testing-library/react": "^12.1.5",
     "@types/jest": "^27.0.1",
+    "@types/object-mapper": "^6.2.0",
     "@types/react": "^17.0.19",
     "@types/react-dom": "^17.0.9",
     "@types/systemjs": "^6.1.1",
@@ -62,16 +64,23 @@
     "webpack-merge": "^5.8.0"
   },
   "dependencies": {
+    "@dnd-kit/core": "^6.0.8",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
     "@mui/icons-material": "^5.13.7",
     "@mui/material": "^5.13.7",
     "@mui/system": "^5.13.7",
+    "@types/react-beautiful-dnd": "^13.1.4",
+    "formik": "^2.4.2",
+    "object-mapper": "^6.2.0",
     "react": "^17.0.2",
+    "react-beautiful-dnd": "^13.1.1",
     "react-dom": "^17.0.2",
+    "react-http-query": "^1.1.1",
     "react-router-dom": "^6.14.1",
     "single-spa": "^5.9.3",
-    "single-spa-react": "^4.3.1"
+    "single-spa-react": "^4.3.1",
+    "yup": "^1.2.0"
   },
   "lint-staged": {
     "src/**/*.{ts,jsx,jsx,js}": [

@@ -7,6 +7,9 @@ import {
    LaunchOutlined,
    SvgIconComponent,
    VisibilityOutlined,
+   AddCircle,
+   Close,
+   CheckCircle,
 } from '@mui/icons-material';
 import { SvgIconProps } from '@mui/material';
 
@@ -17,6 +20,9 @@ export const Icons: Record<IconType, SvgIconComponent> = {
    'open-link': LaunchOutlined,
    'three-bar': DehazeOutlined,
    block: BlockOutlined,
+   'add-circle': AddCircle,
+   close: Close,
+   'check-circle': CheckCircle,
 };
 
 export interface IconProps extends Omit<SvgIconProps, 'name'> {

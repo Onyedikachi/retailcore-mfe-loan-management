@@ -1,4 +1,4 @@
-# @Sterling/product-factory
+# @Sterling/create-credit-product
 
 This repository contains the source code for the Sterling Product Factory application.
 
@@ -10,24 +10,24 @@ To set up the application on your local system, follow these steps:
 
    Clone the repository by running the following command:
 
-   `git clone https://github.com/sterling-retailcore-team/retailcore-mfe-product-factory.git `
+   `git clone https://github.com/sterling-retailcore-team/retailcore-mfe-create-credit-product.git `
 
 
 2. **Install dependencies:**
 
     Navigate to the cloned repository's directory:
 
-    `cd retailcore-mfe-product-factory`
+    `cd retailcore-mfe-create-credit-product`
 
     Install the required dependencies by running:
 
-    `npm install`
+    `yarn`
 
 3. **Start the application:**
 
     Start the application in standalone mode by running:
 
-    `npm run start:standalone`
+    `yarn start:standalone`
 
     This will launch the application and you can access it in your browser at `http://localhost:8083/product/factory`.
 

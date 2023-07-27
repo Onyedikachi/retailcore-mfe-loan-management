@@ -4,6 +4,7 @@ export const Colors = {
    Danger: '#CF2A2A',
    Info: '#3FA2F7',
    Primary: '#CF2A2A',
+   LightPrimary: '#E8C8C85E',
    Secondary: '',
    Warning: '',
    DarkGreen: '#15692A',
@@ -12,6 +13,13 @@ export const Colors = {
    TextGray: '#636363',
    LightGray: '#AAAAAA',
    LightGray1: '#D8DAE5',
+   LightGray3: '#8F8F8F',
+   LightGray4: '#BCBBBB',
+   LightGray5: '#667085',
+   BorderGray: '#C2C9D1',
+   TableBgRed: '#FFFBFB',
+   Pink: '#FFE9E9',
+   Gray50: '#F7F7F7',
    /** For white text on dark Bg. */
    LightGray2: '#F6F8F9',
    Gray: '#808080',
@@ -26,7 +34,7 @@ export const Colors = {
    BgCardSuccess: '#D4F7DC',
    /** For gray chip bg with {@linkcode Colors.DarkGray} text on it. */
    BgCardGray: '#E5E5EA',
-   LinearGradient: 'linear-gradient(90deg, #783B96 0%, #C5593C 100%))',
+   LinearGradient: 'linear-gradient(90deg, #783B96 0%, #C5593C 100%)',
 } as const;
 
 export const ColorMaps = {

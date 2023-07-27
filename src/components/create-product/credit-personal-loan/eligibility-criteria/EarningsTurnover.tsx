@@ -1,0 +1,84 @@
+import { FormControlBase } from '@app/components/forms/FormControl';
+import FormControlWrapper from '@app/components/forms/FormControlWrapper';
+import { Grid } from '@mui/material';
+import * as FormMeta from '@app/utils/validators/personal-loan/eligibility-criteria';
+import RequiredIndicator from '@app/components/atoms/RequiredIndicator';
+import { EarningsControl } from '@app/components/forms/EarningsControls';
+import { useCreateProductContext } from '@app/providers/create-product';
+import { FormikProps } from 'formik';
+import { useFormikHelper } from '@app/hooks/useFormikHelper';
+
+const EarningsOrTurnover: React.FC<{ formik: FormikProps<any> }> = ({ formik }) => {
+   const { InputFieldNames, ToolTipText } = FormMeta;
+   const { productMeta } = useCreateProductContext();
+   const { resetFieldState } = useFormikHelper(formik);
+   const earningType = formik.values?.[InputFieldNames.EARNINGS_TYPE];
+   const isFixed = earningType === 'fixed';
+
+   return (
+      <>
+         <FormControlWrapper
+            name={InputFieldNames.SET_EARNINGS}
+            label="Set up this eligibility criteria?"
+            layout="horizontal"
+            tooltipText={ToolTipText.earnings}
+         >
+            <FormControlBase
+               sx={{ ml: 7 }}
+               control="switch"
+               onChange={(e: any) => {
+                  if (!e.target.checked) {
+                     resetFieldState(InputFieldNames.EARNINGS_TYPE);
+                     resetFieldState(InputFieldNames.EARNINGS_VALUE);
+                     resetFieldState(InputFieldNames.EARNINGS_PERIOD_VALUE);
+                     resetFieldState(InputFieldNames.EARNINGS_PERIOD);
+                  }
+               }}
+               name={InputFieldNames.SET_EARNINGS}
+            />
+         </FormControlWrapper>
+         {formik.values[InputFieldNames.SET_EARNINGS] && (
+            <>
+               <Grid container>
+                  <Grid item xs={2}>
+                     Earnings <RequiredIndicator />
+                  </Grid>
+                  <Grid item xs={10}>
+                     <FormControlBase
+                        sx={{ mb: 3 }}
+                        name={InputFieldNames.EARNINGS_TYPE}
+                        control="radio"
+                        onChange={() => {
+                           resetFieldState(InputFieldNames.EARNINGS_VALUE);
+                        }}
+                        options={[
+                           { label: 'Fixed', value: 'fixed' },
+                           { label: '% of Loan Amount', value: 'percent' },
+                        ]}
+                     />
+                     {earningType && (
+                        <Grid container sx={{ mb: 3 }}>
+                           <EarningsControl
+                              firstName={InputFieldNames.EARNINGS_VALUE}
+                              secondName={InputFieldNames.EARNINGS_PERIOD_VALUE}
+                              thirdName={InputFieldNames.EARNINGS_PERIOD}
+                              firstPlaceHolder={isFixed ? 'Enter a amount' : 'Enter a percentage'}
+                              thirdPlaceHolder="Select period"
+                              formik={formik}
+                              isCurrency={isFixed}
+                              bridgeWord="over"
+                              {...(isFixed
+                                 ? { extraLeft: productMeta?.currency ?? 'NGN' }
+                                 : { extraRight: '%' })}
+                           />
+                        </Grid>
+                     )}
+                  </Grid>
+               </Grid>
+            </>
+         )}
+      </>
+   );
+};
+
+export default EarningsOrTurnover;
