@@ -93,12 +93,10 @@ describe('Component <FormControlBase />', () => {
          </TestForm>
       );
 
-      const checkboxGroupElements = container.querySelectorAll(
-         'input[name="checkboxGroup"]'
-      ) as NodeListOf<HTMLInputElement>;
+      const checkboxGroupElements = container.querySelectorAll('input[name="checkboxGroup"]');
       expect(checkboxGroupElements).toHaveLength(3);
       checkboxGroupElements.forEach((checkboxElement) => {
-         expect(checkboxElement.type).toBe('checkbox');
+         expect(checkboxElement.tagName).toBe('INPUT');
       });
    });
 

@@ -25,14 +25,11 @@ export const objectDiff = <T>(
       return baseObject.every((baseValue) => JSON.stringify(baseValue) !== JSON.stringify(value));
    });
 
+   const actionType = baseDiff.length && !compareDiff.length ? 'add' : 'indeterminate';
+
    return {
       compareDiff,
       baseDiff,
-      actionType:
-         baseDiff.length && !compareDiff.length
-            ? 'add'
-            : !baseDiff.length && compareDiff.length
-            ? 'remove'
-            : 'indeterminate',
+      actionType: !baseDiff.length && compareDiff.length ? 'remove' : actionType,
    };
 };

@@ -15,8 +15,8 @@ export const TestStepper = () => {
    return (
       <StepperProvider defaultStep={1}>
          <Stepper childrenWrapper={StepContentWrapper} stepLabels={testLabel}>
-            {testLabel.map((_, index) => (
-               <StepContent index={index} key={index} />
+            {testLabel.map((label, index) => (
+               <StepContent index={index} key={label} />
             ))}
          </Stepper>
       </StepperProvider>

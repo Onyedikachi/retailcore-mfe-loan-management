@@ -40,7 +40,7 @@ const SelectedRequirements: React.FC<SelectedRequirementsProps> = ({ onCompleted
                            {selectedRequirements.map((item, index) => (
                               <ConfigureRequirementForm
                                  name={`${InputFieldNames.OTHER_REQUIREMENT_VALUES}[${index}].`}
-                                 key={index}
+                                 key={item.id}
                                  formik={formik}
                                  requirement={item}
                               />

@@ -37,7 +37,7 @@ export const CheckBoxGroup: React.FC<CheckBoxGroupProps> = ({ actionComp, option
                   <FormControl fullWidth>
                      <FormGroup {...props} {...field} id={props.name}>
                         {options.map((option, id) => (
-                           <React.Fragment key={id}>
+                           <React.Fragment key={option}>
                               <FormControlLabel
                                  sx={{ mb: 1 }}
                                  value={option}

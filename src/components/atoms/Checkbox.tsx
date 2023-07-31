@@ -1,4 +1,4 @@
-import React, { InputHTMLAttributes } from 'react';
+import React from 'react';
 import { Checkbox as MuiCheckbox, CheckboxProps as MuiCheckboxProps, styled } from '@mui/material';
 
 import { CheckBoxTheme } from '../../utils/material-themes/mui-checkbox';

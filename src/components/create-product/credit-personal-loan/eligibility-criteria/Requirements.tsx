@@ -74,13 +74,13 @@ const Requirements: React.FC<{ formik: FormikProps<any> }> = ({ formik }) => {
             <List sx={{ px: 2 }}>
                <FormControl component="fieldset">
                   <FormGroup>
-                     {requirement?.map(({ title }, index) => (
+                     {requirement?.map(({ title }) => (
                         <ListItem
                            sx={{
                               p: 0,
                               '& .MuiFormControlLabel-label': { fontSize: '14px', fontWeight: 'normal' },
                            }}
-                           key={title + index}
+                           key={title}
                         >
                            <FormControlLabel
                               control={

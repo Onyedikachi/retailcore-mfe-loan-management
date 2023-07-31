@@ -145,8 +145,8 @@ const CreateOtherRequirement: React.FC<{ onCompleted: () => void }> = ({ onCompl
                                        <Grid container>
                                           {formik.values[InputFieldNames.ADD_FORMAT]
                                              .split(',')
-                                             .map((item: string, index: number) => (
-                                                <Grid key={index + item} mb={1}>
+                                             .map((item: string) => (
+                                                <Grid key={item} mb={1}>
                                                    <DocumentFormat>
                                                       {item}
                                                       <Icon

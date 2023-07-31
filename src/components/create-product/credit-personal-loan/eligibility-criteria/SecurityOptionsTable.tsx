@@ -69,12 +69,14 @@ const guarantorOptions = [{ key: 'guarantor', element: 'DOCUMENT NAME' }];
 
 const otherSecurityOptions = [{ key: 'other', element: 'OTHER SECURITY REQUIREMNTS' }];
 
+const options = {
+   collateral: collateralAssetsOptions,
+   guarantor: guarantorOptions,
+   other: otherSecurityOptions,
+};
+
 const tableHeaderMeta = (option: SecurityOptions) => [
    { key: 'sn', element: 'S/N' },
-   ...(option === 'collateral'
-      ? collateralAssetsOptions
-      : option === 'guarantor'
-      ? guarantorOptions
-      : otherSecurityOptions),
+   ...options[option],
    { key: 'cancel' },
 ];

@@ -1,7 +1,7 @@
 /* eslint-disable camelcase */
 import { OtherRequirementDocument } from '@app/@types/create-credit-product';
 import { API_PATH } from '@app/constants';
-import React, { createContext, useState, useContext } from 'react';
+import React, { createContext, useState, useContext, useMemo, useCallback } from 'react';
 import { useRequest } from 'react-http-query';
 
 type OtherRequirementContextType = {
@@ -45,19 +45,34 @@ export const OtherRequirementProvider: React.FC<{ children: React.ReactNode }> =
    const handleSelectRequirement = (requirement: OtherRequirementDocument[]) =>
       setSelectedRequirements(requirement);
 
-   const handleClearSelectedRequirement = () => setSelectedRequirements([]);
+   const handleClearSelectedRequirement = useCallback(
+      () => setSelectedRequirements([]),
+      [setSelectedRequirements]
+   );
 
-   const handleAddNewRequirement = (newRequirement: OtherRequirementDocument) => {
-      setAllRequirements((prevRequirements) => [...prevRequirements, newRequirement]);
-   };
+   const handleAddNewRequirement = useCallback(
+      (newRequirement: OtherRequirementDocument) => {
+         setAllRequirements((prevRequirements) => [...prevRequirements, newRequirement]);
+      },
+      [setAllRequirements]
+   );
 
-   const contextValue: OtherRequirementContextType = {
-      allRequirements,
-      selectedRequirements,
-      handleSelectRequirement,
-      handleAddNewRequirement,
-      handleClearSelectedRequirement,
-   };
+   const contextValue: OtherRequirementContextType = useMemo(
+      () => ({
+         allRequirements,
+         selectedRequirements,
+         handleSelectRequirement,
+         handleAddNewRequirement,
+         handleClearSelectedRequirement,
+      }),
+      [
+         allRequirements,
+         selectedRequirements,
+         handleSelectRequirement,
+         handleAddNewRequirement,
+         handleClearSelectedRequirement,
+      ]
+   );
 
    return (
       <OtherRequirementContext.Provider value={contextValue}>{children}</OtherRequirementContext.Provider>

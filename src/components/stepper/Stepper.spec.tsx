@@ -10,8 +10,8 @@ describe('Component <Stepper />', () => {
       const StepperComponent = () => {
          return (
             <Stepper stepLabels={stepLabels}>
-               {stepLabels.map((_, index) => (
-                  <StepperContent key={index} index={index} />
+               {stepLabels.map((label, index) => (
+                  <StepperContent key={label} index={index} />
                ))}
             </Stepper>
          );
@@ -29,15 +29,13 @@ describe('Component <Stepper />', () => {
    it('should render children correctly', () => {
       const stepLabels = ['Step 1', 'Step 2', 'Step 3'];
 
-      const StepperComponent = () => {
-         return (
-            <Stepper stepLabels={stepLabels}>
-               {stepLabels.map((_, index) => (
-                  <StepperContent key={index} index={index} />
-               ))}
-            </Stepper>
-         );
-      };
+      const StepperComponent = () => (
+         <Stepper stepLabels={stepLabels}>
+            {stepLabels.map((label, index) => (
+               <StepperContent key={label} index={index} />
+            ))}
+         </Stepper>
+      );
 
       const { getByTestId } = render(
          <StepperProvider>
@@ -59,8 +57,8 @@ describe('Component <Stepper />', () => {
 
          return (
             <Stepper stepLabels={stepLabels}>
-               {stepLabels.map((_, index) => (
-                  <StepperContent key={index} index={index} />
+               {stepLabels.map((label, index) => (
+                  <StepperContent key={label} index={index} />
                ))}
             </Stepper>
          );
@@ -117,8 +115,8 @@ describe('Component <Stepper />', () => {
 
          return (
             <Stepper stepLabels={stepLabels}>
-               {stepLabels.map((_, index) => (
-                  <StepperContent key={index} index={index} />
+               {stepLabels.map((label, index) => (
+                  <StepperContent key={label} index={index} />
                ))}
             </Stepper>
          );
@@ -149,8 +147,8 @@ describe('Component <Stepper />', () => {
       const StepperComponent = () => {
          return (
             <Stepper onStepClick={spyFn} stepLabels={stepLabels}>
-               {stepLabels.map((_, index) => (
-                  <StepperContent key={index} index={index} />
+               {stepLabels.map((label, index) => (
+                  <StepperContent key={label} index={index} />
                ))}
             </Stepper>
          );

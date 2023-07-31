@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { CreateCreditProduct } from '@app/@types/create-credit-product';
 
 interface CreateProductProviderProps {
@@ -40,48 +40,60 @@ export const CreateProductProvider = ({ children }: CreateProductProviderProps) 
       eligibilityCriteriaSubmitted: false,
    });
 
-   const addProductStep = <T extends keyof CreateCreditProduct>(
-      stepKey: T,
-      values: CreateCreditProduct[T]
-   ) => {
-      setProductMeta((initialProductMeta) => ({
-         ...initialProductMeta,
-         productDetails: {
-            ...initialProductMeta?.productDetails,
-            [stepKey]: values,
-         },
-      }));
-   };
+   const addProductStep = useCallback(
+      <T extends keyof CreateCreditProduct>(stepKey: T, values: CreateCreditProduct[T]) => {
+         setProductMeta((initialProductMeta) => ({
+            ...initialProductMeta,
+            productDetails: {
+               ...initialProductMeta?.productDetails,
+               [stepKey]: values,
+            },
+         }));
+      },
+      [setProductMeta]
+   );
 
-   const setCurrency = (currency: string) => {
-      setProductMeta((initialProductMeta) => ({
-         ...initialProductMeta,
-         currency,
-      }));
-   };
+   const setCurrency = useCallback(
+      (currency: string) => {
+         setProductMeta((initialProductMeta) => ({
+            ...initialProductMeta,
+            currency,
+         }));
+      },
+      [setProductMeta]
+   );
 
    /** this is used to set if a step has been submitted. */
-   const updateProductStepState = (step: keyof CreateCreditProduct, isSubmitted: boolean) => {
-      setProductStepState((initial) => ({
-         ...initial,
-         [step]: isSubmitted,
-      }));
-   };
-
-   return (
-      <CreateProductContext.Provider
-         value={{
-            submitted: {
-               productInformation: productInformationSubmitted,
-               eligibilityCriteria: eligibilityCriteriaSubmitted,
-            },
-            setCurrency,
-            addProductStep,
-            productMeta,
-            updateProductStepState,
-         }}
-      >
-         {children}
-      </CreateProductContext.Provider>
+   const updateProductStepState = useCallback(
+      (step: keyof CreateCreditProduct, isSubmitted: boolean) => {
+         setProductStepState((initial) => ({
+            ...initial,
+            [step]: isSubmitted,
+         }));
+      },
+      [setProductStepState]
    );
+
+   const providerValues = useMemo(
+      () => ({
+         submitted: {
+            productInformation: productInformationSubmitted,
+            eligibilityCriteria: eligibilityCriteriaSubmitted,
+         },
+         setCurrency,
+         addProductStep,
+         productMeta,
+         updateProductStepState,
+      }),
+      [
+         setCurrency,
+         addProductStep,
+         productMeta,
+         updateProductStepState,
+         productInformationSubmitted,
+         eligibilityCriteriaSubmitted,
+      ]
+   );
+
+   return <CreateProductContext.Provider value={providerValues}>{children}</CreateProductContext.Provider>;
 };

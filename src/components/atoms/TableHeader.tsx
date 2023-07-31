@@ -1,13 +1,13 @@
 import { IconType } from '@app/@types';
-import { TableHead as MuiTableHead, TableCell, TableHeadProps, TableRow } from '@mui/material';
+import { TableHead as MuiTableHead, SvgIconProps, TableCell, TableHeadProps, TableRow } from '@mui/material';
 import React from 'react';
 import { Icon as IconSVG } from './Icon';
 
 export interface TableHeaderData {
    key: string;
    isEmpty?: string;
-   leftIcon?: ((props: any) => JSX.Element) | IconType;
-   rightIcon?: ((props: any) => JSX.Element) | IconType;
+   leftIcon?: React.FC<SvgIconProps> | IconType;
+   rightIcon?: React.FC<SvgIconProps> | IconType;
    element?: React.ReactNode;
    leftIconKey?: string;
    rightIconKey?: string;

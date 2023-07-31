@@ -41,7 +41,7 @@ export const CreateProductHeader = () => {
                </IconButton>
             </Link>
             {['Credit', applicationPathName ?? '', 'Product Factory'].map((message, index) => (
-               <Fragment key={index}>
+               <Fragment key={message}>
                   <Typography
                      sx={{ textTransform: 'capitalize', ...(index < 2 && { color: Colors.LightGray3 }) }}
                   >
