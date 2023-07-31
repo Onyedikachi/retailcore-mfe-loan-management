@@ -13,9 +13,11 @@ jobs:
   code_quality:
     uses: sterling-retailcore-team/workflow-templates/.github/workflows/code_quality.yml@main
     secrets: inherit
+    with:
+      CODE_COVERAGE: 'node' # specify codebase for code coverage. e.g CODE_COVERAGE: 'node' or CODE_COVERAGE: 'python', e.t.c
   container_scan:
     uses: sterling-retailcore-team/workflow-templates/.github/workflows/container_scan.yml@main
-    secrets: inherit
+    secrets: inherit 
   build_and_push_image:
     uses: sterling-retailcore-team/workflow-templates/.github/workflows/build.yml@main
     needs: [code_quality, container_scan]
