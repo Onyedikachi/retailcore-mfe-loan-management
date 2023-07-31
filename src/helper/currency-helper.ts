@@ -8,7 +8,7 @@ export const currencyInputFormatter = (inputValue: string) => {
    const rawValue = inputValue.replace(/[^\d.]/g, '');
    const parts = rawValue.split('.');
 
-   const integerPart = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+   const integerPart = parts[0].replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
    const decimalPart = !isNullish(parts[1]) ? `.${parts[1].substring(0, 2)}` : '';
 
    return {
