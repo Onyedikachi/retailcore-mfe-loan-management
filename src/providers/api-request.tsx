@@ -24,6 +24,35 @@ export const APIRequestProvider = ({ children }: APIRequestProviderProps) => {
    const baseUrl = API_URL ?? '';
    const [requestUrl, setRequestUrl] = useState('');
 
+   const renderLoader = (isLoading: boolean) => {
+      if (isLoading && !LOADING_IGNORED_ROUTE.some((route) => requestUrl.includes(route))) {
+         return <Loader />;
+      }
+
+      return <></>;
+   };
+
+   const renderErrorSnackBar = (errorResponse: any) => {
+      if (!ERROR_DISPLAYED_IGNORED_ROUTE.some((route) => requestUrl.includes(route))) {
+         const { data } = errorResponse;
+         let errorMessage = data?.message;
+         if (Array.isArray(errorMessage)) {
+            errorMessage = errorMessage.join(', ');
+         }
+         return <AlertSnackbar alertType="error" message={errorMessage} />;
+      }
+
+      return <></>;
+   };
+
+   const renderSuccessSnackbar = (response: any) => {
+      if (!SUCCESS_DISPLAYED_IGNORED_ROUTE.some((route) => requestUrl.includes(route))) {
+         return <AlertSnackbar alertType="success" message={response.message ?? 'Request Successful'} />;
+      }
+
+      return <></>;
+   };
+
    return (
       <RequestProvider
          interceptors={{
@@ -39,26 +68,9 @@ export const APIRequestProvider = ({ children }: APIRequestProviderProps) => {
                };
             },
          }}
-         onLoading={(isLoading) => {
-            if (isLoading && !LOADING_IGNORED_ROUTE.some((route) => requestUrl.includes(route))) {
-               return <Loader />;
-            }
-         }}
-         onError={(errorResponse) => {
-            if (!ERROR_DISPLAYED_IGNORED_ROUTE.some((route) => requestUrl.includes(route))) {
-               const { data } = errorResponse;
-               let errorMessage = data?.message;
-               if (Array.isArray(errorMessage)) {
-                  errorMessage = errorMessage.join(', ');
-               }
-               return <AlertSnackbar alertType="error" message={errorMessage} />;
-            }
-         }}
-         onSuccess={(reponse) => {
-            if (!SUCCESS_DISPLAYED_IGNORED_ROUTE.some((route) => requestUrl.includes(route))) {
-               return <AlertSnackbar alertType="success" message={reponse.message ?? 'Request Successful'} />;
-            }
-         }}
+         onLoading={renderLoader}
+         onError={renderErrorSnackBar}
+         onSuccess={renderSuccessSnackbar}
          baseUrl={baseUrl}
       >
          {children}

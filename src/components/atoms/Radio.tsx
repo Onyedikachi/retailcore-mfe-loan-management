@@ -31,10 +31,10 @@ export const RadioGroup: React.FC<RadioGroupProps> = ({ options, ...props }) => 
                         }}
                         id={props.name}
                      >
-                        {options.map((option, id) => (
+                        {options.map((option) => (
                            <FormControlLabel
                               sx={{ mr: 5 }}
-                              key={id}
+                              key={option.label}
                               value={option.value}
                               control={<Radio />}
                               label={option.label}

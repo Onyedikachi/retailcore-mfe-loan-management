@@ -42,13 +42,13 @@ const AddDocumentFormat: React.FC<AddDocumentFormatProps> = ({ handleSelected, s
             <List sx={{ px: 2 }}>
                <FormControl component="fieldset">
                   <FormGroup>
-                     {items.map((option, index) => (
+                     {items.map((option) => (
                         <ListItem
                            sx={{
                               p: 0,
                               '& .MuiFormControlLabel-label': { fontSize: '14px', fontWeight: 'normal' },
                            }}
-                           key={option + index}
+                           key={option}
                         >
                            <FormControlLabel
                               control={

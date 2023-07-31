@@ -107,13 +107,7 @@ const equityContributions = {
    [InputFieldNames.EQUITY_VALUE_FROM]: Yup.string().when(
       InputFieldNames.EQUITY_TYPE,
       (equityContributionType, field) =>
-         equityContributionType[0] == 'fixed'
-            ? field
-                 .required('Enter a percentage')
-                 .test(InputFieldNames.EQUITY_VALUE_FROM, 'Must be greater 0', function (value) {
-                    if (value) return Number(value) > 0;
-                 })
-            : equityContributionType[0] == 'range'
+         ['fixed', 'range'].includes(equityContributionType[0])
             ? field
                  .required('Enter a percentage')
                  .test(InputFieldNames.EQUITY_VALUE_FROM, 'Must be greater 0', function (value) {
@@ -191,52 +185,41 @@ export const securities = {
    ),
 };
 
+const requirementsShape = Yup.object().shape({
+   [InputFieldNames.PERIODICITY_NUM_START]: Yup.number().test(
+      InputFieldNames.PERIODICITY_NUM_START,
+      'Must be greater 0',
+      (value) => (value ?? 0) > 0
+   ),
+   [InputFieldNames.PERIODICITY_NUM_END]: Yup.number()
+      .when(InputFieldNames.PERIODICITY_NUM_START, (periodicityNumStart, schema) =>
+         periodicityNumStart ? schema.required('Field is required') : schema
+      )
+      .test(InputFieldNames.PERIODICITY_NUM_END, 'Must be greater 0', (value) => (value ?? 0) > 0)
+      .test(InputFieldNames.PERIODICITY_NUM_END, 'Must be greater than start periodicity', function (value) {
+         if (value) {
+            const { [InputFieldNames.PERIODICITY_NUM_START]: periodicityNumStart } = this.parent;
+            return Number(value) > Number(periodicityNumStart);
+         }
+      }),
+   [InputFieldNames.PERIODICITY_PERIOD]: Yup.string(),
+   [InputFieldNames.SET_FORMAT]: Yup.boolean(),
+   [InputFieldNames.ADD_FORMAT]: Yup.string().when(InputFieldNames.SET_FORMAT, (setFormat, schema) =>
+      setFormat ? schema.required('Add at least one document format') : schema
+   ),
+});
+
 const otherEligibiltyCriteria = {
    [InputFieldNames.SET_OTHER_REQUIREMENT]: Yup.boolean(),
    [InputFieldNames.OTHER_REQUIREMENT_VALUES]: Yup.array().when(
       InputFieldNames.SET_OTHER_REQUIREMENT,
-      (setOtherRequirement, field) =>
+      (setOtherRequirement, schema) =>
          setOtherRequirement?.[0]
-            ? field
+            ? schema
                  .min(1, 'Select at least one other requirement')
-                 .of(
-                    Yup.object().shape({
-                       [InputFieldNames.PERIODICITY_NUM_START]: Yup.number().test(
-                          InputFieldNames.PERIODICITY_NUM_START,
-                          'Must be greater 0',
-                          function (value) {
-                             if (value) return value > 0;
-                          }
-                       ),
-                       [InputFieldNames.PERIODICITY_NUM_END]: Yup.number()
-                          .when(InputFieldNames.PERIODICITY_NUM_START, (periodicityNumStart, field) =>
-                             periodicityNumStart ? field.required('Field is required') : field
-                          )
-                          .test(InputFieldNames.PERIODICITY_NUM_END, 'Must be greater 0', function (value) {
-                             if (value) return value > 0;
-                          })
-                          .test(
-                             InputFieldNames.PERIODICITY_NUM_END,
-                             'Must be greater than start periodicity',
-                             function (value) {
-                                if (value) {
-                                   const { [InputFieldNames.PERIODICITY_NUM_START]: periodicityNumStart } =
-                                      this.parent;
-                                   return Number(value) > Number(periodicityNumStart);
-                                }
-                             }
-                          ),
-                       [InputFieldNames.PERIODICITY_PERIOD]: Yup.string(),
-                       [InputFieldNames.SET_FORMAT]: Yup.boolean(),
-                       [InputFieldNames.ADD_FORMAT]: Yup.string().when(
-                          InputFieldNames.SET_FORMAT,
-                          (setFormat, field) =>
-                             setFormat ? field.required('Add at least one document format') : field
-                       ),
-                    })
-                 )
+                 .of(requirementsShape)
                  .required('Configure all selected requirements as required')
-            : field
+            : schema
    ),
 };
 export const ToolTipText = {

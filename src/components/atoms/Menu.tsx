@@ -26,7 +26,7 @@ export const Menu = ({ open = false, items, ...restProps }: MenuProps) => {
                   item?.onClick?.(...args);
                   setActiveItem(index);
                }}
-               key={`${index}${item.label}`}
+               key={item.label}
             />
          ))}
       </StyledMenu>

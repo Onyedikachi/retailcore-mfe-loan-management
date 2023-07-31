@@ -115,8 +115,8 @@ const ConfigureRequirementForm: React.FC<{
                      {formats && (
                         <DocumentFormatContainer>
                            <Grid container>
-                              {formats.split(',').map((item: string, index: number) => (
-                                 <Grid key={index + item} mb={1}>
+                              {formats.split(',').map((item: string) => (
+                                 <Grid key={item} mb={1}>
                                     <DocumentFormat>
                                        {item}
                                        <Icon

@@ -89,7 +89,7 @@ export const ProductInformation: React.FC = () => {
             )?.id,
             // eslint-disable-next-line camelcase
             is_draft: Number(isDraft),
-            ...(productId && {id: productId})
+            ...(productId && { id: productId }),
          },
          method: productId ? 'PATCH' : 'POST',
       });
@@ -170,6 +170,7 @@ export const ProductInformation: React.FC = () => {
                            const isNext = type === 'next';
                            return (
                               <Button
+                                 key={type}
                                  sx={{ ...(isNext && { ml: 2 }) }}
                                  color={isNext ? 'primary' : undefined}
                                  onClick={() => setIsDraft(!isNext)}

@@ -25,7 +25,7 @@ const Security: React.FC<{ formik: FormikProps<any> }> = ({ formik }) => {
    } = useSecurityAction(formik);
 
    const getCheckedSecurity = (securityType: SecurityOptions) => {
-      return securityDocuments[securityType as SecurityOptions]
+      return securityDocuments[securityType]
          .filter(({ checked }) => checked)
          .map(({ name, id }) => ({ name, id: id }));
    };
@@ -53,8 +53,8 @@ const Security: React.FC<{ formik: FormikProps<any> }> = ({ formik }) => {
                         name={InputFieldNames.SECURITY_OPTION}
                         placeholder="Select period"
                         options={FormMeta.securityOptions}
-                        actionComp={['guarantor', 'collateral', 'other'].map((securityType, index) => (
-                           <Box mb={1} key={index}>
+                        actionComp={['guarantor', 'collateral', 'other'].map((securityType) => (
+                           <Box mb={1} key={securityType}>
                               <Button
                                  onClick={() => setActiveSecurityModal(securityType as SecurityOptions)}
                                  variant="text"

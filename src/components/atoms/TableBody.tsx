@@ -25,13 +25,13 @@ export const TableBody = ({ rows, tableHeaderData, ...otherProps }: TableBodyPro
       <MuiTableBody {...otherProps}>
          {rows.map((row, index) => (
             <StyledTableRow
-               key={index}
+               key={String(row)}
                sx={{ '&:last-child td, &:last-child th': { border: 0, borderBottom: 0 } }}
             >
                {rowskeys.map((key, contentIndex) => (
                   <TableCell
                      sx={{ paddingY: 0.4 }}
-                     key={`${index}${key}`}
+                     key={key}
                      scope="row"
                      {...(!contentIndex && { component: 'th' })}
                   >

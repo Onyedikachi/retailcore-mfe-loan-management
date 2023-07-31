@@ -72,7 +72,6 @@ const Accordion: React.FC<AccordionProps> = ({ accordionLabels, children, ...oth
                {...otherProps}
             >
                <AccordionSummary
-                  key={index}
                   expandIcon={<ExpandMoreIcon color="primary" />}
                   aria-controls={`panel${index}-content`}
                   id={`panel${index}-header`}

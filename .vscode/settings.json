@@ -25,5 +25,9 @@
    "typescript.tsdk": "node_modules/typescript/lib",
    "exportall.config.relExclusion": [
       "/src/components/create-product"
-   ]
+   ],
+   "sonarlint.connectedMode.project": {
+      "connectionId": "https-sonarqube-devops-bepeerless-co-",
+      "projectKey": "retailcore-mfe-create-credit-product"
+   }
  }
