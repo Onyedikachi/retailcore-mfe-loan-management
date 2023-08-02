@@ -28,7 +28,7 @@ export const productInfoInitialValues = () => ({
 export const productInfoValidator = () =>
    Yup.object({
       [CommonFormFieldNames.PRODUCT_NAME]: Yup.string()
-         .required('Product name is a required')
+         .required('Product name is required')
          .max(50, 'Product name should not be more than 50 characters'),
       [CommonFormFieldNames.DESCRIPTION]: Yup.string().required('Description is required'),
       [CommonFormFieldNames.PRODUCT_CURRENCY]: Yup.string().required('Product currency is required'),

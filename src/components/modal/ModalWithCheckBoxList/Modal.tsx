@@ -6,7 +6,7 @@ import { ListWithChildren, ListWithChildrenProps } from './ModalContent';
 import { AddCircle } from '@mui/icons-material';
 import { ModalWithCheckBoxItemChildren } from '@app/@types/security-document';
 import Dialog from '@app/components/atoms/Dialog';
-import { stringContains } from '@app/helper/compare';
+import { stringContains } from '@app/helper/string';
 import { objectDiff } from '@app/helper/object-diff';
 
 interface ReusableModalProps {
