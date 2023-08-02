@@ -1,7 +1,7 @@
 import * as FormMeta from '@app/utils/validators/personal-loan/product-info';
 import FormContainer from '../../../forms/FormContainer';
 import FormControlWrapper from '@app/components/forms/FormControlWrapper';
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Box, Divider, Grid, Typography } from '@mui/material';
 import { Button } from '@app/components/atoms';
 import { useCreateProductContext } from '@app/providers/create-product';
@@ -33,6 +33,7 @@ export const ProductInformation: React.FC = () => {
    const stepperContext = useStepperContext();
 
    const [searchParams, setSearchParams] = useSearchParams();
+   const productId = searchParams.get(PRODUCT_ID_PARAM_NAME);
 
    const { handleNavigation } = stepperContext;
 
@@ -47,24 +48,24 @@ export const ProductInformation: React.FC = () => {
    const [, postProductInfo] = useRequest({ onSuccess: handleOnSubmitSuccess });
    const [{ data: initialProductInfo }, refetchProductInfo] = useRequest();
 
-   // Retrieves saved value from the endpoints.
-   React.useEffect(() => {
-      const productId = searchParams.get(PRODUCT_ID_PARAM_NAME);
-      if (productId && !productMeta?.productDetails?.productInformation) {
-         refetchProductInfo(API_PATH.PRODUCT_INFO(productId));
-      }
-   }, []);
-
    const initialValues = useMemo(() => {
-      if (initialProductInfo?.data)
-         setCurrency(initialProductInfo.data[CommonFormFieldNames.PRODUCT_CURRENCY]);
-      else if (!productMeta?.productDetails?.productInformation) setCurrency('NGN');
       return productInfoMapper(
          initialProductInfo?.data ??
             productMeta?.productDetails?.productInformation ??
             FormMeta.productInfoInitialValues()
       );
    }, [initialProductInfo]);
+
+   useEffect(() => {
+      setCurrency(initialValues?.[CommonFormFieldNames.PRODUCT_CURRENCY] ?? 'NGN');
+   }, [initialValues]);
+
+   // Retrieves saved value from the endpoints.
+   React.useEffect(() => {
+      if (productId && !productMeta?.productDetails?.productInformation) {
+         refetchProductInfo(API_PATH.PRODUCT_INFO(productId));
+      }
+   }, []);
 
    const { setRequestPath: checkNameAvailability, response: availableResponse } = useDebounceRequests();
    const currencyList = useRequestData<CurrencyListResponse>(REQUEST_NAMES.CURRENCY_LIST);
@@ -77,7 +78,6 @@ export const ProductInformation: React.FC = () => {
       const { MAX_LOAN_PRINCIPAL, MIN_LOAN_PRINCIPAL, PRODUCT_CURRENCY_ID, PRODUCT_CURRENCY } =
          CommonFormFieldNames;
 
-      const productId = searchParams.get(PRODUCT_ID_PARAM_NAME);
       postProductInfo(API_PATH.PRODUCT_INFO(productId ?? undefined), {
          body: {
             ...values,
@@ -168,13 +168,15 @@ export const ProductInformation: React.FC = () => {
                      <Box display="flex" justifyContent="end" mt={5} mb={2}>
                         {['draft', 'next'].map((type) => {
                            const isNext = type === 'next';
+                           
                            return (
                               <Button
                                  key={type}
+                                 id={`product-info-submit-${type}`}
                                  sx={{ ...(isNext && { ml: 2 }) }}
                                  color={isNext ? 'primary' : undefined}
                                  onClick={() => setIsDraft(!isNext)}
-                                 disabled={Object.entries(formik.errors).length !== 0 || !formik.isValid}
+                                 disabled={isNext && ((!formik.dirty && !productId) || !formik.isValid)}
                                  type="submit"
                                  variant={isNext ? 'contained' : 'outlined'}
                               >
