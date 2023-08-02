@@ -26,68 +26,71 @@ type TestMeta = {
    }>;
 };
 
+const findQueryElement = (screen: any, selector: string) => {
+   const queryElement = screen.container.querySelector(selector);
+   if (!queryElement) {
+      throw Error(`Can't find query element with selector ${selector}.`);
+   }
+   return queryElement;
+};
+
+const performActions = async (acts: TestMeta['acts'], elementSelector: string, screen: any) => {
+   const user = userEvent.setup();
+   for (const { click, typeText, blur, focus, selector: actSelector, clear, mousedown } of acts) {
+      const actElement = actSelector
+         ? findQueryElement(screen, actSelector)
+         : findQueryElement(screen, elementSelector);
+
+      if (!actElement) {
+         throw Error(`Can't find query element with selector ${actSelector}.`);
+      }
+
+      await act(async () => {
+         if (focus) fireEvent.focus(actElement);
+         if (blur) fireEvent.blur(actElement);
+         if (typeText) await user.type(actElement, typeText);
+         if (click) fireEvent.click(actElement);
+         if (clear) await user.clear(actElement);
+         if (mousedown) fireEvent.mouseDown(actElement);
+      });
+   }
+};
+
+const testForm = (
+   component: React.ReactElement<any, string | React.JSXElementConstructor<any>>,
+   testMeta: TestMeta
+) => {
+   it(testMeta.testDescription, async () => {
+      const screen = render(component);
+      const queryElement = findQueryElement(screen, testMeta.selector);
+
+      await performActions(testMeta.acts, testMeta.selector, screen);
+
+      if (testMeta.expectedText) {
+         expect(screen.baseElement).toHaveTextContent(testMeta.expectedText);
+      }
+
+      if (!isNullish(testMeta.expectedInputValue)) {
+         expect((queryElement as HTMLInputElement).value).toBe(testMeta.expectedInputValue);
+      }
+
+      if (!isNullish(testMeta.expectedTextLength)) {
+         expect((queryElement as HTMLInputElement).value).toHaveLength(testMeta.expectedTextLength!);
+      }
+
+      if (testMeta.expectedClass) {
+         expect(queryElement?.classList.toString()).toContain(testMeta.expectedClass);
+      }
+
+      if (testMeta.buttonStatus) {
+         const buttonElement = screen.container.querySelector(testMeta.buttonStatus.selector);
+         expect((buttonElement as HTMLButtonElement).disabled).toBe(!!testMeta.buttonStatus.disabled);
+      }
+   });
+};
+
 export const formTestUtil =
    (component: React.ReactElement<any, string | React.JSXElementConstructor<any>>) =>
    (testMeta: Array<TestMeta>) => {
-      testMeta.forEach(
-         ({
-            testDescription,
-            expectedText,
-            selector,
-            buttonStatus,
-            expectedClass,
-            acts,
-            expectedTextLength,
-            expectedInputValue,
-         }) => {
-            it(testDescription, async () => {
-               const user = userEvent.setup();
-
-               const screen = render(component);
-
-               const queryElement = screen.container.querySelector(selector);
-               if (!queryElement) {
-                  throw Error(`Can't find query element with selector ${selector}.`);
-               }
-               // Fire all actions for this test case
-               for (const { click, typeText, blur, focus, selector: actSelector, clear, mousedown } of acts) {
-                  const actElement = actSelector ? screen.container.querySelector(actSelector) : queryElement;
-
-                  if (!actElement) {
-                     throw Error(`Can't find query element with selector ${actSelector}.`);
-                  }
-
-                  await act(async () => {
-                     if (focus) fireEvent.focus(actElement);
-                     if (blur) fireEvent.blur(actElement);
-                     if (!isNullish(typeText)) await user.type(actElement, typeText!);
-                     if (click) fireEvent.click(actElement);
-                     if (clear) await user.clear(actElement);
-                     if (mousedown) fireEvent.mouseDown(actElement);
-                  });
-               }
-
-               if (expectedText) {
-                  expect(screen.baseElement).toHaveTextContent(expectedText);
-               }
-
-               if (!isNullish(expectedInputValue)) {
-                  expect((queryElement as HTMLInputElement).value).toBe(expectedInputValue);
-               }
-
-               if (!isNullish(expectedTextLength)) {
-                  expect((queryElement as HTMLInputElement).value).toHaveLength(expectedTextLength!);
-               }
-
-               if (expectedClass) {
-                  expect(queryElement?.classList.toString()).toContain(expectedClass);
-               }
-
-               if (buttonStatus) {
-                  const buttonElement = screen.container.querySelector(buttonStatus.selector);
-                  expect((buttonElement as HTMLButtonElement).disabled).toBe(!!buttonStatus.disabled);
-               }
-            });
-         }
-      );
+      testMeta.forEach((meta) => testForm(component, meta));
    };

@@ -12,7 +12,7 @@ export const useDebounceRequests = (urlPath?: string, debounceTime = 3000) => {
       timeout.current && clearTimeout(timeout.current);
       timeout.current = setTimeout(() => {
          if (requestPath) {
-            makeDebounceRequest(requestPath as string, { body: requestBody as any });
+            makeDebounceRequest(requestPath, { body: requestBody as any });
          }
       }, debounceTime);
    }, [debounceTime, requestPath, requestBody]);
