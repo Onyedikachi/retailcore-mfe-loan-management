@@ -36,7 +36,7 @@ describe('<Table />', () => {
    });
 
    it('should add row count column if s/n is one of the headerProps data key', () => {
-      const { getByText, debug } = render(
+      const { getByText } = render(
          <GeneralAppSetup>
             <Table
                headerProps={{
@@ -51,8 +51,6 @@ describe('<Table />', () => {
             />
          </GeneralAppSetup>
       );
-
-      debug(undefined, Infinity);
 
       expect(getByText('1')).toHaveClass('MuiTableCell-body');
       expect(getByText('2')).toHaveClass('MuiTableCell-body');

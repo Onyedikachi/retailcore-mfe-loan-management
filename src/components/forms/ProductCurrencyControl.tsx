@@ -23,8 +23,6 @@ export const ProductCurrencyControl = ({
 }: ProductCurrencyControlProps) => {
    const value = useRequestData<CurrencyListResponse>(REQUEST_NAMES.CURRENCY_LIST);
 
-   console.log(value);
-
    return (
       <FormControlWrapper
          name={name ?? CommonFormFieldNames.PRODUCT_CURRENCY}

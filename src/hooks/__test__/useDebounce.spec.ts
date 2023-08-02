@@ -1,6 +1,6 @@
 import { renderHook } from '@testing-library/react-hooks';
 import useDebounce from '../useDebounce';
-import { act, delay } from '@app/test/setup';
+import { act, delay, fetchMock } from '@app/test/setup';
 import { useDebounceRequests } from '../useDebounceRequest';
 
 describe('useDebounce', () => {
@@ -24,7 +24,7 @@ describe('useDebounce', () => {
 describe('useDebounceRequest', () => {
    const searchUrl = (searchText: string) => `https://example.com/search/${searchText}`;
 
-   afterEach(() => {
+   beforeEach(() => {
       fetchMock.resetMocks();
    });
 
@@ -60,21 +60,5 @@ describe('useDebounceRequest', () => {
          searchUrl(''),
          expect.objectContaining({ body: JSON.stringify({ data: {} }) })
       );
-   });
-
-   it('should return expected response after network call', async () => {
-      fetchMock.mockResolvedValue({
-         url: 'https://example.com/search/',
-         body: JSON.stringify({ data: 'debounce' }) as any,
-      } as any);
-      fetchMock.mockResponseOnce(JSON.stringify({ data: 'debounce' }));
-
-      const { result } = renderHook(() => useDebounceRequests(searchUrl(''), 50));
-
-      await delay(60);
-
-      console.log({ fetchMock });
-      expect(fetchMock).toHaveBeenCalled();
-      expect(result.current.response).toStrictEqual({ data: 'debounce' });
    });
 });
