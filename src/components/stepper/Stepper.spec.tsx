@@ -16,13 +16,9 @@ describe('Component <Stepper />', () => {
          );
       };
 
-      try {
+      expect(() => {
          render(<StepperComponent />);
-      } catch (err) {
-         expect((err as any).message).toBe(
-            'To use stepper, Component has to be a descendant of StepperProvider.'
-         );
-      }
+      }).toThrow('To use stepper, Component has to be a descendant of StepperProvider.');
    });
 
    it('should render children correctly', () => {
@@ -161,11 +157,15 @@ describe('Component <Stepper />', () => {
 
       const containers = container.querySelectorAll('.MuiStepLabel-iconContainer > div');
 
-      fireEvent.click(containers.item(0));
+      act(() => {
+         fireEvent.click(containers.item(0));
+      });
       expect(spyFn).toHaveBeenCalledTimes(1);
       expect(spyFn).toHaveBeenCalledWith(0);
 
-      fireEvent.click(containers.item(2));
+      act(() => {
+         fireEvent.click(containers.item(2));
+      });
       expect(spyFn).toHaveBeenCalledTimes(2);
       expect(spyFn).toHaveBeenCalledWith(2);
    });

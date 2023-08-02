@@ -1,4 +1,4 @@
-import { fireEvent, render } from '@testing-library/react';
+import { act, fireEvent, render } from '@testing-library/react';
 import Accordion from './Accordion';
 
 describe('Component <Accordion />', () => {
@@ -30,12 +30,16 @@ describe('Component <Accordion />', () => {
       );
 
       let accordionSummary = container.querySelectorAll('.MuiAccordionSummary-root');
-      fireEvent.click(accordionSummary.item(0));
+      act(() => {
+         fireEvent.click(accordionSummary.item(0));
+      });
       accordionSummary = container.querySelectorAll('.MuiAccordionSummary-root');
       expect(accordionSummary.item(0).classList.contains('Mui-expanded')).toBe(true);
       expect(accordionSummary.item(1).classList.contains('Mui-expanded')).toBe(false);
 
-      fireEvent.click(accordionSummary.item(1));
+      act(() => {
+         fireEvent.click(accordionSummary.item(1));
+      });
       accordionSummary = container.querySelectorAll('.MuiAccordionSummary-root');
       expect(accordionSummary.item(0).classList.contains('Mui-expanded')).toBe(false);
       expect(accordionSummary.item(1).classList.contains('Mui-expanded')).toBe(true);

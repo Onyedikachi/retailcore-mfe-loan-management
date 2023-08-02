@@ -1,7 +1,7 @@
 import { formTestUtil } from '@app/test/form-util';
 import { ProductInformation } from '../credit-personal-loan';
 import { CommonFormFieldNames } from '@app/constants';
-import { CreateProductSetup, fireEvent, render } from '@app/test/setup';
+import { CreateProductSetup, act, fireEvent, render } from '@app/test/setup';
 import { useRequestData } from 'react-http-query';
 import mockCurrency from '@app/test/mocks/currency.json';
 import { InputFieldNames } from '@app/utils/validators/personal-loan/product-info';
@@ -114,13 +114,17 @@ describe('<ProductionInformation>', () => {
          );
          if (!currencySelectElement) throw Error('Currency input not found');
 
-         fireEvent.mouseDown(currencySelectElement);
-         
+         act(() => {
+            fireEvent.mouseDown(currencySelectElement);
+         });
+
          const { abbreviation } = mockCurrency.results[3];
          const option = getAllByRole('option').find((option) => option.dataset?.['value'] === abbreviation);
          if (!option) throw Error('Currency option not found');
 
-         fireEvent.click(option);
+         act(() => {
+            fireEvent.click(option);
+         });
 
          // Expect max principal loan to have currency abbr. updated.
          // Expect min principal loan to have currency abbr. updated.

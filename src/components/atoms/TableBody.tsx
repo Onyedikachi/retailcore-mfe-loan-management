@@ -31,7 +31,7 @@ export const TableBody = ({ rows, tableHeaderData, ...otherProps }: TableBodyPro
                {rowskeys.map((key, contentIndex) => (
                   <TableCell
                      sx={{ paddingY: 0.4 }}
-                     key={key}
+                     key={`key ${String(row)}`}
                      scope="row"
                      {...(!contentIndex && { component: 'th' })}
                   >
