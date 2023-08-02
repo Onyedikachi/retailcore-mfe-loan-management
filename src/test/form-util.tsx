@@ -22,6 +22,7 @@ type TestMeta = {
       focus?: boolean;
       selector?: string;
       clear?: boolean;
+      mousedown?: boolean;
    }>;
 };
 
@@ -37,7 +38,7 @@ export const formTestUtil =
             expectedClass,
             acts,
             expectedTextLength,
-            expectedInputValue
+            expectedInputValue,
          }) => {
             it(testDescription, async () => {
                const user = userEvent.setup();
@@ -49,7 +50,7 @@ export const formTestUtil =
                   throw Error(`Can't find query element with selector ${selector}.`);
                }
                // Fire all actions for this test case
-               for (const { click, typeText, blur, focus, selector: actSelector, clear } of acts) {
+               for (const { click, typeText, blur, focus, selector: actSelector, clear, mousedown } of acts) {
                   const actElement = actSelector ? screen.container.querySelector(actSelector) : queryElement;
 
                   if (!actElement) {
@@ -62,6 +63,7 @@ export const formTestUtil =
                      if (!isNullish(typeText)) await user.type(actElement, typeText!);
                      if (click) fireEvent.click(actElement);
                      if (clear) await user.clear(actElement);
+                     if (mousedown) fireEvent.mouseDown(actElement);
                   });
                }
 

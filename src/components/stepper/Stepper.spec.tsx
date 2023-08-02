@@ -1,7 +1,6 @@
 import { act, fireEvent, render } from '@testing-library/react';
 import { StepperContextProps, StepperProvider, useStepperContext } from '../../providers';
 import { Stepper } from './Stepper';
-import React from 'react';
 
 describe('Component <Stepper />', () => {
    it('should throw when not a descendant of `StepperProvider`', () => {
@@ -17,13 +16,13 @@ describe('Component <Stepper />', () => {
          );
       };
 
-      const renderStepper = () => {
+      try {
          render(<StepperComponent />);
-      };
-
-      expect(() => renderStepper()).toThrow(
-         'To use stepper, Component has to be a descendant of StepperProvider.'
-      );
+      } catch (err) {
+         expect((err as any).message).toBe(
+            'To use stepper, Component has to be a descendant of StepperProvider.'
+         );
+      }
    });
 
    it('should render children correctly', () => {

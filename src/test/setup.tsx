@@ -9,9 +9,19 @@ import { MemoryRouter } from 'react-router-dom';
 // Set up the fetch mock
 fetchMock.enableMocks();
 
-jest.mock('react-http-query', () => ({
-   useRequestData: jest.fn(),
-}));
+export const httpQueryMock = (fnName: string) => {
+   jest.mock('react-http-query', () => ({
+      useRequestData: jest.fn(),
+   }));
+
+   jest.doMock('react-http-query', () => {
+      const originalModule = jest.requireActual('react-http-query'); // Get the original module
+      return {
+         ...originalModule, // Spread the original module to keep other functions intact
+         [fnName]: jest.fn(), // Mock the specific function
+      };
+   });
+};
 
 export const GeneralAppSetup = ({ children }: { children: React.ReactNode }) => {
    return (
@@ -32,3 +42,9 @@ export const CreateProductSetup = ({ children }: { children: React.ReactNode }) 
       </GeneralAppSetup>
    );
 };
+
+export const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+
+export * from '@testing-library/react';
+
+export { fetchMock };

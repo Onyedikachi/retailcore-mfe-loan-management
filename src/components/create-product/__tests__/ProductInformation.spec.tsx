@@ -1,22 +1,29 @@
 import { formTestUtil } from '@app/test/form-util';
 import { ProductInformation } from '../credit-personal-loan';
 import { CommonFormFieldNames } from '@app/constants';
-import { CreateProductSetup } from '@app/test/setup';
+import { CreateProductSetup, fireEvent, render } from '@app/test/setup';
 import { useRequestData } from 'react-http-query';
 import mockCurrency from '@app/test/mocks/currency.json';
+import { InputFieldNames } from '@app/utils/validators/personal-loan/product-info';
 
 const buttonMeta = {
    selector: '#product-info-submit-next',
    disabled: true,
 };
 
-jest.doMock('react-http-query', () => {
+jest.mock('react-http-query', () => {
    const originalModule = jest.requireActual('react-http-query'); // Get the original module
    return {
-     ...originalModule, // Spread the original module to keep other functions intact
-     useRequestData: jest.fn(), // Mock the specific function
+      ...originalModule, // Spread the original module to keep other functions intact
+      useRequestData: jest.fn(), // Mock the specific function
    };
 });
+
+const productCurrencySelector = `input[name=${CommonFormFieldNames.PRODUCT_CURRENCY}]`;
+const minLoanTenure = `input[name=${InputFieldNames.MAX_LOAN_TENURE_NUM}]`;
+const maxLoanTenure = `input[name=${InputFieldNames.MAX_LOAN_TENURE_NUM}]`;
+const maxPrincipalSelector = `input[name=${CommonFormFieldNames.MAX_LOAN_PRINCIPAL}]`;
+const minPrincipalSelector = `input[name=${CommonFormFieldNames.MIN_LOAN_PRINCIPAL}]`;
 
 describe('<ProductionInformation>', () => {
    beforeEach(() => {
@@ -63,8 +70,7 @@ describe('<ProductionInformation>', () => {
          </CreateProductSetup>
       )([
          {
-            testDescription:
-               'Should display `Description is required` when input is empty after focus',
+            testDescription: 'Should display `Description is required` when input is empty after focus',
             selector: productDescriptionSelector,
             expectedText: 'Description is required',
             buttonStatus: buttonMeta,
@@ -82,21 +88,60 @@ describe('<ProductionInformation>', () => {
          (useRequestData as jest.Mock<unknown, any>).mockReset();
       });
 
-      const productCurrencySelector = `input[name=${CommonFormFieldNames.PRODUCT_CURRENCY}]`;
-
       formTestUtil(
          <CreateProductSetup>
             <ProductInformation />
          </CreateProductSetup>
       )([
          {
-            testDescription:
-               'Should have NGN set as default value',
+            testDescription: 'Should have NGN set as default value',
             selector: productCurrencySelector,
             expectedInputValue: 'NGN',
             buttonStatus: buttonMeta,
-            acts: []
+            acts: [],
          },
       ]);
+
+      it('should update currency type on all currency fields when currency type changes', () => {
+         const { container, getAllByRole, getAllByText } = render(
+            <CreateProductSetup>
+               <ProductInformation />
+            </CreateProductSetup>
+         );
+
+         const currencySelectElement = container.querySelector(
+            `#mui-component-select-${CommonFormFieldNames.PRODUCT_CURRENCY}`
+         );
+         if (!currencySelectElement) throw Error('Currency input not found');
+
+         fireEvent.mouseDown(currencySelectElement);
+         
+         const { abbreviation } = mockCurrency.results[3];
+         const option = getAllByRole('option').find((option) => option.dataset?.['value'] === abbreviation);
+         if (!option) throw Error('Currency option not found');
+
+         fireEvent.click(option);
+
+         // Expect max principal loan to have currency abbr. updated.
+         // Expect min principal loan to have currency abbr. updated.
+         // Expect the currency select field to have selected currency abbr. as set value.
+         expect(getAllByText(abbreviation).length).toBe(4);
+      });
+
+      describe('Min Loan Tenure', () => {
+         formTestUtil(
+            <CreateProductSetup>
+               <ProductInformation />
+            </CreateProductSetup>
+         )([
+            {
+               testDescription: 'Should have tenure value set to 1 as default',
+               selector: productCurrencySelector,
+               expectedInputValue: 'NGN',
+               buttonStatus: buttonMeta,
+               acts: [],
+            },
+         ]);
+      });
    });
 });

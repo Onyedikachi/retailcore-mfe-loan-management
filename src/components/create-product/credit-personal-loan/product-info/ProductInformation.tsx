@@ -168,7 +168,7 @@ export const ProductInformation: React.FC = () => {
                      <Box display="flex" justifyContent="end" mt={5} mb={2}>
                         {['draft', 'next'].map((type) => {
                            const isNext = type === 'next';
-                           
+
                            return (
                               <Button
                                  key={type}
