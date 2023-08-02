@@ -35,25 +35,33 @@ const findQueryElement = (screen: any, selector: string) => {
 };
 
 const performActions = async (acts: TestMeta['acts'], elementSelector: string, screen: any) => {
-   const user = userEvent.setup();
-   for (const { click, typeText, blur, focus, selector: actSelector, clear, mousedown } of acts) {
-      const actElement = actSelector
-         ? findQueryElement(screen, actSelector)
+   for (const act of acts) {
+      const actElement = act.selector
+         ? findQueryElement(screen, act.selector)
          : findQueryElement(screen, elementSelector);
 
       if (!actElement) {
-         throw Error(`Can't find query element with selector ${actSelector}.`);
+         throw Error(`Can't find query element with selector ${act.selector}.`);
       }
 
-      await act(async () => {
-         if (focus) fireEvent.focus(actElement);
-         if (blur) fireEvent.blur(actElement);
-         if (typeText) await user.type(actElement, typeText);
-         if (click) fireEvent.click(actElement);
-         if (clear) await user.clear(actElement);
-         if (mousedown) fireEvent.mouseDown(actElement);
-      });
+      await triggerEvent(act, actElement);
    }
+};
+
+const triggerEvent = async (
+   { focus, blur, typeText, clear, click, mousedown }: TestMeta['acts'][0],
+   actElement: any
+) => {
+   const user = userEvent.setup();
+
+   await act(async () => {
+      if (focus) fireEvent.focus(actElement);
+      if (blur) fireEvent.blur(actElement);
+      if (typeText) await user.type(actElement, typeText);
+      if (click) fireEvent.click(actElement);
+      if (clear) await user.clear(actElement);
+      if (mousedown) fireEvent.mouseDown(actElement);
+   });
 };
 
 const testForm = (
