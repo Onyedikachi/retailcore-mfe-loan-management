@@ -18,11 +18,11 @@ const StyledItemContainer = styled(Box)({
    marginRight: -10,
 });
 
-export interface CreateProductHeaderProps {
+export interface CreateLoanHeaderProps {
    title: string;
 }
 
-export const CreateProductHeader = () => {
+export const CreateLoanHeader = () => {
    const { pathname } = useLocation();
    const applicationPathName = Object.values(RoutePaths).find(({ absolute }) => absolute === pathname)?.name;
 

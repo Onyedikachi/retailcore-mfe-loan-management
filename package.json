@@ -1,5 +1,5 @@
 {
-  "name": "@Sterling/create-credit-product",
+  "name": "@Sterling/loan-management",
   "private": true,
   "scripts": {
     "start": "cross-env NODE_ENV=development webpack serve",

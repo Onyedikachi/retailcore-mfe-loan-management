@@ -1,6 +1,5 @@
 import { Stepper } from '@app/components';
-import { CreateProductHeader } from '@app/components/create-product/CreateProductHeader';
-import { EligibilityCriteria, ProductInformation } from '@app/components/create-product/credit-personal-loan';
+import { CreateLoanHeader } from '@app/components/create-loan/CreateLoanHeader';
 import { REQUEST_NAMES, RETAIL_CORE_API_PATH } from '@app/constants';
 import { ProductFactoryLayout } from '@app/layouts/ProductFactoryLayout';
 import { Box, styled } from '@mui/material';
@@ -28,7 +27,7 @@ const StepperContentWrapper = styled(Box)({
    marginTop: 20,
 });
 
-const PersonalLoanCreditContent = () => {
+const CreateIndividualLoanContent = () => {
    const stepperWrapperRef = React.useRef<HTMLElement>(null);
    const [headerHeight, setHeaderHeight] = React.useState<number>();
 
@@ -56,8 +55,7 @@ const PersonalLoanCreditContent = () => {
                'Account & Tax Enteries',
             ]}
          >
-            <ProductInformation />
-            <EligibilityCriteria />
+            <>1</>
             <>2</>
             <>3</>
             <>4</>
@@ -66,7 +64,7 @@ const PersonalLoanCreditContent = () => {
    );
 };
 
-export const CreditPersonalLoan = () => {
+export const CreateIndividualLoan = () => {
    // This request fetches currency list & caches for the usage elsewhere, so request is only being made once.
    useRequest({
       onMount: (getCurrencyList) => getCurrencyList(RETAIL_CORE_API_PATH.GET_CURRENCY),
@@ -76,8 +74,8 @@ export const CreditPersonalLoan = () => {
 
    return (
       <ProductFactoryLayout
-         header={<CreateProductHeader />}
-         content={<PersonalLoanCreditContent />}
+         header={<CreateLoanHeader />}
+         content={<CreateIndividualLoanContent />}
          fullContent={true}
       />
    );
