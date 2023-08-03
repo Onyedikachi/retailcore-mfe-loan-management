@@ -20,3 +20,8 @@ export const CommonTooltipText = {
    DESCRIPTION: 'Enter a description for this loan product ',
    PRODUCT_CURRENCY: 'Select an applicable currency for this loan product ',
 };
+
+export const EligibilityEarningsTypeOptions = [
+   { label: 'Fixed', value: 'fixed' },
+   { label: '% of Loan Amount', value: 'percent' },
+];

@@ -15,10 +15,15 @@ describe('Component <Stepper />', () => {
             </Stepper>
          );
       };
+      const spy = jest.spyOn(console, 'error');
+      // eslint-disable-next-line @typescript-eslint/no-empty-function
+      spy.mockImplementation(() => {});
 
       expect(() => {
          render(<StepperComponent />);
       }).toThrow('To use stepper, Component has to be a descendant of StepperProvider.');
+
+      spy.mockRestore();
    });
 
    it('should render children correctly', () => {

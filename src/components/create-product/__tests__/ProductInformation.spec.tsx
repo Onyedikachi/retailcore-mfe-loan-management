@@ -1,7 +1,7 @@
 import { formTestUtil } from '@app/test/form-util';
 import { ProductInformation } from '../credit-personal-loan';
 import { CommonFormFieldNames } from '@app/constants';
-import { CreateProductSetup, act, fireEvent, render } from '@app/test/setup';
+import { CreateProductSetup, act, fireEvent, render, silentError } from '@app/test/setup';
 import { useRequestData } from 'react-http-query';
 import mockCurrency from '@app/test/mocks/currency.json';
 import { InputFieldNames } from '@app/utils/validators/personal-loan/product-info';
@@ -29,6 +29,21 @@ describe('<ProductionInformation>', () => {
    beforeEach(() => {
       fetchMock.resetMocks();
    });
+
+   /* eslint-disable no-console */
+   let errorConsole: any | null = null;
+   let warnConsole: any | null = null;
+
+   beforeAll(() => {
+      errorConsole = silentError(['was not wrapped in act(...)']);
+      warnConsole =  silentError(['You have provided an out-of-range value'], 'warn');
+   });
+
+   afterAll(() => {
+      console.error = errorConsole;
+      console.warn = warnConsole;
+   });
+   /* eslint-enable no-console */
 
    describe('Product Name', () => {
       const productNameSelector = `input[name=${CommonFormFieldNames.PRODUCT_NAME}]`;

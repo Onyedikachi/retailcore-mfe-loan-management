@@ -47,4 +47,20 @@ export const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve
 
 export * from '@testing-library/react';
 
+/* eslint-disable no-console */
+export const silentError = (searchMessage: Array<string>, consoleType: 'warn' | 'error' = 'error') => {
+   const originalConsole = console[consoleType];
+
+   console[consoleType] = (consoleMessage, ...args) => {
+      // Check if the warning message contains the desired string
+      if (searchMessage.every((message) => !consoleMessage.includes(message))) {
+         // Log the warning only if it contains the desired string
+         originalConsole(consoleMessage, ...args);
+      }
+   };
+
+   return originalConsole;
+};
+/** eslint-enable no-console */
+
 export { fetchMock };

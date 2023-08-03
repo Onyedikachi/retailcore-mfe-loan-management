@@ -90,6 +90,7 @@ export const EligibilityCriteria: React.FC = () => {
                                     onClick={() => setIsDraft(!isNext)}
                                     disabled={!formik.isValid}
                                     type="submit"
+                                    id={`eligibility-submit-${type}`}
                                     variant={isNext ? 'contained' : 'outlined'}
                                  >
                                     {isNext ? 'Next' : 'Save As Draft'}

@@ -7,6 +7,7 @@ import { EarningsControl } from '@app/components/forms/EarningsControls';
 import { useCreateProductContext } from '@app/providers/create-product';
 import { FormikProps } from 'formik';
 import { useFormikHelper } from '@app/hooks/useFormikHelper';
+import { EligibilityEarningsTypeOptions } from '@app/constants';
 
 const EarningsOrTurnover: React.FC<{ formik: FormikProps<any> }> = ({ formik }) => {
    const { InputFieldNames, ToolTipText } = FormMeta;
@@ -51,10 +52,7 @@ const EarningsOrTurnover: React.FC<{ formik: FormikProps<any> }> = ({ formik }) 
                         onChange={() => {
                            resetFieldState(InputFieldNames.EARNINGS_VALUE);
                         }}
-                        options={[
-                           { label: 'Fixed', value: 'fixed' },
-                           { label: '% of Loan Amount', value: 'percent' },
-                        ]}
+                        options={EligibilityEarningsTypeOptions}
                      />
                      {earningType && (
                         <Grid container sx={{ mb: 3 }}>

@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React from 'react';
 import { render } from '@testing-library/react';
-import { InputProps, SelectProps, SwitchProps, RadioGroupProps, CheckBoxGroupProps } from '../atoms';
-import { FormControlBase } from './FormControl';
+import { InputProps, SelectProps, SwitchProps, RadioGroupProps, CheckBoxGroupProps } from '../../atoms';
+import { FormControlBase } from '../FormControl';
 import { Formik, Form } from 'formik';
 import { Box } from '@mui/system';
 import { ObjectAny } from '@app/@types';
