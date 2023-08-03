@@ -1,6 +1,6 @@
-# @Sterling/create-credit-product
+# @Sterling/loan-management
 
-This repository contains the source code for the Sterling Product Factory application.
+This repository contains the source code for the Sterling Loan Management application.
 
 ## Setup
 
@@ -10,14 +10,14 @@ To set up the application on your local system, follow these steps:
 
    Clone the repository by running the following command:
 
-   `git clone https://github.com/sterling-retailcore-team/retailcore-mfe-create-credit-product.git `
+   `git clone https://github.com/sterling-retailcore-team/retailcore-mfe-loan-management.git `
 
 
 2. **Install dependencies:**
 
     Navigate to the cloned repository's directory:
 
-    `cd retailcore-mfe-create-credit-product`
+    `cd retailcore-mfe-loan-management`
 
     Install the required dependencies by running:
 
@@ -29,7 +29,7 @@ To set up the application on your local system, follow these steps:
 
     `yarn start:standalone`
 
-    This will launch the application and you can access it in your browser at `http://localhost:8083/product/factory`.
+    This will launch the application and you can access it in your browser at `http://localhost:8083/loan-management`.
 
 
 ## Scripts
