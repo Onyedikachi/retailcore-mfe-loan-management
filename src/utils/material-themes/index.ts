@@ -99,7 +99,7 @@ export const GlobalTheme = createTheme(
                },
                '.fancy-scrollbar': {
                   '&::-webkit-scrollbar-thumb': {
-                     background: Colors.LinearGradient,
+                     background: Colors.Primary,
                      borderRadius: 10,
                   },
                   '::-webkit-scrollbar': {

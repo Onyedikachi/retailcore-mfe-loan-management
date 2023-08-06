@@ -1,23 +1,24 @@
 import { CreateIndividualLoan } from '@app/pages/CreateIndividualLoan';
 import { Permissions } from './permissions';
+import { LoanManagement } from '@app/components/loan-management/LoanManagement';
 
 export const BasePath = '/loan-management';
 
 export const RouteMaps = {
-   createIndividualLoan: {
-      element: <CreateIndividualLoan />,
-      path: (loanType = '/:loanType') => `${BasePath}${loanType}`,
+   loanManagement: {
+      element: <LoanManagement />,
+      path: BasePath,
    },
 };
 
 export const Routes = Object.values(RouteMaps).map(({ element, path }) => ({
    element,
-   path: typeof path === 'function' ? path() : path,
+   path: path,
 }));
 
 export const RoutePaths = {
    PersonalLoan: {
-      absolute: RouteMaps.createIndividualLoan.path('/personal-loans'),
+      absolute: RouteMaps.loanManagement.path,
       relative: '/personal-loans',
       name: 'Personal Loans',
       permissions: [Permissions.CREATE_CREDIT_PRODUCT],
