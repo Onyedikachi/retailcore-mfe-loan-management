@@ -12,15 +12,30 @@ interface DialogProps extends Omit<MuiDialogProps, 'maxWidth'> {
    title?: string;
    maxWidth?: number | string;
    minWidth?: number | string;
+   minHeight?: number | string;
 }
-const Dialog: React.FC<DialogProps> = ({ open, handleClose, title, children, maxWidth, minWidth }) => {
+const Dialog: React.FC<DialogProps> = ({
+   open,
+   handleClose,
+   title,
+   children,
+   maxWidth,
+   minWidth,
+   minHeight,
+}) => {
    return (
       <div>
          <MuiDialog
             onClose={handleClose}
             open={open}
             PaperProps={{
-               style: { maxWidth, minWidth: minWidth ?? '70%', padding: '10px 20px', overflow: 'hidden' },
+               style: {
+                  maxWidth,
+                  minWidth: minWidth ?? '70%',
+                  padding: '10px 20px',
+                  overflow: 'hidden',
+                  minHeight: minHeight ?? 'initial',
+               },
             }}
             sx={{
                '& .MuiDialogContent-root': { padding: '10px 0px', marginTop: '12px' },

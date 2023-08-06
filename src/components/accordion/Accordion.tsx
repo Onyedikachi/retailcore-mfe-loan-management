@@ -7,19 +7,13 @@ import {
    Typography,
    AccordionProps as MuiAccordionProps,
 } from '@mui/material';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { Colors } from '@app/constants';
+import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 
 const CustomAccordion = styled(MuiAccordion)(() => ({
    fontFamily: 'Inter',
    background: 'white',
    boxShadow: 'unset',
-   '&.Mui-expanded': {
-      margin: 0,
-      '& .MuiAccordionSummary-content': {
-         margin: 0,
-      },
-   },
+   '&.Mui-expanded': { margin: 0, '& .MuiAccordionSummary-content': { margin: 0 } },
    '&::before': {
       height: 0,
    },
@@ -30,25 +24,31 @@ const AccordionSummary = styled(MuiAccordionSummary)(() => ({
    fontSize: '18px',
    fontWeight: 500,
    lineHeight: '32px',
-   borderRadius: '10px',
-   paddingLeft: 32,
-   paddingRight: 40,
-   boxShadow: '0px 0px 3px 0px rgba(0, 0, 0, 0.25)',
+   borderRadius: '5px',
+   height: '40px',
+   minHeight: '42px',
+   padding: '5px',
+   boxShadow: '0px 0px 3px 0px rgba(0, 0, 0, 0.1)',
    zIndex: 1,
-   margin: 0,
+   margin: '10px 0px',
    background: 'white',
+   flexDirection: 'row-reverse',
    '& .MuiSvgIcon-root': {
-      border: `1.5px solid ${Colors.Primary}`,
-      borderRadius: '5px',
       padding: '3px',
    },
+   '& .MuiAccordionSummary-expandIconWrapper': {
+      transition: 'transform 0.3s',
+      transform: 'rotate(0deg)',
+   },
+   '& .MuiAccordionSummary-expandIconWrapper.Mui-expanded': {
+      transition: 'transform 0.3s',
+      transform: 'rotate(90deg)',
+   },
+   '&.Mui-expanded': { minHeight: '42px' },
+   '& .MuiAccordionSummary-content': {},
 }));
 
-const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
-   borderLeft: `4px solid ${Colors.Primary}`,
-   padding: theme.spacing(3, 2),
-   marginTop: '-7px',
-}));
+const AccordionDetails = styled(MuiAccordionDetails)(() => ({}));
 
 interface AccordionProps extends MuiAccordionProps {
    accordionLabels: string[];
@@ -66,13 +66,13 @@ const Accordion: React.FC<AccordionProps> = ({ accordionLabels, children, ...oth
       <>
          {accordionLabels.map((label, index) => (
             <CustomAccordion
+               key={label + index}
                onChange={handleChange(index)}
                expanded={expanded === index}
-               key={label}
                {...otherProps}
             >
                <AccordionSummary
-                  expandIcon={<ExpandMoreIcon color="primary" />}
+                  expandIcon={<ArrowRightIcon color="primary" />}
                   aria-controls={`panel${index}-content`}
                   id={`panel${index}-header`}
                >

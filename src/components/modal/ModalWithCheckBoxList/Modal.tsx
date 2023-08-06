@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Box } from '@mui/material';
-import { ModalAddNewDialog } from './AddNewDialog';
+import { ModalAddNewDialog } from '../AddNewDialog';
 import { Button, SearchInput } from '@app/components/atoms';
 import { ListWithChildren, ListWithChildrenProps } from './ModalContent';
 import { AddCircle } from '@mui/icons-material';
