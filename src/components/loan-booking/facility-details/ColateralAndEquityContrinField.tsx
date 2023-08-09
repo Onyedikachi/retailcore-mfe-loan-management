@@ -1,16 +1,16 @@
-import { Button } from '@app/components/atoms';
-import { FormControlBase } from '@app/components/forms/FormControl';
-import FormControlWrapper from '@app/components/forms/FormControlWrapper';
 import * as FormMeta from '@app/utils/validators/book-a-loan/facility-details';
+import FormControlWrapper from '@app/components/forms/FormControlWrapper';
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import { AddCircle } from '@mui/icons-material';
 import { Box, Grid, Typography } from '@mui/material';
-import { useState } from 'react';
-import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
-import { FieldArray, useFormikContext } from 'formik';
-import { ModalWithCheckBoxList } from '@app/components/modal/ModalWithCheckBoxList/Modal';
+import { Button } from '@app/components/atoms';
 import { ColateralSelected } from './CollateralSelected';
-import { PercentageControl } from '@app/components/forms/PercentageControl';
 import { Colors } from '@app/constants';
+import { FieldArray, useFormikContext } from 'formik';
+import { FormControlBase } from '@app/components/forms/FormControl';
+import { ModalWithCheckBoxList } from '@app/components/modal/ModalWithCheckBoxList/Modal';
+import { PercentageControl } from '@app/components/forms/PercentageControl';
+import { useState } from 'react';
 export const ColateralAndEquityContribFields = () => {
    const { InputFieldNames } = FormMeta;
    const [showAddCollateral, setShowAddCollateral] = useState(false);
@@ -35,12 +35,11 @@ export const ColateralAndEquityContribFields = () => {
                   <Button
                      sx={{ py: 0, px: 2 }}
                      onClick={() => setShowAddCollateral(true)}
-                     color={'gray' as any}
-                     id="one-two-three"
+                     color={'gray'}
                      startIcon={<AddCircle color="inherit" sx={{ m: 0 }} />}
                      variant="text"
                   >
-                     Add Colateral
+                     Add Collateral
                   </Button>
                </Box>
                <FieldArray
@@ -94,8 +93,7 @@ export const ColateralAndEquityContribFields = () => {
          <ModalWithCheckBoxList
             open={showAddCollateral}
             onClose={() => setShowAddCollateral(false)}
-            onRemoveItem={(documentId) => {}}
-            onSubmit={(checkedItems) => {
+            onSubmit={() => {
                setShowAddCollateral(false);
             }}
             items={loanCategories.map((value, index) => ({
@@ -103,7 +101,9 @@ export const ColateralAndEquityContribFields = () => {
                checked: false,
                id: index.toString(),
             }))}
-            onAddNewValue={(value) => {}}
+            onAddNewValue={() => {
+               // TODO: make API call to add the new value.
+            }}
             headerText="COLLATERAL ASSETS"
             addButtonText="Add New Colateral"
          />

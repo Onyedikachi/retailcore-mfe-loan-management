@@ -8,41 +8,13 @@ import { useState } from 'react';
 import { useStepperContext } from '@app/providers';
 import { FacilityDetailsFields } from './FacilityDetailsFields';
 import { ColateralAndEquityContribFields } from './ColateralAndEquityContrinField';
-// import { useSearchParams } from 'react-router-dom';
-// import { useRequest } from 'react-http-query';
-// import { FacilityDetails as FacilityDetailsType } from '@app/@types/create-credit-product';
-// import { API_PATH, CommonPayloadKeys, PRODUCT_ID_PARAM_NAME } from '@app/constants';
-// import { useCreateProductContext } from '@app/providers/create-product';
 
 export const FacilityDetails: React.FC = () => {
    const [isDraft, setIsDraft] = useState(false);
    const { handleNavigation } = useStepperContext();
 
-   // const [searchParams] = useSearchParams();
-   // const { submitted, addProductStep, updateProductStepState } = useCreateProductContext();
-
-   // const handleOnSubmitSuccess = () => {
-   //    updateProductStepState('eligibityCriteria', true);
-   //    handleNavigation('next');
-   // };
-
-   // const [, postFacilityDetails] = useRequest({ onSuccess: handleOnSubmitSuccess });
-
    const onSubmit = (values: any) => {
-      // const productId = searchParams.get(PRODUCT_ID_PARAM_NAME);
-      // const { FacilityDetails: isSubmitted } = submitted;
-      // postFacilityDetails(API_PATH.ELIGIBILITY_CRITERIA(productId ?? undefined), {
-      //    body: {
-      //       ...values,
-      //       // eslint-disable-next-line camelcase
-      //       [CommonPayloadKeys.isDraft]: isDraft,
-      //       [CommonPayloadKeys.productId]: productId,
-      //    },
-      //    // Makes a post request if eligibility hasn't already been submitted.
-      //    // Otherwise, makes a patch request.
-      //    method: isSubmitted ? 'PATCH' : 'POST',
-      // });
-      // addProductStep('eligibityCriteria', values);
+      // TODO: Implement submit facility details field values to backend.
    };
 
    return (

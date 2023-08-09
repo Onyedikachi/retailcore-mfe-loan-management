@@ -1,74 +1,19 @@
 import * as FormMeta from '@app/utils/validators/book-a-loan/customer-info';
-import FormContainer from '../../../forms/FormContainer';
-import React, { useMemo, useState } from 'react';
-import { Box, Divider, Stack, Typography } from '@mui/material';
-import { Button } from '@app/components/atoms';
-import { useCreateProductContext } from '@app/providers/create-product';
-import { Form, Formik } from 'formik';
+import FormContainer from '../../forms/FormContainer';
 import FormControlWrapper from '@app/components/forms/FormControlWrapper';
-import { FormControlBase } from '@app/components/forms/FormControl';
+import React, { useState } from 'react';
+import { Box, Divider } from '@mui/material';
+import { Button } from '@app/components/atoms';
 import { CustomerAccountInformation } from './CustomerAccountInfo';
-// import { useRequest } from 'react-http-query';
-// import { API_PATH, CommonFormFieldNames, PRODUCT_ID_PARAM_NAME,  } from '@app/constants';
-// import { useStepperContext } from '@app/providers';
-// import {
-//    ProductInformationApiResponse,
-//    ProductInformation as ProductInformationType,
-// } from '@app/@types/create-credit-product';
-
-// import { useSearchParams } from 'react-router-dom';
-// import { productInfoMapper } from '@app/mappers/creditProductInformation';
+import { Form, Formik } from 'formik';
+import { FormControlBase } from '@app/components/forms/FormControl';
 
 export const CustomerInformation: React.FC = () => {
    const { InputFieldNames, TooltipText } = FormMeta;
    const [isDraft, setIsDraft] = useState(false);
-   // const stepperContext = useStepperContext();
-
-   // const [searchParams, setSearchParams] = useSearchParams();
-
-   // const { handleNavigation } = stepperContext;
-
-   // const handleOnSubmitSuccess = (response) => {
-   //    setSearchParams((params) => {
-   //      // params.set(PRODUCT_ID_PARAM_NAME, response.data.product_info.id);
-   //       return params;
-   //    });
-   //    handleNavigation('next');
-   // };
-
-   // const [, postCustomerInfo] = useRequest({ onSuccess: handleOnSubmitSuccess });
-   // const [{ data: initialProductInfo }, refetchProductInfo] = useRequest();
-
-   // Retrieves saved value from the endpoints.
-   // React.useEffect(() => {
-   //    const productId = searchParams.get(PRODUCT_ID_PARAM_NAME);
-   //    if (productId && !productMeta?.productDetails?.productInformation) {
-   //       refetchProductInfo(API_PATH.PRODUCT_INFO(productId));
-   //    }
-   // }, []);
-
-   // const initialValues = useMemo(() => {
-   //    if (initialProductInfo?.data)
-   //       setCurrency(initialProductInfo.data[CommonFormFieldNames.PRODUCT_CURRENCY]);
-   //    else if (!productMeta?.productDetails?.productInformation) setCurrency('NGN');
-   //    return productInfoMapper(
-   //       initialProductInfo?.data ??
-   //          productMeta?.productDetails?.productInformation ??
-   //          FormMeta.productInfoInitialValues()
-   //    );
-   // }, [initialProductInfo]);
 
    const onSubmit = (values: any) => {
-      // const productId = searchParams.get(PRODUCT_ID_PARAM_NAME);
-      // postCustomerInfo(API_PATH.PRODUCT_INFO(productId ?? undefined), {
-      //    body: {
-      //       ...values,
-      //       // eslint-disable-next-line camelcase
-      //       is_draft: Number(isDraft),
-      //    },
-      //    method: productId ? 'PATCH' : 'POST',
-      // });
-      // addProductStep('productInformation', values);
+      // TODO: Implement submittion of selected user details to the backed.
    };
 
    return (

@@ -1,6 +1,6 @@
 import { Colors } from '@app/constants';
 import { LaunchOutlined } from '@mui/icons-material';
-import { Box, Grid, IconButton, Typography, styled } from '@mui/material';
+import { Box, Grid, IconButton, Typography, alpha, styled } from '@mui/material';
 import { Link } from 'react-router-dom';
 
 const ContentBox = styled(Box)({
@@ -20,8 +20,9 @@ export const QuickLinkItem = ({ label, href }: QuickLinkItemProps) => {
          <Link to={href} style={{ textDecoration: 'none' }}>
             <ContentBox>
                <IconButton
+                  color="primary"
                   sx={(theme) => ({
-                     background: Colors.LightPrimary,
+                     backgroundColor: `${alpha(Colors.Primary, 0.05)}`,
                      padding: theme.spacing(2),
                      marginBottom: theme.spacing(1),
                   })}
@@ -29,7 +30,6 @@ export const QuickLinkItem = ({ label, href }: QuickLinkItemProps) => {
                   <LaunchOutlined
                      sx={(theme) => ({
                         fontSize: theme.typography.pxToRem(38),
-                        fill: 'url(#myGradient)',
                      })}
                   />
                </IconButton>
