@@ -7,6 +7,7 @@ import FormContainer from '@app/components/forms/FormContainer';
 import { useState } from 'react';
 import { useStepperContext } from '@app/providers';
 import { FacilityDetailsFields } from './FacilityDetailsFields';
+import { ColateralAndEquityContribFields } from './ColateralAndEquityContrinField';
 // import { useSearchParams } from 'react-router-dom';
 // import { useRequest } from 'react-http-query';
 // import { FacilityDetails as FacilityDetailsType } from '@app/@types/create-credit-product';
@@ -58,7 +59,7 @@ export const FacilityDetails: React.FC = () => {
                      <Box sx={{ mb: 5 }}>
                         <Accordion accordionLabels={FormMeta.accordionLabels}>
                            <FacilityDetailsFields />
-                           <></>
+                           <ColateralAndEquityContribFields />
                            <></>
                         </Accordion>
                      </Box>

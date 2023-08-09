@@ -10,7 +10,6 @@ export interface CounterControlProps {
    tooltipText?: string;
    placeholder?: string;
    defaultValue?: any;
-   formik: any;
 }
 
 export const CounterControl = (props: CounterControlProps) => {
@@ -30,7 +29,7 @@ export const CounterControl = (props: CounterControlProps) => {
             InputProps={{
                endAdornment: (
                   <InputAdornment position="end">
-                     <ValueIncrementDecrement formik={props.formik} fieldName={props.name} />
+                     <ValueIncrementDecrement fieldName={props.name} />
                   </InputAdornment>
                ),
             }}

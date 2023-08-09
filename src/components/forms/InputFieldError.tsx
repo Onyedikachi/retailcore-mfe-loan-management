@@ -1,9 +1,9 @@
 import { Colors } from '@app/constants';
-import { Box } from '@mui/system';
+import { Box, SxProps, Theme } from '@mui/system';
 
-type InputErrorTextProps = { errorText: string };
-export const InputErrorText = ({ errorText }: InputErrorTextProps) => {
-   return <Box sx={{ color: 'red', fontSize: '12px' }}>{errorText}</Box>;
+type InputErrorTextProps = { errorText: string; sx?: SxProps<Theme> | undefined };
+export const InputErrorText = ({ errorText, sx }: InputErrorTextProps) => {
+   return <Box sx={{ color: 'red', fontSize: '12px', ...sx }}>{errorText}</Box>;
 };
 
 export const InputSuccessText = ({ successText }: { successText: string }) => {

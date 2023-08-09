@@ -33,7 +33,7 @@ export const percentageInputFormatter = (inputValue: string) => {
    const parts = value.split('.');
    const integerPart = parts[0] ? `${parts[0]}` : '0';
 
-   const decimalPart = parts[1] !== undefined ? `.${parts[1].padEnd(1, '0')}` : '.0';
+   const decimalPart = parts[1] !== undefined ? `.${parts[1].padEnd(1, '0')}` : '';
 
    return {
       parts,

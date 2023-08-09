@@ -78,7 +78,7 @@ const Accordion: React.FC<AccordionProps> = ({ accordionLabels, children, ...oth
                >
                   <Typography fontSize="18px">{label}</Typography>
                </AccordionSummary>
-               <AccordionDetails>{children[index]}</AccordionDetails>
+               <AccordionDetails sx={{ px: 3 }}>{children[index]}</AccordionDetails>
             </CustomAccordion>
          ))}
       </>

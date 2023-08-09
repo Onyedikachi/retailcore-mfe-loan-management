@@ -10,13 +10,17 @@ export interface PercentageControlProps {
    tooltipText?: string;
    placeholder?: string;
    withChip?: boolean;
+   layout?: 'horizontal' | 'vertical' | undefined;
+   labelDescription?: string;
 }
 
-export const PercentageControlControl = (props: PercentageControlProps) => {
+export const PercentageControl = (props: PercentageControlProps) => {
    return (
       <FormControlWrapper
+         labelDescription={props.labelDescription}
          name={props.name}
          label={props.label}
+         layout={props.layout}
          required={props.required ?? true}
          tooltipText={props.tooltipText}
       >

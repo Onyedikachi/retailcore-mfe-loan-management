@@ -4,23 +4,22 @@ import { Colors } from '@app/constants';
 import { StatusIndicator } from '../atoms/StatusIndicator';
 import { Tooltip } from '../atoms';
 
-interface WrapperProps extends InputLabelProps {
+export interface WrapperProps extends InputLabelProps {
    name: string;
    label?: React.ReactNode;
    labelDescription?: string;
    children: React.ReactNode;
    tooltipText?: string;
    layout?: 'vertical' | 'horizontal';
+   layoutFlexGrid?: number[];
    layoutStyles?: SxProps<Theme>;
 }
 
 const FormControlWrapper: React.FC<WrapperProps> = (props) => {
-   // const flexStyles =
-   //    props.layout == 'horizontal' ? { display: 'flex', alignItems: 'center', ...props.layoutStyles } : {};
    return (
       <Grid container sx={{ mb: 4, ...props.sx }}>
          {props.label && (
-            <Grid item xs={props.layout == 'horizontal' ? 4 : 12} pr={4}>
+            <Grid item xs={props.layout == 'horizontal' ? props.layoutFlexGrid?.[0] ?? 4 : 12} pr={4}>
                <Box display="flex">
                   <InputLabel htmlFor={props.name} sx={{ fontWeight: '500' }}>
                      {props.label}
@@ -35,7 +34,7 @@ const FormControlWrapper: React.FC<WrapperProps> = (props) => {
                )}
             </Grid>
          )}
-         <Grid item xs={props.layout == 'horizontal' ? 8 : 12}>
+         <Grid item xs={props.layout == 'horizontal' ? props.layoutFlexGrid?.[1] ?? 8 : 12}>
             {props.children}
          </Grid>
       </Grid>

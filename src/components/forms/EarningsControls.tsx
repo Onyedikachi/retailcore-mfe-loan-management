@@ -1,7 +1,6 @@
 import { Grid } from '@mui/material';
 import { FormControlBase } from './FormControl';
 import { CounterControl } from './CounterControl';
-import { FormikProps } from 'formik';
 import { LoanTenurePeriod } from '@app/constants';
 
 interface EarningsControlProps {
@@ -12,7 +11,6 @@ interface EarningsControlProps {
    firstName: string;
    secondName: string;
    thirdName: string;
-   formik: FormikProps<any>;
    bridgeWord?: string;
    isCurrency?: boolean;
 }
@@ -25,7 +23,6 @@ export const EarningsControl = ({
    thirdName,
    thirdPlaceHolder,
    firstPlaceHolder,
-   formik,
    isCurrency,
 }: EarningsControlProps) => {
    return (
@@ -47,7 +44,7 @@ export const EarningsControl = ({
             </Grid>
          )}
          <Grid item xs={3} pr={6}>
-            <CounterControl name={secondName} formik={formik} />
+            <CounterControl name={secondName} />
          </Grid>
          <Grid item xs={3} pr={4}>
             <FormControlBase

@@ -10,7 +10,7 @@ import {
 } from '@mui/material';
 import { Field, FieldProps, ErrorMessage } from 'formik';
 import { InputErrorText } from '../forms/InputFieldError';
-import { SyntheticEvent, useEffect, useState } from 'react';
+import React, { SyntheticEvent, useEffect, useState } from 'react';
 import SearchIcon from '@mui/icons-material/Search';
 import useDebounce from '@app/hooks/useDebounce';
 
@@ -25,6 +25,7 @@ export interface AutocompleteProps extends MuiAutocompleteProps<any, any, any, a
 
    debounceTime?: number;
    listBoxMaxHeight?: string;
+   addButton?: React.ReactNode;
 }
 interface AutocompleteOptions {
    label: string;
@@ -37,6 +38,7 @@ export const Autocomplete: React.FC<AutocompleteProps> = ({
    handleSearch,
    listBoxMaxHeight,
    placeholder,
+   addButton,
    ...otherProps
 }) => {
    const [open, setOpen] = useState(false);
@@ -60,29 +62,45 @@ export const Autocomplete: React.FC<AutocompleteProps> = ({
                         id={name}
                         data-testid={`autocomplete-${name}`}
                         open={open}
-                        onOpen={() => setOpen(true)}
-                        onClose={() => setOpen(false)}
+                        onOpen={() => {
+                           setOpen(true);
+                        }}
+                        onClose={() => {
+                           setOpen(false);
+                        }}
                         onInputChange={(event, newValue) => setDebouncedValue(newValue)}
                         onChange={(event, newValue) => handleChange(event, newValue, form)}
                         getOptionLabel={(option) =>
                            typeof option === 'string' ? option : (option as AutocompleteOptions)?.label
                         }
-                        renderOption={(props, option) =>
-                           typeof option === 'string' ? (
-                              <li {...props}>{option}</li>
-                           ) : (
-                              <Stack component="li" style={{ alignItems: 'flex-start' }} {...props}>
-                                 <Typography>{(option as AutocompleteOptions).label}</Typography>
-                                 <Typography fontSize={12}>
-                                    {(option as AutocompleteOptions).subtitle}
-                                 </Typography>
-                              </Stack>
-                           )
-                        }
+                        renderOption={(props, option) => (
+                           <React.Fragment
+                              key={
+                                 typeof option === 'string' ? option : (option as AutocompleteOptions).label
+                              }
+                           >
+                              {typeof option === 'string' ? (
+                                 <li {...props}>{option}</li>
+                              ) : (
+                                 <Stack component="li" style={{ alignItems: 'flex-start' }} {...props}>
+                                    <Typography>{(option as AutocompleteOptions).label}</Typography>
+                                    <Typography fontSize={12}>
+                                       {(option as AutocompleteOptions).subtitle}
+                                    </Typography>
+                                 </Stack>
+                              )}
+                           </React.Fragment>
+                        )}
                         ListboxProps={{
                            className: 'fancy-scrollbar',
                            style: { maxHeight: listBoxMaxHeight ?? '250px' },
                         }}
+                        ListboxComponent={(componentProps) => (
+                           <>
+                              {addButton}
+                              <ul {...componentProps} />
+                           </>
+                        )}
                         {...otherProps}
                         renderInput={(params) => {
                            return (
