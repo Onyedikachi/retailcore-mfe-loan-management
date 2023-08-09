@@ -2,7 +2,6 @@ import { Grid, InputAdornment } from '@mui/material';
 import FormControlWrapper from './FormControlWrapper';
 import { FormControlBase } from './FormControl';
 import ValueIncrementDecrement from '../ValueIncreaseDecrease';
-import { FormikProps } from 'formik';
 import { LoanTenurePeriod } from '@app/constants';
 
 export interface TenureControlProps {
@@ -11,8 +10,8 @@ export interface TenureControlProps {
    periodTooltipText?: string;
    numberName: string;
    loanTenurePeriod?: Array<string>;
-   formik: FormikProps<any>;
    required?: boolean;
+   layout?: 'horizontal' | 'vertical' | undefined;
 }
 
 export const TenureControl = (props: TenureControlProps) => {
@@ -20,6 +19,7 @@ export const TenureControl = (props: TenureControlProps) => {
       <FormControlWrapper
          name={props.periodName}
          label={props.fieldLabel}
+         layout={props.layout}
          required={props.required ?? true}
          tooltipText={props.periodTooltipText}
       >
@@ -34,7 +34,7 @@ export const TenureControl = (props: TenureControlProps) => {
                   InputProps={{
                      endAdornment: (
                         <InputAdornment position="end">
-                           <ValueIncrementDecrement formik={props.formik} fieldName={props.numberName} />
+                           <ValueIncrementDecrement fieldName={props.numberName} />
                         </InputAdornment>
                      ),
                   }}

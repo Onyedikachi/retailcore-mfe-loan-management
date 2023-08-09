@@ -1,9 +1,8 @@
-import { Stepper } from '@app/components';
-import { CreateLoanHeader } from '@app/components/create-loan/CreateLoanHeader';
-import { REQUEST_NAMES, RETAIL_CORE_API_PATH } from '@app/constants';
-import { ProductFactoryLayout } from '@app/layouts/ProductFactoryLayout';
-import { Box, styled } from '@mui/material';
 import React from 'react';
+import { BasePath, REQUEST_NAMES, RETAIL_CORE_API_PATH } from '@app/constants';
+import { Box, styled } from '@mui/material';
+import { CustomerInformation, FacilityDetails, LoanBookingHeader, Stepper } from '@app/components';
+import { PageLayout } from '@app/layouts/PageLayout';
 import { useRequest } from 'react-http-query';
 
 const StyledContentWrapper = styled(Box)({
@@ -48,15 +47,14 @@ const CreateIndividualLoanContent = () => {
                className: 'fancy-scrollbar',
             }}
             stepLabels={[
-               'Product Information',
-               'Eligibility Criteria',
-               'Pricing Configuration',
-               'Arrears, Penalties & Fees Setup',
-               'Account & Tax Enteries',
+               'Customer Information',
+               'Facility Details',
+               'Charges, Taxes & Penalty Setup',
+               'Loan Debursement',
             ]}
          >
-            <>1</>
-            <>2</>
+            <CustomerInformation />
+            <FacilityDetails />
             <>3</>
             <>4</>
          </Stepper>
@@ -73,8 +71,8 @@ export const CreateIndividualLoan = () => {
    });
 
    return (
-      <ProductFactoryLayout
-         header={<CreateLoanHeader />}
+      <PageLayout
+         header={<LoanBookingHeader title="Book Loan" backUrl={BasePath} />}
          content={<CreateIndividualLoanContent />}
          fullContent={true}
       />

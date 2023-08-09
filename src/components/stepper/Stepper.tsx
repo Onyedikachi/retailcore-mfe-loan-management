@@ -26,7 +26,7 @@ const StyledIndicatorPointer = styled('div')({
       width: '20px',
       top: '-13px',
       borderRadius: '50% 50% 0 0',
-      background: Colors.LinearGradient,
+      background: Colors.Primary,
       transition: 'all 0.5s',
    },
 });

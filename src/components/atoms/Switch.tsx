@@ -16,7 +16,7 @@ export const StyledSwitch = styled(MuiSwitch)(() => {
             transform: 'translateX(16px)',
             color: '#fff',
             '& + .MuiSwitch-track': {
-               background: Colors.LinearGradient,
+               background: Colors.Primary,
                opacity: 1,
             },
          },
@@ -32,7 +32,7 @@ export const StyledSwitch = styled(MuiSwitch)(() => {
             width: 'calc(100% + 1px)',
             height: 'calc(100% + 1px)',
             zIndex: -1,
-            background: Colors.LinearGradient,
+            background: Colors.Primary,
             position: 'absolute',
             content: '""',
             borderRadius: '100%',

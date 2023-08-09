@@ -11,8 +11,9 @@ import {
    CheckBoxGroup,
    CheckBoxGroupProps,
 } from '../atoms';
+import { Autocomplete, AutocompleteProps } from '../atoms/AutocompleteInput';
 
-type ControlType = 'input' | 'select' | 'switch' | 'checkboxGroup' | 'radio';
+type ControlType = 'input' | 'select' | 'switch' | 'checkboxGroup' | 'radio' | 'autocomplete';
 
 export type FormControlBaseProp<Control extends ControlType = ControlType> = (Control extends 'switch'
    ? SwitchProps
@@ -22,6 +23,8 @@ export type FormControlBaseProp<Control extends ControlType = ControlType> = (Co
    ? RadioGroupProps
    : Control extends 'checkboxGroup'
    ? CheckBoxGroupProps
+   : Control extends 'autocomplete'
+   ? AutocompleteProps
    : InputProps) & { control: Control; children?: React.ReactNode };
 
 export const FormControlBase: React.FC<FormControlBaseProp> = ({ control, children, ...props }) => {
@@ -34,6 +37,8 @@ export const FormControlBase: React.FC<FormControlBaseProp> = ({ control, childr
          return <RadioGroup {...(props as RadioGroupProps)} />;
       case 'checkboxGroup':
          return <CheckBoxGroup {...(props as CheckBoxGroupProps)} />;
+      case 'autocomplete':
+         return <Autocomplete {...(props as AutocompleteProps)} />;
       default:
          return <Input {...(props as InputProps)} />;
    }

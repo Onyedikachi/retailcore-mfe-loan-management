@@ -39,7 +39,7 @@ export const GlobalTheme = createTheme(
             fontFamily: 'Inter',
          },
          h5: {
-            fontWeight: 700,
+            fontWeight: 600,
             fontSize: materialTheme.typography.pxToRem(20),
             lineHeight: materialTheme.typography.pxToRem(24),
             fontFamily: 'Inter',
@@ -99,7 +99,7 @@ export const GlobalTheme = createTheme(
                },
                '.fancy-scrollbar': {
                   '&::-webkit-scrollbar-thumb': {
-                     background: Colors.LinearGradient,
+                     background: Colors.Primary,
                      borderRadius: 10,
                   },
                   '::-webkit-scrollbar': {

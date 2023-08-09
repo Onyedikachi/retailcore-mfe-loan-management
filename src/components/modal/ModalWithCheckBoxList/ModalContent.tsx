@@ -45,7 +45,7 @@ export const ListWithChildren: React.FC<ListWithChildrenProps> = ({
    };
 
    return (
-      <Box sx={{ maxHeight: '20vh', overflowY: 'auto', margin: '5% 0%' }}>
+      <Box className="fancy-scrollbar" sx={{ maxHeight: '20vh', overflowY: 'auto', margin: '5% 0%' }}>
          {items.map((item) => (
             <Box key={item.id}>
                {renderListItem(item)}

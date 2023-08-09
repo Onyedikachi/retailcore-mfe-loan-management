@@ -40,7 +40,7 @@ const QuickLinkToggle = styled('div')(() => ({
    justifyContent: 'center',
    alignItems: 'center',
    borderRadius: '20px 0 0 20px',
-   background: Colors.LinearGradient,
+   background: Colors.Primary,
    boxShadow: '0px 0px 30px rgba(0, 0, 0, 0.25)',
    right: 0,
    top: 70,
@@ -66,13 +66,13 @@ const ContentBox = styled(Box)(() => ({
    background: Colors.Gray50,
 }));
 
-export interface ProductFactoryLayoutProps {
+export interface PageLayoutProps {
    header: React.ReactNode;
    content: React.ReactNode;
    fullContent: boolean;
 }
 
-export const ProductFactoryLayout = ({ header, content, fullContent = false }: ProductFactoryLayoutProps) => {
+export const PageLayout = ({ header, content, fullContent = false }: PageLayoutProps) => {
    const [showQuickLink, setShowQuickLink] = React.useState(false);
    const stackHeaderRef = React.useRef<HTMLElement>(null);
    const [headerHeight, setHeaderHeight] = React.useState<number>();

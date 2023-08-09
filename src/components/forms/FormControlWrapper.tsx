@@ -1,31 +1,30 @@
-import { Box, InputLabel, InputLabelProps, SxProps, Theme, Typography } from '@mui/material';
+import { Box, Grid, InputLabel, InputLabelProps, SxProps, Theme, Typography } from '@mui/material';
 import React from 'react';
 import { Colors } from '@app/constants';
-import RequiredIndicator from '../atoms/RequiredIndicator';
+import { StatusIndicator } from '../atoms/StatusIndicator';
 import { Tooltip } from '../atoms';
 
-interface WrapperProps extends InputLabelProps {
+export interface WrapperProps extends InputLabelProps {
    name: string;
    label?: React.ReactNode;
    labelDescription?: string;
    children: React.ReactNode;
    tooltipText?: string;
    layout?: 'vertical' | 'horizontal';
+   layoutFlexGrid?: number[];
    layoutStyles?: SxProps<Theme>;
 }
 
 const FormControlWrapper: React.FC<WrapperProps> = (props) => {
-   const flexStyles =
-      props.layout == 'horizontal' ? { display: 'flex', alignItems: 'center', ...props.layoutStyles } : {};
    return (
-      <Box sx={{ mb: 4, ...props.sx, ...flexStyles }}>
+      <Grid container sx={{ mb: 4, ...props.sx }}>
          {props.label && (
-            <Box>
+            <Grid item xs={props.layout == 'horizontal' ? props.layoutFlexGrid?.[0] ?? 4 : 12} pr={4}>
                <Box display="flex">
                   <InputLabel htmlFor={props.name} sx={{ fontWeight: '500' }}>
                      {props.label}
                   </InputLabel>
-                  {props.required && <RequiredIndicator />}
+                  {props.required && <StatusIndicator />}
                   {props.tooltipText && <Tooltip text={props.tooltipText} />}
                </Box>
                {props.labelDescription && (
@@ -33,10 +32,12 @@ const FormControlWrapper: React.FC<WrapperProps> = (props) => {
                      {props.labelDescription}
                   </Typography>
                )}
-            </Box>
+            </Grid>
          )}
-         <Box>{props.children}</Box>
-      </Box>
+         <Grid item xs={props.layout == 'horizontal' ? props.layoutFlexGrid?.[1] ?? 8 : 12}>
+            {props.children}
+         </Grid>
+      </Grid>
    );
 };
 export default FormControlWrapper;

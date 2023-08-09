@@ -4,10 +4,10 @@ import React from 'react';
 
 const StyledButton = styled(MuiButton)(({ variant, color, disabled }) => ({
    borderRadius: 8,
-   padding: '5px 40px',
+   padding: '4px 40px',
    textTransform: 'capitalize',
    '&.MuiButton-containedPrimary': {
-      background: Colors.LinearGradient,
+      background: Colors.Primary,
       color: Colors.LightGray2,
    },
    '&.Mui-disabled.MuiButton-containedPrimary': {
