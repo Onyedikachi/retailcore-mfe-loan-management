@@ -79,6 +79,7 @@ export const FacilityDetailsFields = () => {
             />
          </FormControlWrapper>
          <LoanPrincipalControl
+            mb={3}
             name={InputFieldNames.PRINCIPAL}
             layout="horizontal"
             label="Principal"

@@ -86,3 +86,12 @@ const Accordion: React.FC<AccordionProps> = ({ accordionLabels, children, ...oth
 };
 
 export default Accordion;
+export const AccordionVariant = styled(Accordion)(() => ({
+   '& .MuiButtonBase-root': { boxShadow: 'none', margin: '0px' },
+   '& .MuiSvgIcon-root': { color: 'black' },
+   '& .MuiAccordionSummary-expandIconWrapper.Mui-expanded': {
+      transition: 'transform 0.3s',
+      transform: 'rotate(45deg)',
+   },
+   '& .MuiAccordionDetails-root': { paddingBottom: '3px', paddingTop: '3px' },
+}));
