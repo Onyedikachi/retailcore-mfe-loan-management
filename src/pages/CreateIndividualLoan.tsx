@@ -1,9 +1,11 @@
 import React from 'react';
 import { BasePath, REQUEST_NAMES, RETAIL_CORE_API_PATH } from '@app/constants';
-import { Box, styled } from '@mui/material';
+import { Box, Grid, styled } from '@mui/material';
 import { CustomerInformation, FacilityDetails, LoanBookingHeader, Stepper } from '@app/components';
 import { PageLayout } from '@app/layouts/PageLayout';
 import { useRequest } from 'react-http-query';
+import { useStepperContext } from '@app/providers';
+import { LoanInformation } from '@app/components/loan-booking/facility-details/LoanInformation';
 
 const StyledContentWrapper = styled(Box)({
    background: 'white',
@@ -29,36 +31,47 @@ const StepperContentWrapper = styled(Box)({
 const CreateIndividualLoanContent = () => {
    const stepperWrapperRef = React.useRef<HTMLElement>(null);
    const [headerHeight, setHeaderHeight] = React.useState<number>();
+   const { activeStep } = useStepperContext();
+   console.log(activeStep);
 
    React.useEffect(() => {
       setHeaderHeight(stepperWrapperRef.current?.clientHeight);
    }, [stepperWrapperRef.current]);
 
    return (
-      <StyledContentWrapper>
-         <Stepper
-            stepperWrapper={StepperWrapper}
-            childrenWrapper={StepperContentWrapper}
-            stepperWrapperProps={{
-               ref: stepperWrapperRef,
-            }}
-            childrenWrapperProps={{
-               style: { height: `calc(100% - ${(headerHeight ?? 0) + 40}px)` },
-               className: 'fancy-scrollbar',
-            }}
-            stepLabels={[
-               'Customer Information',
-               'Facility Details',
-               'Charges, Taxes & Penalty Setup',
-               'Loan Debursement',
-            ]}
-         >
-            <CustomerInformation />
-            <FacilityDetails />
-            <>3</>
-            <>4</>
-         </Stepper>
-      </StyledContentWrapper>
+      <Grid container height='100%'>
+         <Grid item xs height='100%'>
+            <StyledContentWrapper>
+               <Stepper
+                  stepperWrapper={StepperWrapper}
+                  childrenWrapper={StepperContentWrapper}
+                  stepperWrapperProps={{
+                     ref: stepperWrapperRef,
+                  }}
+                  childrenWrapperProps={{
+                     style: { height: `calc(100% - ${(headerHeight ?? 0) + 40}px)` },
+                     className: 'fancy-scrollbar',
+                  }}
+                  stepLabels={[
+                     'Customer Information',
+                     'Facility Details',
+                     'Charges, Taxes & Penalty Setup',
+                     'Loan Debursement',
+                  ]}
+               >
+                  <CustomerInformation />
+                  <FacilityDetails />
+                  <>3</>
+                  <>4</>
+               </Stepper>
+            </StyledContentWrapper>
+         </Grid>
+         {activeStep >= 1 && (
+            <Grid item xs={3} height='100%'>
+               <LoanInformation />
+            </Grid>
+         )}
+      </Grid>
    );
 };
 

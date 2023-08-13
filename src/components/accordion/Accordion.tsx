@@ -93,5 +93,6 @@ export const AccordionVariant = styled(Accordion)(() => ({
       transition: 'transform 0.3s',
       transform: 'rotate(45deg)',
    },
+   '& .MuiAccordionSummary-content': { '& .MuiTypography-root': { fontSize: 15 } },
    '& .MuiAccordionDetails-root': { paddingBottom: '3px', paddingTop: '3px' },
 }));

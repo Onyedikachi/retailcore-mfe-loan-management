@@ -3,7 +3,7 @@ import { AccordionVariant } from '@app/components/accordion/Accordion';
 
 export const LoanInformation = () => {
    return (
-      <Box p={2} borderRadius="5px">
+      <Box p={2} borderRadius="5px" bgcolor="white" ml={2} height="100%">
          <Typography variant="h5" pb={1}>
             Loan Information
          </Typography>
@@ -14,7 +14,7 @@ export const LoanInformation = () => {
                For financial emergency
             </Typography>
          </Box>
-         <Box className="fancy-scrollbar" sx={{ maxHeight: '500px', overflow: 'auto' }}>
+         <Box className="fancy-scrollbar" sx={{ height: 'calc(100% - 130px)', overflow: 'auto' }}>
             <List>
                <AccordionVariant accordionLabels={loanBookingSections}>
                   <>1</>
