@@ -39,8 +39,8 @@ const CreateIndividualLoanContent = () => {
    }, [stepperWrapperRef.current]);
 
    return (
-      <Grid container height='100%'>
-         <Grid item xs height='100%'>
+      <Grid container height="100%">
+         <Grid item xs height="100%">
             <StyledContentWrapper>
                <Stepper
                   stepperWrapper={StepperWrapper}
@@ -67,7 +67,7 @@ const CreateIndividualLoanContent = () => {
             </StyledContentWrapper>
          </Grid>
          {activeStep >= 1 && (
-            <Grid item xs={3} height='100%'>
+            <Grid item xs={3} height="100%">
                <LoanInformation />
             </Grid>
          )}

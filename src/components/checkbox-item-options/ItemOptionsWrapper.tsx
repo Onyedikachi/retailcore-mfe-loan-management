@@ -1,46 +1,55 @@
 import React, { useEffect, useState } from 'react';
-import { Box } from '@mui/material';
-import { ModalAddNewDialog } from '../AddNewDialog';
+import { Box, Stack, StackProps } from '@mui/material';
+import { ModalAddNewDialog } from '../modal/AddNewDialog';
 import { Button, SearchInput } from '@app/components/atoms';
-import { ListWithChildren, ListWithChildrenProps } from './ModalContent';
+import { ListWithChildren, ListWithChildrenProps } from './ItemOptionsDisplay';
 import { AddCircle } from '@mui/icons-material';
-import { ModalWithCheckBoxItemChildren } from '@app/@types/security-document';
-import Dialog from '@app/components/atoms/Dialog';
 import { stringContains } from '@app/helper/string';
-import { objectDiff } from '@app/helper/object-diff';
+import { CheckboxOptionsItem, CheckboxOptionsItemChildren } from '@app/@types/security-document';
+import { useCheckItems } from '@app/hooks/useCheckItems';
 
-interface ReusableModalProps {
-   open: boolean;
-   onClose: () => void;
-   items: Array<ModalWithCheckBoxItemChildren>;
-   onSubmit: (value: Array<ModalWithCheckBoxItemChildren>) => void;
-   onCheckboxToggle?: (labelName: string) => void;
-   headerText: string;
+interface CheckboxItemOptionsProps extends Omit<StackProps, 'onSubmit'> {
+   items: Array<CheckboxOptionsItemChildren>;
+   onSubmit?: (value: Array<CheckboxOptionsItemChildren>) => void;
+   /** Passing this, implies updating check items won't be handled by this component */
+   onCheckboxToggle?: (item: CheckboxOptionsItem, checkedItems: Array<CheckboxOptionsItemChildren>) => void;
    addButtonText?: string;
    searchPlaceholder?: string;
    onAddNewValue?: (value: string) => void;
-
    onRemoveItem?: (id: string, labelName: string) => void;
+   showSearchBox?: boolean;
+   showAddNewItemButton?: boolean;
+   showAddCloseButton?: boolean;
 }
 
-export const ModalWithCheckBoxList: React.FC<ReusableModalProps> = ({
-   open,
-   onClose,
+export const CheckboxItemOptions: React.FC<CheckboxItemOptionsProps> = ({
    items,
    onSubmit,
-   headerText,
    searchPlaceholder,
    addButtonText,
    onAddNewValue,
    onRemoveItem,
+   showSearchBox = true,
+   showAddNewItemButton = true,
+   showAddCloseButton = true,
+   onCheckboxToggle,
+   ...otherProps
 }) => {
-   const [renderedItems, setRenderedItems] = useState([...items]);
+   const { allItems: internalAllItems, itemToggle } = useCheckItems(
+      items,
+      items.filter(({ checked }) => checked),
+      'id'
+   );
+
+   const isSelfHandled = !!onCheckboxToggle;
+   const allItems = isSelfHandled ? items : internalAllItems;
+
+   const [renderedItems, setRenderedItems] = useState(allItems);
    const [searchValue, setSearchValue] = useState('');
-   const [allItems, setAllItems] = useState([...items]);
    const [showAddNew, setShowAddNew] = useState(false);
 
    const handleSearch = (searchBy: string) => {
-      if (!searchBy) setRenderedItems([...allItems]);
+      if (!searchBy) setRenderedItems(allItems);
       else {
          const searchedItems = allItems.filter(
             ({ labelName, children }) =>
@@ -52,29 +61,19 @@ export const ModalWithCheckBoxList: React.FC<ReusableModalProps> = ({
       setSearchValue(searchBy);
    };
 
-   useEffect(() => {
-      const { baseDiff, compareDiff, actionType } = objectDiff(items, allItems, 'labelName');
-      if (actionType === 'add') {
-         setAllItems((allItems) => [baseDiff[0], ...allItems]);
-      } else if (actionType === 'remove') {
-         setAllItems((allItems) => allItems.filter(({ id }) => compareDiff[0]?.id !== id));
-      }
-   }, [items]);
-
    useEffect(() => handleSearch(searchValue), [allItems]);
 
-   const onCheckboxToggle = (id: string, childLabelId?: string) => {
-      const _allItems = [...allItems];
-      const item = _allItems.find((item) => item.id === id);
+   const handleCheckboxToggle = (id: string, childLabelId?: string) => {
+      const item = allItems.find((item) => item.id === id);
+      if (item && isSelfHandled) return onCheckboxToggle?.(item, allItems);
 
       if (childLabelId) {
          const childItem = item?.children?.find((child) => child.id === childLabelId);
          if (childItem) {
             childItem.checked = !childItem.checked;
          }
-      } else if (item) item.checked = !item.checked;
+      } else if (item) itemToggle(item.id);
 
-      setAllItems(_allItems);
       handleSearch(searchValue);
    };
 
@@ -86,33 +85,38 @@ export const ModalWithCheckBoxList: React.FC<ReusableModalProps> = ({
          return prev;
       }, [] as ListWithChildrenProps['items']);
 
-      onSubmit(selectedItems);
+      onSubmit?.(selectedItems);
    };
 
    return (
       <>
-         <Dialog minWidth="430px" open={open} handleClose={onClose} title={headerText}>
-            <Box>
+         <Stack {...otherProps}>
+            {showSearchBox && (
                <SearchInput
                   handleSearch={handleSearch}
                   debounceTime={50}
                   placeholder={searchPlaceholder ?? 'Search words...'}
+                  boxProps={{ paddingX: 1 }}
                />
+            )}
+            {showAddNewItemButton && (
                <Box mt={2} display="flex" justifyContent="flex-end">
                   <Button
                      onClick={() => setShowAddNew(true)}
-                     color={'gray' as any}
+                     color="gray"
                      startIcon={<AddCircle color="inherit" />}
                      variant="text"
                   >
                      {addButtonText ?? 'Add New'}
                   </Button>
                </Box>
-               <ListWithChildren
-                  onRemoveItem={onRemoveItem}
-                  items={renderedItems}
-                  onCheckboxToggle={onCheckboxToggle}
-               />
+            )}
+            <ListWithChildren
+               onRemoveItem={onRemoveItem}
+               items={renderedItems}
+               onCheckboxToggle={handleCheckboxToggle}
+            />
+            {showAddCloseButton && (
                <Box mt={2} display="flex" justifyContent="center">
                   <Button
                      disabled={allItems.every((item) => !item.checked)}
@@ -123,8 +127,8 @@ export const ModalWithCheckBoxList: React.FC<ReusableModalProps> = ({
                      Add
                   </Button>
                </Box>
-            </Box>
-         </Dialog>
+            )}
+         </Stack>
          <ModalAddNewDialog
             open={showAddNew}
             onClose={() => setShowAddNew(false)}
