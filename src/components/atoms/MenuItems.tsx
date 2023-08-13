@@ -28,7 +28,9 @@ export const MenuItem = ({ label, href, children, onClick, ...restProps }: MenuI
    return (
       <StyledMenuItem onClick={(event) => onClick?.(event, { label: label ?? '', href })} {...restProps}>
          <Anchor
-            {...(href ? { style: { textDecoration: 'none', color: Colors.TextGray }, to: href ?? '' } : {})}
+            {...(href
+               ? { style: { textDecoration: 'none', width: '100%', color: Colors.TextGray }, to: href ?? '' }
+               : {})}
          >
             {children ?? label}
          </Anchor>

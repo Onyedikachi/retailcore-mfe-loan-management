@@ -1,14 +1,14 @@
-import { Button } from '@app/components/atoms';
-import { FormControlBase } from '@app/components/forms/FormControl';
-import FormControlWrapper from '@app/components/forms/FormControlWrapper';
-import { LoanPrincipalControl } from '@app/components/forms/LoanPrincipalControl';
-import { PercentageControl } from '@app/components/forms/PercentageControl';
-import { TenureControl } from '@app/components/forms/TenureControl';
-import { ModalAddNewDialog } from '@app/components/modal/AddNewDialog';
-import { Periodicity2 } from '@app/constants';
 import * as FormMeta from '@app/utils/validators/book-a-loan/facility-details';
+import FormControlWrapper from '@app/components/forms/FormControlWrapper';
 import { AddCircle } from '@mui/icons-material';
 import { Box } from '@mui/material';
+import { Button } from '@app/components/atoms';
+import { FormControlBase } from '@app/components/forms/FormControl';
+import { LoanPrincipalControl } from '@app/components/forms/LoanPrincipalControl';
+import { ModalAddNewDialog } from '@app/components/modal/AddNewDialog';
+import { PercentageControl } from '@app/components/forms/PercentageControl';
+import { Periodicity2 } from '@app/constants';
+import { TenureControl } from '@app/components/forms/TenureControl';
 import { useState } from 'react';
 export const FacilityDetailsFields = () => {
    const { InputFieldNames, TooltipText } = FormMeta;

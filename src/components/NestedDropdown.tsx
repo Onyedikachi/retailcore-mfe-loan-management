@@ -40,7 +40,7 @@ export const NestedDropdown: React.FC = () => {
             open={!!anchorEl}
             anchorEl={anchorEl}
             slotProps={{ paper: { style: { width: anchorEl ? `${anchorEl.clientWidth}px` : undefined } } }}
-            items={getMenuItemsProps(ProductTypesMenuOptions, (event, option) =>
+            items={getMenuItemsProps(ProductTypesMenuOptions(), (event, option) =>
                handleMenuItemClick(2)(event, option)
             )}
             anchorOrigin={{
