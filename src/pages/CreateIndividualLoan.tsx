@@ -6,6 +6,7 @@ import { PageLayout } from '@app/layouts/PageLayout';
 import { useRequest } from 'react-http-query';
 import { useStepperContext } from '@app/providers';
 import { LoanInformation } from '@app/components/loan-booking/facility-details/LoanInformation';
+import { ChargesTaxesAndPenaltySetup } from '@app/components/loan-booking/charges-taxes-and-penalty-setup/ChargesTaxesAndPenalySetup';
 
 const StyledContentWrapper = styled(Box)({
    background: 'white',
@@ -32,7 +33,6 @@ const CreateIndividualLoanContent = () => {
    const stepperWrapperRef = React.useRef<HTMLElement>(null);
    const [headerHeight, setHeaderHeight] = React.useState<number>();
    const { activeStep } = useStepperContext();
-   console.log(activeStep);
 
    React.useEffect(() => {
       setHeaderHeight(stepperWrapperRef.current?.clientHeight);
@@ -61,7 +61,7 @@ const CreateIndividualLoanContent = () => {
                >
                   <CustomerInformation />
                   <FacilityDetails />
-                  <>3</>
+                  <ChargesTaxesAndPenaltySetup />
                   <>4</>
                </Stepper>
             </StyledContentWrapper>

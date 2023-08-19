@@ -13,7 +13,7 @@ import {
 } from '../atoms';
 import { Autocomplete, AutocompleteProps } from '../atoms/AutocompleteInput';
 
-type ControlType = 'input' | 'select' | 'switch' | 'checkboxGroup' | 'radio' | 'autocomplete';
+export type ControlType = 'input' | 'select' | 'switch' | 'checkboxGroup' | 'radio' | 'autocomplete';
 
 export type FormControlBaseProp<Control extends ControlType = ControlType> = (Control extends 'switch'
    ? SwitchProps

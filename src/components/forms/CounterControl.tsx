@@ -14,26 +14,45 @@ export interface CounterControlProps {
 
 export const CounterControl = (props: CounterControlProps) => {
    return (
-      <FormControlWrapper
-         name={props.name}
-         label={props.label}
-         required={props.required ?? true}
-         tooltipText={props.tooltipText}
-      >
-         <FormControlBase
-            name={props.name}
-            control="input"
-            allow="number"
-            defaultValue={props.defaultValue}
-            placeholder={props.placeholder ?? '0'}
-            InputProps={{
-               endAdornment: (
-                  <InputAdornment position="end">
-                     <ValueIncrementDecrement fieldName={props.name} />
-                  </InputAdornment>
-               ),
-            }}
-         />
-      </FormControlWrapper>
+      <>
+         {props.label ? (
+            <FormControlWrapper
+               name={props.name}
+               label={props.label}
+               required={props.required ?? true}
+               tooltipText={props.tooltipText}
+            >
+               <FormControlBase
+                  name={props.name}
+                  control="input"
+                  allow="number"
+                  defaultValue={props.defaultValue}
+                  placeholder={props.placeholder ?? '0'}
+                  InputProps={{
+                     endAdornment: (
+                        <InputAdornment position="end">
+                           <ValueIncrementDecrement fieldName={props.name} />
+                        </InputAdornment>
+                     ),
+                  }}
+               />
+            </FormControlWrapper>
+         ) : (
+            <FormControlBase
+               name={props.name}
+               control="input"
+               allow="number"
+               defaultValue={props.defaultValue}
+               placeholder={props.placeholder ?? '0'}
+               InputProps={{
+                  endAdornment: (
+                     <InputAdornment position="end">
+                        <ValueIncrementDecrement fieldName={props.name} />
+                     </InputAdornment>
+                  ),
+               }}
+            />
+         )}
+      </>
    );
 };

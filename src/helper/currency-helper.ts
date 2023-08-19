@@ -1,7 +1,7 @@
 import { isNullish } from '.';
 
 export const currencyToNumber = (currency: string) => {
-   const cleanedCurrency = currency.replace(/,/g, '').trim();
+   const cleanedCurrency = typeof currency === 'number' ? currency : currency?.replace(/,/g, '')?.trim();
    if (isNullish(cleanedCurrency) || cleanedCurrency === '') {
       return 0;
    }
@@ -10,11 +10,11 @@ export const currencyToNumber = (currency: string) => {
 };
 
 export const currencyInputFormatter = (inputValue: string) => {
-   const rawValue = inputValue.replace(/[^\d.]/g, '');
-   const parts = rawValue.split('.');
+   const rawValue = inputValue?.replace(/[^\d.]/g, '');
+   const parts = rawValue?.split('.');
 
    const integerPart = Number(parts[0] || 0).toLocaleString();
-   const decimalPart = !isNullish(parts[1]) ? `.${parts[1].substring(0, 2)}` : '';
+   const decimalPart = !isNullish(parts[1]) ? `.${parts[1]?.substring(0, 2)}` : '';
 
    return {
       parts,
@@ -27,13 +27,13 @@ export const currencyInputFormatter = (inputValue: string) => {
 };
 
 export const percentageInputFormatter = (inputValue: string) => {
-   let value = inputValue.replace(/[^\d.-]/g, '');
-   value = Number(value) <= 100 ? value : value.substring(0, value.length - 1);
+   let value = inputValue?.replace(/[^\d.-]/g, '');
+   value = Number(value) <= 100 ? value : value?.substring(0, value.length - 1);
 
    const parts = value.split('.');
    const integerPart = parts[0] ? `${parts[0]}` : '0';
 
-   const decimalPart = parts[1] !== undefined ? `.${parts[1].padEnd(1, '0')}` : '';
+   const decimalPart = parts[1] !== undefined ? `.${parts[1]?.substring(0, 2)}` : '';
 
    return {
       parts,

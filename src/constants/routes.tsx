@@ -4,7 +4,7 @@ import { Navigate } from 'react-router-dom';
 import { DashbordOverview } from '@app/pages/DashboardOverview';
 
 export const BasePath = '/loan-management';
-export const CreateLoanPath = `${BasePath}/create`;
+export const CreateLoanPath = `${BasePath}/book-loan`;
 
 export const RouteMaps = {
    root: {

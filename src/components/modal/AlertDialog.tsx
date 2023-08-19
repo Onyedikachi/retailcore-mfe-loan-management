@@ -8,12 +8,14 @@ import DialogContent from '@mui/material/DialogContent';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import InfoIcon from '@mui/icons-material/Info';
-export interface SaveAsDraftDialogProps extends Omit<MuiDialogProps, 'maxWidth'> {
+export interface AlertDialogProps extends Omit<MuiDialogProps, 'maxWidth'> {
    open: boolean;
    handleClose: () => void;
-   handleSaveAsDraft: () => void;
+   handleConfirm: () => void;
+   title: string;
+   subtitle: string;
 }
-const SaveAsDraftDialog: React.FC<SaveAsDraftDialogProps> = ({ open, handleClose, handleSaveAsDraft }) => {
+const AlertDialog: React.FC<AlertDialogProps> = ({ title, subtitle, open, handleClose, handleConfirm }) => {
    return (
       <div>
          <MuiDialog
@@ -36,17 +38,15 @@ const SaveAsDraftDialog: React.FC<SaveAsDraftDialogProps> = ({ open, handleClose
             <DialogContent>
                <>
                   <Typography fontWeight="bold" mb={2}>
-                     Do you want to save as draft?
+                     {title}
                   </Typography>
-                  <Typography mb={2}>
-                     Rquests in drafts would be deleted after 30 days of inactivity.
-                  </Typography>
+                  <Typography mb={2}>{subtitle}</Typography>
                </>
                <Box display="flex" gap={1} justifyContent="center">
                   <Button onClick={handleClose} variant="outlined">
                      Cancel
                   </Button>
-                  <Button color="primary" onClick={handleSaveAsDraft} type="submit" variant="contained">
+                  <Button color="primary" onClick={handleConfirm} type="submit" variant="contained">
                      Confirm
                   </Button>
                </Box>
@@ -55,4 +55,4 @@ const SaveAsDraftDialog: React.FC<SaveAsDraftDialogProps> = ({ open, handleClose
       </div>
    );
 };
-export default React.memo(SaveAsDraftDialog);
+export default React.memo(AlertDialog);

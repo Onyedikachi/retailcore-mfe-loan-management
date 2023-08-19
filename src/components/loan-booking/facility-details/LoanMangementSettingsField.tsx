@@ -2,7 +2,7 @@ import { Button } from '@app/components/atoms';
 import { FormControlBase } from '@app/components/forms/FormControl';
 import FormControlWrapper from '@app/components/forms/FormControlWrapper';
 import * as FormMeta from '@app/utils/validators/book-a-loan/facility-details';
-import { Box,} from '@mui/material';
+import { Box } from '@mui/material';
 import { useState } from 'react';
 import { useFormikContext } from 'formik';
 import { TenureControl } from '@app/components/forms/TenureControl';

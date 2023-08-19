@@ -37,7 +37,7 @@ export const CheckboxItemOptions: React.FC<CheckboxItemOptionsProps> = ({
 }) => {
    const { allItems: internalAllItems, itemToggle } = useCheckItems(
       items,
-      items.filter(({ checked }) => checked),
+      items?.filter(({ checked }) => checked),
       'id'
    );
 

@@ -60,7 +60,6 @@ module.exports = {
       'no-useless-concat': 'error',
       'no-useless-escape': 'error',
       'no-useless-rename': 'error',
-      camelcase: 'error',
       'require-await': 'warn',
       'arrow-spacing': 'warn',
       'spaced-comment': [

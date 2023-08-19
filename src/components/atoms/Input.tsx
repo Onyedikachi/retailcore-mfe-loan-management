@@ -33,7 +33,7 @@ export const Input: React.FC<InputProps> = ({
 
       if (props.allow === 'number') {
          const re = /(?:\b0(?:\.0*|$))|[^\d]/g;
-         input = input.replace(re, '');
+         input = input?.replace(re, '');
       }
       if (currency) {
          const { currency: formattedCurrency } = currencyInputFormatter(e.target.value);
