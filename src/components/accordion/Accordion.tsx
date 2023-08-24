@@ -51,7 +51,7 @@ const AccordionSummary = styled(MuiAccordionSummary)(() => ({
 const AccordionDetails = styled(MuiAccordionDetails)(() => ({}));
 
 interface AccordionProps extends MuiAccordionProps {
-   accordionLabels: string[];
+   accordionLabels: React.ReactNode[];
    children: React.ReactNode[];
 }
 
@@ -66,7 +66,7 @@ const Accordion: React.FC<AccordionProps> = ({ accordionLabels, children, ...oth
       <>
          {accordionLabels.map((label, index) => (
             <CustomAccordion
-               key={label + index}
+               key={'accordion' + index}
                onChange={handleChange(index)}
                expanded={expanded === index}
                {...otherProps}

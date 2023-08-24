@@ -7,6 +7,7 @@ import { useRequest } from 'react-http-query';
 import { useStepperContext } from '@app/providers';
 import { LoanInformation } from '@app/components/loan-booking/facility-details/LoanInformation';
 import { ChargesTaxesAndPenaltySetup } from '@app/components/loan-booking/charges-taxes-and-penalty-setup/ChargesTaxesAndPenalySetup';
+import { LoanDisbursement } from '@app/components/loan-booking/loan-disbursement/LoanDisbursement';
 
 const StyledContentWrapper = styled(Box)({
    background: 'white',
@@ -62,7 +63,7 @@ const CreateIndividualLoanContent = () => {
                   <CustomerInformation />
                   <FacilityDetails />
                   <ChargesTaxesAndPenaltySetup />
-                  <>4</>
+                  <LoanDisbursement />
                </Stepper>
             </StyledContentWrapper>
          </Grid>

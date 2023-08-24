@@ -36,6 +36,7 @@ export const CustomerInformation: React.FC = () => {
                            tooltipText={TooltipText[InputFieldNames.CUSTOMER_ACCOUNT_NO]}
                         >
                            <FormControlBase
+                              sx={{ pl: 2 }}
                               control="autocomplete"
                               placeholder="Type to search"
                               name={InputFieldNames.CUSTOMER_ACCOUNT_NO}
@@ -75,7 +76,7 @@ export const CustomerInformation: React.FC = () => {
    );
 };
 
-const accountNumbers = [
+export const accountNumbers = [
    { label: '014986724', subtitle: 'Lola' },
    { label: '014986824', subtitle: 'Tobi' },
    { label: '014907924', subtitle: 'Timothy' },

@@ -48,11 +48,12 @@ export const CheckBoxGroup: React.FC<CheckBoxGroupProps> = ({ actionComp, option
                                        sx={{ mr: 1 }}
                                        onChange={(e) => handleCheckboxChange(e, form)}
                                        value={option}
+                                       checked={form.values[props.name]?.includes(option)}
                                     />
                                  }
                                  label={option}
                               />
-                              {selectedValues.includes(option) && actionComp && actionComp[id]}
+                              {selectedValues?.includes(option) && actionComp && actionComp[id]}
                            </React.Fragment>
                         ))}
                      </FormGroup>

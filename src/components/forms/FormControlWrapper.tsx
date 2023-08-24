@@ -34,7 +34,7 @@ const FormControlWrapper: React.FC<WrapperProps> = (props) => {
                )}
             </Grid>
          )}
-         <Grid item xs={props.layout == 'horizontal' ? props.layoutFlexGrid?.[1] ?? 8 : 12} pl={2}>
+         <Grid item xs={props.layout == 'horizontal' ? props.layoutFlexGrid?.[1] ?? 8 : 12}>
             {props.children}
          </Grid>
       </Grid>
