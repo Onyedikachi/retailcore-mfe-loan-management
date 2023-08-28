@@ -69,7 +69,7 @@ const ActionButton: React.FC<{
       <Button
          color={getFieldProps(props.name).value?.length > 0 ? 'primary' : 'inherit'}
          variant="text"
-         sx={{ textDecoration: 'underline', textTransform: 'initial', pr:1 }}
+         sx={{ textDecoration: 'underline', textTransform: 'initial', pr: 1 }}
          onClick={props.onClick}
       >
          {props.text}
