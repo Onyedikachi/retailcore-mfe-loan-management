@@ -20,6 +20,19 @@ export const StyledAutocomplete = styled(MuiAutocomplete)(() => {
    return {};
 });
 
+const defaultFilterOption = (options: unknown, { inputValue }: { inputValue: string }) => {
+   const value = inputValue.toLowerCase().trim();
+   return (options as (string | AutocompleteOptions)[]).filter((option) => {
+      if (typeof option === 'string') {
+         return option.toLowerCase().includes(value);
+      } else {
+         const label = option.label.toLowerCase();
+         const subtitle = option.subtitle?.toLowerCase() ?? '';
+         return label.includes(value) || subtitle.includes(value);
+      }
+   });
+};
+
 export interface AutocompleteProps extends MuiAutocompleteProps<any, any, any, any> {
    name: string;
    handleSearch?: (inputValue?: string) => void;
@@ -31,6 +44,10 @@ export interface AutocompleteProps extends MuiAutocompleteProps<any, any, any, a
    applyButton?: React.ReactNode;
    checkbox?: boolean;
    extras?: React.ReactNode;
+   filterOptions?: (
+      options: unknown,
+      { inputValue }: { inputValue: string }
+   ) => (string | AutocompleteOptions)[];
 }
 interface AutocompleteOptions {
    label: string;
@@ -47,6 +64,7 @@ export const Autocomplete: React.FC<AutocompleteProps> = ({
    checkbox,
    applyButton,
    extras,
+   filterOptions = defaultFilterOption,
    ...otherProps
 }) => {
    const [open, setOpen] = useState(false);
@@ -80,6 +98,7 @@ export const Autocomplete: React.FC<AutocompleteProps> = ({
                         onInputChange={(event, newValue) => setDebouncedValue(newValue)}
                         onChange={(event, newValue) => handleChange(event, newValue, form)}
                         getOptionLabel={getOption}
+                        filterOptions={filterOptions}
                         renderOption={(props, option, { selected }) => {
                            return (
                               <React.Fragment key={getOption(option)}>
