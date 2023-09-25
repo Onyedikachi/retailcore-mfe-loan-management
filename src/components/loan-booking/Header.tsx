@@ -45,10 +45,8 @@ export const LoanBookingHeader = ({ title, backUrl }: LoanBookingHeaderProps) =>
             )}
             {['Loan Management', 'Book New Loan', applicationPathName ?? ''].map((message, index) => (
                <Fragment key={message}>
-                  <Typography
-                     sx={{ textTransform: 'capitalize', ...(index < 2 && { color: Colors.LightGray3 }) }}
-                  >
-                     {message.toLowerCase()}
+                  <Typography sx={{ ...(index > 1 && { fontWeight: 'bold' }), color: Colors.LightGray3 }}>
+                     {message.toUpperCase()}
                   </Typography>
                   {index !== 2 && <KeyboardArrowLeft sx={{ color: Colors.TextGray }} />}
                </Fragment>
