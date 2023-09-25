@@ -86,7 +86,7 @@ export const CreateIndividualLoan = () => {
 
    return (
       <PageLayout
-         header={<LoanBookingHeader title="Book Loan" backUrl={BasePath} />}
+         header={<LoanBookingHeader title="BOOK LOAN" backUrl={BasePath} />}
          content={<CreateIndividualLoanContent />}
          fullContent={true}
       />
