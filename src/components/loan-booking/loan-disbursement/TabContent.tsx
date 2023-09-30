@@ -3,7 +3,7 @@ import { styled, FormControlLabel as MuiFormControlLabel, Checkbox, Box } from '
 import { Colors } from '@app/constants/colors';
 import { FormControlBase } from '@app/components/forms/FormControl';
 import { useFormikContext } from 'formik';
-import React from 'react';
+import React, { useCallback, useEffect } from 'react';
 
 const FormControlLabel = styled(MuiFormControlLabel)({
    '& .MuiSvgIcon-root': { color: Colors.Primary, marginLeft: 2 },
@@ -14,14 +14,13 @@ export const TabContent: React.FC<{ name: string; options: string[] }> = ({ name
       <>
          <AccordionVariant
             accordionLabels={
-               [<CheckboxHeader key={'jkll'} name={name} label={'jkll'} options={options} />]
-               // assetsCheckbox(name, [options, []])
+               assetsCheckbox(name, [options, []])
             }
          >
             <Box
                ml={3}
                sx={{
-                  '& .MuiTypography-root': { fontSize: 12 },
+                  fontSize: 12,
                   '& .MuiSvgIcon-root': { color: Colors.Primary },
                   '& .MuiCheckbox-root': { padding: '0px 4px' },
                }}
@@ -42,27 +41,33 @@ interface CheckboxHeaderProps {
 
 const CheckboxHeader = ({ label, name, options }: CheckboxHeaderProps) => {
    const { getFieldProps, setFieldValue } = useFormikContext();
-   let selected = getFieldProps(name).value;
-   let itemCount = options.length;
+   const selected = getFieldProps(name).value as Array<string>;
    const [checked, setChecked] = React.useState(false);
+
+   const computedOptions = options.length ? options : [label];
+   const handleCheck = useCallback(() => {
+      const newState = !checked;
+      const newCheckedItems = newState
+         ? Array.from(new Set([...selected, ...computedOptions]))
+         : selected?.filter((item) => !computedOptions.includes(item));
+
+      setFieldValue(name, newCheckedItems);
+      setChecked(newState);
+   }, [checked, selected, setFieldValue]);
+
+   useEffect(() => {
+      setChecked(computedOptions.every((option) => selected.includes(option)));
+   }, [selected, setChecked]);
+
+   const indeterminate =
+      computedOptions.some((option) => selected.includes(option)) &&
+      !computedOptions.every((option) => selected.includes(option));
 
    return (
       <FormControlLabel
          label={label}
          sx={{ ml: 0.1 }}
-         control={
-            <Checkbox
-               checked={selected.length == itemCount && itemCount > 0}
-               indeterminate={selected.length > 0 && selected.length < itemCount}
-               onChange={(e) => {
-                  setChecked((prev) => !prev);
-                  const filtered = selected.filter((item: string) => !options.includes(item));
-                  const allChecked = checked ? options : filtered;
-                  const newChecked = Array.from(new Set([...selected, ...allChecked]));
-                  setFieldValue(name, newChecked);
-               }}
-            />
-         }
+         control={<Checkbox checked={checked} indeterminate={indeterminate} onChange={handleCheck} />}
          onClick={(event) => event.stopPropagation()}
       />
    );

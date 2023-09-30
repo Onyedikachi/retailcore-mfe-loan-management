@@ -1,5 +1,5 @@
 import { Colors } from '@app/constants/colors';
-import { styled, Tab as MuiTab, } from '@mui/material';
+import { styled, Tab as MuiTab } from '@mui/material';
 
 export const Tab = styled(MuiTab)({
    textTransform: 'capitalize',
