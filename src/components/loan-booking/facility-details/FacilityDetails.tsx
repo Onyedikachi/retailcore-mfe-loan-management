@@ -9,11 +9,6 @@ import { useStepperContext } from '@app/providers';
 import { FacilityDetailsFields } from './FacilityDetailsFields';
 import { ColateralAndEquityContribFields } from './ColateralAndEquityContrinField';
 import { LoanManagementSettingsField } from './LoanMangementSettingsField';
-// import { useSearchParams } from 'react-router-dom';
-// import { useRequest } from 'react-http-query';
-// import { FacilityDetails as FacilityDetailsType } from '@app/@types/create-credit-product';
-// import { API_PATH, CommonPayloadKeys, PRODUCT_ID_PARAM_NAME } from '@app/constants';
-// import { useCreateProductContext } from '@app/providers/create-product';
 
 export const FacilityDetails: React.FC = () => {
    const [isDraft, setIsDraft] = useState(false);

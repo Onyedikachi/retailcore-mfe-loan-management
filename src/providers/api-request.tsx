@@ -1,77 +1,47 @@
 import { AlertSnackbar } from '@app/components';
 import { Loader } from '@app/components/Loader';
-import { API_PATH, API_URL, RETAIL_CORE_API_PATH } from '@app/constants';
-import { useState } from 'react';
+import { environmentVar } from '@app/constants';
 import { RequestProvider } from 'react-http-query';
+import { axiosInstance } from '@Sterling/shared';
+import { refreshToken } from '@app/utils/refresh-token';
 
 interface APIRequestProviderProps {
    children: React.ReactNode;
 }
 
-// Add routes that you want not to show loader when API is being called here;
-const LOADING_IGNORED_ROUTE = [API_PATH.PRODUCT_NAME_AVAILABILITY(''), RETAIL_CORE_API_PATH.GET_CURRENCY];
-
-// Add routes that you want error messages display to be ignored here.
-const ERROR_DISPLAYED_IGNORED_ROUTE = [API_PATH.PRODUCT_NAME_AVAILABILITY('')];
-
-// Add routes that you want success messages display to be ignored here.
-const SUCCESS_DISPLAYED_IGNORED_ROUTE = [
-   API_PATH.PRODUCT_NAME_AVAILABILITY(''),
-   RETAIL_CORE_API_PATH.GET_CURRENCY,
-];
-
 export const APIRequestProvider = ({ children }: APIRequestProviderProps) => {
+   const { API_URL } = environmentVar();
    const baseUrl = API_URL ?? '';
-   const [requestUrl, setRequestUrl] = useState('');
-
-   const renderLoader = (isLoading: boolean) => {
-      if (isLoading && !LOADING_IGNORED_ROUTE.some((route) => requestUrl.includes(route))) {
-         return <Loader />;
-      }
-
-      return <></>;
-   };
 
    const renderErrorSnackBar = (errorResponse: any) => {
-      if (!ERROR_DISPLAYED_IGNORED_ROUTE.some((route) => requestUrl.includes(route))) {
-         const { data } = errorResponse;
-         let errorMessage = data?.message;
-         if (Array.isArray(errorMessage)) {
-            errorMessage = errorMessage.join(', ');
-         }
-         return <AlertSnackbar alertType="error" message={errorMessage} />;
+      const { data } = errorResponse;
+      let errorMessage = data?.message;
+      if (Array.isArray(errorMessage)) {
+         errorMessage = errorMessage.join(', ');
       }
-
-      return <></>;
+      return <AlertSnackbar alertType="error" message={errorMessage} />;
    };
 
    const renderSuccessSnackbar = (response: any) => {
-      if (!SUCCESS_DISPLAYED_IGNORED_ROUTE.some((route) => requestUrl.includes(route))) {
-         return <AlertSnackbar alertType="success" message={response.message ?? 'Request Successful'} />;
-      }
-
-      return <></>;
+      return <AlertSnackbar alertType="success" message={response.message ?? 'Request Successful'} />;
    };
 
    return (
       <RequestProvider
          interceptors={{
             request(payload) {
-               setRequestUrl(payload.url);
-               const authorizationToken = localStorage.getItem('@sterling_core_token');
-               return {
-                  ...payload,
-                  headers: {
-                     Authorization: `Bearer ${authorizationToken}`,
-                     'Content-Type': 'application/json',
-                  },
-               };
+               return { ...payload, headers: { 'Content-Type': 'application/json' } };
+            },
+            response(payload) {
+               refreshToken();
+               return { ...payload };
             },
          }}
-         onLoading={renderLoader}
+         onLoading={() => <Loader />}
          onError={renderErrorSnackBar}
          onSuccess={renderSuccessSnackbar}
          baseUrl={baseUrl}
+         axiosInstance={axiosInstance}
       >
          {children}
       </RequestProvider>

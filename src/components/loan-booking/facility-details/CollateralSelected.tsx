@@ -1,26 +1,24 @@
 import CancelIcon from '@mui/icons-material/Cancel';
-import { Colors } from '@app/constants';
-import { Box, Grid, Typography } from '@mui/material';
+import { Box, Grid, IconButton, Typography } from '@mui/material';
 import { LoanPrincipalControl } from '@app/components/forms/LoanPrincipalControl';
 import * as FormMeta from '@app/utils/validators/book-a-loan/facility-details';
 import { FileUpload } from '@app/components/atoms/FileUpload';
+import { RedBorderContentBox } from '@app/components/atoms/RedBorderBox';
 
-export const ColateralSelected: React.FC<{ name: string; collateral: string }> = ({ collateral, name }) => {
+export const ColateralSelected: React.FC<{ name: string; collateral: string; handleRemove: () => void }> = ({
+   collateral,
+   name,
+   handleRemove,
+}) => {
    const { InputFieldNames, TooltipText } = FormMeta;
 
    return (
-      <Box
-         sx={{
-            mb: 2.5,
-            border: `1px solid ${Colors.Primary}`,
-            borderRadius: '5px',
-            minHeight: '120px',
-            p: 1.5,
-         }}
-      >
+      <RedBorderContentBox sx={{ pb: 2 }} >
          <Box display="flex" justifyContent="space-between">
             <Typography fontWeight="bold">{collateral}</Typography>
-            <CancelIcon sx={{ color: 'primary.main' }} />
+            <IconButton onClick={handleRemove}>
+               <CancelIcon sx={{ color: 'primary.main' }} />
+            </IconButton>
          </Box>
          <Grid container mt={2} mb={0.5}>
             <Grid item xs={4}>
@@ -41,6 +39,6 @@ export const ColateralSelected: React.FC<{ name: string; collateral: string }> =
                />
             </Grid>
          </Grid>
-      </Box>
+      </RedBorderContentBox>
    );
 };
