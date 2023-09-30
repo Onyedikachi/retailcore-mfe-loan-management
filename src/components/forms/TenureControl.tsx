@@ -12,6 +12,7 @@ export interface TenureControlProps {
    loanTenurePeriod?: Array<string>;
    required?: boolean;
    layout?: 'horizontal' | 'vertical' | undefined;
+   layoutFlexGrid?: number[];
 }
 
 export const TenureControl = (props: TenureControlProps) => {
@@ -22,6 +23,7 @@ export const TenureControl = (props: TenureControlProps) => {
          layout={props.layout}
          required={props.required ?? true}
          tooltipText={props.periodTooltipText}
+         layoutFlexGrid={props.layoutFlexGrid}
       >
          <Grid container>
             <Grid item xs={4}>

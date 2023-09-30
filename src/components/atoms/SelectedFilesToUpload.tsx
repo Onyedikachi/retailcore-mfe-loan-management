@@ -59,7 +59,7 @@ export const SelectedFilesToUpload: React.FC<{
                         </Grid>
                      </Grid>
                   </Box>
-                  <InputSuccessText successText="File uploaded succesfully" />
+                  {/* <InputSuccessText successText="File uploaded succesfully" /> */}
                </Box>
             </ListItem>
          ))}

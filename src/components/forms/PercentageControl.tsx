@@ -1,17 +1,13 @@
 import { InputAdornment } from '@mui/material';
 import { InputChip } from '../atoms';
 import { FormControlBase } from './FormControl';
-import FormControlWrapper from './FormControlWrapper';
+import FormControlWrapper, { WrapperProps } from './FormControlWrapper';
 
-export interface PercentageControlProps {
+export interface PercentageControlProps extends Omit<WrapperProps, 'children'> {
    name: string;
    required?: boolean;
-   label?: string;
-   tooltipText?: string;
    placeholder?: string;
    withChip?: boolean;
-   layout?: 'horizontal' | 'vertical' | undefined;
-   labelDescription?: string;
 }
 
 export const PercentageControl = (props: PercentageControlProps) => {
@@ -23,6 +19,7 @@ export const PercentageControl = (props: PercentageControlProps) => {
          layout={props.layout}
          required={props.required ?? true}
          tooltipText={props.tooltipText}
+         layoutFlexGrid={props.layoutFlexGrid}
       >
          <FormControlBase
             name={props.name}

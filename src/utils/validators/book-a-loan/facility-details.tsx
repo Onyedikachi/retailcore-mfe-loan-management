@@ -12,6 +12,9 @@ export const InputFieldNames = {
    LOAN_TENURE_PERIOD: 'loan_tenure',
    REPAYMENT_PATTERN: 'repayment_pattern',
    REPAYMENT_FREQUENCY: 'repayment_frequency',
+   START_DATE: 'start_date',
+   START_DATE_NUM: 'start_date_num',
+   START_DATE_PERIOD: 'start_date_period',
    REQUIRE_COLLATERAL: 'require_collateral',
    COLLATERAL_AND_EQUITY_VALUES: 'contrib_values',
    COLLATERAL_MARKET_VALUE: 'collateral_market_value',
@@ -43,6 +46,9 @@ export const initialValues = () => ({
    [InputFieldNames.LOAN_TENURE_PERIOD]: '',
    [InputFieldNames.REPAYMENT_PATTERN]: '',
    [InputFieldNames.REPAYMENT_FREQUENCY]: '',
+   [InputFieldNames.START_DATE]: '',
+   [InputFieldNames.START_DATE_NUM]: '',
+   [InputFieldNames.START_DATE_PERIOD]: '',
    [InputFieldNames.REQUIRE_COLLATERAL]: false,
    [InputFieldNames.COLLATERAL_AND_EQUITY_VALUES]: [],
    [InputFieldNames.COLLATERAL_MARKET_VALUE]: '',
@@ -81,6 +87,21 @@ const facilityDetails = {
    [InputFieldNames.LOAN_TENURE_PERIOD]: Yup.string().required('Field is required'),
    [InputFieldNames.REPAYMENT_PATTERN]: Yup.string().required('Select repayment pattern'),
    [InputFieldNames.REPAYMENT_FREQUENCY]: Yup.string().required('Select repayment frequency'),
+   [InputFieldNames.START_DATE]: Yup.string().when(
+      InputFieldNames.REPAYMENT_FREQUENCY,
+      (repaymentFrequency, field) =>
+         repaymentFrequency?.[0] == 'Custom' ? field.required('Field is required') : field
+   ),
+   [InputFieldNames.START_DATE_NUM]: Yup.string().when(
+      InputFieldNames.REPAYMENT_FREQUENCY,
+      (repaymentFrequency, field) =>
+         repaymentFrequency?.[0] == 'Custom' ? field.required('Field is required') : field
+   ),
+   [InputFieldNames.START_DATE_PERIOD]: Yup.string().when(
+      InputFieldNames.REPAYMENT_FREQUENCY,
+      (repaymentFrequency, field) =>
+         repaymentFrequency?.[0] == 'Custom' ? field.required('Field is required') : field
+   ),
 };
 
 const colateralAndEquityContrib = {
@@ -136,18 +157,20 @@ export const loanManagementSettings = {
 };
 
 export const TooltipText = {
-   [InputFieldNames.PRODUCT_NAME]: 'Enter the name of the loan product customer wants to take.',
-   [InputFieldNames.PRODUCT_CATEGORY]: 'Select a product category for the loan product being booked',
-   [InputFieldNames.LOAN_PURPOSE]: 'Enter the purpose for which customer wants to take  this loan product',
-   [InputFieldNames.PRINCIPAL]: 'Enter amount customer wants to take under this loan product',
+   [InputFieldNames.PRODUCT_NAME]: 'Select the loan product the customer wants to take.',
+   [InputFieldNames.PRODUCT_CATEGORY]:
+      'This represents the product category for the loan product being booked',
+   [InputFieldNames.LOAN_PURPOSE]: 'Indicate the purpose for which customer wants to take  this loan product',
+   [InputFieldNames.PRINCIPAL]: 'Specify the pricipal (amount) that the customer wishes to collect as a loan',
    [InputFieldNames.INTEREST_RATE]:
-      'Specify the percentage at which interest will be charged on the loan amount',
+      'Specify the rate (%) at which interest will be charged on the loan amount',
    [InputFieldNames.LOAN_TENURE_PERIOD]:
-      'Specify the period for which the customer will hold this loan product ',
+      'Specify the period for which the customer will hold this loan product',
    [InputFieldNames.REPAYMENT_PATTERN]:
-      'Select the frequency at which the equated  instalment (EI) will be paid',
+      'Select the method/pattern with which the customer is to pay back the loan amount',
    [InputFieldNames.REPAYMENT_FREQUENCY]:
       'Select the frequency at which the equated  instalment (EI) will be paid',
+   [InputFieldNames.START_DATE]: 'Specify start date',
    [InputFieldNames.COLLATERAL_MARKET_VALUE]: 'Enter the appraised value of the collateral selected',
    [InputFieldNames.ENABLE_MORATORIUM_PERIOD]:
       'This is the period during which the customer is not required to make loan repayments',
@@ -163,4 +186,5 @@ export const repaymentPattern = [
    'Equal Installment (Reducing Balance)',
    'Equal Installment (Fixed)',
    'Bullet',
+   'Tranches',
 ];

@@ -6,7 +6,6 @@ import { PageLayout } from '@app/layouts/PageLayout';
 import { useRequest } from 'react-http-query';
 import { useStepperContext } from '@app/providers';
 import { LoanInformation } from '@app/components/loan-booking/facility-details/LoanInformation';
-import { ChargesTaxesAndPenaltySetup } from '@app/components/loan-booking/charges-taxes-and-penalty-setup/ChargesTaxesAndPenalySetup';
 import { LoanDisbursement } from '@app/components/loan-booking/loan-disbursement/LoanDisbursement';
 
 const StyledContentWrapper = styled(Box)({
@@ -30,7 +29,7 @@ const StepperContentWrapper = styled(Box)({
    marginTop: 20,
 });
 
-const CreateIndividualLoanContent = () => {
+const BookIndividualLoanContent = () => {
    const stepperWrapperRef = React.useRef<HTMLElement>(null);
    const [headerHeight, setHeaderHeight] = React.useState<number>();
    const { activeStep } = useStepperContext();
@@ -53,16 +52,10 @@ const CreateIndividualLoanContent = () => {
                      style: { height: `calc(100% - ${(headerHeight ?? 0) + 40}px)` },
                      className: 'fancy-scrollbar',
                   }}
-                  stepLabels={[
-                     'Customer Information',
-                     'Facility Details',
-                     'Charges, Taxes & Penalty Setup',
-                     'Loan Debursement',
-                  ]}
+                  stepLabels={['Customer Information', 'Facility Details', 'Loan Debursement']}
                >
                   <CustomerInformation />
                   <FacilityDetails />
-                  <ChargesTaxesAndPenaltySetup />
                   <LoanDisbursement />
                </Stepper>
             </StyledContentWrapper>
@@ -76,18 +69,19 @@ const CreateIndividualLoanContent = () => {
    );
 };
 
-export const CreateIndividualLoan = () => {
+export const BookIndividualLoan = () => {
    // This request fetches currency list & caches for the usage elsewhere, so request is only being made once.
    useRequest({
-      onMount: (getCurrencyList) => getCurrencyList(RETAIL_CORE_API_PATH.GET_CURRENCY),
+      onMount: (getCurrencyList) =>
+         getCurrencyList(RETAIL_CORE_API_PATH.GET_CURRENCY, { showSuccess: false }),
       memoryStorage: true,
       name: REQUEST_NAMES.CURRENCY_LIST,
    });
 
    return (
       <PageLayout
-         header={<LoanBookingHeader title="Book Loan" backUrl={BasePath} />}
-         content={<CreateIndividualLoanContent />}
+         header={<LoanBookingHeader title="BOOK LOAN" backUrl={BasePath} />}
+         content={<BookIndividualLoanContent />}
          fullContent={true}
       />
    );

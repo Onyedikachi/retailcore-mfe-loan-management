@@ -1,11 +1,8 @@
 import { SecurityEligibilityDocumentType } from '@app/@types';
-
-export const API_URL = 'https://loan-management-api.dev.bepeerless.co';
-export const RETAIL_CORE_BASE_URL = 'https://dev2-retailcore-accounting-api.dev.bepeerless.co';
-export const RETAIL_AUTH_BASE_URL = 'https://dev2-retailcore-auth-api.dev.bepeerless.co';
+import { environmentVar } from './environment-var';
 
 const API_V1 = '/api/v1';
-
+const { RETAIL_AUTH_BASE_URL, RETAIL_CORE_BASE_URL } = environmentVar();
 export const API_PATH = {
    PRODUCT_INFO: (param?: string) => `${API_V1}/product-info${param ? '/' + param : ''}`,
    PRODUCT_NAME_AVAILABILITY: (name: string) => `${API_V1}/product-info/available/${name}`,
