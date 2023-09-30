@@ -1,10 +1,11 @@
-import { CreateIndividualLoan } from '@app/pages/CreateIndividualLoan';
+
 import { Permissions } from './permissions';
 import { Navigate } from 'react-router-dom';
 import { DashbordOverview } from '@app/pages/DashboardOverview';
+import { BookIndividualLoan } from '@app/pages/BookIndividualLoan';
 
 export const BasePath = '/loan-management';
-export const CreateLoanPath = `${BasePath}/book-loan`;
+export const BookLoanPath = `${BasePath}/book-loan`;
 
 export const RouteMaps = {
    root: {
@@ -27,9 +28,9 @@ export const RouteMaps = {
       element: <></>,
       path: `${BasePath}/corporate`,
    },
-   createIndividualLoan: {
-      element: <CreateIndividualLoan />,
-      path: `${CreateLoanPath}/individual-loan`,
+   bookIndividualLoan: {
+      element: <BookIndividualLoan />,
+      path: `${BookLoanPath}/individual-loan`,
    },
 };
 
@@ -40,7 +41,7 @@ export const Routes = Object.values(RouteMaps).map(({ element, path }) => ({
 
 export const RoutePaths = {
    IndividualLoan: {
-      absolute: RouteMaps.createIndividualLoan.path,
+      absolute: RouteMaps.bookIndividualLoan.path,
       relative: '/individual-loan',
       name: 'Individual Loan',
       permissions: [Permissions.CREATE_CREDIT_PRODUCT],
@@ -49,24 +50,24 @@ export const RoutePaths = {
       absolute: RouteMaps.dashboardOverview.path,
       relative: '/overview',
       name: 'Overview',
-      Permissions: [],
+      permissions: [],
    },
    DashboardSME: {
       absolute: RouteMaps.dashboardSME.path,
       relative: '/sme',
       name: 'SME',
-      Permissions: [],
+      permissions: [],
    },
    DashboardCorporate: {
       absolute: RouteMaps.dashboardCorporate.path,
       relative: '/corporate',
       name: 'Corporate',
-      Permissions: [],
+      permissions: [],
    },
    DashboardPersonal: {
       absolute: RouteMaps.dashboardPersonal.path,
       relative: '/personal',
       name: 'Personal',
-      Permissions: [],
+      permissions: [],
    },
 };
