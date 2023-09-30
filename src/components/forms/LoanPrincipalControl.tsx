@@ -10,6 +10,7 @@ export type LoanPrincipalControlProps = {
    layout?: 'horizontal' | 'vertical' | undefined;
    mb?: number;
    placeholder?: string;
+   layoutFlexGrid?: number[];
 };
 
 export const LoanPrincipalControl = ({
@@ -20,6 +21,7 @@ export const LoanPrincipalControl = ({
    extraLeft,
    layout,
    placeholder,
+   layoutFlexGrid,
    mb,
    ...otherProps
 }: LoanPrincipalControlProps) => {
@@ -30,13 +32,14 @@ export const LoanPrincipalControl = ({
          label={label}
          required={required ?? true}
          layout={layout}
+         layoutFlexGrid={layoutFlexGrid}
          tooltipText={tooltipText}
       >
          <FormControlBase
             name={name}
             currency
             placeholder={placeholder ?? '0'}
-            extraLeft={extraLeft ?? 'NGN'}
+            extraLeft={extraLeft ?? extraLeft}
             {...otherProps}
             control="input"
          />
