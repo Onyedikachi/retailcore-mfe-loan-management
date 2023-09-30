@@ -19,9 +19,9 @@ const FormControlWrapper: React.FC<WrapperProps> = (props) => {
    return (
       <Grid container sx={{ mb: 4, ...props.sx }}>
          {props.label && (
-            <Grid item xs={props.layout == 'horizontal' ? props.layoutFlexGrid?.[0] ?? 4 : 12} pr={4}>
+            <Grid item xs={props.layout == 'horizontal' ? props.layoutFlexGrid?.[0] ?? 4 : 12}>
                <Box display="flex">
-                  <InputLabel htmlFor={props.name} sx={{ fontWeight: '500' }}>
+                  <InputLabel htmlFor={props.name} sx={{ fontWeight: '500', whiteSpace: 'normal' }}>
                      {props.label}
                   </InputLabel>
                   {props.required && <StatusIndicator />}

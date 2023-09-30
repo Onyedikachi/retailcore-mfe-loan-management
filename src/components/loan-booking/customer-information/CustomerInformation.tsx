@@ -7,13 +7,18 @@ import { Button } from '@app/components/atoms';
 import { CustomerAccountInformation } from './CustomerAccountInfo';
 import { Form, Formik } from 'formik';
 import { FormControlBase } from '@app/components/forms/FormControl';
+import AlertDialog from '@app/components/modal/AlertDialog';
 
 export const CustomerInformation: React.FC = () => {
    const { InputFieldNames, TooltipText } = FormMeta;
    const [isDraft, setIsDraft] = useState(false);
-
-   const onSubmit = (values: any) => {
-      // TODO: Implement submittion of selected user details to the backed.
+   const [showAlertDialog, setShowAlertDialog] = useState(false);
+   const onSubmit = (values: FormMeta.FormValues) => {
+      if (isDraft) {
+         setShowAlertDialog(true);
+      } else {
+         // TODO: Implement submittion of selected user details to the backed.
+      }
    };
 
    return (
@@ -71,11 +76,18 @@ export const CustomerInformation: React.FC = () => {
                );
             }}
          </Formik>
+         <AlertDialog
+            open={showAlertDialog}
+            handleClose={() => setShowAlertDialog(false)}
+            handleConfirm={() => {}}
+            title="Do you want to save as draft?"
+            subtitle="Requests in drafts would be deleted after 30 days of inactivity."
+         />
       </FormContainer>
    );
 };
 
-const accountNumbers = [
+export const accountNumbers = [
    { label: '014986724', subtitle: 'Lola' },
    { label: '014986824', subtitle: 'Tobi' },
    { label: '014907924', subtitle: 'Timothy' },

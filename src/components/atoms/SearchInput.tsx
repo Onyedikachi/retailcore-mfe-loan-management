@@ -1,4 +1,4 @@
-import { InputAdornment, IconButton, TextField, FormControl, TextFieldProps } from '@mui/material';
+import { InputAdornment, IconButton, TextField, FormControl, TextFieldProps, BoxProps } from '@mui/material';
 import { Box } from '@mui/system';
 import SearchIcon from '@mui/icons-material/Search';
 import React, { useEffect } from 'react';
@@ -6,11 +6,18 @@ import useDebounce from '@app/hooks/useDebounce';
 export type SearchProps = TextFieldProps & {
    handleSearch: (searchBy: string) => void;
    debounceTime?: number;
+   boxProps?: Omit<BoxProps, 'children' | 'component' | 'theme'>;
 };
 
 const SEARCH_BY = 'searchBy';
 
-export const SearchInput: React.FC<SearchProps> = ({ handleSearch, placeholder, debounceTime = 1000 }) => {
+export const SearchInput: React.FC<SearchProps> = ({
+   handleSearch,
+   placeholder,
+   boxProps,
+   debounceTime = 1000,
+   ...otherProps
+}) => {
    const { debouncedValue, setDebouncedValue } = useDebounce<string>(debounceTime);
    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
       setDebouncedValue(event.target.value);
@@ -21,7 +28,7 @@ export const SearchInput: React.FC<SearchProps> = ({ handleSearch, placeholder, 
    }, [debouncedValue]);
 
    return (
-      <Box>
+      <Box {...(boxProps as any)}>
          <FormControl fullWidth>
             <TextField
                variant="standard"
@@ -38,6 +45,7 @@ export const SearchInput: React.FC<SearchProps> = ({ handleSearch, placeholder, 
                      </InputAdornment>
                   ),
                }}
+               {...otherProps}
             />
          </FormControl>
       </Box>

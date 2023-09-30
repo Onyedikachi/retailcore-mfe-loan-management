@@ -1,11 +1,11 @@
 import React from 'react';
 import { Box, IconButton, Typography } from '@mui/material';
-import Checkbox from '../../atoms/Checkbox';
-import { ModalWithCheckBoxItemChildren } from '@app/@types/security-document';
+import Checkbox from '../atoms/Checkbox';
+import { CheckboxOptionsItemChildren } from '@app/@types/security-document';
 import { Colors } from '@app/constants';
 import CancelIcon from '@mui/icons-material/Cancel';
 export interface ListWithChildrenProps {
-   items: Array<ModalWithCheckBoxItemChildren>;
+   items: Array<CheckboxOptionsItemChildren>;
    onCheckboxToggle: (labelName: string, childLabelName?: string) => void;
    onRemoveItem?: (id: string, labelName: string) => void;
 }
@@ -15,7 +15,7 @@ export const ListWithChildren: React.FC<ListWithChildrenProps> = ({
    onCheckboxToggle,
    onRemoveItem,
 }) => {
-   const renderListItem = (item: ModalWithCheckBoxItemChildren, childLabelId?: string) => {
+   const renderListItem = (item: CheckboxOptionsItemChildren, childLabelId?: string) => {
       return (
          <Box
             sx={{
@@ -45,7 +45,7 @@ export const ListWithChildren: React.FC<ListWithChildrenProps> = ({
    };
 
    return (
-      <Box className="fancy-scrollbar" sx={{ maxHeight: '20vh', overflowY: 'auto', margin: '5% 0%' }}>
+      <Box sx={{ flex: 1, overflowY: 'auto', margin: '5% 0%' }}>
          {items.map((item) => (
             <Box key={item.id}>
                {renderListItem(item)}

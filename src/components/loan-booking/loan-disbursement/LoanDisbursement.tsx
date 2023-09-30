@@ -1,21 +1,15 @@
 import { Box, Divider } from '@mui/material';
 import { Formik, Form } from 'formik';
-import * as FormMeta from '@app/utils/validators/book-a-loan/facility-details';
+import * as FormMeta from '@app/utils/validators/book-a-loan/loan-disbursement';
 import Accordion from '@app/components/accordion/Accordion';
 import { Button } from '@app/components/atoms';
 import FormContainer from '@app/components/forms/FormContainer';
 import { useState } from 'react';
 import { useStepperContext } from '@app/providers';
-import { FacilityDetailsFields } from './FacilityDetailsFields';
-import { ColateralAndEquityContribFields } from './ColateralAndEquityContrinField';
-import { LoanManagementSettingsField } from './LoanMangementSettingsField';
-// import { useSearchParams } from 'react-router-dom';
-// import { useRequest } from 'react-http-query';
-// import { FacilityDetails as FacilityDetailsType } from '@app/@types/create-credit-product';
-// import { API_PATH, CommonPayloadKeys, PRODUCT_ID_PARAM_NAME } from '@app/constants';
-// import { useCreateProductContext } from '@app/providers/create-product';
+import { DisbursementSettingsFields } from './DisbursementSettingsFields';
+import { AccountEnteriesFields } from './AccountEnteriesFields';
 
-export const FacilityDetails: React.FC = () => {
+export const LoanDisbursement: React.FC = () => {
    const [isDraft, setIsDraft] = useState(false);
    const { handleNavigation } = useStepperContext();
 
@@ -27,7 +21,7 @@ export const FacilityDetails: React.FC = () => {
       <FormContainer>
          <Formik
             enableReinitialize={true}
-            initialValues={FormMeta.initialValues()}
+            initialValues={FormMeta.initialValues}
             validationSchema={FormMeta.validator()}
             onSubmit={onSubmit}
          >
@@ -36,9 +30,8 @@ export const FacilityDetails: React.FC = () => {
                   <Form>
                      <Box sx={{ mb: 5 }}>
                         <Accordion accordionLabels={FormMeta.accordionLabels}>
-                           <FacilityDetailsFields />
-                           <ColateralAndEquityContribFields />
-                           <LoanManagementSettingsField />
+                           <DisbursementSettingsFields />
+                           <AccountEnteriesFields />
                         </Accordion>
                      </Box>
                      <Divider />

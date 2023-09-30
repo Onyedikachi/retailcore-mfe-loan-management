@@ -6,7 +6,6 @@ import React from 'react';
 import { InputErrorText } from '../forms/InputFieldError';
 import { Field, FieldProps, useFormikContext } from 'formik';
 import { SelectedFilesToUpload } from './SelectedFilesToUpload';
-
 interface FileUploadProps {
    fileTypes: string[];
    multiple?: boolean;

@@ -1,4 +1,4 @@
-import { SecurityOptions } from '@app/@types/create-credit-product';
+import { SecurityOptions } from '@app/@types/book-a-loan';
 import { SecurityDocument } from '@app/@types/security-document';
 import { API_PATH } from '@app/constants';
 import { useState } from 'react';

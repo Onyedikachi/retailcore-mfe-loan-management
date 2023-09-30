@@ -14,13 +14,13 @@ export interface SecurityDocument {
    updated_by_id: string | null;
 }
 
-export interface ModalWithCheckBoxItem {
+export interface CheckboxOptionsItem {
    id: string;
    labelName: string;
    checked: boolean;
    status?: string;
 }
 
-export interface ModalWithCheckBoxItemChildren extends ModalWithCheckBoxItem {
-   children?: Array<ModalWithCheckBoxItem>;
+export interface CheckboxOptionsItemChildren extends CheckboxOptionsItem {
+   children?: Array<CheckboxOptionsItem>;
 }

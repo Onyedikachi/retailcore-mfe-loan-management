@@ -10,6 +10,7 @@ import { PercentageControl } from '@app/components/forms/PercentageControl';
 import { Periodicity2 } from '@app/constants';
 import { TenureControl } from '@app/components/forms/TenureControl';
 import { useState } from 'react';
+import { AddButton } from '@app/components/atoms/AddButton';
 export const FacilityDetailsFields = () => {
    const { InputFieldNames, TooltipText } = FormMeta;
    const [showAddNew, setShowAddNew] = useState(false);
@@ -31,23 +32,13 @@ export const FacilityDetailsFields = () => {
                options={loanCategories}
                search
                addButton={
-                  <>
-                     <Box mt={2} display="flex" justifyContent="flex-end">
-                        <Button
-                           sx={{ py: 0, px: 2 }}
-                           onMouseDown={(event) => {
-                              event.stopPropagation();
-                              setShowAddNew(true);
-                           }}
-                           color={'gray' as any}
-                           id="one-two-three"
-                           startIcon={<AddCircle color="inherit" sx={{ m: 0 }} />}
-                           variant="text"
-                        >
-                           Add New Categories
-                        </Button>
-                     </Box>
-                  </>
+                  <AddButton
+                     text=" Add New Categories"
+                     onMouseDown={(event) => {
+                        event.stopPropagation();
+                        setShowAddNew(true);
+                     }}
+                  />
                }
             />
          </FormControlWrapper>
@@ -79,6 +70,7 @@ export const FacilityDetailsFields = () => {
             />
          </FormControlWrapper>
          <LoanPrincipalControl
+            mb={3}
             name={InputFieldNames.PRINCIPAL}
             layout="horizontal"
             label="Principal"

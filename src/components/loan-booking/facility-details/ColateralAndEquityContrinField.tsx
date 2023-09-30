@@ -8,9 +8,10 @@ import { ColateralSelected } from './CollateralSelected';
 import { Colors } from '@app/constants';
 import { FieldArray, useFormikContext } from 'formik';
 import { FormControlBase } from '@app/components/forms/FormControl';
-import { ModalWithCheckBoxList } from '@app/components/modal/ModalWithCheckBoxList/Modal';
 import { PercentageControl } from '@app/components/forms/PercentageControl';
 import { useState } from 'react';
+import Dialog from '@app/components/atoms/Dialog';
+import { CheckboxItemOptions } from '@app/components/checkbox-item-options/ItemOptionsWrapper';
 export const ColateralAndEquityContribFields = () => {
    const { InputFieldNames } = FormMeta;
    const [showAddCollateral, setShowAddCollateral] = useState(false);
@@ -90,23 +91,28 @@ export const ColateralAndEquityContribFields = () => {
                )}
             </Grid>
          )}
-         <ModalWithCheckBoxList
+         <Dialog
+            minWidth="430px"
             open={showAddCollateral}
-            onClose={() => setShowAddCollateral(false)}
-            onSubmit={() => {
-               setShowAddCollateral(false);
-            }}
-            items={loanCategories.map((value, index) => ({
-               labelName: value,
-               checked: false,
-               id: index.toString(),
-            }))}
-            onAddNewValue={() => {
-               // TODO: make API call to add the new value.
-            }}
-            headerText="COLLATERAL ASSETS"
-            addButtonText="Add New Colateral"
-         />
+            handleClose={() => setShowAddCollateral(false)}
+            title="COLLATERAL ASSETS"
+         >
+            <CheckboxItemOptions
+               onSubmit={() => {
+                  setShowAddCollateral(false);
+               }}
+               items={loanCategories.map((value, index) => ({
+                  labelName: value,
+                  checked: false,
+                  id: index.toString(),
+               }))}
+               onAddNewValue={() => {
+                  // TODO: make API call to add the new value.
+               }}
+               addButtonText="Add New Colateral"
+               height="50vh"
+            />
+         </Dialog>
       </Box>
    );
 };

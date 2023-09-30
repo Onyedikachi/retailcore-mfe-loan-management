@@ -24,7 +24,7 @@
     "editor.tabSize": 3,
    "typescript.tsdk": "node_modules/typescript/lib",
    "exportall.config.relExclusion": [
-      "/src/components/create-product"
+      "/src/components/loan-booking"
    ],
    "sonarlint.connectedMode.project": {
       "connectionId": "https-sonarqube-devops-bepeerless-co-",

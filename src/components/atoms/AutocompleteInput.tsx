@@ -7,16 +7,31 @@ import {
    Stack,
    Typography,
    InputAdornment,
+   Box,
 } from '@mui/material';
 import { Field, FieldProps, ErrorMessage } from 'formik';
 import { InputErrorText } from '../forms/InputFieldError';
 import React, { SyntheticEvent, useEffect, useState } from 'react';
 import SearchIcon from '@mui/icons-material/Search';
 import useDebounce from '@app/hooks/useDebounce';
+import Checkbox from './Checkbox';
 
 export const StyledAutocomplete = styled(MuiAutocomplete)(() => {
    return {};
 });
+
+const defaultFilterOption = (options: unknown, { inputValue }: { inputValue: string }) => {
+   const value = inputValue.toLowerCase().trim();
+   return (options as (string | AutocompleteOptions)[]).filter((option) => {
+      if (typeof option === 'string') {
+         return option.toLowerCase().includes(value);
+      } else {
+         const label = option.label.toLowerCase();
+         const subtitle = option.subtitle?.toLowerCase() ?? '';
+         return label.includes(value) || subtitle.includes(value);
+      }
+   });
+};
 
 export interface AutocompleteProps extends MuiAutocompleteProps<any, any, any, any> {
    name: string;
@@ -26,6 +41,13 @@ export interface AutocompleteProps extends MuiAutocompleteProps<any, any, any, a
    debounceTime?: number;
    listBoxMaxHeight?: string;
    addButton?: React.ReactNode;
+   applyButton?: React.ReactNode;
+   checkbox?: boolean;
+   extras?: React.ReactNode;
+   filterOptions?: (
+      options: unknown,
+      { inputValue }: { inputValue: string }
+   ) => (string | AutocompleteOptions)[];
 }
 interface AutocompleteOptions {
    label: string;
@@ -39,6 +61,10 @@ export const Autocomplete: React.FC<AutocompleteProps> = ({
    listBoxMaxHeight,
    placeholder,
    addButton,
+   checkbox,
+   applyButton,
+   extras,
+   filterOptions = defaultFilterOption,
    ...otherProps
 }) => {
    const [open, setOpen] = useState(false);
@@ -49,7 +75,12 @@ export const Autocomplete: React.FC<AutocompleteProps> = ({
    }, [debouncedValue]);
 
    const handleChange = (event: SyntheticEvent<Element, Event>, newValue: any, form: FieldProps['form']) => {
-      form.setFieldValue(name, typeof newValue === 'string' ? newValue : newValue?.label);
+      if (otherProps.multiple) {
+         const value = newValue.map((prop: AutocompleteOptions) => prop.label);
+         form.setFieldValue(name, typeof newValue === 'string' ? newValue : value);
+      } else {
+         form.setFieldValue(name, typeof newValue === 'string' ? newValue : newValue?.label);
+      }
    };
 
    return (
@@ -62,47 +93,57 @@ export const Autocomplete: React.FC<AutocompleteProps> = ({
                         id={name}
                         data-testid={`autocomplete-${name}`}
                         open={open}
-                        onOpen={() => {
-                           setOpen(true);
-                        }}
-                        onClose={() => {
-                           setOpen(false);
-                        }}
+                        onOpen={() => setOpen(true)}
+                        onClose={() => setOpen(false)}
                         onInputChange={(event, newValue) => setDebouncedValue(newValue)}
                         onChange={(event, newValue) => handleChange(event, newValue, form)}
-                        getOptionLabel={(option) =>
-                           typeof option === 'string' ? option : (option as AutocompleteOptions)?.label
-                        }
-                        renderOption={(props, option) => (
-                           <React.Fragment
-                              key={
-                                 typeof option === 'string' ? option : (option as AutocompleteOptions).label
-                              }
-                           >
-                              {typeof option === 'string' ? (
-                                 <li {...props}>{option}</li>
-                              ) : (
-                                 <Stack component="li" style={{ alignItems: 'flex-start' }} {...props}>
-                                    <Typography>{(option as AutocompleteOptions).label}</Typography>
-                                    <Typography fontSize={12}>
-                                       {(option as AutocompleteOptions).subtitle}
-                                    </Typography>
-                                 </Stack>
-                              )}
-                           </React.Fragment>
-                        )}
+                        getOptionLabel={getOption}
+                        filterOptions={filterOptions}
+                        renderOption={(props, option, { selected }) => {
+                           return (
+                              <React.Fragment key={getOption(option)}>
+                                 {(option as AutocompleteOptions).subtitle ? (
+                                    <Stack component="li" style={{ alignItems: 'flex-start' }} {...props}>
+                                       <Typography>{getOption(option)}</Typography>
+                                       <Typography fontSize={12}>
+                                          {(option as AutocompleteOptions).subtitle}
+                                       </Typography>
+                                    </Stack>
+                                 ) : (
+                                    <Box component="li" {...props} sx={{ py: 0 }}>
+                                       {checkbox && <Checkbox sx={{ mr: 2, py: 0 }} checked={selected} />}
+                                       {getOption(option)} {extras && extras}
+                                    </Box>
+                                 )}
+                              </React.Fragment>
+                           );
+                        }}
                         ListboxProps={{
                            className: 'fancy-scrollbar',
-                           style: { maxHeight: listBoxMaxHeight ?? '250px' },
+                           style: { maxHeight: listBoxMaxHeight ?? '250px', fontSize: '14px' },
                         }}
                         ListboxComponent={(componentProps) => (
                            <>
-                              {addButton}
+                              {addButton && (
+                                 <Box pt={1.5} display="flex" justifyContent="flex-end">
+                                    {addButton}
+                                 </Box>
+                              )}
                               <ul {...componentProps} />
+                              {applyButton && (
+                                 <Box py={1} display="flex" justifyContent="flex-end">
+                                    {applyButton}
+                                 </Box>
+                              )}
                            </>
                         )}
                         {...otherProps}
+                        renderTags={(list) => {
+                           let lists = list.map((item: any) => item.label).join(', ');
+                           return <span>{lists}</span>;
+                        }}
                         renderInput={(params) => {
+                           const { startAdornment, endAdornment } = params.InputProps;
                            return (
                               <TextField
                                  {...params}
@@ -110,11 +151,19 @@ export const Autocomplete: React.FC<AutocompleteProps> = ({
                                  placeholder={placeholder}
                                  InputProps={{
                                     ...params.InputProps,
-                                    endAdornment: <>{params.InputProps.endAdornment}</>,
+                                    endAdornment: [
+                                       ...(Array.isArray(endAdornment) ? endAdornment : [endAdornment]),
+                                       <>{params.InputProps.endAdornment}</>,
+                                    ],
                                     startAdornment: (
-                                       <InputAdornment position="start">
-                                          {search && <SearchIcon sx={{ color: 'black', opacity: '0.77' }} />}
-                                       </InputAdornment>
+                                       <Box component="span" sx={{ display: 'flex', alignItems: 'center' }}>
+                                          {search && (
+                                             <InputAdornment position="start">
+                                                <SearchIcon sx={{ color: 'black', opacity: '0.77' }} />
+                                             </InputAdornment>
+                                          )}
+                                          <span>{startAdornment}</span>
+                                       </Box>
                                     ),
                                  }}
                                  error={!!(form.errors[name] && form.touched[name])}
@@ -133,4 +182,8 @@ export const Autocomplete: React.FC<AutocompleteProps> = ({
          }}
       </Field>
    );
+};
+
+const getOption = (option: unknown): string => {
+   return typeof option === 'string' ? option : (option as AutocompleteOptions)?.label;
 };

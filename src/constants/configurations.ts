@@ -1,7 +1,7 @@
 import { RoutePaths } from './routes';
 
 export const ProductTypes = {
-   PERSONAL: 'Personal',
+   PERSONAL: 'Inidividual',
    COMMERCIAL: 'Commercial',
 };
 

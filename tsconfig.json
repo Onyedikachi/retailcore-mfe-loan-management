@@ -16,7 +16,7 @@
          "@app/*": ["./src/*"]
       }
    },
-   "files": ["src/Sterling-loan-management.tsx", "./src/components/atoms/StatusIndicator.1.tsx"],
+   "files": ["src/Sterling-loan-management.tsx"],
    "include": ["src/**/*"],
    "exclude": ["src/**/*.test*"]
 }

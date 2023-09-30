@@ -1,4 +1,4 @@
-import { ProductInformation } from '@app/@types/create-credit-product';
+import { ProductInformation } from '@app/@types/book-a-loan';
 import ObjectMapper from 'object-mapper';
 /* eslint-disable camelcase */
 

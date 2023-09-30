@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo, useState } from 'react';
-import { CreateCreditProduct } from '@app/@types/create-credit-product';
+import { CreateCreditProduct } from '@app/@types/book-a-loan';
 
 interface CreateProductProviderProps {
    children: React.ReactNode;

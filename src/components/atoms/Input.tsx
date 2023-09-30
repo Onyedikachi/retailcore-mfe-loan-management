@@ -14,6 +14,7 @@ export type InputProps = TextFieldProps & {
    ratio?: boolean;
    extraLeft?: ReactNode;
    extraRight?: ReactNode;
+   showErrorMessage?: boolean;
 };
 
 export const Input: React.FC<InputProps> = ({
@@ -22,6 +23,7 @@ export const Input: React.FC<InputProps> = ({
    extraRight,
    currency,
    ratio,
+   showErrorMessage = true,
    ...props
 }) => {
    const handleChange = (
@@ -33,7 +35,7 @@ export const Input: React.FC<InputProps> = ({
 
       if (props.allow === 'number') {
          const re = /(?:\b0(?:\.0*|$))|[^\d]/g;
-         input = input.replace(re, '');
+         input = input?.replace(re, '');
       }
       if (currency) {
          const { currency: formattedCurrency } = currencyInputFormatter(e.target.value);
@@ -72,10 +74,12 @@ export const Input: React.FC<InputProps> = ({
                      </FormControl>
                      {extraRight && <Typography ml={1}>{extraRight}</Typography>}
                   </Box>
-                  <ErrorMessage
-                     name={props.name}
-                     children={(error: string) => <InputErrorText errorText={error} />}
-                  />
+                  {showErrorMessage && (
+                     <ErrorMessage
+                        name={props.name}
+                        children={(error: string) => <InputErrorText errorText={error} />}
+                     />
+                  )}
                </>
             );
          }}

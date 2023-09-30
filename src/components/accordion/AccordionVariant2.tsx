@@ -7,13 +7,22 @@ import {
    Typography,
    AccordionProps as MuiAccordionProps,
 } from '@mui/material';
-import ArrowRightIcon from '@mui/icons-material/ArrowRight';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { Colors } from '@app/constants';
 
 const CustomAccordion = styled(MuiAccordion)(() => ({
    fontFamily: 'Inter',
    background: 'white',
    boxShadow: 'unset',
-   '&.Mui-expanded': { margin: 0, '& .MuiAccordionSummary-content': { margin: 0 } },
+   '&.Mui-expanded': {
+      margin: 0,
+      '& .MuiAccordionSummary-content': {
+         margin: 0,
+      },
+   },
+   '& .MuiAccordionSummary-content': {
+      margin: 0,
+   },
    '&::before': {
       height: 0,
    },
@@ -24,38 +33,34 @@ const AccordionSummary = styled(MuiAccordionSummary)(() => ({
    fontSize: '18px',
    fontWeight: 500,
    lineHeight: '32px',
-   borderRadius: '5px',
-   height: '40px',
-   minHeight: '42px',
-   padding: '5px',
-   boxShadow: '0px 0px 3px 0px rgba(0, 0, 0, 0.1)',
+   borderRadius: '10px',
+   paddingLeft: 32,
+   paddingRight: 40,
+   boxShadow: '0px 0px 3px 0px rgba(0, 0, 0, 0.25)',
    zIndex: 1,
-   margin: '10px 0px',
+   margin: 0,
+   minHeight: '45px',
    background: 'white',
-   flexDirection: 'row-reverse',
    '& .MuiSvgIcon-root': {
+      border: `1.5px solid ${Colors.Primary}`,
+      borderRadius: '5px',
       padding: '3px',
    },
-   '& .MuiAccordionSummary-expandIconWrapper': {
-      transition: 'transform 0.3s',
-      transform: 'rotate(0deg)',
-   },
-   '& .MuiAccordionSummary-expandIconWrapper.Mui-expanded': {
-      transition: 'transform 0.3s',
-      transform: 'rotate(90deg)',
-   },
-   '&.Mui-expanded': { minHeight: '42px' },
-   '& .MuiAccordionSummary-content': {},
+   '&.Mui-expanded': { minHeight: '45px' },
 }));
 
-const AccordionDetails = styled(MuiAccordionDetails)(() => ({}));
+const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
+   borderLeft: `4px solid ${Colors.Primary}`,
+   padding: theme.spacing(3, 2),
+   marginTop: '-7px',
+}));
 
 interface AccordionProps extends MuiAccordionProps {
-   accordionLabels: React.ReactNode[];
+   accordionLabels: string[];
    children: React.ReactNode[];
 }
 
-const Accordion: React.FC<AccordionProps> = ({ accordionLabels, children, ...otherProps }) => {
+const AccordionVariant2: React.FC<AccordionProps> = ({ accordionLabels, children, ...otherProps }) => {
    const [expanded, setExpanded] = useState<number | false>(false);
 
    const handleChange = (index: number) => (_event: React.SyntheticEvent, isExpanded: boolean) => {
@@ -66,33 +71,23 @@ const Accordion: React.FC<AccordionProps> = ({ accordionLabels, children, ...oth
       <>
          {accordionLabels.map((label, index) => (
             <CustomAccordion
-               key={'accordion' + index}
                onChange={handleChange(index)}
                expanded={expanded === index}
+               key={label}
                {...otherProps}
             >
                <AccordionSummary
-                  expandIcon={<ArrowRightIcon color="primary" />}
+                  expandIcon={<ExpandMoreIcon color="primary" />}
                   aria-controls={`panel${index}-content`}
                   id={`panel${index}-header`}
                >
                   <Typography fontSize="18px">{label}</Typography>
                </AccordionSummary>
-               <AccordionDetails sx={{ px: 3 }}>{children[index]}</AccordionDetails>
+               <AccordionDetails>{children[index]}</AccordionDetails>
             </CustomAccordion>
          ))}
       </>
    );
 };
 
-export default Accordion;
-export const AccordionVariant = styled(Accordion)(() => ({
-   '& .MuiButtonBase-root': { boxShadow: 'none', margin: '0px' },
-   '& .MuiSvgIcon-root': { color: 'black' },
-   '& .MuiAccordionSummary-expandIconWrapper.Mui-expanded': {
-      transition: 'transform 0.3s',
-      transform: 'rotate(45deg)',
-   },
-   '& .MuiAccordionSummary-content': { '& .MuiTypography-root': { fontSize: 15 } },
-   '& .MuiAccordionDetails-root': { paddingBottom: '3px', paddingTop: '3px' },
-}));
+export default AccordionVariant2;
