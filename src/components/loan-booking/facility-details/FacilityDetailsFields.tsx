@@ -4,15 +4,20 @@ import { Box, Typography } from '@mui/material';
 import { FormControlBase } from '@app/components/forms/FormControl';
 import { LoanPrincipalControl } from '@app/components/forms/LoanPrincipalControl';
 import { PercentageControl } from '@app/components/forms/PercentageControl';
-import { Colors, Periodicity3 } from '@app/constants';
+import { Colors, Periodicity3, REQUEST_NAMES } from '@app/constants';
 import { TenureControl } from '@app/components/forms/TenureControl';
 import { useFormikContext } from 'formik';
 import { StartDateControl } from '@app/components/forms/StartDateControl';
 import { useFormikHelper } from '@app/hooks/useFormikHelper';
+import { useRequestData } from 'react-http-query';
+import { getDefaultCurrency } from '@app/helper/currency-helper';
+import { CurrencyListResponse } from '@app/@types';
 export const FacilityDetailsFields = () => {
    const { InputFieldNames, TooltipText } = FormMeta;
    const { getFieldProps } = useFormikContext();
    const { resetFieldState } = useFormikHelper();
+   const currencies = useRequestData<CurrencyListResponse>(REQUEST_NAMES.CURRENCY_LIST);
+   const defaultCurrency = getDefaultCurrency(currencies);
 
    return (
       <Box sx={{ width: '90%' }}>
@@ -69,7 +74,7 @@ export const FacilityDetailsFields = () => {
             layout="horizontal"
             label="Principal"
             layoutFlexGrid={[5.5, 6.5]}
-            extraLeft="NGN"
+            extraLeft={defaultCurrency?.abbreviation ?? 'NGN'}
             placeholder="Enter amount"
             tooltipText={TooltipText[InputFieldNames.PRINCIPAL]}
          />

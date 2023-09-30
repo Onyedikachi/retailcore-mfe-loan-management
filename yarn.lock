@@ -6549,10 +6549,10 @@ react-fast-compare@^2.0.1:
   resolved "https://registry.yarnpkg.com/react-fast-compare/-/react-fast-compare-2.0.4.tgz#e84b4d455b0fec113e0402c329352715196f81f9"
   integrity sha512-suNP+J1VU1MWFKcyt7RtjiSWUjvidmQSlqu+eHslq+342xCbGTYmC0mEhPCOHxlW0CywylOC1u2DFAT+bv4dBw==
 
-react-http-query@^1.1.1:
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/react-http-query/-/react-http-query-1.1.1.tgz#1fda5bc7c00543af712b80000c75f0fc7e057442"
-  integrity sha512-at2M9AKHaoY3wimMxuOxnK4QHxpDOYhWuR1FLy40MB77j9jEhJDdwLdq6boZSA7MehwewGQZ9JrSiF91cBdwcw==
+react-http-query@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/react-http-query/-/react-http-query-2.1.0.tgz#dcf825728e4e1d34ed82179e71fc9cd4e7be5143"
+  integrity sha512-5W2NgRx0UzyTFg/UxwrFkZqVslOtbcDESXFCiwABvu5dlJOQN1QPelOLl2tyfK5CU9mfTnyEgaNrps91g7BMGA==
 
 react-is@^16.13.1, react-is@^16.7.0:
   version "16.13.1"

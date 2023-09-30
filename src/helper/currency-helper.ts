@@ -1,3 +1,4 @@
+import { CurrencyListResponse } from '@app/@types';
 import { isNullish } from '.';
 
 export const currencyToNumber = (currency: string) => {
@@ -44,4 +45,8 @@ export const percentageInputFormatter = (inputValue: string) => {
       integerPart,
       decimalPart,
    };
+};
+
+export const getDefaultCurrency = (currencies?: CurrencyListResponse) => {
+   return currencies?.results.find(({ is_default }) => is_default);
 };
