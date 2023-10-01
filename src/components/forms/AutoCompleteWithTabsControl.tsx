@@ -6,7 +6,6 @@ import { ReactNode, useCallback, useEffect, useRef, useState } from 'react';
 import { Tab } from '../atoms/Tab';
 import { TabPanel } from '../atoms/TabPanel';
 import { useFormikContext } from 'formik';
-import { useId } from '@app/hooks/useId';
 
 interface AutoCompleteWithTabsControlProps {
    tabLabels: string[];
@@ -17,10 +16,10 @@ interface AutoCompleteWithTabsControlProps {
 }
 const AutoCompleteWithTabsControl: React.FC<AutoCompleteWithTabsControlProps> = (props) => {
    const [value, setValue] = useState(0);
-   const id = useId();
    const [isPopperOpen, setIsPopperOpen] = useState(false);
    const [searchQuery, setSearchQuery] = useState('');
    const anchorRef = useRef<HTMLDivElement>(null);
+   const popperRef = useRef<HTMLDivElement>(null);
    const { getFieldProps, setFieldValue } = useFormikContext();
    const selected = getFieldProps(props.name).value;
    const handleInputFocus = () => {
@@ -30,11 +29,11 @@ const AutoCompleteWithTabsControl: React.FC<AutoCompleteWithTabsControlProps> = 
    const handleClose = useCallback(
       (event: MouseEvent) => {
          const target = event.target as HTMLElement;
-         if (!['anchor', 'popover'].some((suffix) => target.closest(`#${id}-${suffix}`))) {
+         if (![anchorRef, popperRef].some((node) => node.current?.contains(target))) {
             setIsPopperOpen(false);
          }
       },
-      [id, setIsPopperOpen]
+      [setIsPopperOpen, anchorRef.current, popperRef.current]
    );
 
    const handleInputBlur = () => {
@@ -57,7 +56,7 @@ const AutoCompleteWithTabsControl: React.FC<AutoCompleteWithTabsControlProps> = 
 
    return (
       <>
-         <Box ref={anchorRef} id={`${id}-anchor`}>
+         <Box ref={anchorRef}>
             <FormControlBase
                control="input"
                name={props.name}
@@ -90,8 +89,8 @@ const AutoCompleteWithTabsControl: React.FC<AutoCompleteWithTabsControlProps> = 
          </Box>
          <Popper
             open={isPopperOpen}
-            id={`${id}-popover`}
             anchorEl={anchorRef.current}
+            ref={popperRef}
             placement="bottom-start"
             style={{ width: anchorRef.current?.clientWidth, zIndex: 10 }}
          >
