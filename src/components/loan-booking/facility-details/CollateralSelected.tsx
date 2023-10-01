@@ -13,13 +13,14 @@ export const ColateralSelected: React.FC<{ name: string; collateral: string; han
    const { InputFieldNames, TooltipText } = FormMeta;
 
    return (
-      <RedBorderContentBox sx={{ pb: 2 }} >
+      <RedBorderContentBox sx={{ pb: 2 }}>
          <Box display="flex" justifyContent="space-between">
             <Typography fontWeight="bold">{collateral}</Typography>
             <IconButton onClick={handleRemove}>
                <CancelIcon sx={{ color: 'primary.main' }} />
             </IconButton>
          </Box>
+         {/* TODO: Market value must not be lesser than that specified for the collateral */}
          <Grid container mt={2} mb={0.5}>
             <Grid item xs={4}>
                <LoanPrincipalControl
@@ -32,7 +33,7 @@ export const ColateralSelected: React.FC<{ name: string; collateral: string; han
             </Grid>
             <Grid item xs={8} mx="auto">
                <FileUpload
-                  fileTypes={['JPG', 'PNG', 'JPEG']}
+                  fileTypes={['PDF']}
                   maxSize={1}
                   multiple={true}
                   name={`${name}${InputFieldNames.COLLATERAL_FILE_UPLOADED}`}

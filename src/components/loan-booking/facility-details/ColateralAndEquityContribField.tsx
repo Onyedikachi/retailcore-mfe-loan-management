@@ -12,16 +12,18 @@ import Dialog from '@app/components/atoms/Dialog';
 import { CheckboxItemOptions } from '@app/components/checkbox-item-options/ItemOptionsWrapper';
 import { CheckboxOptionsItemChildren } from '@app/@types/security-document';
 import { RedBorderContentBox } from '@app/components/atoms/RedBorderBox';
+import { useFormikHelper } from '@app/hooks/useFormikHelper';
 export const ColateralAndEquityContribFields = () => {
    const { InputFieldNames } = FormMeta;
    const [showAddCollateral, setShowAddCollateral] = useState(false);
-   const [selectedColateral, setSelectedColateral] = useState<CheckboxOptionsItemChildren[]>([]);
    const { getFieldProps } = useFormikContext();
-
+   const { arrayFieldsHelper } = useFormikHelper();
+   const collateralValues = getFieldProps(InputFieldNames.COLLATERALS).value;
    return (
       <Box>
+         {/* TODO: This should only show if this loan product been booked require collateral */}
          <Box display="flex" justifyContent="space-between" mb={3}>
-            <Typography display="flex" alignItems="center">
+            <Typography variant="body2" display="flex" alignItems="center">
                <InfoOutlinedIcon sx={{ fontSize: 16, mr: 1 }} />
                Supporting documents will be required for each collateral added
             </Typography>
@@ -35,28 +37,29 @@ export const ColateralAndEquityContribFields = () => {
                Add Collateral
             </Button>
          </Box>
-         {selectedColateral.length > 0 ? (
+         {collateralValues.length > 0 ? (
             <FieldArray
                render={() =>
-                  selectedColateral.map(({ labelName }, index) => (
-                     <ColateralSelected
-                        handleRemove={() => {
-                           setSelectedColateral((prev) =>
-                              prev.filter((collateral) => collateral.labelName != labelName)
-                           );
-                        }}
-                        name={`${InputFieldNames.COLLATERAL_AND_EQUITY_VALUES}[${index}].`}
-                        key={labelName}
-                        collateral={labelName}
-                     />
-                  ))
+                  loanCollaterals
+                     .filter(({ id }) =>
+                        collateralValues.some(({ id: itemId }: { id: string }) => itemId === id)
+                     )
+                     .map(({ labelName, id }, index) => (
+                        <ColateralSelected
+                           handleRemove={() => {
+                              arrayFieldsHelper(InputFieldNames.COLLATERALS).removeAllByValue(id, 'id');
+                           }}
+                           name={`${InputFieldNames.COLLATERALS}[${index}].`}
+                           key={labelName}
+                           collateral={labelName}
+                        />
+                     ))
                }
-               name={InputFieldNames.COLLATERAL_AND_EQUITY_VALUES}
+               name={InputFieldNames.COLLATERALS}
             />
          ) : (
             <RedBorderContentBox />
          )}
-
          <Grid container mt={3}>
             <Grid item xs={7}>
                <PercentageControl
@@ -66,11 +69,13 @@ export const ColateralAndEquityContribFields = () => {
                   placeholder="0"
                   name={InputFieldNames.EQUITY_CONTRIB}
                   withChip
+                  layoutFlexGrid={[7, 5]}
                />
             </Grid>
             {getFieldProps(InputFieldNames.EQUITY_CONTRIB)?.value && (
                <Grid item xs={5} pl={4}>
                   <Typography
+                     //TODO: calculate and display the actual equity amount based on the percentage equity
                      component="span"
                      sx={{ py: 1, px: 2, borderRadius: '4px', background: Colors.LightGray2 }}
                   >
@@ -89,14 +94,19 @@ export const ColateralAndEquityContribFields = () => {
             title="COLLATERAL ASSETS"
          >
             <CheckboxItemOptions
+               searchPlaceholder="Search by collateral asset name"
                onSubmit={(values: CheckboxOptionsItemChildren[]) => {
                   setShowAddCollateral(false);
-                  setSelectedColateral(values);
+                  arrayFieldsHelper(InputFieldNames.COLLATERALS).updateField(
+                     values.map(({ id }) => ({ id })),
+                     'id'
+                  );
                }}
-               items={loanCategories.map((value, index) => ({
-                  labelName: value,
-                  checked: false,
-                  id: index.toString(),
+               //TODO: Collaterals on the list should be only those related to the loan product
+               items={loanCollaterals.map(({ labelName, id: loanId }) => ({
+                  labelName: labelName,
+                  checked: collateralValues?.some(({ id }: { id: string }) => id === loanId),
+                  id: loanId,
                }))}
                height="50vh"
                showAddNewItemButton={false}
@@ -105,17 +115,9 @@ export const ColateralAndEquityContribFields = () => {
       </Box>
    );
 };
-const loanCategories = [
-   'Auto Loan',
-   'Debt Consolidation Loan',
-   'Emergency Cash Loan',
-   'Household Equipment Lease',
-   'Auto Loan',
-   'Debt Consolidation Loan',
-   'Emergency Cash Loan',
-   'Household Equipment Lease',
-   'Auto Loan',
-   'Debt Consolidation Loan',
-   'Emergency Cash Loan',
-   'Household Equipment Lease',
+const loanCollaterals = [
+   { labelName: 'Auto Loan', id: '1' },
+   { labelName: 'Debt Consolidation Loan', id: '2' },
+   { labelName: 'Emergency Cash Loan', id: '3' },
+   { labelName: 'Household Equipment Lease', id: '4' },
 ];

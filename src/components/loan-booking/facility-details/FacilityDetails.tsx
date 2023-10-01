@@ -7,7 +7,7 @@ import FormContainer from '@app/components/forms/FormContainer';
 import { useState } from 'react';
 import { useStepperContext } from '@app/providers';
 import { FacilityDetailsFields } from './FacilityDetailsFields';
-import { ColateralAndEquityContribFields } from './ColateralAndEquityContrinField';
+import { ColateralAndEquityContribFields } from './ColateralAndEquityContribField';
 import { LoanManagementSettingsField } from './LoanMangementSettingsField';
 
 export const FacilityDetails: React.FC = () => {

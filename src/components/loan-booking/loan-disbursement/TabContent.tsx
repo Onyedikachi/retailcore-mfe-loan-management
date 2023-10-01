@@ -12,11 +12,7 @@ const FormControlLabel = styled(MuiFormControlLabel)({
 export const TabContent: React.FC<{ name: string; options: string[] }> = ({ name, options }) => {
    return (
       <>
-         <AccordionVariant
-            accordionLabels={
-               assetsCheckbox(name, [options, []])
-            }
-         >
+         <AccordionVariant accordionLabels={assetsCheckbox(name, [options, []])}>
             <Box
                ml={3}
                sx={{

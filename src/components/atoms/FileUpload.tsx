@@ -30,6 +30,10 @@ export const FileUpload: React.FC<FileUploadProps> = (props) => {
    const handleRemoveFile = (name: string) => {
       const updatedFile = Array.from(filesUploaded ?? []).filter((file) => file.name != name);
       setFieldValue(props.name, updatedFile);
+      if (updatedFile.length === 0) {
+         setFileSizeError('');
+         setFileTypeError('');
+      }
    };
 
    return (
@@ -51,9 +55,7 @@ export const FileUpload: React.FC<FileUploadProps> = (props) => {
                            boxShadow="0px 0px 4px 0px rgba(0, 0, 0, 0.1)"
                            borderRadius="10px"
                            width="300px"
-                           mx="auto"
-                           p={1}
-                           fontSize={14}
+                           sx={{ cursor: 'pointer', fontSize: 14, p: 1, mx: 'auto' }}
                         >
                            <Box display="flex" gap={2} alignItems="center">
                               <Typography>
@@ -65,14 +67,17 @@ export const FileUpload: React.FC<FileUploadProps> = (props) => {
                                  <Typography component="span" color="primary.main" mr={0.5}>
                                     Click to upload
                                  </Typography>
-                                 or drag and drop .jpg, .pdf
+                                 or drag and drop{' '}
+                                 {props.fileTypes.map((str) => '.' + str.toLowerCase()).join(', ')}
                               </Typography>
                            </Box>
                         </Box>
                         {fileSizeError && (
                            <InputErrorText
                               sx={{ mt: 1, textAlign: 'center' }}
-                              errorText={`${fileSizeError}, maximum file size is ${props.maxSize}mb`}
+                              errorText={`${fileSizeError.replace('big', 'large')}, maximum file size is ${
+                                 props.maxSize
+                              }mb`}
                            />
                         )}
                         {fileTypeError && (
