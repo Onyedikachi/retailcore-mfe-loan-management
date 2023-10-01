@@ -1,7 +1,7 @@
 /* eslint-disable max-len */
 
 import * as Yup from 'yup';
-
+export type FormValues = ReturnType<typeof initialValues>;
 export const InputFieldNames = {
    PRODUCT_NAME: 'product_name',
    PRODUCT_CATEGORY: 'product_category',
