@@ -2,11 +2,13 @@ import AutoCompleteWithTabsControl from '@app/components/forms/AutoCompleteWithT
 import FormControlWrapper from '@app/components/forms/FormControlWrapper';
 import { InputFieldNames, TooltipText } from '@app/utils/validators/book-a-loan/transaction-settings';
 import { Grid, Typography } from '@mui/material';
-import { TabContent } from './TabContent';
-import { Button } from '@app/components/atoms/Button';
-import { useFormikContext } from 'formik';
+import { TabContent } from '../TabContent';
+import { assetsOptions, ActionButton } from './CustomAccountEntryField';
+
 type InputNames = typeof InputFieldNames;
+
 type ToolTipKeys = keyof typeof TooltipText;
+
 interface CustomAccountEntryFieldProps {
    label: string;
    debitLedgername: InputNames[keyof InputNames];
@@ -14,6 +16,7 @@ interface CustomAccountEntryFieldProps {
    onClickActionButtonDebit: React.MouseEventHandler<HTMLButtonElement> | undefined;
    onClickActionButtonCredit: React.MouseEventHandler<HTMLButtonElement> | undefined;
 }
+
 export const CustomAccountEntryField: React.FC<CustomAccountEntryFieldProps> = (props) => {
    return (
       <>
@@ -59,27 +62,3 @@ export const CustomAccountEntryField: React.FC<CustomAccountEntryFieldProps> = (
       </>
    );
 };
-const ActionButton: React.FC<{
-   name: string;
-   text: string;
-   onClick?: React.MouseEventHandler<HTMLButtonElement> | undefined;
-}> = (props) => {
-   const { getFieldProps } = useFormikContext();
-   return (
-      <Button
-         color={getFieldProps(props.name).value?.length > 0 ? 'primary' : 'inherit'}
-         variant="text"
-         sx={{ textDecoration: 'underline', textTransform: 'initial', pr: 1 }}
-         onClick={props.onClick}
-      >
-         {props.text}
-      </Button>
-   );
-};
-const assetsOptions = [
-   'Current Account balances [ASTCAS23421]',
-   'Savings Account balances [ASTCAS23422]',
-   'Cash Receipt balances [ASTCAS23423]',
-   'Current Account balances [ASTCAS23424]',
-   'Current Account balances [ASTCAS23425]',
-];

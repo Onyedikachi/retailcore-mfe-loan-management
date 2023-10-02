@@ -9,6 +9,7 @@ const FormControlLabel = styled(MuiFormControlLabel)({
    '& .MuiSvgIcon-root': { color: Colors.Primary, marginLeft: 2 },
    '& .MuiCheckbox-root .MuiSvgIcon-root': { fontSize: 22, marginLeft: 2 },
 });
+
 export const TabContent: React.FC<{ name: string; options: string[] }> = ({ name, options }) => {
    return (
       <>
@@ -39,8 +40,8 @@ const CheckboxHeader = ({ label, name, options }: CheckboxHeaderProps) => {
    const { getFieldProps, setFieldValue } = useFormikContext();
    const selected = getFieldProps(name).value as Array<string>;
    const [checked, setChecked] = React.useState(false);
-
    const computedOptions = options.length ? options : [label];
+   
    const handleCheck = useCallback(() => {
       const newState = !checked;
       const newCheckedItems = newState

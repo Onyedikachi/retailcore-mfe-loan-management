@@ -10,10 +10,8 @@ export const InputFieldNames = {
    OTHER_ACCOUNT_NO: 'other_account_no',
    ENABLE_DISBURSEMENT_NOTIFICATION: 'enable_disbursement_notification',
    NOTIFICATION_CHANNEL: 'notification_channel',
-
    REPAYMENT_CHANNEL: 'repayment_channel',
    REPAYMENT_ACCOUNT: 'repayment_account',
-
    DISBURSEMENT_DEBIT_LEDGER: 'disbursement_debit_ledger',
    DISBURSEMENT_CREDIT_LEDGER: 'disbursement_credit_ledger',
    PRINCIPAL_REPAYMENT_DEBIT_LEDGER: 'principal_repayment_debit_ledger',
