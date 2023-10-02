@@ -3,7 +3,6 @@ import {
    ArrowRightOutlined,
    BlockOutlined,
    DehazeOutlined,
-   Filter1Outlined,
    LaunchOutlined,
    SvgIconComponent,
    VisibilityOutlined,
@@ -12,9 +11,10 @@ import {
    CheckCircle,
 } from '@mui/icons-material';
 import { SvgIconProps } from '@mui/material';
+import { FilterFunnel } from '../icons/FilterFunnel';
 
 export const Icons: Record<IconType, SvgIconComponent> = {
-   filter: Filter1Outlined,
+   filter: FilterFunnel as SvgIconComponent,
    eye: VisibilityOutlined,
    'arrow-right': ArrowRightOutlined,
    'open-link': LaunchOutlined,
