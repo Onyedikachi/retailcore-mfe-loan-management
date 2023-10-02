@@ -35,16 +35,16 @@ export const useFormikHelper = () => {
             );
          },
          /**
-          * The purpose of this updateField is to check the passed values and check for new items in the
-          * values that doesn't exist in the formik array field and update the formik array field items
+          * The purpose of this updateField is to check the passed values and check for new items
+          * that doesn't exist in the formik array field and update the formik array field items
           * with the new items.
           *
           * @param value Either an array of object or an object, the functions checks if the value contains/is
           * a new item.
           * @param formikKey The key of the object items in formik that would be use to compare.
-          * If not supplied, it is assume the array field contains primitive values.
-          * @param valueKey  The key of the object items in the value argument to be used to compare. If not
-          * supplied and formikKey is supplied, it is assumed the valueKey is same as the formikKey.
+          * If not supplied, it assume the array field contains primitive values.
+          * @param valueKey The key of the object items in the value argument to be used to compare. If not
+          * supplied and formikKey is supplied, it assumed the valueKey is same as the formikKey.
           */
          updateField: (value: any, formikKey?: string, valueKey?: string) => {
             let fieldValues = getFieldProps(`${baseName}`).value ?? [];

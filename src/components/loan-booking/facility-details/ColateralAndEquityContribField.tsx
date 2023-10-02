@@ -3,7 +3,7 @@ import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import { AddCircle } from '@mui/icons-material';
 import { Box, Grid, Typography } from '@mui/material';
 import { Button } from '@app/components/atoms';
-import { ColateralSelected } from './CollateralSelected';
+import { CollateralSelected } from './CollateralSelected';
 import { Colors } from '@app/constants';
 import { FieldArray, useFormikContext } from 'formik';
 import { PercentageControl } from '@app/components/forms/PercentageControl';
@@ -45,7 +45,7 @@ export const ColateralAndEquityContribFields = () => {
                         collateralValues.some(({ id: itemId }: { id: string }) => itemId === id)
                      )
                      .map(({ labelName, id }, index) => (
-                        <ColateralSelected
+                        <CollateralSelected
                            handleRemove={() => {
                               arrayFieldsHelper(InputFieldNames.COLLATERALS).removeAllByValue(id, 'id');
                            }}

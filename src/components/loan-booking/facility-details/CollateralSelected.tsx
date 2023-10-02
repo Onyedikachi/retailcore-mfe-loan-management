@@ -5,7 +5,7 @@ import * as FormMeta from '@app/utils/validators/book-a-loan/facility-details';
 import { FileUpload } from '@app/components/atoms/FileUpload';
 import { RedBorderContentBox } from '@app/components/atoms/RedBorderBox';
 
-export const ColateralSelected: React.FC<{ name: string; collateral: string; handleRemove: () => void }> = ({
+export const CollateralSelected: React.FC<{ name: string; collateral: string; handleRemove: () => void }> = ({
    collateral,
    name,
    handleRemove,
