@@ -111,6 +111,7 @@ export interface StepperProps extends Omit<MuiStepperProps, 'activeStep'> {
    stepperWrapperProps?: React.HTMLProps<HTMLElement>;
    onStepClick?: (step: number) => void;
    stepLabels: Array<string>;
+   hideStepper?: boolean;
 }
 
 export const Stepper = ({
@@ -120,6 +121,7 @@ export const Stepper = ({
    alternativeLabel = true,
    stepLabels,
    onStepClick,
+   hideStepper = false,
    childrenWrapperProps,
    stepperWrapperProps,
    ...restProp
@@ -136,26 +138,28 @@ export const Stepper = ({
 
    return (
       <>
-         <StepperWrapper {...stepperWrapperProps}>
-            <MuiStepper
-               alternativeLabel={alternativeLabel}
-               activeStep={activeStep}
-               connector={<StepperConnector />}
-               style={{ marginTop: 20 }}
-               {...restProp}
-            >
-               {children.map((_, index) => (
-                  <Step key={stepLabels[index]}>
-                     <StepLabel
-                        sx={{ textTransform: 'uppercase' }}
-                        StepIconComponent={StepperIndicator(index, onStepClick)}
-                     >
-                        {stepLabels[index]}
-                     </StepLabel>
-                  </Step>
-               ))}
-            </MuiStepper>
-         </StepperWrapper>
+         {!hideStepper && (
+            <StepperWrapper {...stepperWrapperProps}>
+               <MuiStepper
+                  alternativeLabel={alternativeLabel}
+                  activeStep={activeStep}
+                  connector={<StepperConnector />}
+                  style={{ marginTop: 20 }}
+                  {...restProp}
+               >
+                  {children.map((_, index) => (
+                     <Step key={stepLabels[index]}>
+                        <StepLabel
+                           sx={{ textTransform: 'uppercase' }}
+                           StepIconComponent={StepperIndicator(index, onStepClick)}
+                        >
+                           {stepLabels[index]}
+                        </StepLabel>
+                     </Step>
+                  ))}
+               </MuiStepper>
+            </StepperWrapper>
+         )}
          <ChildrenWrapper {...childrenWrapperProps}>
             {children[activeStep < children.length ? activeStep : children.length]}
          </ChildrenWrapper>

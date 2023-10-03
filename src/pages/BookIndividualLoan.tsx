@@ -6,7 +6,7 @@ import { PageLayout } from '@app/layouts/PageLayout';
 import { useRequest } from 'react-http-query';
 import { useStepperContext } from '@app/providers';
 import { LoanInformation } from '@app/components/loan-booking/facility-details/LoanInformation';
-import { LoanDisbursement } from '@app/components/loan-booking/loan-disbursement/LoanDisbursement';
+import { TransactionSettings } from '@app/components/loan-booking/transaction-settings/TransactionSettings';
 
 const StyledContentWrapper = styled(Box)({
    background: 'white',
@@ -52,15 +52,16 @@ const BookIndividualLoanContent = () => {
                      style: { height: `calc(100% - ${(headerHeight ?? 0) + 40}px)` },
                      className: 'fancy-scrollbar',
                   }}
-                  stepLabels={['Customer Information', 'Facility Details', 'Loan Debursement']}
+                  stepLabels={['Customer Information', 'Facility Details', 'Transaction Settings']}
+                  hideStepper={activeStep > 2}
                >
                   <CustomerInformation />
                   <FacilityDetails />
-                  <LoanDisbursement />
+                  <TransactionSettings />
                </Stepper>
             </StyledContentWrapper>
          </Grid>
-         {activeStep >= 1 && (
+         {activeStep > 0 && activeStep < 3 && (
             <Grid item xs={3} height="100%">
                <LoanInformation />
             </Grid>
