@@ -81,7 +81,6 @@ const schedule: TableHeaderProps = {
             <FilterMenu
                options={['Hello', 'Hi', 'Hello', 'Hi', 'Hello', 'Hi', 'Hello', 'Hi', 'Hello', 'Hi']}
                onFilterChange={(selected) => {
-                  console.log(selected);
                }}
             />
          ),
