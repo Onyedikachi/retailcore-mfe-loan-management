@@ -4,7 +4,7 @@ import { Box, Typography } from '@mui/material';
 import { FormControlBase } from '@app/components/forms/FormControl';
 import { LoanPrincipalControl } from '@app/components/forms/LoanPrincipalControl';
 import { PercentageControl } from '@app/components/forms/PercentageControl';
-import { Colors, Periodicity3, REQUEST_NAMES } from '@app/constants';
+import { Periodicity3, REQUEST_NAMES } from '@app/constants';
 import { TenureControl } from '@app/components/forms/TenureControl';
 import { useFormikContext } from 'formik';
 import { StartDateControl } from '@app/components/forms/StartDateControl';
@@ -20,7 +20,7 @@ export const FacilityDetailsFields = () => {
    const defaultCurrency = getDefaultCurrency(currencies);
 
    return (
-      <Box sx={{ width: '90%' }}>
+      <Box sx={{ width: '95%' }}>
          <FormControlWrapper
             name={InputFieldNames.PRODUCT_NAME}
             label="Loan Product Name"
@@ -48,9 +48,11 @@ export const FacilityDetailsFields = () => {
          >
             <>
                {getFieldProps(InputFieldNames.PRODUCT_NAME)?.value ? (
-                  <Typography bgcolor="rgba(170, 170, 170, 0.07)">Category name</Typography>
+                  <Typography bgcolor="rgba(170, 170, 170, 0.07)" p={1.2}>
+                     Category name
+                  </Typography>
                ) : (
-                  <Typography color={Colors.LightGray}>Auto-filled from product configuration</Typography>
+                  <Typography variant="body2">Auto-filled from product configuration</Typography>
                )}
             </>
          </FormControlWrapper>
@@ -77,6 +79,7 @@ export const FacilityDetailsFields = () => {
             extraLeft={defaultCurrency?.abbreviation ?? 'NGN'}
             placeholder="Enter amount"
             tooltipText={TooltipText[InputFieldNames.PRINCIPAL]}
+            //  TODO: Ensure that Principal is not below the min principal or above the max principal
          />
          <PercentageControl
             layout="horizontal"
@@ -86,6 +89,7 @@ export const FacilityDetailsFields = () => {
             name={InputFieldNames.INTEREST_RATE}
             layoutFlexGrid={[5.5, 6.5]}
             withChip
+            //TODO: Ensure that interest rate is not below the min rate or above the max rate
          />
          <TenureControl
             layout="horizontal"
@@ -94,6 +98,7 @@ export const FacilityDetailsFields = () => {
             numberName={InputFieldNames.LOAN_TENURE_NUM}
             layoutFlexGrid={[5.5, 6.5]}
             periodTooltipText={TooltipText[InputFieldNames.LOAN_TENURE_PERIOD]}
+            //TODO: Ensure tenor number and period is not below the min or above the max tenor
          />
          <FormControlWrapper
             name={InputFieldNames.REPAYMENT_PATTERN}
@@ -130,14 +135,13 @@ export const FacilityDetailsFields = () => {
                }}
             />
          </FormControlWrapper>
-
          {getFieldProps(InputFieldNames.REPAYMENT_FREQUENCY)?.value == 'Custom' && (
             <FormControlWrapper
                name={InputFieldNames.START_DATE}
                label="Start Date"
                required
                layout="horizontal"
-               layoutFlexGrid={[2, 10]}
+               layoutFlexGrid={[3, 9]}
                tooltipText={TooltipText[InputFieldNames.START_DATE]}
             >
                <StartDateControl
