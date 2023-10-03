@@ -1,4 +1,3 @@
-
 import { Permissions } from './permissions';
 import { Navigate } from 'react-router-dom';
 import { DashbordOverview } from '@app/pages/DashboardOverview';

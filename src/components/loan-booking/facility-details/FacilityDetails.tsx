@@ -7,15 +7,20 @@ import FormContainer from '@app/components/forms/FormContainer';
 import { useState } from 'react';
 import { useStepperContext } from '@app/providers';
 import { FacilityDetailsFields } from './FacilityDetailsFields';
-import { ColateralAndEquityContribFields } from './ColateralAndEquityContrinField';
+import { ColateralAndEquityContribFields } from './ColateralAndEquityContribField';
 import { LoanManagementSettingsField } from './LoanMangementSettingsField';
+import AlertDialog from '@app/components/modal/AlertDialog';
 
 export const FacilityDetails: React.FC = () => {
    const [isDraft, setIsDraft] = useState(false);
    const { handleNavigation } = useStepperContext();
-
-   const onSubmit = (values: any) => {
-      // TODO: Implement submit facility details field values to backend.
+   const [showAlertDialog, setShowAlertDialog] = useState(false);
+   const onSubmit = (values: FormMeta.FormValues) => {
+      if (isDraft) {
+         setShowAlertDialog(true);
+      } else {
+         // TODO: Implement submittion of selected user details to the backed.
+      }
    };
 
    return (
@@ -67,6 +72,13 @@ export const FacilityDetails: React.FC = () => {
                );
             }}
          </Formik>
+         <AlertDialog
+            open={showAlertDialog}
+            handleClose={() => setShowAlertDialog(false)}
+            handleConfirm={() => {}}
+            title="Do you want to save as draft?"
+            subtitle="Requests in drafts would be deleted after 30 days of inactivity."
+         />
       </FormContainer>
    );
 };

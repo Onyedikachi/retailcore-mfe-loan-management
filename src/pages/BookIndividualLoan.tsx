@@ -6,8 +6,8 @@ import { PageLayout } from '@app/layouts/PageLayout';
 import { useRequest } from 'react-http-query';
 import { useStepperContext } from '@app/providers';
 import { LoanInformation } from '@app/components/loan-booking/facility-details/LoanInformation';
-import { LoanDisbursement } from '@app/components/loan-booking/loan-disbursement/LoanDisbursement';
 import { RepaymentSchedule } from '@app/components/loan-booking/repayment-schedule/RepaymentSchedule';
+import { TransactionSettings } from '@app/components/loan-booking/transaction-settings/TransactionSettings';
 
 const StyledContentWrapper = styled(Box)({
    background: 'white',
@@ -59,7 +59,7 @@ const BookIndividualLoanContent = () => {
                >
                   <CustomerInformation />
                   <FacilityDetails />
-                  <LoanDisbursement />
+                  <TransactionSettings />
                   <RepaymentSchedule />
                </Stepper>
             </StyledContentWrapper>

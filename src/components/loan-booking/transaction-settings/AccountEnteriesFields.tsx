@@ -1,6 +1,6 @@
 import { useFormikContext } from 'formik';
 import * as FormMeta from '@app/utils/validators/book-a-loan/transaction-settings';
-import { CustomAccountEntryField } from './CustomAccountEntryField';
+import { CustomAccountEntryField } from './custom-account-entry';
 
 export const AccountEnteriesFields = () => {
    const { getFieldProps } = useFormikContext();
