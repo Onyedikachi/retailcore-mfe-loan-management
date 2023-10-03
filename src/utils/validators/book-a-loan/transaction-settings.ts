@@ -36,10 +36,8 @@ export const initialValues = {
    [InputFieldNames.OTHER_ACCOUNT_NO]: '',
    [InputFieldNames.ENABLE_DISBURSEMENT_NOTIFICATION]: false,
    [InputFieldNames.NOTIFICATION_CHANNEL]: [],
-
    [InputFieldNames.REPAYMENT_CHANNEL]: '',
    [InputFieldNames.REPAYMENT_ACCOUNT]: '',
-
    [InputFieldNames.DISBURSEMENT_DEBIT_LEDGER]: [],
    [InputFieldNames.DISBURSEMENT_CREDIT_LEDGER]: [],
    [InputFieldNames.PRINCIPAL_REPAYMENT_DEBIT_LEDGER]: [],
