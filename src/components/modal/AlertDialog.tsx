@@ -13,7 +13,7 @@ export interface AlertDialogProps extends Omit<MuiDialogProps, 'maxWidth'> {
    handleClose: () => void;
    handleConfirm: () => void;
    title: string;
-   subtitle: string;
+   subtitle?: string;
 }
 const AlertDialog: React.FC<AlertDialogProps> = ({ title, subtitle, open, handleClose, handleConfirm }) => {
    return (
@@ -40,7 +40,7 @@ const AlertDialog: React.FC<AlertDialogProps> = ({ title, subtitle, open, handle
                   <Typography fontWeight="bold" mb={2}>
                      {title}
                   </Typography>
-                  <Typography mb={2}>{subtitle}</Typography>
+                  {subtitle && <Typography mb={2}>{subtitle}</Typography>}
                </>
                <Box display="flex" gap={1} justifyContent="center">
                   <Button onClick={handleClose} variant="outlined">

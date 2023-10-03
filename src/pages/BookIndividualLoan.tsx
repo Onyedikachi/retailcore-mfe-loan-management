@@ -8,6 +8,8 @@ import { useStepperContext } from '@app/providers';
 import { RepaymentSchedule } from '@app/components/loan-booking/repayment-schedule/RepaymentSchedule';
 import { TransactionSettings } from '@app/components/loan-booking/transaction-settings/TransactionSettings';
 import { LoanInformation } from '@app/components/loan-booking/facility-details/LoanInformation';
+import { ProcessSummary } from '@app/components/loan-booking/process-summary/ProcessSummary';
+import { ActivitySummary } from '@app/components/loan-booking/process-summary/ActivitySummary';
 
 const StyledContentWrapper = styled(Box)({
    background: 'white',
@@ -30,14 +32,15 @@ const StepperContentWrapper = styled(Box)({
    marginTop: 20,
 });
 
-const BookIndividualLoanContent = () => {
+const BookIndividualLoanContent: React.FC<{ getActiveStep: (step: number) => void }> = (props) => {
    const stepperWrapperRef = React.useRef<HTMLElement>(null);
    const [headerHeight, setHeaderHeight] = React.useState<number>();
    const { activeStep } = useStepperContext();
 
    React.useEffect(() => {
       setHeaderHeight(stepperWrapperRef.current?.clientHeight);
-   }, [stepperWrapperRef.current]);
+      props.getActiveStep(activeStep);
+   }, [stepperWrapperRef.current, activeStep]);
 
    return (
       <Grid container height="100%">
@@ -61,12 +64,13 @@ const BookIndividualLoanContent = () => {
                   <FacilityDetails />
                   <TransactionSettings />
                   <RepaymentSchedule />
+                  <ProcessSummary />
                </Stepper>
             </StyledContentWrapper>
          </Grid>
-         {activeStep > 0 && activeStep < 3 && (
+         {activeStep > 0 && (
             <Grid item xs={3} height="100%">
-               <LoanInformation />
+               {activeStep == 4 ? <ActivitySummary /> : <LoanInformation />}
             </Grid>
          )}
       </Grid>
@@ -74,6 +78,8 @@ const BookIndividualLoanContent = () => {
 };
 
 export const BookIndividualLoan = () => {
+   const [activeStep, setActiveStep] = React.useState<number | undefined>();
+
    // This request fetches currency list & caches for the usage elsewhere, so request is only being made once.
    useRequest({
       onMount: (getCurrencyList) =>
@@ -84,8 +90,10 @@ export const BookIndividualLoan = () => {
 
    return (
       <PageLayout
-         header={<LoanBookingHeader title="BOOK LOAN" backUrl={BasePath} />}
-         content={<BookIndividualLoanContent />}
+         header={
+            <LoanBookingHeader title={activeStep == 4 ? 'PROCESS SUMMARY' : 'BOOK LOAN'} backUrl={BasePath} />
+         }
+         content={<BookIndividualLoanContent getActiveStep={(step) => setActiveStep(step)} />}
          fullContent={true}
       />
    );
