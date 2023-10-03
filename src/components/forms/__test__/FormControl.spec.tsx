@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React from 'react';
-import { Matcher, fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import {
    InputProps,
    SelectProps,
@@ -157,8 +157,8 @@ describe('Component <FormControlBase />', () => {
 
          const autocompleteInput = screen.getByRole('combobox');
 
-         await userEvent.type(autocompleteInput, 'Option');
-         screen.debug(undefined, Infinity);
+         await userEvent.type(autocompleteInput, 'Option')
+
          // Click the first option from the dropdown
          const option1 = screen.getByText('Option 1');
          await userEvent.click(option1);

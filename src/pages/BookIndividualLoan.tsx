@@ -5,8 +5,9 @@ import { CustomerInformation, FacilityDetails, LoanBookingHeader, Stepper } from
 import { PageLayout } from '@app/layouts/PageLayout';
 import { useRequest } from 'react-http-query';
 import { useStepperContext } from '@app/providers';
-import { LoanInformation } from '@app/components/loan-booking/facility-details/LoanInformation';
+import { RepaymentSchedule } from '@app/components/loan-booking/repayment-schedule/RepaymentSchedule';
 import { TransactionSettings } from '@app/components/loan-booking/transaction-settings/TransactionSettings';
+import { LoanInformation } from '@app/components/loan-booking/facility-details/LoanInformation';
 
 const StyledContentWrapper = styled(Box)({
    background: 'white',
@@ -54,10 +55,12 @@ const BookIndividualLoanContent = () => {
                   }}
                   stepLabels={['Customer Information', 'Facility Details', 'Transaction Settings']}
                   hideStepper={activeStep > 2}
+                  hideAtIndex={3}
                >
                   <CustomerInformation />
                   <FacilityDetails />
                   <TransactionSettings />
+                  <RepaymentSchedule />
                </Stepper>
             </StyledContentWrapper>
          </Grid>

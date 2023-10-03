@@ -112,6 +112,7 @@ export interface StepperProps extends Omit<MuiStepperProps, 'activeStep'> {
    onStepClick?: (step: number) => void;
    stepLabels: Array<string>;
    hideStepper?: boolean;
+   hideAtIndex?: number;
 }
 
 export const Stepper = ({
@@ -122,6 +123,7 @@ export const Stepper = ({
    stepLabels,
    onStepClick,
    hideStepper = false,
+   hideAtIndex,
    childrenWrapperProps,
    stepperWrapperProps,
    ...restProp
@@ -147,7 +149,7 @@ export const Stepper = ({
                   style={{ marginTop: 20 }}
                   {...restProp}
                >
-                  {children.map((_, index) => (
+                  {children.slice(0, hideAtIndex).map((_, index) => (
                      <Step key={stepLabels[index]}>
                         <StepLabel
                            sx={{ textTransform: 'uppercase' }}
