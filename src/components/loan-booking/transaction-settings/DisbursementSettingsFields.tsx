@@ -16,6 +16,7 @@ export const DisbursementSettingsFields = () => {
             name={InputFieldNames.DISBURSEMENT_METHOD}
             label="Disbursement Method"
             layout="horizontal"
+            layoutFlexGrid={[6, 6]}
             tooltipText={TooltipText[InputFieldNames.DISBURSEMENT_METHOD]}
          >
             <FormControlBase
@@ -31,6 +32,7 @@ export const DisbursementSettingsFields = () => {
                name={InputFieldNames.DISBURSEMENT_DATE}
                label="Date of disbursement"
                layout="horizontal"
+               layoutFlexGrid={[6, 6]}
                tooltipText={TooltipText[InputFieldNames.DISBURSEMENT_DATE]}
             >
                <FormControlBase
@@ -44,6 +46,7 @@ export const DisbursementSettingsFields = () => {
             name={InputFieldNames.DISBURSEMENT_ACCOUNT}
             label="Disbursement Account"
             layout="horizontal"
+            layoutFlexGrid={[6, 6]}
             tooltipText={TooltipText[InputFieldNames.DISBURSEMENT_ACCOUNT]}
          >
             <FormControlBase
@@ -58,6 +61,7 @@ export const DisbursementSettingsFields = () => {
                name={InputFieldNames.OTHER_ACCOUNT_NO}
                label="Other Account Number"
                layout="horizontal"
+               layoutFlexGrid={[6, 6]}
                tooltipText={TooltipText[InputFieldNames.OTHER_ACCOUNT_NO]}
             >
                <FormControlBase
@@ -74,6 +78,7 @@ export const DisbursementSettingsFields = () => {
             name={InputFieldNames.ENABLE_DISBURSEMENT_NOTIFICATION}
             label="Enable Disbursement Notification"
             layout="horizontal"
+            layoutFlexGrid={[6, 6]}
             tooltipText={TooltipText[InputFieldNames.ENABLE_DISBURSEMENT_NOTIFICATION]}
          >
             <FormControlBase
@@ -89,6 +94,7 @@ export const DisbursementSettingsFields = () => {
                tooltipText={TooltipText[InputFieldNames.NOTIFICATION_CHANNEL]}
             >
                <FormControlBase
+                  sx={{ ml: 1 }}
                   control="checkboxGroup"
                   name={InputFieldNames.NOTIFICATION_CHANNEL}
                   options={['Email']}

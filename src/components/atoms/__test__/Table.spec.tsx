@@ -16,7 +16,7 @@ describe('<Table />', () => {
    });
 
    it('should render table header if headerProps is given', () => {
-      const { getByText } = render(
+      const { getByText, container } = render(
          <GeneralAppSetup>
             <Table
                headerProps={{
@@ -32,7 +32,7 @@ describe('<Table />', () => {
 
       expect(getByText('Sample')).toBeInTheDocument();
       expect(getByText('Name')).toBeInTheDocument();
-      expect(getByText('Name')).toHaveClass('MuiTableCell-head');
+      expect(container.querySelector('.MuiTableCell-head')?.contains(getByText('Name'))).toBe(true);
    });
 
    it('should add row count column if s/n is one of the headerProps data key', () => {
@@ -71,6 +71,6 @@ describe('<Table />', () => {
          </GeneralAppSetup>
       );
 
-      expect(getByTestId('Filter1OutlinedIcon')).toBeInTheDocument();
+      expect(getByTestId('custom-filter-funnel')).toBeInTheDocument();
    });
 });
