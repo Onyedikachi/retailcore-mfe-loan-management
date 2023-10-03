@@ -8,15 +8,20 @@ import { useState } from 'react';
 import { useStepperContext } from '@app/providers';
 import { DisbursementSettingsFields } from './DisbursementSettingsFields';
 import { AccountEnteriesFields } from './AccountEnteriesFields';
+import { RepaymentSettingsFields } from './RepaymentSettingsFields';
+import AlertDialog from '@app/components/modal/AlertDialog';
 
-export const LoanDisbursement: React.FC = () => {
+export const TransactionSettings: React.FC = () => {
    const [isDraft, setIsDraft] = useState(false);
    const { handleNavigation } = useStepperContext();
-
-   const onSubmit = (values: any) => {
-      // TODO: Implement submit facility details field values to backend.
+   const [showAlertDialog, setShowAlertDialog] = useState(false);
+   const onSubmit = (values: FormMeta.FormValues) => {
+      if (isDraft) {
+         setShowAlertDialog(true);
+      } else {
+         // TODO: Implement submission of selected user details to the backend.
+      }
    };
-
    return (
       <FormContainer>
          <Formik
@@ -31,6 +36,7 @@ export const LoanDisbursement: React.FC = () => {
                      <Box sx={{ mb: 5 }}>
                         <Accordion accordionLabels={FormMeta.accordionLabels}>
                            <DisbursementSettingsFields />
+                           <RepaymentSettingsFields />
                            <AccountEnteriesFields />
                         </Accordion>
                      </Box>
@@ -55,7 +61,7 @@ export const LoanDisbursement: React.FC = () => {
                                     type="submit"
                                     variant={isNext ? 'contained' : 'outlined'}
                                  >
-                                    {isNext ? 'Next' : 'Save As Draft'}
+                                    {isNext ? 'Generate Repayement Schedule' : 'Save As Draft'}
                                  </Button>
                               );
                            })}
@@ -65,6 +71,13 @@ export const LoanDisbursement: React.FC = () => {
                );
             }}
          </Formik>
+         <AlertDialog
+            open={showAlertDialog}
+            handleClose={() => setShowAlertDialog(false)}
+            handleConfirm={() => {}}
+            title="Do you want to save as draft?"
+            subtitle="Requests in drafts would be deleted after 30 days of inactivity."
+         />
       </FormContainer>
    );
 };

@@ -1,7 +1,7 @@
 /* eslint-disable max-len */
 
 import * as Yup from 'yup';
-
+export type FormValues = ReturnType<typeof initialValues>;
 export const InputFieldNames = {
    PRODUCT_NAME: 'product_name',
    PRODUCT_CATEGORY: 'product_category',
@@ -15,11 +15,9 @@ export const InputFieldNames = {
    START_DATE: 'start_date',
    START_DATE_NUM: 'start_date_num',
    START_DATE_PERIOD: 'start_date_period',
-   REQUIRE_COLLATERAL: 'require_collateral',
-   COLLATERAL_AND_EQUITY_VALUES: 'contrib_values',
+   COLLATERALS: 'collaterals',
    COLLATERAL_MARKET_VALUE: 'collateral_market_value',
-   COLLATERAL_FILE_UPLOADED: 'collateral_files',
-   REQUIRE_EQUITY_CONTRIB: 'require_equity_contrib',
+   COLLATERAL_FILE_UPLOADED: 'collateral_file',
    EQUITY_CONTRIB: 'equity_contrib',
    ENABLE_MORATORIUM_PERIOD: 'enable_moratorium_period',
    MORATORIUM_PERIOD: 'moratorium_period',
@@ -49,11 +47,7 @@ export const initialValues = () => ({
    [InputFieldNames.START_DATE]: '',
    [InputFieldNames.START_DATE_NUM]: '',
    [InputFieldNames.START_DATE_PERIOD]: '',
-   [InputFieldNames.REQUIRE_COLLATERAL]: false,
-   [InputFieldNames.COLLATERAL_AND_EQUITY_VALUES]: [],
-   [InputFieldNames.COLLATERAL_MARKET_VALUE]: '',
-   [InputFieldNames.COLLATERAL_FILE_UPLOADED]: [],
-   [InputFieldNames.REQUIRE_EQUITY_CONTRIB]: false,
+   [InputFieldNames.COLLATERALS]: [],
    [InputFieldNames.EQUITY_CONTRIB]: '',
    [InputFieldNames.ENABLE_MORATORIUM_PERIOD]: false,
    [InputFieldNames.MORATORIUM_PERIOD]: '',
@@ -105,31 +99,27 @@ const facilityDetails = {
 };
 
 const colateralAndEquityContrib = {
-   [InputFieldNames.REQUIRE_COLLATERAL]: Yup.boolean(),
-   [InputFieldNames.COLLATERAL_AND_EQUITY_VALUES]: Yup.array().when(
-      InputFieldNames.REQUIRE_COLLATERAL,
-      (requireCollateral, field) => {
-         return requireCollateral?.[0]
-            ? field
-                 .of(
-                    Yup.object().shape({
-                       [InputFieldNames.COLLATERAL_MARKET_VALUE]: Yup.string().required(
-                          'Enter market value for this collateral'
-                       ),
-                       [InputFieldNames.COLLATERAL_FILE_UPLOADED]: Yup.array().required(
-                          'Attach supporting documents'
-                       ),
-                    })
-                 )
-                 .required('Add at least one collateral asset.')
-            : field;
-      }
-   ),
-   [InputFieldNames.REQUIRE_EQUITY_CONTRIB]: Yup.boolean(),
-   [InputFieldNames.EQUITY_CONTRIB]: Yup.string().when(
-      InputFieldNames.REQUIRE_EQUITY_CONTRIB,
-      (requireCollateral, field) => (requireCollateral?.[0] ? field.required('Field is required') : field)
-   ),
+   [InputFieldNames.COLLATERALS]: Yup.array()
+      .of(
+         Yup.object().shape({
+            [InputFieldNames.COLLATERAL_MARKET_VALUE]: Yup.string()
+               .required('Enter market value for this collateral')
+               .test(InputFieldNames.COLLATERAL_MARKET_VALUE, 'Must be greater 0', function (value) {
+                  if (value) {
+                     return Number(value.replace(/,/g, '')) > 0;
+                  }
+               }),
+            [InputFieldNames.COLLATERAL_FILE_UPLOADED]: Yup.array().required('Attach supporting documents'),
+         })
+      )
+      .required('Add at least one collateral asset.'),
+   [InputFieldNames.EQUITY_CONTRIB]: Yup.string()
+      .required('Field is required')
+      .test(InputFieldNames.EQUITY_CONTRIB, 'Must be greater 0', function (value) {
+         if (value) {
+            return Number(value.replace(/,/g, '')) > 0;
+         }
+      }),
 };
 export const loanManagementSettings = {
    [InputFieldNames.ENABLE_MORATORIUM_PERIOD]: Yup.boolean(),
@@ -174,7 +164,8 @@ export const TooltipText = {
    [InputFieldNames.COLLATERAL_MARKET_VALUE]: 'Enter the appraised value of the collateral selected',
    [InputFieldNames.ENABLE_MORATORIUM_PERIOD]:
       'This is the period during which the customer is not required to make loan repayments',
-   [InputFieldNames.MORATORIUM_PERIOD]: 'Specify the moratorium period',
+   [InputFieldNames.MORATORIUM_PERIOD]:
+      'Specify the period during which the borrower is not required to make loan repayments',
    [InputFieldNames.RECOGNISE_MORATORIUM_PERIOD]:
       'Will the moratorium period be included in the loan tenor or not?',
    [InputFieldNames.ENABLE_GRACE_PERIOD]:
