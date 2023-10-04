@@ -3,5 +3,5 @@ import { Box, styled } from '@mui/material';
 export const PaddedContainer = styled(Box)(() => ({
    boxShadow: '0px 0px 2px 0px rgba(0, 0, 0, 0.25)',
    borderRadius: '8px',
-   padding: '20px',
+   padding: '30px',
 }));
