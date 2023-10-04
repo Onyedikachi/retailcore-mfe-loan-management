@@ -11,7 +11,7 @@ import { useState } from 'react';
 import Dialog from '@app/components/atoms/Dialog';
 import { CheckboxItemOptions } from '@app/components/checkbox-item-options/ItemOptionsWrapper';
 import { CheckboxOptionsItemChildren } from '@app/@types/security-document';
-import { RedBorderContentBox } from '@app/components/atoms/RedBorderBox';
+import { RedBorderContainer } from '@app/components/containers/RedBorderContainer';
 import { useFormikHelper } from '@app/hooks/useFormikHelper';
 export const ColateralAndEquityContribFields = () => {
    const { InputFieldNames } = FormMeta;
@@ -58,7 +58,7 @@ export const ColateralAndEquityContribFields = () => {
                name={InputFieldNames.COLLATERALS}
             />
          ) : (
-            <RedBorderContentBox />
+            <RedBorderContainer />
          )}
          <Grid container mt={3}>
             <Grid item xs={7}>
