@@ -1,8 +1,7 @@
 import { CurrencyListResponse } from '@app/@types';
 import { Button, Tooltip } from '@app/components/atoms';
 import FilterMenu from '@app/components/atoms/FilterMenu';
-import { Table } from '@app/components/atoms/Table';
-import { TableHeaderProps } from '@app/components/atoms/TableHeader';
+import { TableHeaderProps } from '@app/components/table/TableHeader';
 import FormContainer from '@app/components/forms/FormContainer';
 import AlertDialog from '@app/components/modal/AlertDialog';
 import { REQUEST_NAMES } from '@app/constants';
@@ -12,6 +11,7 @@ import { useStepperContext } from '@app/providers';
 import { Box, Divider, Typography } from '@mui/material';
 import { useState } from 'react';
 import { useRequestData } from 'react-http-query';
+import { Table } from '@app/components/table';
 
 export const RepaymentSchedule = () => {
    const [isDraft, setIsDraft] = useState(false);
@@ -80,8 +80,7 @@ const schedule: TableHeaderProps = {
          rightIcon: (
             <FilterMenu
                options={['Hello', 'Hi', 'Hello', 'Hi', 'Hello', 'Hi', 'Hello', 'Hi', 'Hello', 'Hi']}
-               onFilterChange={(selected) => {
-               }}
+               onFilterChange={(selected) => {}}
             />
          ),
       },

@@ -48,7 +48,7 @@ const CheckboxHeader = ({ label, name, options }: CheckboxHeaderProps) => {
    );
 };
 
- export const assetsCheckbox = (name: string, optionsList: string[][]) =>
+export const assetsCheckbox = (name: string, optionsList: string[][]) =>
    checkBoxHeader.map(({ label }, index) => (
       <CheckboxHeader key={label} name={name} label={label} options={optionsList[index]} />
    ));
