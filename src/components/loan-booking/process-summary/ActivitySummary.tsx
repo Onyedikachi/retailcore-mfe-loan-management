@@ -7,9 +7,10 @@ export const ActivitySummary = () => {
             ACTIVITY LOG
          </Typography>
          <Divider />
-         <Typography variant="body2" mt={3}>No activities found</Typography>
+         <Typography variant="body2" mt={3}>
+            No activities found
+         </Typography>
          <Box className="fancy-scrollbar" sx={{ height: 'calc(100% - 130px)', overflow: 'auto' }}></Box>
       </Box>
    );
 };
-

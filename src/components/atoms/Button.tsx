@@ -23,7 +23,7 @@ const StyledButton = styled(MuiButton)(({ variant, color, disabled }) => ({
       }),
 }));
 
-export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
+export const Button = React.forwardRef<HTMLButtonElement, ButtonProps & { to?: string }>(
    ({ variant, color, ...restProp }, ref) => {
       color = color ?? ((variant === 'outlined' ? 'gray' : undefined) as any);
       return <StyledButton color={color} variant={variant ?? 'contained'} ref={ref} {...restProp} />;

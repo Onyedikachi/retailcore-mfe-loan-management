@@ -1,17 +1,17 @@
-import Typography from '@mui/material/Typography';
-import Box from '@mui/material/Box';
 import * as React from 'react';
-import { Dialog as MuiDialog, DialogProps as MuiDialogProps } from '@mui/material';
-import DialogTitle from '@mui/material/DialogTitle';
-import DialogContent from '@mui/material/DialogContent';
-import IconButton from '@mui/material/IconButton';
-import CloseIcon from '@mui/icons-material/Close';
-import InfoIcon from '@mui/icons-material/Info';
-import { Previous } from '../icons/Modify';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import Box from '@mui/material/Box';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import CloseIcon from '@mui/icons-material/Close';
+import DialogContent from '@mui/material/DialogContent';
+import DialogTitle from '@mui/material/DialogTitle';
+import IconButton from '@mui/material/IconButton';
+import InfoIcon from '@mui/icons-material/Info';
+import Typography from '@mui/material/Typography';
 import { Button } from '../atoms/Button';
 import { Colors } from '@app/constants/colors';
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import { Dialog as MuiDialog, DialogProps as MuiDialogProps, styled } from '@mui/material';
+import { Previous } from '../icons/Modify';
 
 export interface AlertDialogProps extends Omit<MuiDialogProps, 'maxWidth'> {
    open: boolean;
@@ -26,6 +26,18 @@ export interface AlertDialogProps extends Omit<MuiDialogProps, 'maxWidth'> {
    children?: React.ReactNode;
 }
 
+const StyledDialog = styled(MuiDialog)({
+   '& .MuiDialogContent-root': { padding: '10px 0px', marginTop: '12px' },
+   '& .MuiBackdrop-root': { backgroundColor: 'rgba(0, 0, 0, 0.1)', borderBottom: 'unset' },
+   '& .MuiPaper-root': {
+      minWidth: '350px',
+      maxWidth: '500px',
+      padding: '20px',
+      overflow: 'hidden',
+      borderRadius: '8px',
+   },
+});
+
 export const ResponseDialog: React.FC<AlertDialogProps> = ({
    title,
    subtitle,
@@ -39,76 +51,59 @@ export const ResponseDialog: React.FC<AlertDialogProps> = ({
    handleNext,
 }) => {
    return (
-
-         <MuiDialog
-            onClose={handleClose}
-            open={open}
-            PaperProps={{
-               style: {
-                  minWidth: '350px',
-                  maxWidth: '500px',
-                  padding: '20px',
-                  overflow: 'hidden',
-                  borderRadius: '8px',
-               },
-            }}
-            sx={{
-               '& .MuiDialogContent-root': { padding: '10px 0px', marginTop: '12px' },
-               '& .MuiBackdrop-root': { backgroundColor: 'rgba(0, 0, 0, 0.1)', borderBottom: 'unset' },
-            }}
-         >
-            <DialogTitle sx={{ fontWeight: 'bold', m: 0, p: 0 }}>
-               <IconButton onClick={handleClose} sx={{ position: 'absolute', right: 8, top: 8 }}>
-                  <CloseIcon />
-               </IconButton>
-            </DialogTitle>
-            <DialogContent>
-               <Box sx={{ mx: 'auto', textAlign: 'center', mb: 5 }}>
-                  <Box pb={4}>
-                     {status == 'error' ? (
-                        <InfoIcon sx={{ color: 'primary.main', fontSize: 50, transform: 'rotate(180deg)' }} />
-                     ) : (
-                        <CheckCircleIcon sx={{ color: Colors.Success, fontSize: 50 }} />
-                     )}
-                  </Box>
-                  <Typography fontWeight="400" fontSize={20} mb={2}>
-                     {title}
-                  </Typography>
-                  {subtitle && (
-                     <Typography variant="body2" mb={2}>
-                        {subtitle}
-                     </Typography>
+      <StyledDialog onClose={handleClose} open={open}>
+         <DialogTitle sx={{ fontWeight: 'bold', m: 0, p: 0 }}>
+            <IconButton onClick={handleClose} sx={{ position: 'absolute', right: 8, top: 8 }}>
+               <CloseIcon />
+            </IconButton>
+         </DialogTitle>
+         <DialogContent>
+            <Box sx={{ mx: 'auto', textAlign: 'center', mb: 5 }}>
+               <Box pb={4}>
+                  {status == 'error' ? (
+                     <InfoIcon sx={{ color: 'primary.main', fontSize: 50, transform: 'rotate(180deg)' }} />
+                  ) : (
+                     <CheckCircleIcon sx={{ color: Colors.Success, fontSize: 50 }} />
                   )}
                </Box>
-               {children}
-               <Box display="flex" gap={1} justifyContent={nextText ? 'space-between' : 'center'}>
+               <Typography fontWeight="400" fontSize={20} mb={2}>
+                  {title}
+               </Typography>
+               {subtitle && (
+                  <Typography variant="body2" mb={2}>
+                     {subtitle}
+                  </Typography>
+               )}
+            </Box>
+            {children}
+            <Box display="flex" gap={1} justifyContent={nextText ? 'space-between' : 'center'}>
+               <Button
+                  sx={{ px: 1, textTransform: 'none', fontWeight: 400, color: 'initial' }}
+                  onClick={() => {
+                     handleClose();
+                     handlePrevious();
+                  }}
+                  variant="text"
+                  startIcon={<Previous sx={{ color: Colors.Primary }} />}
+               >
+                  {previousText ?? 'Return to dashboard'}
+               </Button>
+               {nextText && (
                   <Button
                      sx={{ px: 1, textTransform: 'none', fontWeight: 400, color: 'initial' }}
                      onClick={() => {
                         handleClose();
-                        handlePrevious();
+                        handleNext();
                      }}
+                     type="submit"
                      variant="text"
-                     startIcon={<Previous sx={{ color: Colors.Primary }} />}
+                     endIcon={<ArrowForwardIosIcon sx={{ color: Colors.Primary }} />}
                   >
-                     {previousText ?? 'Return to dashboard'}
+                     {nextText}
                   </Button>
-                  {nextText && (
-                     <Button
-                        sx={{ px: 1, textTransform: 'none', fontWeight: 400, color: 'initial' }}
-                        onClick={() => {
-                           handleClose();
-                           handleNext();
-                        }}
-                        type="submit"
-                        variant="text"
-                        endIcon={<ArrowForwardIosIcon sx={{ color: Colors.Primary }} />}
-                     >
-                        {nextText}
-                     </Button>
-                  )}
-               </Box>
-            </DialogContent>
-         </MuiDialog>
+               )}
+            </Box>
+         </DialogContent>
+      </StyledDialog>
    );
 };
