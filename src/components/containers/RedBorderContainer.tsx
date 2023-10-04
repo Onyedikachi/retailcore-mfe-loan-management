@@ -1,7 +1,7 @@
 import { Colors } from '@app/constants/colors';
 import { Box, styled } from '@mui/material';
 
-export const RedBorderContentBox = styled(Box)({
+export const RedBorderContainer = styled(Box)({
    marginBottom: '12px',
    border: `1px solid ${Colors.Primary}`,
    borderRadius: '5px',

@@ -9,9 +9,9 @@ import {
    styled,
 } from '@mui/material';
 import React from 'react';
-import { Icon as IconSVG } from './Icon';
+import { Icon as IconSVG } from '../atoms/Icon';
 import { Colors } from '@app/constants/colors';
-import { StatusIndicator } from './StatusIndicator';
+import { StatusIndicator } from '../atoms/StatusIndicator';
 
 const StyledTableHeader = styled(MuiTableHead)({
    '& th': { position: 'relative', color: Colors.LightGray },

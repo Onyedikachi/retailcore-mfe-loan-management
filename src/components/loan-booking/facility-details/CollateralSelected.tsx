@@ -3,7 +3,7 @@ import { Box, Grid, IconButton, Typography } from '@mui/material';
 import { LoanPrincipalControl } from '@app/components/forms/LoanPrincipalControl';
 import * as FormMeta from '@app/utils/validators/book-a-loan/facility-details';
 import { FileUpload } from '@app/components/atoms/FileUpload';
-import { RedBorderContentBox } from '@app/components/atoms/RedBorderBox';
+import { RedBorderContainer } from '@app/components/containers/RedBorderContainer';
 
 export const CollateralSelected: React.FC<{ name: string; collateral: string; handleRemove: () => void }> = ({
    collateral,
@@ -13,7 +13,7 @@ export const CollateralSelected: React.FC<{ name: string; collateral: string; ha
    const { InputFieldNames, TooltipText } = FormMeta;
 
    return (
-      <RedBorderContentBox sx={{ pb: 2 }}>
+      <RedBorderContainer sx={{ pb: 2 }}>
          <Box display="flex" justifyContent="space-between">
             <Typography fontWeight="bold">{collateral}</Typography>
             <IconButton onClick={handleRemove}>
@@ -40,6 +40,6 @@ export const CollateralSelected: React.FC<{ name: string; collateral: string; ha
                />
             </Grid>
          </Grid>
-      </RedBorderContentBox>
+      </RedBorderContainer>
    );
 };
