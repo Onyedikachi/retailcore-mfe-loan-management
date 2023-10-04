@@ -1,5 +1,3 @@
-import { PaddedBox } from '@app/components/atoms/PaddedBox';
-import { ProcessStatus } from '@app/components/atoms/ProcessStatus';
 import { Box, Typography } from '@mui/material';
 import { Details } from './Details';
 import { Button } from '@app/components/atoms/Button';
@@ -9,6 +7,8 @@ import { SubmitIcon } from '@app/components/icons/Submit';
 import AlertDialog from '@app/components/modal/AlertDialog';
 import { useState } from 'react';
 import { ResponseDialog } from '@app/components/modal/ResponseDialog';
+import { PaddedContainer } from '@app/components/containers/PaddedContainer';
+import { ProcessProgress } from '@app/components/ProcessProgress';
 export const ProcessSummary = () => {
    const [showCancelDialog, setShowCancelDialog] = useState(false);
    const [showResponseDialog, setShowResponseDialog] = useState(false);
@@ -19,15 +19,15 @@ export const ProcessSummary = () => {
             sx={{ height: 'calc(100% - 95px)', overflow: 'auto', pt: '1px', px: '1px' }}
          >
             <Box mb={2}>
-               <ProcessStatus percentage={0} currentLabel={'Pending submission'} endLabel={'Approval'} />
+               <ProcessProgress percentage={0} currentLabel={'Pending submission'} endLabel={'Approval'} />
             </Box>
-            <PaddedBox>
+            <PaddedContainer>
                <Typography>Individual Loan Details</Typography>
                <Details title="Booking Information" details={bookingInfo} />
                <Details title="Customer Information" details={customerInfo} />
-            </PaddedBox>
+            </PaddedContainer>
          </Box>
-         <PaddedBox>
+         <PaddedContainer>
             <Box display="flex" alignItems="center" justifyContent="space-between">
                <Button
                   onClick={() => setShowCancelDialog(true)}
@@ -50,7 +50,7 @@ export const ProcessSummary = () => {
                   </Button>
                </Box>
             </Box>
-         </PaddedBox>
+         </PaddedContainer>
 
          <AlertDialog
             open={showCancelDialog}
@@ -67,7 +67,7 @@ export const ProcessSummary = () => {
             subtitle="Do you want to cancel loan booking process?"
             status="success"
             nextText="Book another loan"
-       />
+         />
       </>
    );
 };
