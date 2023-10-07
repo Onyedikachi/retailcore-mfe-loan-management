@@ -15,7 +15,7 @@ export const TransactionSettings: React.FC = () => {
    const [isDraft, setIsDraft] = useState(false);
    const { handleNavigation } = useStepperContext();
    const [showAlertDialog, setShowAlertDialog] = useState(false);
-   const onSubmit = (values: FormMeta.FormValues) => {
+   const onSubmit = (values: FormMeta.TransactionSettingsFormValues) => {
       if (isDraft) {
          setShowAlertDialog(true);
       } else {

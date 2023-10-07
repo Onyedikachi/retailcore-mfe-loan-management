@@ -10,7 +10,7 @@ export const CollateralSelected: React.FC<{ name: string; collateral: string; ha
    name,
    handleRemove,
 }) => {
-   const { InputFieldNames, TooltipText } = FormMeta;
+   const { CollateraFieldNames, TooltipText } = FormMeta;
 
    return (
       <RedBorderContainer sx={{ pb: 2 }}>
@@ -25,10 +25,10 @@ export const CollateralSelected: React.FC<{ name: string; collateral: string; ha
             <Grid item xs={4}>
                <LoanPrincipalControl
                   mb={0}
-                  name={`${name}${InputFieldNames.COLLATERAL_MARKET_VALUE}`}
+                  name={`${name}${CollateraFieldNames.COLLATERAL_MARKET_VALUE}`}
                   label="Market Value"
                   placeholder="Enter market value"
-                  tooltipText={TooltipText[InputFieldNames.COLLATERAL_MARKET_VALUE]}
+                  tooltipText={TooltipText[CollateraFieldNames.COLLATERAL_MARKET_VALUE]}
                />
             </Grid>
             <Grid item xs={8} mx="auto">
@@ -36,7 +36,7 @@ export const CollateralSelected: React.FC<{ name: string; collateral: string; ha
                   fileTypes={['PDF']}
                   maxSize={1}
                   multiple={true}
-                  name={`${name}${InputFieldNames.COLLATERAL_FILE_UPLOADED}`}
+                  name={`${name}${CollateraFieldNames.COLLATERAL_FILE_UPLOADED}`}
                />
             </Grid>
          </Grid>

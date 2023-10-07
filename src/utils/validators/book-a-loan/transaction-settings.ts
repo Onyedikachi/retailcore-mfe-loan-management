@@ -1,7 +1,7 @@
 /* eslint-disable max-len */
 
 import * as Yup from 'yup';
-export type FormValues = typeof initialValues;
+export type TransactionSettingsFormValues = typeof initialValues;
 
 export const InputFieldNames = {
    DISBURSEMENT_METHOD: 'disbursement_method',

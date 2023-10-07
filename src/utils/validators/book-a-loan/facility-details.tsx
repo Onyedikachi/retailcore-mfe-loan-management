@@ -1,7 +1,6 @@
 /* eslint-disable max-len */
 
 import * as Yup from 'yup';
-export type FormValues = ReturnType<typeof initialValues>;
 export const InputFieldNames = {
    PRODUCT_NAME: 'product_name',
    PRODUCT_CATEGORY: 'product_category',
@@ -16,8 +15,6 @@ export const InputFieldNames = {
    START_DATE_NUM: 'start_date_num',
    START_DATE_PERIOD: 'start_date_period',
    COLLATERALS: 'collaterals',
-   COLLATERAL_MARKET_VALUE: 'collateral_market_value',
-   COLLATERAL_FILE_UPLOADED: 'collateral_file',
    EQUITY_CONTRIB: 'equity_contrib',
    ENABLE_MORATORIUM_PERIOD: 'enable_moratorium_period',
    MORATORIUM_PERIOD: 'moratorium_period',
@@ -27,6 +24,19 @@ export const InputFieldNames = {
    GRACE_PERIOD: 'grace_period',
    GRACE_PERIOD_VALUE: 'grace_period_value',
 } as const;
+export const CollateraFieldNames = {
+   COLLATERAL_MARKET_VALUE: 'collateral_market_value',
+   COLLATERAL_FILE_UPLOADED: 'collateral_file',
+} as const;
+export type FacilityDetailsFormValues = {
+   [key in (typeof InputFieldNames)[keyof typeof InputFieldNames]]: key extends
+      | 'enable_moratorium_period'
+      | 'enable_grace_period'
+      ? boolean
+      : key extends 'collaterals'
+      ? string[]
+      : string;
+};
 
 export const accordionLabels = [
    'Facility Details',
@@ -34,7 +44,7 @@ export const accordionLabels = [
    'Loan Management Settings',
 ];
 export const recognize_moratorium_period = ['Included in loan tenor', 'Not included in loan tenor'];
-export const initialValues = () => ({
+export const initialValues = (data?: FacilityDetailsFormValues) => ({
    [InputFieldNames.PRODUCT_NAME]: '',
    [InputFieldNames.PRODUCT_CATEGORY]: '',
    [InputFieldNames.LOAN_PURPOSE]: '',
@@ -102,14 +112,16 @@ const colateralAndEquityContrib = {
    [InputFieldNames.COLLATERALS]: Yup.array()
       .of(
          Yup.object().shape({
-            [InputFieldNames.COLLATERAL_MARKET_VALUE]: Yup.string()
+            [CollateraFieldNames.COLLATERAL_MARKET_VALUE]: Yup.string()
                .required('Enter market value for this collateral')
-               .test(InputFieldNames.COLLATERAL_MARKET_VALUE, 'Must be greater 0', function (value) {
+               .test(CollateraFieldNames.COLLATERAL_MARKET_VALUE, 'Must be greater 0', function (value) {
                   if (value) {
                      return Number(value.replace(/,/g, '')) > 0;
                   }
                }),
-            [InputFieldNames.COLLATERAL_FILE_UPLOADED]: Yup.array().required('Attach supporting documents'),
+            [CollateraFieldNames.COLLATERAL_FILE_UPLOADED]: Yup.array().required(
+               'Attach supporting documents'
+            ),
          })
       )
       .required('Add at least one collateral asset.'),
@@ -161,7 +173,7 @@ export const TooltipText = {
    [InputFieldNames.REPAYMENT_FREQUENCY]:
       'Select the frequency at which the equated  instalment (EI) will be paid',
    [InputFieldNames.START_DATE]: 'Specify start date',
-   [InputFieldNames.COLLATERAL_MARKET_VALUE]: 'Enter the appraised value of the collateral selected',
+   [CollateraFieldNames.COLLATERAL_MARKET_VALUE]: 'Enter the appraised value of the collateral selected',
    [InputFieldNames.ENABLE_MORATORIUM_PERIOD]:
       'This is the period during which the customer is not required to make loan repayments',
    [InputFieldNames.MORATORIUM_PERIOD]:

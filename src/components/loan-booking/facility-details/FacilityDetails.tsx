@@ -10,16 +10,20 @@ import { FacilityDetailsFields } from './FacilityDetailsFields';
 import { ColateralAndEquityContribFields } from './ColateralAndEquityContribField';
 import { LoanManagementSettingsField } from './LoanMangementSettingsField';
 import AlertDialog from '@app/components/modal/AlertDialog';
+import { useBookLoanContext } from '@app/providers/book-loan';
 
 export const FacilityDetails: React.FC = () => {
    const [isDraft, setIsDraft] = useState(false);
    const { handleNavigation } = useStepperContext();
    const [showAlertDialog, setShowAlertDialog] = useState(false);
-   const onSubmit = (values: FormMeta.FormValues) => {
+   const { bookLoanData, updateBookLoanData } = useBookLoanContext();
+
+   const onSubmit = (values: FormMeta.FacilityDetailsFormValues) => {
+      updateBookLoanData(values);
       if (isDraft) {
          setShowAlertDialog(true);
       } else {
-         // TODO: Implement submittion of selected user details to the backed.
+         handleNavigation('next');
       }
    };
 
@@ -27,7 +31,7 @@ export const FacilityDetails: React.FC = () => {
       <FormContainer>
          <Formik
             enableReinitialize={true}
-            initialValues={FormMeta.initialValues()}
+            initialValues={FormMeta.initialValues((bookLoanData?.facilityDetails))}
             validationSchema={FormMeta.validator()}
             onSubmit={onSubmit}
          >

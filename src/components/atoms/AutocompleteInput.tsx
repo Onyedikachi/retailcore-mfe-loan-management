@@ -85,7 +85,7 @@ export const Autocomplete: React.FC<AutocompleteProps> = ({
 
    return (
       <Field name={name}>
-         {({ form }: FieldProps) => {
+         {({ form, field }: FieldProps) => {
             return (
                <>
                   <FormControl fullWidth>
@@ -99,6 +99,12 @@ export const Autocomplete: React.FC<AutocompleteProps> = ({
                         onChange={(event, newValue) => handleChange(event, newValue, form)}
                         getOptionLabel={getOption}
                         filterOptions={filterOptions}
+                        value={field.value}
+                        isOptionEqualToValue={(option, value) => {
+                           return typeof option === 'string'
+                              ? option == value
+                              : (option as AutocompleteOptions).label == value;
+                        }}
                         renderOption={(props, option, { selected }) => {
                            return (
                               <React.Fragment key={getOption(option)}>
