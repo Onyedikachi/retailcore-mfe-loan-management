@@ -44,6 +44,7 @@ export interface AutocompleteProps extends MuiAutocompleteProps<any, any, any, a
    applyButton?: React.ReactNode;
    checkbox?: boolean;
    extras?: React.ReactNode;
+   onInputChange?: () => void;
    filterOptions?: (
       options: unknown,
       { inputValue }: { inputValue: string }
@@ -65,6 +66,7 @@ export const Autocomplete: React.FC<AutocompleteProps> = ({
    applyButton,
    extras,
    filterOptions = defaultFilterOption,
+   onInputChange,
    ...otherProps
 }) => {
    const [open, setOpen] = useState(false);
@@ -81,6 +83,7 @@ export const Autocomplete: React.FC<AutocompleteProps> = ({
       } else {
          form.setFieldValue(name, typeof newValue === 'string' ? newValue : newValue?.label);
       }
+      onInputChange?.();
    };
 
    return (

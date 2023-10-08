@@ -19,7 +19,7 @@ export const CustomerInformation: React.FC = () => {
    const { handleNavigation } = useStepperContext();
 
    const onSubmit = (values: FormMeta.CustomerInfoFormValues) => {
-      updateBookLoanData(values);
+      updateBookLoanData('customerInformation', values);
       if (isDraft) {
          setShowAlertDialog(true);
       } else {

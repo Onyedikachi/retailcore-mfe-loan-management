@@ -1,14 +1,19 @@
+import { Currency, CurrencyListResponse } from '@app/@types';
 import { BookLoanData } from '@app/@types/book-loan';
+import { REQUEST_NAMES } from '@app/constants';
+import { getDefaultCurrency } from '@app/helper/currency-helper';
 import { CustomerInfoFormValues } from '@app/utils/validators/book-a-loan/customer-info';
 import { FacilityDetailsFormValues } from '@app/utils/validators/book-a-loan/facility-details';
 import { TransactionSettingsFormValues } from '@app/utils/validators/book-a-loan/transaction-settings';
 import { createContext, useContext, useState, ReactNode, useMemo } from 'react';
+import { useRequestData } from 'react-http-query';
 
 type DataType = CustomerInfoFormValues | TransactionSettingsFormValues | FacilityDetailsFormValues;
+type BookLoanSteps = 'customerInformation' | 'facilityDetails' | 'transactionSettings';
 interface BookLoanContextType {
    bookLoanData: BookLoanData;
-   updateBookLoanData: (data: DataType) => void;
-   stepsCompleted?: number;
+   updateBookLoanData: (step: BookLoanSteps, data: DataType) => void;
+   defaultCurrency: Currency | undefined;
 }
 
 // Create the context
@@ -27,35 +32,18 @@ interface BookLoanProviderProps {
 }
 export const BookLoanProvider = ({ children }: BookLoanProviderProps) => {
    const [bookLoanData, setBookLoanData] = useState<BookLoanData>({});
-   const [stepCompleted, setStepCompleted] = useState<number | undefined>();
-   const steps: (keyof BookLoanData)[] = ['customerInformation', 'facilityDetails', 'transactionSettings'];
+   const currencies = useRequestData<CurrencyListResponse>(REQUEST_NAMES.CURRENCY_LIST);
+   const defaultCurrency = getDefaultCurrency(currencies);
 
-   const updateBookLoanData = (data: DataType) => {
-      if (data as CustomerInfoFormValues) {
-         setBookLoanData((prevData) => {
-            return { ...prevData, [steps[0]]: data };
-         });
-         setStepCompleted(1);
-      } else if (data as FacilityDetailsFormValues) {
-         setBookLoanData((prevData) => {
-            return { ...prevData, [steps[1]]: data };
-         });
-         setStepCompleted(2);
-      } else {
-         setBookLoanData((prevData) => {
-            return { ...prevData, [steps[2]]: data };
-         });
-         setStepCompleted(3);
-      }
+   const updateBookLoanData = (step: BookLoanSteps, data: DataType) => {
+      setBookLoanData((prevData) => {
+         return { ...prevData, [step]: data };
+      });
    };
 
    const contextValue = useMemo<BookLoanContextType>(
-      () => ({
-         bookLoanData,
-         updateBookLoanData,
-         stepCompleted,
-      }),
-      [bookLoanData, stepCompleted]
+      () => ({ bookLoanData, updateBookLoanData, defaultCurrency }),
+      [bookLoanData, defaultCurrency]
    );
 
    return <BookLoanContext.Provider value={contextValue}>{children}</BookLoanContext.Provider>;

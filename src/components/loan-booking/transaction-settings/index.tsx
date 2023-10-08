@@ -7,26 +7,29 @@ import FormContainer from '@app/components/forms/FormContainer';
 import { useState } from 'react';
 import { useStepperContext } from '@app/providers';
 import { DisbursementSettingsFields } from './DisbursementSettingsFields';
-import { AccountEnteriesFields } from './AccountEnteriesFields';
 import { RepaymentSettingsFields } from './RepaymentSettingsFields';
 import AlertDialog from '@app/components/modal/AlertDialog';
+import { useBookLoanContext } from '@app/providers/book-loan';
 
 export const TransactionSettings: React.FC = () => {
    const [isDraft, setIsDraft] = useState(false);
    const { handleNavigation } = useStepperContext();
    const [showAlertDialog, setShowAlertDialog] = useState(false);
+   const { bookLoanData, updateBookLoanData } = useBookLoanContext();
+
    const onSubmit = (values: FormMeta.TransactionSettingsFormValues) => {
+      updateBookLoanData('transactionSettings', values);
       if (isDraft) {
          setShowAlertDialog(true);
       } else {
-         // TODO: Implement submission of selected user details to the backend.
+         handleNavigation('next');
       }
    };
    return (
       <FormContainer>
          <Formik
             enableReinitialize={true}
-            initialValues={FormMeta.initialValues}
+            initialValues={FormMeta.initialValues(bookLoanData.transactionSettings)}
             validationSchema={FormMeta.validator()}
             onSubmit={onSubmit}
          >
@@ -37,7 +40,6 @@ export const TransactionSettings: React.FC = () => {
                         <Accordion accordionLabels={FormMeta.accordionLabels}>
                            <DisbursementSettingsFields />
                            <RepaymentSettingsFields />
-                           <AccountEnteriesFields />
                         </Accordion>
                      </Box>
                      <Divider />

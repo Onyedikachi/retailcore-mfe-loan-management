@@ -4,6 +4,7 @@ import { LoanPrincipalControl } from '@app/components/forms/LoanPrincipalControl
 import * as FormMeta from '@app/utils/validators/book-a-loan/facility-details';
 import { FileUpload } from '@app/components/atoms/FileUpload';
 import { RedBorderContainer } from '@app/components/containers/RedBorderContainer';
+import { useBookLoanContext } from '@app/providers/book-loan';
 
 export const CollateralSelected: React.FC<{ name: string; collateral: string; handleRemove: () => void }> = ({
    collateral,
@@ -11,7 +12,7 @@ export const CollateralSelected: React.FC<{ name: string; collateral: string; ha
    handleRemove,
 }) => {
    const { CollateraFieldNames, TooltipText } = FormMeta;
-
+   const { defaultCurrency } = useBookLoanContext();
    return (
       <RedBorderContainer sx={{ pb: 2 }}>
          <Box display="flex" justifyContent="space-between">
@@ -28,6 +29,7 @@ export const CollateralSelected: React.FC<{ name: string; collateral: string; ha
                   name={`${name}${CollateraFieldNames.COLLATERAL_MARKET_VALUE}`}
                   label="Market Value"
                   placeholder="Enter market value"
+                  extraLeft={defaultCurrency?.abbreviation ?? 'NGN'}
                   tooltipText={TooltipText[CollateraFieldNames.COLLATERAL_MARKET_VALUE]}
                />
             </Grid>

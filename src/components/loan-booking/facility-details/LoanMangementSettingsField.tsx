@@ -4,10 +4,11 @@ import * as FormMeta from '@app/utils/validators/book-a-loan/facility-details';
 import { Box } from '@mui/material';
 import { useFormikContext } from 'formik';
 import { TenureControl } from '@app/components/forms/TenureControl';
+import { useFormikHelper } from '@app/hooks/useFormikHelper';
 export const LoanManagementSettingsField = () => {
    const { InputFieldNames, TooltipText } = FormMeta;
    const { getFieldProps } = useFormikContext();
-
+   const { resetFieldState } = useFormikHelper();
    return (
       <Box>
          <FormControlWrapper
@@ -20,6 +21,11 @@ export const LoanManagementSettingsField = () => {
                sx={{ ml: 7 }}
                control="switch"
                name={InputFieldNames.ENABLE_MORATORIUM_PERIOD}
+               onChange={() => {
+                  resetFieldState(InputFieldNames.MORATORIUM_PERIOD);
+                  resetFieldState(InputFieldNames.MORATORIUM_PERIOD_VALUE);
+                  resetFieldState(InputFieldNames.RECOGNISE_MORATORIUM_PERIOD);
+               }}
             />
          </FormControlWrapper>
          {getFieldProps(InputFieldNames.ENABLE_MORATORIUM_PERIOD)?.value && (
@@ -55,6 +61,10 @@ export const LoanManagementSettingsField = () => {
             label="Enable Grace Period"
             layout="horizontal"
             tooltipText={TooltipText[InputFieldNames.ENABLE_GRACE_PERIOD]}
+            onChange={() => {
+               resetFieldState(InputFieldNames.GRACE_PERIOD);
+               resetFieldState(InputFieldNames.GRACE_PERIOD_VALUE);
+            }}
          >
             <FormControlBase sx={{ ml: 7 }} control="switch" name={InputFieldNames.ENABLE_GRACE_PERIOD} />
          </FormControlWrapper>

@@ -30,7 +30,7 @@ export type FormControlBaseProp<Control extends ControlType = ControlType> = (Co
    ? DateInputProps
    : InputProps) & { control: Control; children?: React.ReactNode };
 
-export const FormControlBase: React.FC<FormControlBaseProp>  = ({ control, children, ...props }) => {
+export const FormControlBase: React.FC<FormControlBaseProp> = ({ control, children, ...props }) => {
    switch (control) {
       case 'select':
          return <SelectInput children={children} {...(props as SelectProps)} />;

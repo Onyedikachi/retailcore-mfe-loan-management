@@ -5,5 +5,5 @@ import { TransactionSettingsFormValues } from '@app/utils/validators/book-a-loan
 export interface BookLoanData {
    customerInformation?: CustomerInfoFormValues;
    facilityDetails?: FacilityDetailsFormValues;
-   transactionSettings?:TransactionSettingsFormValues;
+   transactionSettings?: TransactionSettingsFormValues;
 }

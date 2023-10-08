@@ -13,12 +13,14 @@ import { CheckboxItemOptions } from '@app/components/checkbox-item-options/ItemO
 import { CheckboxOptionsItemChildren } from '@app/@types/security-document';
 import { RedBorderContainer } from '@app/components/containers/RedBorderContainer';
 import { useFormikHelper } from '@app/hooks/useFormikHelper';
+import { InputErrorText } from '@app/components/forms/InputFieldError';
 export const ColateralAndEquityContribFields = () => {
    const { InputFieldNames } = FormMeta;
    const [showAddCollateral, setShowAddCollateral] = useState(false);
-   const { getFieldProps } = useFormikContext();
+   const { getFieldProps, errors } = useFormikContext();
    const { arrayFieldsHelper } = useFormikHelper();
    const collateralValues = getFieldProps(InputFieldNames.COLLATERALS).value;
+
    return (
       <Box>
          {/* TODO: This should only show if this loan product been booked require collateral */}
@@ -58,7 +60,12 @@ export const ColateralAndEquityContribFields = () => {
                name={InputFieldNames.COLLATERALS}
             />
          ) : (
-            <RedBorderContainer />
+            <>
+               <RedBorderContainer />
+               {errors.hasOwnProperty(InputFieldNames.COLLATERALS) && (
+                  <InputErrorText errorText={'Add Collateral(s) for this loan'} />
+               )}
+            </>
          )}
          <Grid container mt={3}>
             <Grid item xs={7}>

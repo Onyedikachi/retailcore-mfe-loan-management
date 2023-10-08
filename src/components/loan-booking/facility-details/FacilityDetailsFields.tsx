@@ -9,15 +9,23 @@ import { TenureControl } from '@app/components/forms/TenureControl';
 import { useFormikContext } from 'formik';
 import { StartDateControl } from '@app/components/forms/StartDateControl';
 import { useFormikHelper } from '@app/hooks/useFormikHelper';
-import { useRequestData } from 'react-http-query';
-import { getDefaultCurrency } from '@app/helper/currency-helper';
-import { CurrencyListResponse } from '@app/@types';
+import { useBookLoanContext } from '@app/providers/book-loan';
+import { useEffect } from 'react';
+
 export const FacilityDetailsFields = () => {
    const { InputFieldNames, TooltipText } = FormMeta;
-   const { getFieldProps } = useFormikContext();
+   const {
+      getFieldProps,
+      setFieldValue,
+      values: facilityDetails,
+   } = useFormikContext<FormMeta.FacilityDetailsFormValues>();
    const { resetFieldState } = useFormikHelper();
-   const currencies = useRequestData<CurrencyListResponse>(REQUEST_NAMES.CURRENCY_LIST);
-   const defaultCurrency = getDefaultCurrency(currencies);
+   const { defaultCurrency } = useBookLoanContext();
+   const { updateBookLoanData } = useBookLoanContext();
+
+   useEffect(() => {
+      updateBookLoanData('facilityDetails', facilityDetails);
+   }, [facilityDetails]);
 
    return (
       <Box sx={{ width: '95%' }}>
@@ -34,6 +42,7 @@ export const FacilityDetailsFields = () => {
                control="autocomplete"
                placeholder="Type to search and select"
                noOptionsText="No match"
+               onInputChange={() => setFieldValue(InputFieldNames.PRODUCT_CATEGORY, 'Category Name')}
                options={loanProductName}
                search
             />
@@ -148,7 +157,6 @@ export const FacilityDetailsFields = () => {
                   firstName={InputFieldNames.START_DATE}
                   secondName={InputFieldNames.START_DATE_NUM}
                   thirdName={InputFieldNames.START_DATE_PERIOD}
-                  firstPlaceHolder="Select a date"
                   thirdPlaceHolder="Select period"
                   bridgeWord="every"
                />

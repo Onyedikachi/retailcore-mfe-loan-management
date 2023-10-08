@@ -4,12 +4,21 @@ import { Box } from '@mui/material';
 import { FormControlBase } from '@app/components/forms/FormControl';
 import { useFormikContext } from 'formik';
 import { useFormikHelper } from '@app/hooks/useFormikHelper';
-import { accountNumbers } from '../customer-information/CustomerInformation';
+import { accountNumbers } from '../customer-information';
+import { useBookLoanContext } from '@app/providers/book-loan';
+import { useEffect } from 'react';
 
 export const DisbursementSettingsFields = () => {
    const { InputFieldNames, TooltipText, disbursementMethods, disbursementAccounts } = FormMeta;
-   const { getFieldProps } = useFormikContext();
+   const { getFieldProps, values: transactionSettingsValues } =
+      useFormikContext<FormMeta.TransactionSettingsFormValues>();
    const { resetFieldState } = useFormikHelper();
+   const { updateBookLoanData } = useBookLoanContext();
+
+   useEffect(() => {
+      updateBookLoanData('transactionSettings', transactionSettingsValues);
+   }, [transactionSettingsValues]);
+
    return (
       <Box width="90%" py={2}>
          <FormControlWrapper
@@ -36,7 +45,7 @@ export const DisbursementSettingsFields = () => {
                tooltipText={TooltipText[InputFieldNames.DISBURSEMENT_DATE]}
             >
                <FormControlBase
-                  control="input"
+                  control="date"
                   placeholder="Select date"
                   name={InputFieldNames.DISBURSEMENT_DATE}
                />
