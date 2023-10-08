@@ -1,6 +1,5 @@
 import { CurrencyListResponse } from '@app/@types';
 import { Button, Tooltip } from '@app/components/atoms';
-import FilterMenu from '@app/components/atoms/FilterMenu';
 import { TableHeaderProps } from '@app/components/table/TableHeader';
 import FormContainer from '@app/components/forms/FormContainer';
 import AlertDialog from '@app/components/modal/AlertDialog';
@@ -9,9 +8,11 @@ import { getDefaultCurrency } from '@app/helper/currency-helper';
 import { formattedDate } from '@app/helper/date-formater';
 import { useStepperContext } from '@app/providers';
 import { Box, Divider, Typography } from '@mui/material';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useRequestData } from 'react-http-query';
 import { Table } from '@app/components/table';
+import { DateFilter } from '@app/components/calendar/DateFilter';
+import { downloadTableAsPDFByID } from '@app/helper/pdfDownloader';
 
 export const RepaymentSchedule = () => {
    const [isDraft, setIsDraft] = useState(false);
@@ -19,6 +20,28 @@ export const RepaymentSchedule = () => {
    const currencies = useRequestData<CurrencyListResponse>(REQUEST_NAMES.CURRENCY_LIST);
    const currency = getDefaultCurrency(currencies)?.abbreviation ?? 'NGN';
 
+   const schedule: TableHeaderProps = useMemo(() => {
+      return {
+         data: [
+            { key: 'date', element: 'DATE', rightIcon: <DateFilter /> },
+            { key: 'principal', element: 'PRINCIPAL' },
+            { key: 'interest', element: 'INTEREST' },
+            { key: 'amountPayable', element: 'AMOUNT PAYABLE' },
+            { key: 'outstandingBal', element: 'OUTSTANDING BALANCE' },
+            { key: 'gracePeriod', element: 'GRACE PERIOD' },
+         ],
+      };
+   }, []);
+   const tableBody = useMemo(() => {
+      return [1, 2].map((item, id) => ({
+         date: formattedDate('2022-02-22T15:45:00Z'),
+         principal: `${currency} 8,333.33`,
+         interest: `${currency} 461.67`,
+         amountPayable: `${currency} 8,750.00`,
+         outstandingBal: `${currency} 8,750.00`,
+         gracePeriod: formattedDate('2022-02-25T15:45:00Z'),
+      }));
+   }, []);
    return (
       <>
          <FormContainer>
@@ -28,19 +51,7 @@ export const RepaymentSchedule = () => {
             </Typography>
 
             <Box pt={1} pb={5}>
-               <Table
-                  headerProps={schedule}
-                  bodyProps={{
-                     rows: [1, 2].map((item, id) => ({
-                        date: formattedDate('2022-02-22T15:45:00Z'),
-                        principal: `${currency} 8,333.33`,
-                        interest: `${currency} 461.67`,
-                        amountPayable: `${currency} 8,750.00`,
-                        outstandingBal: `${currency} 8,750.00`,
-                        gracePeriod: formattedDate('2022-02-25T15:45:00Z'),
-                     })),
-                  }}
-               />
+               <Table id="schedule" headerProps={schedule} bodyProps={{ rows: tableBody }} />
             </Box>
 
             <Divider />
@@ -49,15 +60,18 @@ export const RepaymentSchedule = () => {
                   Previous
                </Button>
                <Box display="flex" gap={3}>
-                  <Button color={'gray' as any} variant="outlined">
+                  <Button
+                     variant="outlined"
+                     onClick={() =>
+                        downloadTableAsPDFByID('schedule', 'Loan Repayment Schedule', 'repayment schedule')
+                     }
+                  >
                      Download
                   </Button>
-                  <Button color={'gray' as any} variant="outlined" onClick={() => setIsDraft(!isDraft)}>
+                  <Button variant="outlined" onClick={() => setIsDraft(!isDraft)}>
                      Save As Draft
                   </Button>
-                  <Button color="primary" variant="contained">
-                     Next
-                  </Button>
+                  <Button onClick={() => handleNavigation('next')}>Next</Button>
                </Box>
             </Box>
          </FormContainer>
@@ -70,24 +84,4 @@ export const RepaymentSchedule = () => {
          />
       </>
    );
-};
-
-const schedule: TableHeaderProps = {
-   data: [
-      {
-         key: 'date',
-         element: 'DATE',
-         rightIcon: (
-            <FilterMenu
-               options={['Hello', 'Hi', 'Hello', 'Hi', 'Hello', 'Hi', 'Hello', 'Hi', 'Hello', 'Hi']}
-               onFilterChange={(selected) => {}}
-            />
-         ),
-      },
-      { key: 'principal', element: 'PRINCIPAL', recentlyUpdated: true },
-      { key: 'interest', element: 'INTEREST', rightIcon: 'close' },
-      { key: 'amountPayable', element: 'AMOUNT PAYABLE' },
-      { key: 'outstandingBal', element: 'OUTSTANDING BALANCE' },
-      { key: 'gracePeriod', element: 'GRACE PERIOD' },
-   ],
 };
