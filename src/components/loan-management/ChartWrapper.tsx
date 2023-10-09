@@ -1,9 +1,10 @@
-import { Box, Divider, Grid, Typography } from '@mui/material';
+import { Box, Divider, Grid, Typography, styled } from '@mui/material';
 import { FilterFunnel } from '../icons/FilterFunnel';
 import { useRequestData } from 'react-http-query';
 import { CurrencyListResponse } from '@app/@types';
 import { REQUEST_NAMES } from '@app/constants';
 import { getDefaultCurrency } from '@app/helper/currency-helper';
+import { PaddedContainer } from '../containers/PaddedContainer';
 
 interface DataDetails {
    labels?: string[];
@@ -24,14 +25,7 @@ export const ChartWrapper: React.FC<ChartWrapperProps> = ({ children, title, tot
    const defaultCurrency = getDefaultCurrency(currencies);
 
    return (
-      <Box
-         sx={{
-            borderRadius: '5px',
-            py: 2,
-            px: 3,
-            boxShadow: '0px 0px 4px 0px rgba(0, 0, 0, 0.25)',
-         }}
-      >
+      <PaddedContainer sx={{ py: 2, px: 3, bgcolor: 'white' }}>
          <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
             <Typography fontWeight="bold">{title}</Typography>{' '}
             <Typography fontSize={14} display="flex" alignItems="center">
@@ -53,10 +47,17 @@ export const ChartWrapper: React.FC<ChartWrapperProps> = ({ children, title, tot
          </Box>
          {children}
          <Legend dataDetails={dataDetails} />
-      </Box>
+      </PaddedContainer>
    );
 };
 
+const RoundedDot = styled(Box)(() => ({
+   width: '7px',
+   height: '7px',
+   marginTop: '8px',
+   marginRight: '8px',
+   borderRadius: '50%',
+}));
 const Legend: React.FC<{
    dataDetails: DataDetails;
 }> = ({ dataDetails }) => {
@@ -70,16 +71,7 @@ const Legend: React.FC<{
                key={label + index}
                justifyContent={dataDetails.labelAmount ? 'start' : 'center'}
             >
-               <Box
-                  sx={{
-                     width: '7px',
-                     height: '7px',
-                     mt: 1,
-                     mr: 1,
-                     backgroundColor: dataDetails.backgroundColors[index],
-                     borderRadius: '50%',
-                  }}
-               />
+               <RoundedDot sx={{ backgroundColor: dataDetails.backgroundColors[index] }} />
                <Box>
                   <Typography display="flex" alignItems="center">
                      {label}
