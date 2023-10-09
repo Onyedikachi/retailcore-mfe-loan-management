@@ -32,9 +32,7 @@ export const DateRange: React.FC<DateRangeProps> = ({
    useEffect(() => {
       const weekDays = document.querySelectorAll('.rdrWeekDay');
       weekDays.forEach((day) => {
-         const fullDayName = day.textContent;
-         const firstLetter = fullDayName?.charAt(0);
-         day.textContent = firstLetter!;
+         day.textContent = day.textContent?.charAt(0) ?? '';
       });
 
       const prevButton = document.querySelector('.rdrPprevButton');

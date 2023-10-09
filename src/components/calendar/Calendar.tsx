@@ -15,15 +15,13 @@ export interface CalenderProp extends CalendarProps {
 }
 
 export const Calendar: React.FC<CalenderProp> = ({ onClickClear, onDateChange, ...prop }) => {
-   const [date, setDate] = useState<Date | undefined>(undefined);
+   const [date, setDate] = useState<Date>();
    const [buttonWrapperNode, setButtonWrapperNode] = useState<HTMLDivElement>();
 
    useEffect(() => {
       const weekDays = document.querySelectorAll('.rdrWeekDay');
       weekDays.forEach((day) => {
-         const fullDayName = day.textContent;
-         const firstLetter = fullDayName?.charAt(0);
-         day.textContent = firstLetter!;
+         day.textContent = day.textContent?.charAt(0) ?? '';
       });
 
       const prevButton = document.querySelector('.rdrPprevButton');
