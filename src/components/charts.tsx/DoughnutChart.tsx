@@ -28,9 +28,8 @@ interface DoughnutChartProps {
    width?: string;
    height?: string;
    dataDetails: { labels: string[]; data: number[]; amount?: string[]; backgroundColors: string[] };
-   legend: React.ReactNode;
 }
-export const DoughnutChart: React.FC<DoughnutChartProps> = ({ width, height, dataDetails, legend }) => {
+export const DoughnutChart: React.FC<DoughnutChartProps> = ({ width, height, dataDetails }) => {
    return (
       <Box sx={{ width: width ?? '100%' }}>
          <Doughnut
@@ -38,7 +37,6 @@ export const DoughnutChart: React.FC<DoughnutChartProps> = ({ width, height, dat
             data={data(dataDetails.labels, dataDetails.data, dataDetails.backgroundColors)}
             options={options}
          />
-         {legend}
       </Box>
    );
 };

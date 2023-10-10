@@ -5,7 +5,7 @@ import FormContainer from '@app/components/forms/FormContainer';
 import AlertDialog from '@app/components/modal/AlertDialog';
 import { REQUEST_NAMES } from '@app/constants';
 import { getDefaultCurrency } from '@app/helper/currency-helper';
-import { formattedDate } from '@app/helper/date-formater';
+import { formattedDate } from '@app/helper/formater';
 import { useStepperContext } from '@app/providers';
 import { Box, Divider, Typography } from '@mui/material';
 import { useMemo, useState } from 'react';
