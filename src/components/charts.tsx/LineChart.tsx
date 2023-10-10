@@ -6,6 +6,7 @@ import { useRequestData } from 'react-http-query';
 import { CurrencyListResponse } from '@app/@types';
 import { getDefaultCurrency } from '@app/helper/currency-helper';
 import { REQUEST_NAMES } from '@app/constants';
+import { bigValueFormatter } from '@app/helper/formater';
 ChartJS.register(ChartDataLabels, CategoryScale, LinearScale, PointElement, LineElement, Tooltip);
 
 interface LineChartProps {
@@ -30,7 +31,7 @@ export const options = (currency: string) => {
             border: { display: false, dash: [2, 2], color: '#D7E4F0' },
             ticks: {
                padding: 10,
-               callback: (value: any) => `${currency}${value}k`,
+               callback: (value: any) => `${currency}${bigValueFormatter(value)}`,
             },
          },
       },
@@ -44,10 +45,10 @@ export const data = (labels: string[], data: number[][], backgroundColors: strin
          backgroundColors: backgroundColors[index],
          borderColor: backgroundColors[index],
          borderWidth: 2,
-         pointRadius:1.2,
+         pointRadius: 1.2,
       };
    });
-   console.log(datasets);
+
    return {
       labels: labels,
       datasets: datasets,

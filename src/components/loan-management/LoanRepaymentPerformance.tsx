@@ -8,11 +8,13 @@ export const LoanRepaymentPerformance = () => {
       </ChartWrapper>
    );
 };
+
 const dataDetails = {
    footerlabels: ['Individual', 'SME', 'Corporate'],
    data: [50, 25, 25],
    backgroundColors: ['#F94144', '#5EBFE8', '#F8961E'],
 };
+
 const lineChartData = {
    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
    data: [
