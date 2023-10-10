@@ -3,23 +3,26 @@ import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
 import { Box, Typography, styled } from '@mui/material';
 import { Button } from '@app/components/atoms/Button';
 import { Details } from './Details';
-import { Link } from 'react-router-dom';
 import { PaddedContainer } from '@app/components/containers/PaddedContainer';
 import { Previous } from '@app/components/icons/Modify';
 import { ProcessProgress } from '@app/components/ProcessProgress';
 import { ResponseDialog } from '@app/components/modal/ResponseDialog';
 import { SubmitIcon } from '@app/components/icons/Submit';
 import { useState } from 'react';
+import { useStepperContext } from '@app/providers';
 
 const ContainerWrapper = styled(Box)({
    height: 'calc(100% - 95px)',
    overflow: 'auto',
    paddingTop: '1px 1px 0px 1px',
+   padding: '2px',
 });
 
 export const ProcessSummary = () => {
    const [showCancelDialog, setShowCancelDialog] = useState(false);
    const [showResponseDialog, setShowResponseDialog] = useState(false);
+   const { handleNavigation } = useStepperContext();
+   
    return (
       <>
          <ContainerWrapper className="fancy-scrollbar">
@@ -27,7 +30,7 @@ export const ProcessSummary = () => {
                <ProcessProgress percentage={0} currentLabel={'Pending submission'} endLabel={'Approval'} />
             </Box>
             <PaddedContainer>
-               <Typography>Individual Loan Details</Typography>
+               <Typography fontWeight="600">Individual Loan Details</Typography>
                <Details title="Booking Information" details={bookingInfo} />
                <Details title="Customer Information" details={customerInfo} />
             </PaddedContainer>
@@ -42,7 +45,7 @@ export const ProcessSummary = () => {
                   Cancel
                </Button>
                <Box display="flex" gap={3}>
-                  <Button LinkComponent={Link} variant="outlined" to="#" startIcon={<Previous />}>
+                  <Button variant="outlined" startIcon={<Previous />} onClick={() => handleNavigation(0)}>
                      Modify
                   </Button>
                   <Button
