@@ -5,7 +5,7 @@ import { DateRange, DateRangeProps } from './DateRange';
 
 interface DateFilterProps extends DateRangeProps {}
 
-export const DateFilter = ({ ...props }: DateFilterProps) => {
+export const DateFilter = (props: DateFilterProps) => {
    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
    const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
