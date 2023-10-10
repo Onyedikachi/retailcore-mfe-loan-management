@@ -1,4 +1,4 @@
-import { Box, Divider, Grid, Typography, styled } from '@mui/material';
+import { Box, Divider, Typography } from '@mui/material';
 import { useRequestData } from 'react-http-query';
 import { CurrencyListResponse } from '@app/@types';
 import { REQUEST_NAMES } from '@app/constants';
