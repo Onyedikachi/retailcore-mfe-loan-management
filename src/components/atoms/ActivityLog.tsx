@@ -7,6 +7,7 @@ interface Log {
    subtitle?: string;
    title: string;
 }
+
 interface ActivityLogProps {
    logs?: Array<Log>;
    title?: string;

@@ -22,6 +22,7 @@ export const ProcessSummary = () => {
    const [showCancelDialog, setShowCancelDialog] = useState(false);
    const [showResponseDialog, setShowResponseDialog] = useState(false);
    const { handleNavigation } = useStepperContext();
+   
    return (
       <>
          <ContainerWrapper className="fancy-scrollbar">
