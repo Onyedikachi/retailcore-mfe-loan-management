@@ -68,7 +68,7 @@ const BookIndividualLoanContent: React.FC<{ getActiveStep: (step: number) => voi
                </Stepper>
             </StyledContentWrapper>
          </Grid>
-         {activeStep > 0 && (
+         {activeStep > 0 && activeStep != 3 && (
             <Grid item xs={3} height="100%">
                {activeStep == 4 ? <ActivitySummary /> : <LoanInformation />}
             </Grid>
