@@ -1,14 +1,23 @@
 import React, { useCallback, useRef, useState } from 'react';
 import { Navigate, Outlet, useLocation } from 'react-router-dom';
 import { isTokenValid } from '@Sterling/shared';
-import { BasePath, RoutePaths } from './constants';
+import { BasePath, REQUEST_NAMES, RETAIL_CORE_API_PATH, RoutePaths } from './constants';
 import { usePermission } from './hooks/usePermission';
+import { useRequest } from 'react-http-query';
 
 export const Root = () => {
    const { pathname } = useLocation();
    const pathnameRef = useRef<string | null>(null);
    const [nextPathname, setNextPathname] = useState<string>('');
    const { checkPermission, isSuperAdmin, authLoaded, user } = usePermission();
+
+   // This request fetches currency list & caches for the usage elsewhere, so request is only being made once.
+   useRequest({
+      onMount: (getCurrencyList) =>
+         getCurrencyList(RETAIL_CORE_API_PATH.GET_CURRENCY, { showSuccess: false }),
+      memoryStorage: true,
+      name: REQUEST_NAMES.CURRENCY_LIST,
+   });
 
    const checkUserAuthentication = useCallback(() => {
       const isAuthenticated = isTokenValid();

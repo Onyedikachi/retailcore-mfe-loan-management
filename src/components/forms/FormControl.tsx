@@ -12,7 +12,7 @@ import {
    CheckBoxGroupProps,
 } from '../atoms';
 import { Autocomplete, AutocompleteProps } from '../atoms/AutocompleteInput';
-import { DateInput, DateInputProps } from '../atoms/DateInput';
+import { DateControl, DateControlProps } from './DateControl';
 
 export type ControlType = 'input' | 'select' | 'switch' | 'checkboxGroup' | 'radio' | 'autocomplete' | 'date';
 
@@ -27,7 +27,7 @@ export type FormControlBaseProp<Control extends ControlType = ControlType> = (Co
    : Control extends 'autocomplete'
    ? AutocompleteProps
    : Control extends 'date'
-   ? DateInputProps
+   ? DateControlProps
    : InputProps) & { control: Control; children?: React.ReactNode };
 
 export const FormControlBase: React.FC<FormControlBaseProp> = ({ control, children, ...props }) => {
@@ -43,7 +43,7 @@ export const FormControlBase: React.FC<FormControlBaseProp> = ({ control, childr
       case 'autocomplete':
          return <Autocomplete {...(props as AutocompleteProps)} />;
       case 'date':
-         return <DateInput {...(props as DateInputProps)} />;
+         return <DateControl {...(props as DateControlProps)} />;
       default:
          return <Input {...(props as InputProps)} />;
    }

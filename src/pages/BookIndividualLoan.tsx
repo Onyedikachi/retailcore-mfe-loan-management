@@ -1,9 +1,8 @@
 import React from 'react';
-import { BasePath, REQUEST_NAMES, RETAIL_CORE_API_PATH } from '@app/constants';
+import { BasePath } from '@app/constants';
 import { Box, Grid, styled } from '@mui/material';
 import { CustomerInformation, FacilityDetails, LoanBookingHeader, Stepper } from '@app/components';
 import { PageLayout } from '@app/layouts/PageLayout';
-import { useRequest } from 'react-http-query';
 import { useStepperContext } from '@app/providers';
 import { RepaymentSchedule } from '@app/components/loan-booking/repayment-schedule/RepaymentSchedule';
 import { TransactionSettings } from '@app/components/loan-booking/transaction-settings';
@@ -70,7 +69,7 @@ const BookIndividualLoanContent: React.FC<{ getActiveStep: (step: number) => voi
                   </Stepper>
                </StyledContentWrapper>
             </Grid>
-            {activeStep > 0 && (
+            {activeStep > 0 && activeStep != 3 && (
                <Grid item xs={3} height="100%">
                   {activeStep == 4 ? <ActivitySummary /> : <LoanInformation />}
                </Grid>
@@ -82,14 +81,6 @@ const BookIndividualLoanContent: React.FC<{ getActiveStep: (step: number) => voi
 
 export const BookIndividualLoan = () => {
    const [activeStep, setActiveStep] = React.useState<number | undefined>();
-
-   // This request fetches currency list & caches for the usage elsewhere, so request is only being made once.
-   useRequest({
-      onMount: (getCurrencyList) =>
-         getCurrencyList(RETAIL_CORE_API_PATH.GET_CURRENCY, { showSuccess: false }),
-      memoryStorage: true,
-      name: REQUEST_NAMES.CURRENCY_LIST,
-   });
 
    return (
       <PageLayout

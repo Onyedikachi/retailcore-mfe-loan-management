@@ -12,9 +12,10 @@ import { useEffect, useState, ReactNode } from 'react';
 import { Calendar, CalenderProp } from '../calendar/Calendar';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import { Field, ErrorMessage, FieldProps, useFormikContext } from 'formik';
-import { InputErrorText } from '../forms/InputFieldError';
+import { InputErrorText } from './InputFieldError';
 import { format, parse } from 'date-fns';
-export type DateInputProps = TextFieldProps &
+
+export type DateControlProps = TextFieldProps &
    CalenderProp & {
       name: string;
       extraLeft?: ReactNode;
@@ -23,7 +24,7 @@ export type DateInputProps = TextFieldProps &
       minDateString?: string;
    };
 
-export const DateInput: React.FC<DateInputProps> = ({
+export const DateControl: React.FC<DateControlProps> = ({
    placeholder,
    name,
    extraLeft,
@@ -33,15 +34,14 @@ export const DateInput: React.FC<DateInputProps> = ({
    ...props
 }) => {
    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-   const [date, setDate] = useState<Date | undefined>();
+   const [date, setDate] = useState<Date>();
    const { setFieldValue } = useFormikContext();
 
    const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
-      if (!{ ...(props as TextFieldProps) }.disabled) {
+      if (!(props as TextFieldProps).disabled) {
          setAnchorEl(event.currentTarget);
       }
    };
-   const handleMenuClose = () => setAnchorEl(null);
 
    useEffect(() => {
       if (date) {
@@ -70,7 +70,7 @@ export const DateInput: React.FC<DateInputProps> = ({
                                     <IconButton
                                        edge="end"
                                        sx={{ mr: 0.1 }}
-                                       disabled={{ ...(props as TextFieldProps) }.disabled}
+                                       disabled={(props as TextFieldProps).disabled}
                                     >
                                        <CalendarMonthIcon />
                                     </IconButton>
@@ -83,14 +83,14 @@ export const DateInput: React.FC<DateInputProps> = ({
                      <Menu
                         anchorEl={anchorEl}
                         open={Boolean(anchorEl)}
-                        onClose={handleMenuClose}
+                        onClose={() => setAnchorEl(null)}
                         anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
                         transformOrigin={{ vertical: 'top', horizontal: 'right' }}
                      >
                         <Calendar
                            onDateChange={(date) => {
                               setDate(date);
-                              handleMenuClose();
+                              setAnchorEl(null);
                            }}
                            minDate={
                               props.minDate
