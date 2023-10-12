@@ -1,25 +1,23 @@
-import { useRequestData } from 'react-http-query';
-import { TableHeaderProps, TableVariant } from '../table';
-import { LoanPerformanceSummary } from './LoanPerformanceSummary';
-import { getDefaultCurrency } from '@app/helper/currency-helper';
-import { CurrencyListResponse } from '@app/@types';
-import { REQUEST_NAMES } from '@app/constants';
+import { TableHeaderProps, TableVariant } from '../../table';
+import { LoanPerformanceSummary } from './LoanPerformanceWrapper';
+import { useAppContext } from '@app/providers/app-provider';
 
-export const NonPerformingLoans = () => {
-   const currencies = useRequestData<CurrencyListResponse>(REQUEST_NAMES.CURRENCY_LIST);
-   const currency = getDefaultCurrency(currencies)?.abbreviation ?? 'NGN';
+export const PerformingLoans = () => {
+   const { defaultCurrency } = useAppContext();
+
    return (
       <LoanPerformanceSummary
          tabLabels={['All', 'Individuals', 'SME', 'Cooperate']}
-         title="Non Performing Loans"
+         title="Performing Loans"
          tabPanels={[
             <TableVariant
-               headerProps={loans(currency)}
+               key={''}
+               headerProps={loans(defaultCurrency?.abbreviation ?? 'NGN')}
                bodyProps={{
                   rows: [1, 2, 3, 4, 5, 6, 7, 8, 9, 12, 10].map((item, id) => ({
                      loanProduct: 'Payday Loan',
                      number: '52',
-                     value: `${currency} 461.67`,
+                     value: `${defaultCurrency?.abbreviation ?? 'NGN'} 461.67`,
                   })),
                }}
             />,
@@ -27,6 +25,7 @@ export const NonPerformingLoans = () => {
       />
    );
 };
+
 const loans = (currency: string): TableHeaderProps => {
    return {
       data: [

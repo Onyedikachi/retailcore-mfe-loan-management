@@ -1,5 +1,6 @@
 import { QuickLink } from '@app/components/QuickLink';
 import { Colors } from '@app/constants';
+import { AppProvider } from '@app/providers/app-provider';
 import { KeyboardArrowLeft } from '@mui/icons-material';
 import { Box, Grid, Stack } from '@mui/material';
 import { styled } from '@mui/system';
@@ -82,35 +83,37 @@ export const PageLayout = ({ header, content, fullContent = false }: PageLayoutP
    }, [stackHeaderRef.current]);
 
    return (
-      <StyledBox>
-         <Stack spacing={0} sx={{ overflowY: 'hidden', height: '100%' }}>
-            <Box ref={stackHeaderRef}>{header}</Box>
-            <ContentBox height={headerHeight && `calc(100% - ${headerHeight}px)`}>
-               <Grid container height="100%" position="relative">
-                  <Grid height="100%" xs item>
-                     {content}
-                  </Grid>
-                  {!fullContent && (
-                     <Grid xs="auto" height="100%" item>
-                        <QuickLink />
+      <AppProvider>
+         <StyledBox>
+            <Stack spacing={0} sx={{ overflowY: 'hidden', height: '100%' }}>
+               <Box ref={stackHeaderRef}>{header}</Box>
+               <ContentBox height={headerHeight && `calc(100% - ${headerHeight}px)`}>
+                  <Grid container height="100%" position="relative">
+                     <Grid height="100%" xs item>
+                        {content}
                      </Grid>
-                  )}
-               </Grid>
-            </ContentBox>
-         </Stack>
-         {fullContent && (
-            <>
-               <QuickLinkToggle
-                  onClick={() => setShowQuickLink(!showQuickLink)}
-                  className={showQuickLink ? 'content-visible' : ''}
-               >
-                  <KeyboardArrowLeft />
-               </QuickLinkToggle>
-               <QuickLinkExpandBox aria-expanded={!fullContent || showQuickLink}>
-                  <QuickLink />
-               </QuickLinkExpandBox>
-            </>
-         )}
-      </StyledBox>
+                     {!fullContent && (
+                        <Grid xs="auto" height="100%" item>
+                           <QuickLink />
+                        </Grid>
+                     )}
+                  </Grid>
+               </ContentBox>
+            </Stack>
+            {fullContent && (
+               <>
+                  <QuickLinkToggle
+                     onClick={() => setShowQuickLink(!showQuickLink)}
+                     className={showQuickLink ? 'content-visible' : ''}
+                  >
+                     <KeyboardArrowLeft />
+                  </QuickLinkToggle>
+                  <QuickLinkExpandBox aria-expanded={!fullContent || showQuickLink}>
+                     <QuickLink />
+                  </QuickLinkExpandBox>
+               </>
+            )}
+         </StyledBox>
+      </AppProvider>
    );
 };

@@ -2,6 +2,7 @@ import { Permissions } from './permissions';
 import { Navigate } from 'react-router-dom';
 import { DashbordOverview } from '@app/pages/DashboardOverview';
 import { BookIndividualLoan } from '@app/pages/BookIndividualLoan';
+import { LoanPerformance } from '@app/pages/LoanPerformance';
 
 export const BasePath = '/loan-management';
 export const BookLoanPath = `${BasePath}/book-loan`;
@@ -30,6 +31,10 @@ export const RouteMaps = {
    bookIndividualLoan: {
       element: <BookIndividualLoan />,
       path: `${BookLoanPath}/individual-loan`,
+   },
+   loanPerformance: {
+      element: <LoanPerformance />,
+      path: `${BasePath}/loan-performance`,
    },
 };
 
@@ -67,6 +72,12 @@ export const RoutePaths = {
       absolute: RouteMaps.dashboardPersonal.path,
       relative: '/personal',
       name: 'Personal',
+      permissions: [],
+   },
+   LoanPerformance: {
+      absolute: RouteMaps.loanPerformance.path,
+      relative: '/loan-performance',
+      name: 'Loan Performance',
       permissions: [],
    },
 };

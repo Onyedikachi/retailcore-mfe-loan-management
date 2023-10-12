@@ -32,6 +32,6 @@ export const downloadAsCSVByID = (id: string, title?: string) => {
 export function makeCSV(csvContent: string, title: string = 'export_table_') {
    const link = document.createElement('a');
    link.setAttribute('href', `data:text/csv;charset=utf-8,\uFEFF${encodeURI(csvContent)}`);
-   link.setAttribute('download', `${title}${Date.now()}.csv`);
+   link.setAttribute('download', `${title}.csv`);
    link.click();
 }

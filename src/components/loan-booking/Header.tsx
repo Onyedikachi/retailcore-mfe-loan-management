@@ -21,9 +21,10 @@ const StyledItemContainer = styled(Box)({
 export interface LoanBookingHeaderProps {
    title: string;
    backUrl?: string;
+   pathList?: string[];
 }
 
-export const LoanBookingHeader = ({ title, backUrl }: LoanBookingHeaderProps) => {
+export const LoanBookingHeader = ({ title, backUrl, pathList }: LoanBookingHeaderProps) => {
    const { pathname } = useLocation();
    const applicationPathName = Object.values(RoutePaths).find(({ absolute }) => absolute === pathname)?.name;
 
@@ -43,14 +44,16 @@ export const LoanBookingHeader = ({ title, backUrl }: LoanBookingHeaderProps) =>
                   </IconButton>
                </Link>
             )}
-            {['Loan Management', 'Book New Loan', applicationPathName ?? ''].map((message, index) => (
-               <Fragment key={message}>
-                  <Typography sx={{ ...(index > 1 && { fontWeight: 'bold' }), color: Colors.LightGray3 }}>
-                     {message.toUpperCase()}
-                  </Typography>
-                  {index !== 2 && <KeyboardArrowLeft sx={{ color: Colors.TextGray }} />}
-               </Fragment>
-            ))}
+            {(pathList ?? ['Loan Management', 'Book New Loan', applicationPathName ?? '']).map(
+               (message, index) => (
+                  <Fragment key={message}>
+                     <Typography sx={{ ...(index > 1 && { fontWeight: 'bold' }), color: Colors.LightGray3 }}>
+                        {message.toUpperCase()}
+                     </Typography>
+                     {index !== 2 && <KeyboardArrowLeft sx={{ color: Colors.TextGray }} />}
+                  </Fragment>
+               )
+            )}
          </StyledItemContainer>
       </StyledContainer>
    );

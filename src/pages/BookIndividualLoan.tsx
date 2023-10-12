@@ -10,7 +10,7 @@ import { LoanInformation } from '@app/components/loan-booking/facility-details/L
 import { ProcessSummary } from '@app/components/loan-booking/process-summary/ProcessSummary';
 import { ActivitySummary } from '@app/components/loan-booking/process-summary/ActivitySummary';
 
-const StyledContentWrapper = styled(Box)({
+export const StyledContentWrapper = styled(Box)({
    background: 'white',
    padding: '15px 10px',
    borderRadius: '10px',
