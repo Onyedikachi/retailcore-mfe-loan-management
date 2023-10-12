@@ -2,6 +2,8 @@ import { Permissions } from './permissions';
 import { Navigate } from 'react-router-dom';
 import { DashbordOverview } from '@app/pages/DashboardOverview';
 import { BookIndividualLoan } from '@app/pages/BookIndividualLoan';
+import { CustomerLoanDetails } from '@app/pages/CustomerLoanDetails';
+import { LoanProductDetails } from '@app/pages/LoanProductDetails';
 
 export const BasePath = '/loan-management';
 export const BookLoanPath = `${BasePath}/book-loan`;
@@ -31,7 +33,18 @@ export const RouteMaps = {
       element: <BookIndividualLoan />,
       path: `${BookLoanPath}/individual-loan`,
    },
+   customerLoanDetails: {
+      element: <CustomerLoanDetails />,
+      path: `${BasePath}/customer-loan-details`,
+   },
+   loanProductDetails: {
+      element: <LoanProductDetails />,
+      path: `${BasePath}/loan-product-details`,
+   },
 };
+
+export const CustomerLoanDetailsPath = RouteMaps.customerLoanDetails.path;
+export const LoanProductPath = RouteMaps.loanProductDetails.path;
 
 export const Routes = Object.values(RouteMaps).map(({ element, path }) => ({
    element,
@@ -67,6 +80,18 @@ export const RoutePaths = {
       absolute: RouteMaps.dashboardPersonal.path,
       relative: '/personal',
       name: 'Personal',
+      permissions: [],
+   },
+   CustomerLoanDetails: {
+      absolute: RouteMaps.customerLoanDetails.path,
+      relative: '/customer-loan-details',
+      name: 'Customer Loan Details',
+      permissions: [],
+   },
+   LoanProductDetails: {
+      absolute: RouteMaps.loanProductDetails.path,
+      relative: '/loan-product-details',
+      name: 'Customer Loan Details',
       permissions: [],
    },
 };

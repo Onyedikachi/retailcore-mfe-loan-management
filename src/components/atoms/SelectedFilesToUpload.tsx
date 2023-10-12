@@ -15,14 +15,13 @@ export const SelectedFilesToUpload: React.FC<{
             height: '80px',
             overflow: 'auto',
             width: 'max-content',
-            mx: 'auto',
             px: '20px',
             pt: 0,
          }}
       >
          {filesMeta.map(({ name, url }, id) => (
-            <ListItem key={name + id} sx={{ p: 0 }}>
-               <Box sx={{ width: '300px', mx: 'auto', mb: 1 }}>
+            <ListItem key={name} sx={{ p: 0 }}>
+               <Box sx={{ width: '300px', mb: 1 }}>
                   <Box
                      sx={{
                         boxShadow: '0px 0px 4px 0px rgba(0, 0, 0, 0.1)',
