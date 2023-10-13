@@ -30,6 +30,7 @@ export const useBookLoanContext = () => {
 interface BookLoanProviderProps {
    children: ReactNode;
 }
+
 export const BookLoanProvider = ({ children }: BookLoanProviderProps) => {
    const [bookLoanData, setBookLoanData] = useState<BookLoanData>({});
    const currencies = useRequestData<CurrencyListResponse>(REQUEST_NAMES.CURRENCY_LIST);

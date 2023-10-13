@@ -45,8 +45,8 @@ export const SelectInput: React.FC<SelectProps> = ({ options, placeholder, ...pr
                         }
                      >
                         {options.map((option) => {
-                           const value = typeof option == 'string' ? option : option.value;
-                           const disable = typeof option == 'string' ? false : option?.disable;
+                           const value = typeof option === 'string' ? option : option.value;
+                           const disable = typeof option === 'string' ? false : option?.disable;
                            return (
                               <MenuItem value={value} key={value} disabled={disable}>
                                  {value}

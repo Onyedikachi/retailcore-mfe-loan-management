@@ -87,21 +87,21 @@ const facilityDetails = {
    [InputFieldNames.LOAN_PURPOSE]: Yup.string().required('Enter purpose of loan request'),
    [InputFieldNames.PRINCIPAL]: Yup.string()
       .required('Enter amount')
-      .test(InputFieldNames.PRINCIPAL, 'Must be greater 0', function (value) {
+      .test(InputFieldNames.PRINCIPAL, 'Must be greater than 0', function (value) {
          if (value) {
             return Number(value.replace(/,/g, '')) > 0;
          }
       }),
    [InputFieldNames.INTEREST_RATE]: Yup.string()
       .required('Enter interest rate')
-      .test(InputFieldNames.INTEREST_RATE, 'Must be greater 0', function (value) {
+      .test(InputFieldNames.INTEREST_RATE, 'Must be greater than 0', function (value) {
          if (value) {
             return Number(value.replace(/,/g, '')) > 0;
          }
       }),
    [InputFieldNames.LOAN_TENURE_NUM]: Yup.string()
       .required('Field is required')
-      .test(InputFieldNames.LOAN_TENURE_NUM, 'Must be greater 0', function (value) {
+      .test(InputFieldNames.LOAN_TENURE_NUM, 'Must be greater than 0', function (value) {
          if (value) {
             return Number(value.replace(/,/g, '')) > 0;
          }
@@ -120,7 +120,7 @@ const facilityDetails = {
             ? field
                  .required('Field is required')
                  .required('Field is required')
-                 .test(InputFieldNames.START_DATE_NUM, 'Must be greater 0', function (value) {
+                 .test(InputFieldNames.START_DATE_NUM, 'Must be greater than 0', function (value) {
                     if (value) {
                        return Number(value.replace(/,/g, '')) > 0;
                     }
@@ -140,7 +140,7 @@ const colateralAndEquityContrib = {
          Yup.object().shape({
             [CollateraFieldNames.COLLATERAL_MARKET_VALUE]: Yup.string()
                .required('Enter market value for this collateral')
-               .test(CollateraFieldNames.COLLATERAL_MARKET_VALUE, 'Must be greater 0', function (value) {
+               .test(CollateraFieldNames.COLLATERAL_MARKET_VALUE, 'Must be greater than 0', function (value) {
                   if (value) {
                      return Number(value.replace(/,/g, '')) > 0;
                   }
@@ -153,7 +153,7 @@ const colateralAndEquityContrib = {
       .required('Add at least one collateral asset.'),
    [InputFieldNames.EQUITY_CONTRIB]: Yup.string()
       .required('Field is required')
-      .test(InputFieldNames.EQUITY_CONTRIB, 'Must be greater 0', function (value) {
+      .test(InputFieldNames.EQUITY_CONTRIB, 'Must be greater than 0', function (value) {
          if (value) {
             return Number(value.replace(/,/g, '')) > 0;
          }
@@ -167,7 +167,7 @@ export const loanManagementSettings = {
          enableMoratorium?.[0]
             ? field
                  .required('Field is required')
-                 .test(InputFieldNames.MORATORIUM_PERIOD_VALUE, 'Must be greater 0', function (value) {
+                 .test(InputFieldNames.MORATORIUM_PERIOD_VALUE, 'Must be greater than 0', function (value) {
                     if (value) {
                        return Number(value.replace(/,/g, '')) > 0;
                     }
@@ -189,7 +189,7 @@ export const loanManagementSettings = {
          enableGracePeriod?.[0]
             ? field
                  .required('Field is required')
-                 .test(InputFieldNames.GRACE_PERIOD_VALUE, 'Must be greater 0', function (value) {
+                 .test(InputFieldNames.GRACE_PERIOD_VALUE, 'Must be greater than 0', function (value) {
                     if (value) {
                        return Number(value.replace(/,/g, '')) > 0;
                     }
