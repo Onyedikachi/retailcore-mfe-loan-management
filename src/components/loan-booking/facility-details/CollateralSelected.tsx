@@ -13,7 +13,7 @@ export const CollateralSelected: React.FC<{ name: string; collateral: string; ha
 }) => {
    const { CollateraFieldNames, TooltipText } = FormMeta;
    const { defaultCurrency } = useBookLoanContext();
-   
+
    return (
       <RedBorderContainer sx={{ pb: 2 }}>
          <Box display="flex" justifyContent="space-between">
