@@ -1,10 +1,19 @@
 import { AccordionVariant } from '@app/components/accordion/Accordion';
 import { SearchInput } from '@app/components/atoms/SearchInput';
-import { Box, Typography } from '@mui/material';
+import { Colors } from '@app/constants/colors';
+import { Box, Typography, styled } from '@mui/material';
+
+export const Container = styled(Box)(() => ({
+   padding: '16px',
+   borderRadius: 1,
+   border: `1px solid ${Colors.LightGray6}`,
+   marginRight: 1.5,
+   height: '100%',
+}));
 
 export const SearchLoanProducts = () => {
    return (
-      <Box sx={{ p: 2, borderRadius: 1, border: '1px solid #E5E9EB', mr: 1.5, height: '100%' }}>
+      <Container>
          <Typography fontWeight="bold" textAlign="center" mb={1}>
             Loan Products
          </Typography>
@@ -19,6 +28,6 @@ export const SearchLoanProducts = () => {
                <>3</>
             </AccordionVariant>
          </Box>
-      </Box>
+      </Container>
    );
 };

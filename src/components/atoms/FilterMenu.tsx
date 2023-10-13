@@ -5,14 +5,14 @@ import Checkbox from './Checkbox';
 
 interface FilterMenuProps {
    options: string[];
-   onFilterChange: (selectedOptions: string[] | string | undefined) => void;
+   onFilterChange: (selectedOptions?: string[] | string) => void;
    checkbox?: boolean;
    filterIcon?: ReactNode;
 }
 
 function FilterMenu({ options, onFilterChange, checkbox = true, filterIcon }: FilterMenuProps) {
    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-   const [selectedOption, setSelectedOption] = useState<string[] | string | undefined>();
+   const [selectedOption, setSelectedOption] = useState<string[] | string>();
 
    const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
       setAnchorEl(event.currentTarget);

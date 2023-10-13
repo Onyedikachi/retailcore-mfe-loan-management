@@ -5,8 +5,9 @@ import { TableHeaderProps } from '@app/components/table/TableHeader';
 import { useMemo, useState } from 'react';
 import { Table } from '@app/components/table';
 import { useAppContext } from '@app/providers/app-provider';
-import { performanceBodyData, performanceHeaderData } from './performance-table-data';
+import { performanceHeaderData } from './table-data/performance-header-data';
 import { downloadAsCSVByID } from '@app/helper/csvDownloader';
+import { performanceBodyData } from './table-data/performance-body-data';
 
 export const PerformanceTable = () => {
    const [searchParams] = useSearchParams();

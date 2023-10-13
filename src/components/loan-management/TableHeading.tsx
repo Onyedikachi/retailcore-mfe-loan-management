@@ -14,12 +14,9 @@ const StyledSearchInput = styled(SearchInput)(() => ({
       fontSize: 14,
       width: '250px',
    },
-   '& .MuiInputBase-root:hover:not(.Mui-disabled):before': { border: 'unset' },
-   '& .MuiInput-root:before': { border: 'unset' },
-   '& .MuiInput-root:fieldset': { border: 'unset' },
-   '&:hover': { border: 'unset' },
-   '&.Mui-focused fieldset': { border: 'unset' },
-   '& .MuiInput-root:after': { border: 'unset' },
+   '& .MuiInputBase-root:hover:not(.Mui-disabled):before,  .MuiInput-root:before, .MuiInput-root:after': {
+      border: 'unset',
+   },
    '& .MuiSvgIcon-root': { marginLeft: '8px', width: '20px' },
 }));
 
