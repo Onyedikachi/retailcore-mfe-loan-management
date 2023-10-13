@@ -4,28 +4,18 @@ import { Box, Typography } from '@mui/material';
 import { FormControlBase } from '@app/components/forms/FormControl';
 import { LoanPrincipalControl } from '@app/components/forms/LoanPrincipalControl';
 import { PercentageControl } from '@app/components/forms/PercentageControl';
-import { Periodicity3, REQUEST_NAMES } from '@app/constants';
+import { Periodicity3 } from '@app/constants';
 import { TenureControl } from '@app/components/forms/TenureControl';
 import { useFormikContext } from 'formik';
 import { StartDateControl } from '@app/components/forms/StartDateControl';
 import { useFormikHelper } from '@app/hooks/useFormikHelper';
 import { useBookLoanContext } from '@app/providers/book-loan';
-import { useEffect } from 'react';
 
 export const FacilityDetailsFields = () => {
    const { InputFieldNames, TooltipText } = FormMeta;
-   const {
-      getFieldProps,
-      setFieldValue,
-      values: facilityDetails,
-   } = useFormikContext<FormMeta.FacilityDetailsFormValues>();
+   const { getFieldProps, setFieldValue } = useFormikContext<FormMeta.FacilityDetailsFormValues>();
    const { resetFieldState } = useFormikHelper();
    const { defaultCurrency } = useBookLoanContext();
-   const { updateBookLoanData } = useBookLoanContext();
-
-   useEffect(() => {
-      updateBookLoanData('facilityDetails', facilityDetails);
-   }, [facilityDetails]);
 
    return (
       <Box sx={{ width: '95%' }}>

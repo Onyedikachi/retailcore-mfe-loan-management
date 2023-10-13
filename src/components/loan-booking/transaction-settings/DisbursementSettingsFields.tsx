@@ -5,19 +5,11 @@ import { FormControlBase } from '@app/components/forms/FormControl';
 import { useFormikContext } from 'formik';
 import { useFormikHelper } from '@app/hooks/useFormikHelper';
 import { accountNumbers } from '../customer-information';
-import { useBookLoanContext } from '@app/providers/book-loan';
-import { useEffect } from 'react';
 
 export const DisbursementSettingsFields = () => {
    const { InputFieldNames, TooltipText, disbursementMethods, disbursementAccounts } = FormMeta;
-   const { getFieldProps, values: transactionSettingsValues } =
-      useFormikContext<FormMeta.TransactionSettingsFormValues>();
+   const { getFieldProps } = useFormikContext<FormMeta.TransactionSettingsFormValues>();
    const { resetFieldState } = useFormikHelper();
-   const { updateBookLoanData } = useBookLoanContext();
-
-   useEffect(() => {
-      updateBookLoanData('transactionSettings', transactionSettingsValues);
-   }, [transactionSettingsValues]);
 
    return (
       <Box width="90%" py={2}>
