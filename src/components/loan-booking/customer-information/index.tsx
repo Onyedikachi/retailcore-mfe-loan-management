@@ -8,15 +8,25 @@ import { CustomerAccountInformation } from './CustomerAccountInfo';
 import { Form, Formik } from 'formik';
 import { FormControlBase } from '@app/components/forms/FormControl';
 import AlertDialog from '@app/components/modal/AlertDialog';
-import { useBookLoanContext } from '@app/providers/book-loan';
+import { AccountNumber, useBookLoanContext } from '@app/providers/book-loan';
 import { useStepperContext } from '@app/providers/stepper';
+import { useRequest } from 'react-http-query';
+import { CUSTOMER_MANAGEMENT_PATH } from '@app/constants';
 
 export const CustomerInformation: React.FC = () => {
    const { InputFieldNames, TooltipText } = FormMeta;
    const [isDraft, setIsDraft] = useState(false);
    const [showAlertDialog, setShowAlertDialog] = useState(false);
-   const { bookLoanData, updateBookLoanData } = useBookLoanContext();
+   const {
+      bookLoanData,
+      updateBookLoanData,
+      getCustomersData,
+      getSelectedCustomer,
+      accountNumbers,
+      selectedCustomer,
+   } = useBookLoanContext();
    const { handleNavigation } = useStepperContext();
+   const { GET_INDIVIDUAL_CUSTOMERS } = CUSTOMER_MANAGEMENT_PATH;
 
    const onSubmit = (values: FormMeta.CustomerInfoFormValues) => {
       updateBookLoanData('customerInformation', values);
@@ -26,6 +36,12 @@ export const CustomerInformation: React.FC = () => {
          handleNavigation('next');
       }
    };
+
+   useRequest({
+      onMount: (makeRequest) => makeRequest(GET_INDIVIDUAL_CUSTOMERS, { showSuccess: false }),
+      onSuccess: (response) => getCustomersData(response.data.data.customer),
+   });
+
    return (
       <FormContainer>
          <Formik
@@ -50,12 +66,14 @@ export const CustomerInformation: React.FC = () => {
                               placeholder="Type to search"
                               name={InputFieldNames.CUSTOMER_ACCOUNT_NO}
                               noOptionsText="No match"
-                              options={accountNumbers}
+                              options={accountNumbers ?? []}
+                              onInputChange={(value) =>
+                                 getSelectedCustomer((value as AccountNumber)?.customerId)
+                              }
                               search
                            />
                         </FormControlWrapper>
-
-                        {formik.values[InputFieldNames.CUSTOMER_ACCOUNT_NO] && <CustomerAccountInformation />}
+                        {selectedCustomer && <CustomerAccountInformation />}
                      </Box>
 
                      <Divider />
@@ -91,14 +109,3 @@ export const CustomerInformation: React.FC = () => {
       </FormContainer>
    );
 };
-
-export const accountNumbers = [
-   { label: '014986724', subtitle: 'Lola' },
-   { label: '014986824', subtitle: 'Tobi' },
-   { label: '014907924', subtitle: 'Timothy' },
-   { label: '010987924', subtitle: 'Oluwaseun' },
-   { label: '016787924', subtitle: 'Lola' },
-   { label: '014987924', subtitle: 'Tobi' },
-   { label: '074987924', subtitle: 'Timothy' },
-   { label: '064987924', subtitle: 'Oluwaseun' },
-];
