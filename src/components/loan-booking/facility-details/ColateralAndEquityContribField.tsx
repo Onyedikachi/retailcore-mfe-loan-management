@@ -14,6 +14,7 @@ import { CheckboxOptionsItemChildren } from '@app/@types/security-document';
 import { RedBorderContainer } from '@app/components/containers/RedBorderContainer';
 import { useFormikHelper } from '@app/hooks/useFormikHelper';
 import { InputErrorText } from '@app/components/forms/InputFieldError';
+
 export const ColateralAndEquityContribFields = () => {
    const { InputFieldNames } = FormMeta;
    const [showAddCollateral, setShowAddCollateral] = useState(false);

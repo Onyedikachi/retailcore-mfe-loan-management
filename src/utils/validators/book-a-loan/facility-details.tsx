@@ -173,7 +173,7 @@ export const loanManagementSettings = {
                  .required('Field is required')
                  .test(InputFieldNames.MORATORIUM_PERIOD_VALUE, 'Must be greater than 0', function (value) {
                     if (value) {
-                       return Number(value.replace(/,/g, '')) > 0;
+                       return Number(value) > 0;
                     }
                  })
             : field
@@ -195,7 +195,7 @@ export const loanManagementSettings = {
                  .required('Field is required')
                  .test(InputFieldNames.GRACE_PERIOD_VALUE, 'Must be greater than 0', function (value) {
                     if (value) {
-                       return Number(value.replace(/,/g, '')) > 0;
+                       return Number(value) > 0;
                     }
                  })
             : field
