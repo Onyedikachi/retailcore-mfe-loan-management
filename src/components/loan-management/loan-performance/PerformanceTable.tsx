@@ -32,7 +32,7 @@ export const PerformanceTable = () => {
       [performanceType]
    );
 
-   const perfomingTableBody = useMemo(() => {
+   const performingTableBody = useMemo(() => {
       return [1, 2, 3, 4, 5].map((item, id) =>
          performanceBodyData(defaultCurrency?.abbreviation ?? 'NGN', performanceType)
       );
@@ -53,7 +53,7 @@ export const PerformanceTable = () => {
                sx={{ '& .MuiTableCell-root': { p: 0.8 } }}
                id="performance"
                headerProps={performing}
-               bodyProps={{ rows: perfomingTableBody }}
+               bodyProps={{ rows: performingTableBody }}
             />
          </Box>
       </Box>

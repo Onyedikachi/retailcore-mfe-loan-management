@@ -1,5 +1,8 @@
 import { Chip } from '@app/components/atoms/Chip';
+import styled from '@emotion/styled';
 import { Typography } from '@mui/material';
+
+export const StyledChip = styled(Chip)(() => ({ padding: 0, borderRadius: '4px', height: '25px' }));
 
 export const performanceBodyData = (currency: string, type: string | null) => {
    const status = 'Active';
@@ -12,10 +15,8 @@ export const performanceBodyData = (currency: string, type: string | null) => {
       ),
       loanAmount: `${currency} 10,000.00`,
       initiator: 'Me',
-      performance: <Chip sx={{ p: 0, borderRadius: '4px', height: '25px', ...colors.plain }} label={type} />,
-      status: (
-         <Chip sx={{ p: 0, borderRadius: '4px', height: '25px', ...statusColors(status) }} label={status} />
-      ),
+      performance: <StyledChip sx={{ ...colors.plain }} label={type} />,
+      status: <StyledChip sx={{ ...statusColors(status) }} label={status} />,
       updatedOn: '19 Feb 2022, 10:22 AM',
    };
 };
@@ -29,18 +30,22 @@ const colors = {
    lost: { color: '#9F1F17', bgcolor: '#FFD4D2' },
 };
 
-const statusColors = (status: string) => {
+export const statusColors = (status: string) => {
    switch (status) {
       case 'Active':
+      case 'Performing':
+      case 'Settled':
          return colors.active;
       case 'Watchlist':
-         return colors.active;
+         return colors.watchList;
       case 'Substandard':
-         return colors.active;
+         return colors.substandard;
       case 'Doubtful':
-         return colors.active;
+         return colors.doubtful;
       case 'Lost':
-         return colors.active;
+         return colors.lost;
+      case 'Closed':
+         return colors.plain;
       default:
          return colors.plain;
    }
