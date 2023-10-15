@@ -1,4 +1,4 @@
-import { TableContainer, Table as MuiTable, TableProps as MuiTableProps } from '@mui/material';
+import { TableContainer, Table as MuiTable, TableProps as MuiTableProps, styled } from '@mui/material';
 import { TableHeader, TableHeaderProps } from './TableHeader';
 import { TableBody, TableBodyProps } from './TableBody';
 
@@ -22,3 +22,10 @@ export const Table = ({ minWidth, headerProps, bodyProps, tableName, ...restProp
       </TableContainer>
    );
 };
+
+export const TableVariant = styled(Table)(() => ({
+   '& .MuiTableHead-root th': { color: 'inherit' },
+   '& .MuiTableHead-root th::after': { background: 'none' },
+   '& .MuiTableCell-root': { padding: '5px', borderBotton: '1px solid #EEEEEE', fontSize: '12px' },
+   '& tr': { background: 'none' },
+}));

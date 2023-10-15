@@ -59,7 +59,7 @@ export const downloadHTMLAsPDF = async (
          doc.addImage(img, 'JPEG', 10, -(i * pageHeight) + 10, width - 20, widthRatio * elemHeight);
       }
 
-      doc.save(`${name}_${Date.now()}.pdf`);
+      doc.save(`${name}.pdf`);
    }
 };
 
@@ -91,6 +91,6 @@ const createPdf = (head: Array<unknown>, data: unknown[][], title: string, name?
          },
       },
    });
-   doc.save(`${name ?? title}_${Date.now()}.pdf`);
+   doc.save(`${name ?? title}.pdf`);
    doc.output('datauri');
 };

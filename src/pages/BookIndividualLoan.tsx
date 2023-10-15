@@ -11,7 +11,7 @@ import { ProcessSummary } from '@app/components/loan-booking/process-summary/Pro
 import { ActivitySummary } from '@app/components/loan-booking/process-summary/ActivitySummary';
 import { BookLoanProvider } from '@app/providers/book-loan';
 
-const StyledContentWrapper = styled(Box)({
+export const StyledContentWrapper = styled(Box)({
    background: 'white',
    padding: '15px 10px',
    borderRadius: '10px',
