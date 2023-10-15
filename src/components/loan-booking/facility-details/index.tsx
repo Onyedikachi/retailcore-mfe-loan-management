@@ -1,32 +1,36 @@
 import { Box, Divider } from '@mui/material';
 import { Formik, Form } from 'formik';
-import * as FormMeta from '@app/utils/validators/book-a-loan/transaction-settings';
+import * as FormMeta from '@app/utils/validators/book-a-loan/facility-details';
 import Accordion from '@app/components/accordion/Accordion';
 import { Button } from '@app/components/atoms';
 import FormContainer from '@app/components/forms/FormContainer';
 import { useState } from 'react';
 import { useStepperContext } from '@app/providers';
-import { DisbursementSettingsFields } from './DisbursementSettingsFields';
-import { AccountEnteriesFields } from './AccountEnteriesFields';
-import { RepaymentSettingsFields } from './RepaymentSettingsFields';
+import { FacilityDetailsFields } from './FacilityDetailsFields';
+import { ColateralAndEquityContribFields } from './ColateralAndEquityContribField';
+import { LoanManagementSettingsField } from './LoanMangementSettingsField';
 import AlertDialog from '@app/components/modal/AlertDialog';
+import { useBookLoanContext } from '@app/providers/book-loan';
 
-export const TransactionSettings: React.FC = () => {
+export const FacilityDetails: React.FC = () => {
    const [isDraft, setIsDraft] = useState(false);
    const { handleNavigation } = useStepperContext();
    const [showAlertDialog, setShowAlertDialog] = useState(false);
-   const onSubmit = (values: FormMeta.FormValues) => {
+   const { bookLoanData, updateBookLoanData } = useBookLoanContext();
+
+   const onSubmit = (values: FormMeta.FacilityDetailsFormValues) => {
+      updateBookLoanData('facilityDetails', values);
       if (isDraft) {
          setShowAlertDialog(true);
       } else {
-         // TODO: Implement submission of selected user details to the backend.
+         handleNavigation('next');
       }
    };
    return (
       <FormContainer>
          <Formik
             enableReinitialize={true}
-            initialValues={FormMeta.initialValues}
+            initialValues={FormMeta.initialValues(bookLoanData?.facilityDetails)}
             validationSchema={FormMeta.validator()}
             onSubmit={onSubmit}
          >
@@ -35,9 +39,9 @@ export const TransactionSettings: React.FC = () => {
                   <Form>
                      <Box sx={{ mb: 5 }}>
                         <Accordion accordionLabels={FormMeta.accordionLabels}>
-                           <DisbursementSettingsFields />
-                           <RepaymentSettingsFields />
-                           <AccountEnteriesFields />
+                           <FacilityDetailsFields />
+                           <ColateralAndEquityContribFields />
+                           <LoanManagementSettingsField />
                         </Accordion>
                      </Box>
                      <Divider />
@@ -61,7 +65,7 @@ export const TransactionSettings: React.FC = () => {
                                     type="submit"
                                     variant={isNext ? 'contained' : 'outlined'}
                                  >
-                                    {isNext ? 'Generate Repayement Schedule' : 'Save As Draft'}
+                                    {isNext ? 'Next' : 'Save As Draft'}
                                  </Button>
                               );
                            })}

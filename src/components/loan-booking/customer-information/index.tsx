@@ -8,23 +8,28 @@ import { CustomerAccountInformation } from './CustomerAccountInfo';
 import { Form, Formik } from 'formik';
 import { FormControlBase } from '@app/components/forms/FormControl';
 import AlertDialog from '@app/components/modal/AlertDialog';
+import { useBookLoanContext } from '@app/providers/book-loan';
+import { useStepperContext } from '@app/providers/stepper';
 
 export const CustomerInformation: React.FC = () => {
    const { InputFieldNames, TooltipText } = FormMeta;
    const [isDraft, setIsDraft] = useState(false);
    const [showAlertDialog, setShowAlertDialog] = useState(false);
-   const onSubmit = (values: FormMeta.FormValues) => {
+   const { bookLoanData, updateBookLoanData } = useBookLoanContext();
+   const { handleNavigation } = useStepperContext();
+
+   const onSubmit = (values: FormMeta.CustomerInfoFormValues) => {
+      updateBookLoanData('customerInformation', values);
       if (isDraft) {
          setShowAlertDialog(true);
       } else {
-         // TODO: Implement submittion of selected user details to the backed.
+         handleNavigation('next');
       }
    };
-
    return (
       <FormContainer>
          <Formik
-            initialValues={FormMeta.initialValues}
+            initialValues={FormMeta.initialValues(bookLoanData.customerInformation)}
             enableReinitialize={true}
             validationSchema={FormMeta.validator()}
             onSubmit={onSubmit}

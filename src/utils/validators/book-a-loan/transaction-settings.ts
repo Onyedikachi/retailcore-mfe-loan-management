@@ -1,8 +1,6 @@
 /* eslint-disable max-len */
 
 import * as Yup from 'yup';
-export type FormValues = typeof initialValues;
-
 export const InputFieldNames = {
    DISBURSEMENT_METHOD: 'disbursement_method',
    DISBURSEMENT_ACCOUNT: 'disbursement_account',
@@ -12,45 +10,40 @@ export const InputFieldNames = {
    NOTIFICATION_CHANNEL: 'notification_channel',
    REPAYMENT_CHANNEL: 'repayment_channel',
    REPAYMENT_ACCOUNT: 'repayment_account',
-   DISBURSEMENT_DEBIT_LEDGER: 'disbursement_debit_ledger',
-   DISBURSEMENT_CREDIT_LEDGER: 'disbursement_credit_ledger',
-   PRINCIPAL_REPAYMENT_DEBIT_LEDGER: 'principal_repayment_debit_ledger',
-   PRINCIPAL_REPAYMENT_CREDIT_LEDGER: 'principal_repayment_credit_ledger',
-   INTEREST_REPAYMENT_DEBIT_LEDGER: 'interest_repayement_debit_ledger',
-   INTEREST_REPAYMENT_CREDIT_LEDGER: 'interest_repayement_credit_ledger',
-   INTEREST_ACCRUED_DEBIT_LEDGER: 'interest_accrued_debit_ledger',
-   INTEREST_ACCRUED_CREDIT_LEDGER: 'interest_accrued_credit_ledger',
-   PENALTIES_DEBIT_LEDGER: 'penalties_debit_ledger',
-   PENALTIES_CREDIT_LEDGER: 'penalties_credit_ledger',
 } as const;
-
-export const accordionLabels = ['Disbursement Settings', 'Repayment Settings', 'Accounting Entries'];
+export type TransactionSettingsFormValues = {
+   [key in (typeof InputFieldNames)[keyof typeof InputFieldNames]]: key extends
+      | 'enable_disbursement_notification'
+      ? boolean
+      : key extends 'notification_channel'
+      ? string[]
+      : string;
+};
+export const accordionLabels = ['Disbursement Settings', 'Repayment Settings'];
 
 export const disbursementMethods = ['On Approval', 'Schedule Disbursement Date'];
 export const disbursementAccounts = ['Customer’s Account', 'Suspense Account', 'Other Customers’ Account'];
 
-export const initialValues = {
-   [InputFieldNames.DISBURSEMENT_METHOD]: '',
-   [InputFieldNames.DISBURSEMENT_ACCOUNT]: '',
-   [InputFieldNames.DISBURSEMENT_DATE]: '',
-   [InputFieldNames.OTHER_ACCOUNT_NO]: '',
-   [InputFieldNames.ENABLE_DISBURSEMENT_NOTIFICATION]: false,
-   [InputFieldNames.NOTIFICATION_CHANNEL]: [],
-   [InputFieldNames.REPAYMENT_CHANNEL]: '',
-   [InputFieldNames.REPAYMENT_ACCOUNT]: '',
-   [InputFieldNames.DISBURSEMENT_DEBIT_LEDGER]: [],
-   [InputFieldNames.DISBURSEMENT_CREDIT_LEDGER]: [],
-   [InputFieldNames.PRINCIPAL_REPAYMENT_DEBIT_LEDGER]: [],
-   [InputFieldNames.PRINCIPAL_REPAYMENT_CREDIT_LEDGER]: [],
-   [InputFieldNames.INTEREST_REPAYMENT_DEBIT_LEDGER]: [],
-   [InputFieldNames.INTEREST_REPAYMENT_CREDIT_LEDGER]: [],
-   [InputFieldNames.INTEREST_ACCRUED_DEBIT_LEDGER]: [],
-   [InputFieldNames.INTEREST_ACCRUED_CREDIT_LEDGER]: [],
-   [InputFieldNames.PENALTIES_DEBIT_LEDGER]: [],
-   [InputFieldNames.PENALTIES_CREDIT_LEDGER]: [],
+export const initialValues = (data?: TransactionSettingsFormValues) => {
+   return {
+      [InputFieldNames.DISBURSEMENT_METHOD]: data?.[InputFieldNames.DISBURSEMENT_METHOD] ?? '',
+      [InputFieldNames.DISBURSEMENT_ACCOUNT]: data?.[InputFieldNames.DISBURSEMENT_ACCOUNT] ?? '',
+      [InputFieldNames.DISBURSEMENT_DATE]: data?.[InputFieldNames.DISBURSEMENT_DATE] ?? '',
+      [InputFieldNames.OTHER_ACCOUNT_NO]: data?.[InputFieldNames.OTHER_ACCOUNT_NO] ?? '',
+      [InputFieldNames.ENABLE_DISBURSEMENT_NOTIFICATION]:
+         data?.[InputFieldNames.ENABLE_DISBURSEMENT_NOTIFICATION] ?? false,
+      [InputFieldNames.NOTIFICATION_CHANNEL]: data?.[InputFieldNames.NOTIFICATION_CHANNEL] ?? [],
+      [InputFieldNames.REPAYMENT_CHANNEL]: data?.[InputFieldNames.REPAYMENT_CHANNEL] ?? '',
+      [InputFieldNames.REPAYMENT_ACCOUNT]: data?.[InputFieldNames.REPAYMENT_ACCOUNT] ?? '',
+   };
 };
 
-export const repaymentChannels = ['Direct Debit', 'Card Tokenization', 'Remita', 'NIBBS'];
+export const repaymentChannels = [
+   { value: 'Direct Debit' },
+   { value: 'Card Tokenization', disable: true },
+   { value: 'Remita', disable: true },
+   { value: 'NIBBS', disable: true },
+];
 export const repaymentAccount = [
    'Deduct from customer’s primary account',
    'Deduct from customer’s other accounts',
@@ -77,20 +70,12 @@ export const validator = () =>
       [InputFieldNames.NOTIFICATION_CHANNEL]: Yup.array().when(
          InputFieldNames.ENABLE_DISBURSEMENT_NOTIFICATION,
          (enableNotification, field) =>
-            enableNotification?.[0] ? field.min(1, 'Select one notification channel') : field
+            enableNotification?.[0]
+               ? field.min(1, 'Select one notification channel').required('Select one notification channel')
+               : field
       ),
       [InputFieldNames.REPAYMENT_ACCOUNT]: Yup.string().required('Select repayemnt account'),
       [InputFieldNames.REPAYMENT_CHANNEL]: Yup.string().required('Select repayment channel'),
-      [InputFieldNames.DISBURSEMENT_DEBIT_LEDGER]: Yup.array().min(1, 'Select at least one '),
-      [InputFieldNames.DISBURSEMENT_CREDIT_LEDGER]: Yup.array().min(1, 'Select at least one '),
-      [InputFieldNames.PRINCIPAL_REPAYMENT_DEBIT_LEDGER]: Yup.array().min(1, 'Select at least one '),
-      [InputFieldNames.PRINCIPAL_REPAYMENT_CREDIT_LEDGER]: Yup.array().min(1, 'Select at least one '),
-      [InputFieldNames.INTEREST_REPAYMENT_DEBIT_LEDGER]: Yup.array().min(1, 'Select at least one '),
-      [InputFieldNames.INTEREST_REPAYMENT_CREDIT_LEDGER]: Yup.array().min(1, 'Select at least one '),
-      [InputFieldNames.INTEREST_ACCRUED_DEBIT_LEDGER]: Yup.array().min(1, 'Select at least one '),
-      [InputFieldNames.INTEREST_ACCRUED_CREDIT_LEDGER]: Yup.array().min(1, 'Select at least one '),
-      [InputFieldNames.PENALTIES_DEBIT_LEDGER]: Yup.array().min(1, 'Select at least one '),
-      [InputFieldNames.PENALTIES_CREDIT_LEDGER]: Yup.array().min(1, 'Select at least one '),
    });
 
 export const TooltipText = {
@@ -107,15 +92,4 @@ export const TooltipText = {
 
    [InputFieldNames.REPAYMENT_CHANNEL]: 'Select the channel through which loan repayments will be made',
    [InputFieldNames.REPAYMENT_ACCOUNT]: 'Specify where direct debit for repayment will be taken from',
-
-   [InputFieldNames.DISBURSEMENT_DEBIT_LEDGER]:
-      'Specify the debit and credit ledgers to be reported to on disbursement of the principal',
-   [InputFieldNames.PRINCIPAL_REPAYMENT_DEBIT_LEDGER]:
-      'Specify the debit and credit ledgers to be reported to for the repayment of the principal component of the loan',
-   [InputFieldNames.INTEREST_REPAYMENT_DEBIT_LEDGER]:
-      'Specify the debit and credit ledgers to be reported to for the repayment of the interest component of the loan',
-   [InputFieldNames.INTEREST_ACCRUED_DEBIT_LEDGER]:
-      'Specify the debit and credit ledgers to be reported to for interest accrual',
-   [InputFieldNames.PENALTIES_DEBIT_LEDGER]:
-      'Specify the debit and credit ledgers to be reported to for penalties fees',
 };

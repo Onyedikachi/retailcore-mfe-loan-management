@@ -16,7 +16,7 @@ const StyledSelect = styled(Select)(({ variant }) => ({
 export interface SelectProps extends MuiSelectProps {
    name: string;
    padding?: string;
-   options: string[];
+   options: Array<string | { value: string; disable?: boolean }>;
    placeholder: string;
 }
 
@@ -44,11 +44,15 @@ export const SelectInput: React.FC<SelectProps> = ({ options, placeholder, ...pr
                            value ? value : <SelectPlaceholder text={placeholder} />
                         }
                      >
-                        {options.map((option) => (
-                           <MenuItem value={option} key={option}>
-                              {option}
-                           </MenuItem>
-                        ))}
+                        {options.map((option) => {
+                           const value = typeof option === 'string' ? option : option.value;
+                           const disable = typeof option === 'string' ? false : option?.disable;
+                           return (
+                              <MenuItem value={value} key={value} disabled={disable}>
+                                 {value}
+                              </MenuItem>
+                           );
+                        })}
                      </StyledSelect>
                      <ErrorMessage
                         name={props.name}

@@ -22,7 +22,7 @@ export const StartDateControl = ({
    return (
       <Grid container>
          <Grid item xs={4} pr={2}>
-            <FormControlBase name={firstName} control="input" placeholder={firstPlaceHolder} />
+            <FormControlBase name={firstName} control="date" placeholder={firstPlaceHolder} />
          </Grid>
          {bridgeWord && (
             <Grid item xs={2} textAlign="center">
