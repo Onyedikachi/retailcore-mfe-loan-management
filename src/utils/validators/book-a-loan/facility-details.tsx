@@ -1,5 +1,6 @@
 /* eslint-disable max-len */
 
+import { currencyToNumber } from '@app/helper/currency-helper';
 import * as Yup from 'yup';
 
 export const InputFieldNames = {
@@ -26,12 +27,12 @@ export const InputFieldNames = {
    GRACE_PERIOD_VALUE: 'grace_period_value',
 } as const;
 
-export const CollateraFieldNames = {
+export const CollateralFieldNames = {
    COLLATERAL_MARKET_VALUE: 'collateral_market_value',
    COLLATERAL_FILE_UPLOADED: 'collateral_file',
 } as const;
 
-type CollateralFields = typeof CollateraFieldNames & { id: string };
+type CollateralFields = typeof CollateralFieldNames & { id: string };
 
 export type FacilityDetailsFormValues = {
    [key in (typeof InputFieldNames)[keyof typeof InputFieldNames]]: key extends
@@ -89,21 +90,21 @@ const facilityDetails = {
       .required('Enter amount')
       .test(InputFieldNames.PRINCIPAL, 'Must be greater than 0', function (value) {
          if (value) {
-            return Number(value.replace(/,/g, '')) > 0;
+            return currencyToNumber(value) > 0;
          }
       }),
    [InputFieldNames.INTEREST_RATE]: Yup.string()
       .required('Enter interest rate')
       .test(InputFieldNames.INTEREST_RATE, 'Must be greater than 0', function (value) {
          if (value) {
-            return Number(value.replace(/,/g, '')) > 0;
+            return Number(value) > 0;
          }
       }),
    [InputFieldNames.LOAN_TENURE_NUM]: Yup.string()
       .required('Field is required')
       .test(InputFieldNames.LOAN_TENURE_NUM, 'Must be greater than 0', function (value) {
          if (value) {
-            return Number(value.replace(/,/g, '')) > 0;
+            return Number(value) > 0;
          }
       }),
    [InputFieldNames.LOAN_TENURE_PERIOD]: Yup.string().required('Field is required'),
@@ -119,10 +120,9 @@ const facilityDetails = {
          repaymentFrequency?.[0] == 'Custom'
             ? field
                  .required('Field is required')
-                 .required('Field is required')
                  .test(InputFieldNames.START_DATE_NUM, 'Must be greater than 0', function (value) {
                     if (value) {
-                       return Number(value.replace(/,/g, '')) > 0;
+                       return Number(value) > 0;
                     }
                  })
             : field
@@ -138,14 +138,18 @@ const colateralAndEquityContrib = {
    [InputFieldNames.COLLATERALS]: Yup.array()
       .of(
          Yup.object().shape({
-            [CollateraFieldNames.COLLATERAL_MARKET_VALUE]: Yup.string()
+            [CollateralFieldNames.COLLATERAL_MARKET_VALUE]: Yup.string()
                .required('Enter market value for this collateral')
-               .test(CollateraFieldNames.COLLATERAL_MARKET_VALUE, 'Must be greater than 0', function (value) {
-                  if (value) {
-                     return Number(value.replace(/,/g, '')) > 0;
+               .test(
+                  CollateralFieldNames.COLLATERAL_MARKET_VALUE,
+                  'Must be greater than 0',
+                  function (value) {
+                     if (value) {
+                        return currencyToNumber(value) > 0;
+                     }
                   }
-               }),
-            [CollateraFieldNames.COLLATERAL_FILE_UPLOADED]: Yup.mixed().required(
+               ),
+            [CollateralFieldNames.COLLATERAL_FILE_UPLOADED]: Yup.mixed().required(
                'Attach supporting document(s)'
             ),
          })
@@ -155,7 +159,7 @@ const colateralAndEquityContrib = {
       .required('Field is required')
       .test(InputFieldNames.EQUITY_CONTRIB, 'Must be greater than 0', function (value) {
          if (value) {
-            return Number(value.replace(/,/g, '')) > 0;
+            return Number(value) > 0;
          }
       }),
 };
@@ -217,7 +221,7 @@ export const TooltipText = {
    [InputFieldNames.REPAYMENT_FREQUENCY]:
       'Select the frequency at which the equated  instalment (EI) will be paid',
    [InputFieldNames.START_DATE]: 'Specify start date',
-   [CollateraFieldNames.COLLATERAL_MARKET_VALUE]: 'Enter the appraised value of the collateral selected',
+   [CollateralFieldNames.COLLATERAL_MARKET_VALUE]: 'Enter the appraised value of the collateral selected',
    [InputFieldNames.ENABLE_MORATORIUM_PERIOD]:
       'This is the period during which the customer is not required to make loan repayments',
    [InputFieldNames.MORATORIUM_PERIOD]:

@@ -1,16 +1,15 @@
-import { Grid, styled } from '@mui/material';
-
-const StyledGridItem = styled(Grid)({ overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' });
+import { Ellipsis } from '@app/components/atoms/Ellipsis';
+import { Grid } from '@mui/material';
 
 export const GridComponent: React.FC<{ property: string; value?: string }> = (props) => {
    return (
       <Grid container key={props?.property} fontSize={13} mb={2}>
-         <StyledGridItem item xs={7}>
-            {props?.property}
-         </StyledGridItem>
-         <StyledGridItem item xs={5} fontWeight="400">
-            {props?.value}
-         </StyledGridItem>
+         <Grid item xs={7} pr={1}>
+            <Ellipsis text={props?.property} />
+         </Grid>
+         <Grid item xs={5} fontWeight="400">
+            <Ellipsis text={props?.value ?? ''} />
+         </Grid>
       </Grid>
    );
 };

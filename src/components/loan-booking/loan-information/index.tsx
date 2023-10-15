@@ -11,9 +11,9 @@ export const LoanInformation = () => {
          <Divider />
 
          <Box bgcolor="#F9F2F2" py={1} px={2} my={2} borderRadius="6px">
-            <Typography>Pay Day loan informatieeion</Typography>
+            <Typography>Pay Day loan information</Typography>
             <Typography fontSize={14} pt={1}>
-               'This panel will display details of the loan product.
+               This panel will display details of the loan product.
             </Typography>
          </Box>
          <Box className="fancy-scrollbar" sx={{ height: 'calc(100% - 130px)', overflow: 'auto' }}>
@@ -21,7 +21,6 @@ export const LoanInformation = () => {
                <AccordionVariant accordionLabels={loanProductSections}>
                   {Object.values(details).map((detail, index) =>
                      detail.map(({ key, value }) => {
-                        console.log(index);
                         return index != 1 ? (
                            <GridComponent key={key} property={key} value={value} />
                         ) : (
@@ -59,7 +58,7 @@ const details = {
       { key: 'Principal', value: '' },
       { key: 'Interest rate', value: '' },
       { key: 'Loan Tenor', value: '' },
-      { key: 'Repayment Pattern', value: '' },
+      { key: 'Repayment Pattern', value: 'Collateral & Equity Contribution' },
       { key: 'Repayment Frequency', value: '' },
       { key: 'Repayment Start Date', value: '' },
    ],

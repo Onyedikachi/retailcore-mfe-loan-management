@@ -4,7 +4,7 @@ import { Box, Typography } from '@mui/material';
 import { FormControlBase } from '@app/components/forms/FormControl';
 import { LoanPrincipalControl } from '@app/components/forms/LoanPrincipalControl';
 import { PercentageControl } from '@app/components/forms/PercentageControl';
-import { Periodicity3 } from '@app/constants';
+import { PeriodWithCustom } from '@app/constants';
 import { TenureControl } from '@app/components/forms/TenureControl';
 import { useFormikContext } from 'formik';
 import { StartDateControl } from '@app/components/forms/StartDateControl';
@@ -126,7 +126,7 @@ export const FacilityDetailsFields = () => {
                control="select"
                name={InputFieldNames.REPAYMENT_FREQUENCY}
                placeholder="Select frequency"
-               options={Periodicity3}
+               options={PeriodWithCustom}
                onChange={() => {
                   resetFieldState(InputFieldNames.START_DATE);
                   resetFieldState(InputFieldNames.START_DATE_NUM);
