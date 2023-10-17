@@ -6,6 +6,8 @@ import { LoanPerformance } from '@app/pages/LoanPerformance';
 import { DashboardSMELoan } from '@app/pages/DashboardSMELoan';
 import { DashboardCorperateLoan } from '@app/pages/DashboardCorperateLoan';
 import { DashboardIndividualLoan } from '@app/pages/DashboardIndividualLoan';
+import { CustomerLoanDetails } from '@app/pages/CustomerLoanDetails';
+import { LoanProductDetails } from '@app/pages/LoanProductDetails';
 
 export const BasePath = '/loan-management';
 export const BookLoanPath = `${BasePath}/book-loan`;
@@ -39,7 +41,18 @@ export const RouteMaps = {
       element: <LoanPerformance />,
       path: `${BasePath}/loan-performance`,
    },
+   customerLoanDetails: {
+      element: <CustomerLoanDetails />,
+      path: `${BasePath}/customer-loan-details`,
+   },
+   loanProductDetails: {
+      element: <LoanProductDetails />,
+      path: `${BasePath}/loan-product-details`,
+   },
 };
+
+export const CustomerLoanDetailsPath = RouteMaps.customerLoanDetails.path;
+export const LoanProductPath = RouteMaps.loanProductDetails.path;
 
 export const Routes = Object.values(RouteMaps).map(({ element, path }) => ({
    element,
@@ -81,6 +94,18 @@ export const RoutePaths = {
       absolute: RouteMaps.loanPerformance.path,
       relative: '/loan-performance',
       name: 'Loan Performance',
+      permissions: [],
+   },
+   CustomerLoanDetails: {
+      absolute: RouteMaps.customerLoanDetails.path,
+      relative: '/customer-loan-details',
+      name: 'Customer Loan Details',
+      permissions: [],
+   },
+   LoanProductDetails: {
+      absolute: RouteMaps.loanProductDetails.path,
+      relative: '/loan-product-details',
+      name: 'Customer Loan Details',
       permissions: [],
    },
 };

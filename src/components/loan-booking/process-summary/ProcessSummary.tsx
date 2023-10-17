@@ -22,7 +22,7 @@ export const ProcessSummary = () => {
    const [showCancelDialog, setShowCancelDialog] = useState(false);
    const [showResponseDialog, setShowResponseDialog] = useState(false);
    const { handleNavigation } = useStepperContext();
-   
+
    return (
       <>
          <ContainerWrapper className="fancy-scrollbar">
@@ -86,7 +86,7 @@ export const ProcessSummary = () => {
    );
 };
 
-const bookingInfo = [
+export const bookingInfo = [
    { key: 'Loan product name', value: 'PayDay Loan' },
    { key: 'Loan product category', value: 'Chukwuma' },
    { key: 'Loan purpose', value: 'Temitope' },
@@ -103,7 +103,7 @@ const bookingInfo = [
    { key: 'Disbursement amount', value: '-' },
 ];
 
-const customerInfo = [
+export const customerInfo = [
    { key: 'Customer Name', value: 'Mr', view: true },
    { key: 'Account Number', value: 'Chukwuma' },
    { key: 'BVN', value: 'Temitope' },

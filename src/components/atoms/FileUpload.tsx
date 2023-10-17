@@ -62,14 +62,14 @@ export const FileUpload: React.FC<FileUploadProps> = (props) => {
                         onSizeError={(file: string) => setFileSizeError(file)}
                         onTypeError={(file: string) => setFileTypeError(file)}
                      >
-                        <Container>
+                        <Container p={1}>
                            <Box display="flex" gap={2} alignItems="center">
                               <Typography>
                                  <IconButton sx={{ background: '#F2F4F7' }}>
                                     <BackupOutlinedIcon />
                                  </IconButton>
                               </Typography>
-                              <Typography>
+                              <Typography textAlign="center">
                                  <Typography component="span" color="primary.main" mr={0.5}>
                                     Click to upload
                                  </Typography>
