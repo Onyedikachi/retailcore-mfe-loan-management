@@ -36,7 +36,7 @@ export const TableHeading: React.FC<TableHeadingProps> = (props) => {
             variant="text"
             sx={{ p: 1, pb: 0.2, color: Colors.TextGray }}
             startIcon={<SyncIcon />}
-            onClick={props.handleDownload}
+            onClick={props.handleRefresh}
          >
             Refresh
          </Button>

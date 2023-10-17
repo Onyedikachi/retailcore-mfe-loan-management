@@ -97,7 +97,7 @@ export const ConstomerLoanDetail = () => {
             handleClose={() => setOpenLoanAction(false)}
             title={`LOAN ${actionType.toUpperCase()} REQUEST`}
          >
-            <LoanActionRequest action={actionType} />
+            <LoanActionRequest action={actionType} handleSubmit={() => setOpenLoanAction(false)} />
          </Dialog>
       </Box>
    );

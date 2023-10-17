@@ -4,13 +4,18 @@ import styled from '@emotion/styled';
 import { Typography } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import { format } from 'date-fns';
-import {  statusColors } from '@app/constants/colors';
+import { statusColors } from '@app/constants/colors';
 import { menuFromStatus } from '@app/constants/dashboard';
 
-export const StyledChip = styled(Chip)(() => ({ padding: 0, borderRadius: '4px', height: '25px' }));
+export const StyledChip = styled(Chip)(() => ({
+   padding: 0,
+   borderRadius: '4px',
+   height: '25px',
+   fontWeight: '500',
+}));
 
 export const bodyData = (currency: string, loanActions: (selectedAction: string) => void, tab: string) => {
-   const status = 'Active';
+   const status = 'Performing';
    return {
       customerName: (
          <>
@@ -18,6 +23,7 @@ export const bodyData = (currency: string, loanActions: (selectedAction: string)
             <Typography variant="caption"> 0123456789</Typography>
          </>
       ),
+      loanAmount: `${currency} 10,000.00`,
       loanProduct: 'PayDay Loan',
       status: <StyledChip sx={{ ...statusColors(status) }} label={status} />,
       updatedOn: format(new Date(), 'd MMM yyyy, hh:mm a'),
@@ -25,23 +31,10 @@ export const bodyData = (currency: string, loanActions: (selectedAction: string)
          <FilterMenu
             checkbox={false}
             filterIcon={<MenuIcon color="primary" />}
-            options={menuFromStatus('Active')}
+            options={menuFromStatus(status)}
             icon
             onFilterChange={(value) => loanActions(value as string)}
          />
       ),
    };
-};
-const loanActions = ['liquidation', 'closure', 'write-off'];
-
-export const menuToAction = (menu: string) => {
-   if (menu.includes('Liquidate')) {
-      return loanActions[0];
-   } else if (menu.includes('Close')) {
-      return loanActions[1];
-   } else if (menu.includes('Write-Off')) {
-      return loanActions[2];
-   } else {
-      return;
-   }
 };

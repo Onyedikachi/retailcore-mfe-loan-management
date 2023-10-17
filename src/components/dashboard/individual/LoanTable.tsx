@@ -6,12 +6,14 @@ import { Table } from '@app/components/table';
 import { useAppContext } from '@app/providers/app-provider';
 import { downloadAsCSVByID } from '@app/helper/csvDownloader';
 import { TableHeading } from '@app/components/loan-management/TableHeading';
-import { bodyData, menuToAction } from './table-data/table-body-data';
+import { bodyData } from './table-data/table-body-data';
 import { headerData } from './table-data/table-header-data';
 import Dialog from '@app/components/atoms/Dialog';
 import { LoanActionRequest } from './customer-loan-details/LoanActionRequest';
-import { CustomerLoanDetailsPath } from '@app/constants';
+import { BookIndividualLoanPath, CustomerLoanDetailsPath } from '@app/constants';
 import { capitalizeString } from '@app/helper/string';
+import { deleteLoan, menuToAction, modifyLoan } from '@app/constants/dashboard';
+import AlertDialog from '@app/components/modal/AlertDialog';
 
 export const LoanTable = () => {
    const [searchParams] = useSearchParams();
@@ -19,6 +21,7 @@ export const LoanTable = () => {
    const { defaultCurrency } = useAppContext();
    const [action, setAction] = useState('');
    const [openLoanAction, setOpenLoanAction] = useState(false);
+   const [openDeleteAction, setOpenDeleteAction] = useState(false);
    const navigate = useNavigate();
 
    const loanTableHeader: TableHeaderProps = useMemo(
@@ -37,9 +40,16 @@ export const LoanTable = () => {
          bodyData(
             defaultCurrency?.abbreviation ?? 'NGN',
             (selectedAction) => {
-               selectedAction == 'View' && navigate(CustomerLoanDetailsPath);
                setAction(selectedAction);
-               menuToAction(selectedAction) && setOpenLoanAction(true);
+               if (selectedAction == 'View') {
+                  navigate(`${CustomerLoanDetailsPath}?id=${1}`);
+               } else if (menuToAction(selectedAction)) {
+                  setOpenLoanAction(true);
+               } else if (modifyLoan(selectedAction)) {
+                  navigate(`${BookIndividualLoanPath}?id=${1}`);
+               } else if (deleteLoan(selectedAction)) {
+                  setOpenDeleteAction(true);
+               }
             },
             tab!!
          )
@@ -51,9 +61,9 @@ export const LoanTable = () => {
          <TableHeading
             handleSearch={(text) => {}}
             handleRefresh={() => {}}
-            handleDownload={() => {
-               downloadAsCSVByID('performance', `Individual Loan ${capitalizeString(tab!)}`);
-            }}
+            handleDownload={() =>
+               downloadAsCSVByID('performance', `Individual Loan ${capitalizeString(tab!)}`)
+            }
             searchPlaceholder="Search by product name/code"
          />
          <Box pt={2} pb={3}>
@@ -70,8 +80,14 @@ export const LoanTable = () => {
             handleClose={() => setOpenLoanAction(false)}
             title={`LOAN ${menuToAction(action)?.toUpperCase()} REQUEST`}
          >
-            <LoanActionRequest action={menuToAction(action)!} />
+            <LoanActionRequest action={menuToAction(action)!} handleSubmit={() => setOpenLoanAction(false)} />
          </Dialog>
+         <AlertDialog
+            open={openDeleteAction}
+            handleClose={() => setOpenDeleteAction(false)}
+            handleConfirm={() => {}}
+            title="Do you want to withdraw and delete request?"
+         />
       </Box>
    );
 };

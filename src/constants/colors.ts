@@ -44,8 +44,6 @@ export const ColorMaps = {
    info: { backgroundColor: Colors.BgCardInfo, color: Colors.DarkBlue },
    error: { backgroundColor: Colors.BgCardRed, color: Colors.DarKRed },
    default: { backgroundColor: Colors.BgCardGray, color: Colors.DarkGray },
-};
-const colors = {
    plain: { color: '#1E0A3C', bgcolor: '#E5E5EA' },
    active: { color: '#15692A', bgcolor: '#D4F7DC' },
    watchList: { color: '#0050C8', bgcolor: '#F0F5FF' },
@@ -59,19 +57,22 @@ export const statusColors = (status: string) => {
       case 'Active':
       case 'Performing':
       case 'Settled':
-         return colors.active;
+      case 'Approved':
+         return ColorMaps.active;
       case 'Watchlist':
-         return colors.watchList;
+      case 'In-Review':
+         return ColorMaps.watchList;
       case 'Substandard':
       case 'Non-Performing':
-         return colors.substandard;
+         return ColorMaps.substandard;
       case 'Doubtful':
-         return colors.doubtful;
+         return ColorMaps.doubtful;
       case 'Lost':
-         return colors.lost;
+      case 'In-Issue':
+         return ColorMaps.lost;
       case 'Closed':
-         return colors.plain;
+         return ColorMaps.plain;
       default:
-         return colors.plain;
+         return ColorMaps.plain;
    }
 };

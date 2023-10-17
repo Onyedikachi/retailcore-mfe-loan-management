@@ -36,9 +36,9 @@ export const menuFromStatus = (menu: string) => {
       case 'Settled':
       case 'Closed':
          return ['View'];
-      case 'In Issue':
+      case 'In-Issue':
          return ['View', 'Modify', 'Delete Request'];
-      case 'In Review':
+      case 'In-Review':
          return ['View', 'Withdraw & Modify', 'Withdraw & Delete Request'];
       case 'Draft':
          return ['Continue Request', 'Delete Request'];
@@ -54,3 +54,23 @@ export const menuFromStatus = (menu: string) => {
          return ['View'];
    }
 };
+const loanActions = ['liquidation', 'closure', 'write-off'];
+
+export const menuToAction = (menu: string) => {
+   switch (menu) {
+      case 'Liquidate Loan':
+         return loanActions[0];
+      case 'Close Loan Account':
+         return loanActions[1];
+      case 'Write-Off Loan':
+         return loanActions[2];
+      default:
+         return;
+   }
+};
+
+export const modifyLoan = (action: string) =>
+   action == 'Withdraw & Modify' || action == 'Modify' || action == 'Continue Request';
+
+export const deleteLoan = (action: string) =>
+   action == 'Delete Request' || action == 'Withdraw & Delete Request';

@@ -34,7 +34,7 @@ export const IndividualLoan = () => {
             onFilterOptionSelected={onFilterOptionSelected}
             filterOptions={creditFilterOptions}
          />
-         <LoanTable/>
+         <LoanTable />
       </StyledContentWrapper>
    );
 };

@@ -8,11 +8,15 @@ import { FileUpload } from '@app/components/atoms/FileUpload';
 import { Button } from '@app/components/atoms/Button';
 import { InputErrorText } from '@app/components/forms/InputFieldError';
 
-export const LoanActionRequest: React.FC<{ action: string }> = ({ action }) => {
+export const LoanActionRequest: React.FC<{ action: string; handleSubmit?: () => void }> = ({
+   action,
+   handleSubmit,
+}) => {
    const { initialValues, validationSchema, Fields } = FormMeta;
 
    const onSubmit = (values: FormMeta.FormValues) => {
       // TODO: Implement submittion of  details to the backend.
+      handleSubmit?.();
    };
 
    return (
