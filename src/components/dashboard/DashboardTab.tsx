@@ -130,7 +130,7 @@ export const Filters = (props: FiltersProps) => {
                <UncontrolledSelect
                   size="small"
                   name="filter"
-                  placeholder={props.filterPlaceholder ?? 'filter by'}
+                  placeholder={props.filterPlaceholder ?? 'Filter by'}
                   options={props.filterOptions}
                   onChange={props.onFilterOptionSelected}
                   sx={{

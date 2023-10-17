@@ -2,6 +2,7 @@ import { Filters } from '@app/components/dashboard/DashboardTab';
 import { SelectChangeEvent, Stack, styled } from '@mui/material';
 import { useState } from 'react';
 import { creditFilterOptions, tabOptions, tabCardOptions } from '@app/constants/dashboard';
+import { LoanTable } from './LoanTable';
 
 const StyledContentWrapper = styled(Stack)({
    gap: '27px',
@@ -33,7 +34,7 @@ export const IndividualLoan = () => {
             onFilterOptionSelected={onFilterOptionSelected}
             filterOptions={creditFilterOptions}
          />
-         {/** Todo: implement the table component here */}
+         <LoanTable/>
       </StyledContentWrapper>
    );
 };

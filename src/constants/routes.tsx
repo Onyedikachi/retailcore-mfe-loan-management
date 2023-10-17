@@ -11,6 +11,7 @@ import { LoanProductDetails } from '@app/pages/LoanProductDetails';
 
 export const BasePath = '/loan-management';
 export const BookLoanPath = `${BasePath}/book-loan`;
+export const IndividualLoanPath = `${BasePath}/individual`;
 
 export const RouteMaps = {
    root: {

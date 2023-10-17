@@ -4,7 +4,7 @@ import { Box, Typography, styled } from '@mui/material';
 import { Button } from '@app/components/atoms/Button';
 import { Details } from './Details';
 import { PaddedContainer } from '@app/components/containers/PaddedContainer';
-import { Previous } from '@app/components/icons/Modify';
+import { Previous } from '@app/components/icons/Previous';
 import { ProcessProgress } from '@app/components/ProcessProgress';
 import { ResponseDialog } from '@app/components/modal/ResponseDialog';
 import { SubmitIcon } from '@app/components/icons/Submit';

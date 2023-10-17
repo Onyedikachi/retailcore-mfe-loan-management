@@ -45,3 +45,33 @@ export const ColorMaps = {
    error: { backgroundColor: Colors.BgCardRed, color: Colors.DarKRed },
    default: { backgroundColor: Colors.BgCardGray, color: Colors.DarkGray },
 };
+const colors = {
+   plain: { color: '#1E0A3C', bgcolor: '#E5E5EA' },
+   active: { color: '#15692A', bgcolor: '#D4F7DC' },
+   watchList: { color: '#0050C8', bgcolor: '#F0F5FF' },
+   substandard: { color: '#806B00', bgcolor: '#FFF8CC' },
+   doubtful: { color: '#804C00', bgcolor: '#FFEBCC' },
+   lost: { color: '#9F1F17', bgcolor: '#FFD4D2' },
+};
+
+export const statusColors = (status: string) => {
+   switch (status) {
+      case 'Active':
+      case 'Performing':
+      case 'Settled':
+         return colors.active;
+      case 'Watchlist':
+         return colors.watchList;
+      case 'Substandard':
+      case 'Non-Performing':
+         return colors.substandard;
+      case 'Doubtful':
+         return colors.doubtful;
+      case 'Lost':
+         return colors.lost;
+      case 'Closed':
+         return colors.plain;
+      default:
+         return colors.plain;
+   }
+};
