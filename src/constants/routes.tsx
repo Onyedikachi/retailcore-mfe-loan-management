@@ -3,6 +3,9 @@ import { Navigate } from 'react-router-dom';
 import { DashbordOverview } from '@app/pages/DashboardOverview';
 import { BookIndividualLoan } from '@app/pages/BookIndividualLoan';
 import { LoanPerformance } from '@app/pages/LoanPerformance';
+import { DashboardSMELoan } from '@app/pages/DashboardSMELoan';
+import { DashboardCorperateLoan } from '@app/pages/DashboardCorperateLoan';
+import { DashboardIndividualLoan } from '@app/pages/DashboardIndividualLoan';
 
 export const BasePath = '/loan-management';
 export const BookLoanPath = `${BasePath}/book-loan`;
@@ -16,16 +19,16 @@ export const RouteMaps = {
       element: <DashbordOverview />,
       path: `${BasePath}/overview`,
    },
-   dashboardPersonal: {
-      element: <></>,
-      path: `${BasePath}/personal`,
+   dashboardIndividual: {
+      element: <DashboardIndividualLoan />,
+      path: `${BasePath}/individual`,
    },
    dashboardSME: {
-      element: <></>,
+      element: <DashboardSMELoan />,
       path: `${BasePath}/sme`,
    },
    dashboardCorporate: {
-      element: <></>,
+      element: <DashboardCorperateLoan />,
       path: `${BasePath}/corporate`,
    },
    bookIndividualLoan: {
@@ -68,10 +71,10 @@ export const RoutePaths = {
       name: 'Corporate',
       permissions: [],
    },
-   DashboardPersonal: {
-      absolute: RouteMaps.dashboardPersonal.path,
-      relative: '/personal',
-      name: 'Personal',
+   DashboardIndividual: {
+      absolute: RouteMaps.dashboardIndividual.path,
+      relative: '/individual',
+      name: 'Individual',
       permissions: [],
    },
    LoanPerformance: {

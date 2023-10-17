@@ -1,0 +1,73 @@
+import { StatusCardProps } from '@app/@types/dashboard';
+
+export const creditFilterOptions = [
+   'Created by me',
+   'Initiated by my team',
+   'Created system-wide',
+   'Approved by me',
+   'Approved by my branch',
+   'Approved system-wide',
+];
+
+export const tabCardOptions: Record<string, Array<Omit<StatusCardProps, 'isActive' | 'onClick'>>> = {
+   requests: [
+      {
+         label: 'All',
+         value: 0,
+         variant: 'black',
+      },
+      {
+         label: 'Approved',
+         value: 0,
+         variant: 'success',
+      },
+      {
+         label: 'In-Review',
+         value: 0,
+         variant: 'info',
+      },
+      {
+         label: 'In-Issue',
+         value: 0,
+         variant: 'error',
+      },
+      {
+         label: 'draft',
+         value: 0,
+         variant: 'gray',
+      },
+   ],
+   records: [
+      {
+         label: 'All',
+         value: 0,
+         variant: 'black',
+      },
+      {
+         label: 'Performing',
+         value: 0,
+         variant: 'success',
+      },
+      {
+         label: 'Non-Performing',
+         value: 0,
+         variant: 'gray',
+      },
+      {
+         label: 'Closed',
+         value: 0,
+         variant: 'gray',
+      },
+   ],
+};
+
+export const tabOptions = [
+   {
+      label: 'Records',
+      key: 'records',
+   },
+   {
+      label: 'Requests',
+      key: 'requests',
+   },
+];

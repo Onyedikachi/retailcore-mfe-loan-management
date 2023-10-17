@@ -22,13 +22,13 @@ export const DashboardHeader = () => {
    };
 
    return (
-      <Stack paddingX={3} paddingTop={2}>
+      <Stack paddingX={3} paddingTop={3}>
          <NestedDropdown />
          <Grid container marginTop={4} justifyContent="space-between">
             <Grid item xs display="flex" gap={3}>
                {[
                   RoutePaths.DashboardOverview,
-                  RoutePaths.DashboardPersonal,
+                  RoutePaths.DashboardIndividual,
                   RoutePaths.DashboardSME,
                   RoutePaths.DashboardCorporate,
                ].map(({ name, absolute }) => (

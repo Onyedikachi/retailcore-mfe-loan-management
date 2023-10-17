@@ -21,6 +21,7 @@ export const Colors = {
    TableBgRed: '#FFFBFB',
    Pink: '#FFE9E9',
    Gray50: '#F7F7F7',
+   BorderGray1: '#E5E9EB',
    /** For white text on dark Bg. */
    LightGray2: '#F6F8F9',
    Gray: '#808080',

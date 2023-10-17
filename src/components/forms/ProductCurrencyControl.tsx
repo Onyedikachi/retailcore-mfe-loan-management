@@ -1,9 +1,9 @@
 import { CommonFormFieldNames, CommonTooltipText, REQUEST_NAMES } from '@app/constants';
 import { FormControlBase } from './FormControl';
 import FormControlWrapper from './FormControlWrapper';
-import { SelectProps } from '../atoms';
 import { useRequestData } from 'react-http-query';
 import { CurrencyListResponse } from '@app/@types/currency-list';
+import { SelectProps } from '../atoms/select';
 
 export type ProductCurrencyControlProps = Partial<SelectProps> & {
    name?: string;

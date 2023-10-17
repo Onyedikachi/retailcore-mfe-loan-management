@@ -1,0 +1,146 @@
+import MUITab from '@mui/material/Tab';
+import Tabs from '@mui/material/Tabs';
+import { ArrowRight } from '@mui/icons-material';
+import { Box, Divider, SelectChangeEvent, Stack, styled } from '@mui/material';
+import { Colors } from '@app/constants';
+import { Fragment, useEffect, useState } from 'react';
+import { StatusCard } from './DashboardStatusCard';
+import { useNavigate, useSearchParams } from 'react-router-dom';
+import { StatusCardProps } from '@app/@types/dashboard';
+import { UncontrolledSelect } from '../atoms/select';
+
+const FilterWrapper = styled(Stack)(() => ({
+   backgroundColor: 'white',
+   color: 'GrayText',
+   borderRadius: '8px',
+   border: `1px solid ${Colors.BorderGray1}`,
+   gap: '72px',
+   justifyContent: 'space-between',
+}));
+
+const TabStack = styled(Tabs)(() => ({
+   borderRadius: '8px 0 0 8px',
+   backgroundColor: Colors.LightGray6,
+   gap: '2px',
+   borderRight: `2px solid ${Colors.LightGray6}`,
+})) as typeof Tabs;
+
+const StyledTab = styled(MUITab)(() => ({
+   width: '170px',
+   padding: '10px',
+   gap: '5px',
+   cursor: 'pointer',
+   alignItems: 'center',
+   textTransform: 'none',
+   minHeight: 55,
+   '&.MuiTab-root.Mui-selected': {
+      backgroundColor: 'white',
+      color: Colors.TextGray,
+   },
+})) as typeof MUITab;
+
+interface FiltersProps {
+   statusOptions: Array<Omit<StatusCardProps, 'isActive' | 'onClick'>>;
+   onStatusClick: (statusKey: number) => void;
+   tabOptions: Array<{
+      label: string;
+      key: number | string;
+   }>;
+   onTabClick: (tabKey: number | string) => void;
+   defaultTabKey?: number | string;
+   tabKey: number | string;
+   filterOptions?: Array<string>;
+   filterPlaceholder?: string;
+   onFilterOptionSelected: (event: SelectChangeEvent<any>) => void;
+}
+
+export const Filters = (props: FiltersProps) => {
+   const [activeStatus, setActiveStatus] = useState('All');
+   const [searchParams] = useSearchParams();
+   const navigate = useNavigate();
+
+   const defaultActiveTab = searchParams.get('tab') ?? props.defaultTabKey ?? props.tabOptions[0]?.key;
+
+   const [activeTab, setActiveTab] = useState(defaultActiveTab);
+
+   const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
+      setActiveTab(newValue);
+      navigate(`?tab=${newValue}`);
+   };
+
+   useEffect(() => navigate(`?tab=${defaultActiveTab}`), []);
+
+   const handleStatusCardClick = (key: string) => {
+      setActiveStatus(key);
+   };
+
+   return (
+      <FilterWrapper direction="row">
+         <Stack direction="row" gap={6} flex={1}>
+            <TabStack
+               value={activeTab}
+               onChange={handleTabChange}
+               orientation="vertical"
+               visibleScrollbar={false}
+               aria-label="filter tabs"
+               TabIndicatorProps={{ style: { display: 'none' } }}
+            >
+               {props.tabOptions.map((tab) => {
+                  const isActive = tab.key === activeTab;
+
+                  return (
+                     <StyledTab
+                        onClick={() => props.onTabClick(tab.key)}
+                        value={tab.key}
+                        icon={isActive ? <ArrowRight fontSize="large" color="primary" /> : <></>}
+                        iconPosition="start"
+                        key={tab.key}
+                        label={tab.label}
+                        sx={{
+                           fontSize: isActive ? '20px' : '18px',
+                           fontWeight: isActive ? 600 : 400,
+                           justifyContent: isActive ? 'start' : 'center',
+                        }}
+                     />
+                  );
+               })}
+            </TabStack>
+            <Stack direction="row" gap="10px" alignItems="center">
+               {props.statusOptions?.map((data, index) => (
+                  <Fragment key={index}>
+                     <StatusCard
+                        onClick={() => handleStatusCardClick(data.key ?? data.label)}
+                        isActive={(data?.key ?? data.label) === activeStatus}
+                        {...data}
+                     />
+                     {index !== props.statusOptions?.length - 1 && (
+                        <Divider
+                           orientation="vertical"
+                           variant="middle"
+                           flexItem
+                           sx={{ height: '54px', alignSelf: 'center' }}
+                        />
+                     )}
+                  </Fragment>
+               ))}
+            </Stack>
+         </Stack>
+         {props.filterOptions && (
+            <Box mr={1} mt={2}>
+               <UncontrolledSelect
+                  size="small"
+                  name="filter"
+                  placeholder={props.filterPlaceholder ?? 'filter by'}
+                  options={props.filterOptions}
+                  onChange={props.onFilterOptionSelected}
+                  sx={{
+                     height: '32px',
+                     borderRadius: '6px',
+                     minWidth: '150px',
+                  }}
+               />
+            </Box>
+         )}
+      </FilterWrapper>
+   );
+};

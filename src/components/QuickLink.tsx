@@ -7,7 +7,7 @@ const QuickLinkBox = styled(Box)({
    padding: '15px 10px',
    borderRadius: '10px',
    width: '100%',
-   maxWidth: '290px',
+   maxWidth: '250px',
    background: 'white',
    height: 'max-content',
    maxHeight: '100%',
