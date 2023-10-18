@@ -36,7 +36,7 @@ export const LoanTable = () => {
    );
 
    const loanTableBody = useMemo(() => {
-      return [1, 2, 3, 4, 5].map((item, id) =>
+      return [1, 2, 3, 4, 5,6,7,8,9,0].map((item, id) =>
          bodyData(
             defaultCurrency?.abbreviation ?? 'NGN',
             (selectedAction) => {

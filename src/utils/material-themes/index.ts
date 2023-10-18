@@ -106,6 +106,9 @@ export const GlobalTheme = createTheme(
                      width: 5,
                   },
                },
+               '.hidden-scrollbar': {
+                  '::-webkit-scrollbar': { width: 0 },
+               },
             }),
          },
       },
