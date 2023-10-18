@@ -60,7 +60,7 @@ export const CustomerInfoDialog: FC<{ id?: string }> = ({ id }) => {
                                  {key}
                               </Grid>
                               <Grid item xs={7} mb={2} pl={2}>
-                                 {value}
+                                 {value ?? '-'}
                               </Grid>
                            </Fragment>
                         ))}

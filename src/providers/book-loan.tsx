@@ -21,6 +21,11 @@ interface BookLoanContextType {
    getSelectedCustomer: (id: string) => void;
    selectedCustomerId: string | undefined;
    selectedCustomer: CustomerData | undefined;
+   persona: string | undefined;
+   customerEligibility: {
+      isEligbible: boolean;
+      message: string;
+   };
 }
 
 const BookLoanContext = createContext<BookLoanContextType | null>(null);
@@ -74,6 +79,24 @@ export const BookLoanProvider = ({ children }: BookLoanProviderProps) => {
       );
    };
 
+   const persona: string | undefined = selectedCustomer?.risk_assessments?.filter(
+      (assessments) =>
+         assessments?.sectionName == "Customer's Identity" && assessments?.parameter == 'Customer Persona'
+   )?.[0]?.parameterOption;
+
+   const profile = selectedCustomer?.customer_profiles[0];
+   const hasKYC = profile?.status === 'Approved' && profile?.approvalStatus === 'Approved';
+   const isActive = selectedCustomer?.status === 'Active';
+   const customerEligibility: { isEligbible: boolean; message: string } = {
+      isEligbible: hasKYC && isActive,
+      message:
+         !hasKYC && !isActive
+            ? "Customer's KYC is Incomplete and Account Status is Inactive"
+            : !hasKYC
+            ? "Customer's KYC is Incomplete"
+            : "Customer's  Account Status is Inactive",
+   };
+
    const contextValue = useMemo<BookLoanContextType>(
       () => ({
          bookLoanData,
@@ -81,11 +104,13 @@ export const BookLoanProvider = ({ children }: BookLoanProviderProps) => {
          accountNumbers,
          selectedCustomerId,
          selectedCustomer,
+         persona,
+         customerEligibility,
          updateBookLoanData,
          getSelectedCustomer,
          getCustomersData,
       }),
-      [bookLoanData, defaultCurrency, accountNumbers, selectedCustomerId]
+      [bookLoanData, defaultCurrency, accountNumbers, selectedCustomerId, persona, customerEligibility]
    );
 
    return <BookLoanContext.Provider value={contextValue}>{children}</BookLoanContext.Provider>;

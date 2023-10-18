@@ -32,7 +32,7 @@ export const DashboardHeader = () => {
                   RoutePaths.DashboardSME,
                   RoutePaths.DashboardCorporate,
                ].map(({ name, absolute }) => (
-                  <StyledLink isActive={location.pathname === absolute} to={absolute}>
+                  <StyledLink key={name} isActive={location.pathname === absolute} to={absolute}>
                      <Typography variant={location.pathname === absolute ? 'h5' : 'body1'}>{name}</Typography>
                   </StyledLink>
                ))}

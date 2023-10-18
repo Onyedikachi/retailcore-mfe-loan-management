@@ -1,5 +1,5 @@
 import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
-import { SxProps, Theme } from '@mui/material';
+import { SxProps, Theme, styled } from '@mui/material';
 interface StatusIndicatorProps {
    sx?: SxProps<Theme>;
 }
@@ -16,3 +16,9 @@ export const StatusIndicator: React.FC<StatusIndicatorProps> = (props) => {
       />
    );
 };
+export const BigStatusIndicator = styled(FiberManualRecordIcon)(() => ({
+   width: '13px',
+   height: '13px',
+   marginLeft: 0,
+   marginRight: 1,
+}));

@@ -50,10 +50,11 @@ export interface AutocompleteProps extends MuiAutocompleteProps<any, any, any, a
       { inputValue }: { inputValue: string }
    ) => (string | AutocompleteOptions)[];
 }
-interface AutocompleteOptions {
+export interface AutocompleteOptions {
    label: string;
    subtitle?: string;
 }
+
 export const Autocomplete: React.FC<AutocompleteProps> = ({
    name,
    search,
@@ -106,16 +107,16 @@ export const Autocomplete: React.FC<AutocompleteProps> = ({
                         isOptionEqualToValue={(option, value) => {
                            return typeof option === 'string'
                               ? option == value
-                              : (option as AutocompleteOptions).label == value;
+                              : (option as AutocompleteOptions)?.label == value;
                         }}
                         renderOption={(props, option, { selected }) => {
                            return (
                               <React.Fragment key={getOption(option)}>
-                                 {(option as AutocompleteOptions).subtitle ? (
+                                 {(option as AutocompleteOptions)?.subtitle ? (
                                     <Stack component="li" style={{ alignItems: 'flex-start' }} {...props}>
                                        <Typography>{getOption(option)}</Typography>
                                        <Typography fontSize={12}>
-                                          {(option as AutocompleteOptions).subtitle}
+                                          {(option as AutocompleteOptions)?.subtitle}
                                        </Typography>
                                     </Stack>
                                  ) : (
@@ -148,7 +149,7 @@ export const Autocomplete: React.FC<AutocompleteProps> = ({
                         )}
                         {...otherProps}
                         renderTags={(list) => {
-                           let lists = list.map((item: any) => item.label).join(', ');
+                           let lists = list?.map((item: any) => item.label).join(', ');
                            return <span>{lists}</span>;
                         }}
                         renderInput={(params) => {
