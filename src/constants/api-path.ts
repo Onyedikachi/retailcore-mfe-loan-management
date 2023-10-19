@@ -4,6 +4,8 @@ const API_V1 = '/api/v1';
 const { RETAIL_AUTH_BASE_URL, RETAIL_CORE_BASE_URL, CUSTOMER_MANAGEMENT_BASE_URL } = environmentVar();
 export const API_PATH = {
    BookLoan: `${API_V1}/loan`,
+   GetAllLoanProduct: `${API_V1}/productsetup/filter`,
+   GetAllBookedLoanProduct: `${API_V1}/loan/filter`,
 };
 
 const RETAIL_CORE_V1 = `${RETAIL_CORE_BASE_URL ?? ''}${API_V1}`;

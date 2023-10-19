@@ -1,7 +1,7 @@
 export const environmentVar = () => {
    const env = {
       dev: {
-         API_URL: 'https://loan-management-api.dev.bepeerless.co',
+         API_URL: 'https://loan-managementms-api.dev.bepeerless.co',
          CORE_TOKEN: localStorage.getItem('@sterling_core_token'),
          CORE_TOKEN_NAME: '@sterling_core_token',
          REFRESH_TOKEN: localStorage.getItem('@sterling_core_refresh'),
@@ -10,7 +10,7 @@ export const environmentVar = () => {
          CUSTOMER_MANAGEMENT_BASE_URL: 'https://customer-management-api.dev.bepeerless.co',
       },
       dev2: {
-         API_URL: 'https://loan-management-api.dev.bepeerless.co',
+         API_URL: 'https://loan-managementms-api.dev.bepeerless.co',
          CORE_TOKEN: localStorage.getItem('@sterling_core_token_dev2'),
          CORE_TOKEN_NAME: '@sterling_core_token_dev2',
          REFRESH_TOKEN: localStorage.getItem('@sterling_core_refresh_dev2'),

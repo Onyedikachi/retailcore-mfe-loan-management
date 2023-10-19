@@ -1,7 +1,7 @@
 /* eslint-disable max-len */
 import * as Yup from 'yup';
 export const InputFieldNames = {
-   CUSTOMER_ACCOUNT_NO: 'customer_account_no',
+   CUSTOMER_ACCOUNT_NO: 'acctNo',
 } as const;
 
 export type CustomerInfoFormValues = {

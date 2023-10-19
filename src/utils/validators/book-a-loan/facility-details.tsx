@@ -6,11 +6,11 @@ import * as Yup from 'yup';
 export const InputFieldNames = {
    PRODUCT_NAME: 'product_name',
    PRODUCT_CATEGORY: 'product_category',
-   LOAN_PURPOSE: 'loan_purpose',
+   LOAN_PURPOSE: 'productPurpose',
    PRINCIPAL: 'principal',
-   INTEREST_RATE: 'interest_rate',
-   LOAN_TENURE_NUM: 'loan_tenure_num',
-   LOAN_TENURE_PERIOD: 'loan_tenure',
+   INTEREST_RATE: 'interestRate',
+   LOAN_TENURE_NUM: 'tenorValue',
+   LOAN_TENURE_PERIOD: 'tenorPeriod',
    REPAYMENT_PATTERN: 'repayment_pattern',
    REPAYMENT_FREQUENCY: 'repayment_frequency',
    START_DATE: 'start_date',
@@ -18,13 +18,13 @@ export const InputFieldNames = {
    START_DATE_PERIOD: 'start_date_period',
    COLLATERALS: 'collaterals',
    EQUITY_CONTRIB: 'equity_contrib',
-   ENABLE_MORATORIUM_PERIOD: 'enable_moratorium_period',
-   MORATORIUM_PERIOD: 'moratorium_period',
-   MORATORIUM_PERIOD_VALUE: 'moratorium_period_value',
+   ENABLE_MORATORIUM_PERIOD: 'isMoratoriumReq',
+   MORATORIUM_PERIOD: 'moratoriumPeriod',
+   MORATORIUM_PERIOD_VALUE: 'moratoriumValue',
    RECOGNISE_MORATORIUM_PERIOD: 'recognize_moratorium_period',
-   ENABLE_GRACE_PERIOD: 'enable_grace_period',
-   GRACE_PERIOD: 'grace_period',
-   GRACE_PERIOD_VALUE: 'grace_period_value',
+   ENABLE_GRACE_PERIOD: 'isGraceReq',
+   GRACE_PERIOD: 'gracePeriod',
+   GRACE_PERIOD_VALUE: 'graceValue',
 } as const;
 
 export const CollateralFieldNames = {
@@ -36,8 +36,8 @@ type CollateralFields = typeof CollateralFieldNames & { id: string };
 
 export type FacilityDetailsFormValues = {
    [key in (typeof InputFieldNames)[keyof typeof InputFieldNames]]: key extends
-      | 'enable_moratorium_period'
-      | 'enable_grace_period'
+      | 'isMoratoriumReq'
+      | 'isGraceReq'
       ? boolean
       : key extends 'collaterals'
       ? CollateralFields[]

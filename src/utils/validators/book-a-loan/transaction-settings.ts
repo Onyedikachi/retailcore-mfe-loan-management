@@ -2,20 +2,19 @@
 
 import * as Yup from 'yup';
 export const InputFieldNames = {
-   DISBURSEMENT_METHOD: 'disbursement_method',
-   DISBURSEMENT_ACCOUNT: 'disbursement_account',
-   DISBURSEMENT_DATE: 'disbursement_date',
-   OTHER_ACCOUNT_NO: 'other_account_no',
-   ENABLE_DISBURSEMENT_NOTIFICATION: 'enable_disbursement_notification',
-   NOTIFICATION_CHANNEL: 'notification_channel',
-   REPAYMENT_CHANNEL: 'repayment_channel',
-   REPAYMENT_ACCOUNT: 'repayment_account',
+   DISBURSEMENT_METHOD: 'disburseMethd',
+   DISBURSEMENT_ACCOUNT: 'disburseAcct',
+   DISBURSEMENT_DATE: 'disburseDate',
+   OTHER_ACCOUNT_NO: 'otherAcctNo',
+   ENABLE_DISBURSEMENT_NOTIFICATION: 'isDisburseNotReq',
+   NOTIFICATION_CHANNEL: 'notificationChannel',
+   REPAYMENT_CHANNEL: 'repaymentChannel',
+   REPAYMENT_ACCOUNT: 'repaymentAcct',
 } as const;
 export type TransactionSettingsFormValues = {
-   [key in (typeof InputFieldNames)[keyof typeof InputFieldNames]]: key extends
-      | 'enable_disbursement_notification'
+   [key in (typeof InputFieldNames)[keyof typeof InputFieldNames]]: key extends 'isDisburseNotReq'
       ? boolean
-      : key extends 'notification_channel'
+      : key extends 'notificationChannel'
       ? string[]
       : string;
 };
