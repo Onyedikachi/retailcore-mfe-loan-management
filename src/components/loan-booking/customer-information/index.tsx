@@ -22,7 +22,7 @@ export const CustomerInformation: React.FC = () => {
       getCustomersData,
       accountNumbers,
       customerEligibility,
-      selectedCustomer,
+      backendData,
    } = useBookLoanContext();
    const { handleNavigation } = useStepperContext();
    const navigate = useNavigate();
@@ -30,7 +30,6 @@ export const CustomerInformation: React.FC = () => {
    const { GET_INDIVIDUAL_CUSTOMERS } = CUSTOMER_MANAGEMENT_PATH;
 
    const onSubmit = (values: FormMeta.CustomerInfoFormValues) => {
-      console.log(values);
       // if (!customerEligibility.isEligbible) {
       //    setOpenEligibilityModal(true);
       // } else {
@@ -43,20 +42,10 @@ export const CustomerInformation: React.FC = () => {
       // }
    };
 
-   const [{ success }, submitForm] = useRequest();
+   const [, submitForm] = useRequest({ onSuccess: (res) => navigate(BasePath) });
    const handleSubmit = () => {
-      const profile = selectedCustomer?.customer_profiles[0];
-      submitForm(API_PATH.BookLoan, {
-         body: {
-            customerName: `${profile?.firstName} ${profile?.otherNames ?? ''} ${profile?.surname}`,
-            customerId: profile?.customerNumber,
-            acctNo: bookLoanData.customerInformation?.acctNo,
-            bvn: profile?.bvn,
-            isDraft: true,
-         },
-      });
       setShowAlertDialog(false);
-      success && navigate(BasePath);
+      submitForm(API_PATH.BookLoan, { body: backendData });
    };
 
    useRequest(
@@ -65,7 +54,6 @@ export const CustomerInformation: React.FC = () => {
             makeRequest(`${GET_INDIVIDUAL_CUSTOMERS}?search=${searchInput}`, {
                showSuccess: false,
                showLoader: !accountNumbers,
-               // query:{size:68, page:1}
             }),
          onSuccess: (response) => getCustomersData(response.data.data.customer),
       },
