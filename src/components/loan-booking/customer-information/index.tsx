@@ -8,37 +8,44 @@ import AlertDialog from '@app/components/modal/AlertDialog';
 import { useBookLoanContext } from '@app/providers/book-loan';
 import { useStepperContext } from '@app/providers/stepper';
 import { useRequest } from 'react-http-query';
-import { API_PATH, CUSTOMER_MANAGEMENT_PATH } from '@app/constants';
+import { API_PATH, BasePath, CUSTOMER_MANAGEMENT_PATH } from '@app/constants';
 import { CustomerInfoFields } from './CustomerInfoFields';
+import { useNavigate } from 'react-router-dom';
 
 export const CustomerInformation: React.FC = () => {
    const [isDraft, setIsDraft] = useState(false);
    const [showAlertDialog, setShowAlertDialog] = useState(false);
    const [searchInput, setSearchInput] = useState('');
-   const { bookLoanData, updateBookLoanData, getCustomersData, accountNumbers, customerEligibility } =
-      useBookLoanContext();
+   const {
+      bookLoanData,
+      updateBookLoanData,
+      getCustomersData,
+      accountNumbers,
+      customerEligibility,
+      backendData,
+   } = useBookLoanContext();
    const { handleNavigation } = useStepperContext();
+   const navigate = useNavigate();
    const [openEligibilityModal, setOpenEligibilityModal] = useState<boolean>();
    const { GET_INDIVIDUAL_CUSTOMERS } = CUSTOMER_MANAGEMENT_PATH;
 
    const onSubmit = (values: FormMeta.CustomerInfoFormValues) => {
-      if (!customerEligibility.isEligbible) {
-         setOpenEligibilityModal(true);
+      // if (!customerEligibility.isEligbible) {
+      //    setOpenEligibilityModal(true);
+      // } else {
+      updateBookLoanData('customerInformation', values);
+      if (isDraft) {
+         setShowAlertDialog(true);
       } else {
-         updateBookLoanData('customerInformation', values);
-         if (isDraft) {
-            setShowAlertDialog(true);
-         } else {
-            handleNavigation('next');
-         }
+         handleNavigation('next');
       }
+      // }
    };
 
-   const [, submitForm] = useRequest();
+   const [, submitForm] = useRequest({ onSuccess: (res) => navigate(BasePath) });
    const handleSubmit = () => {
-      submitForm(API_PATH.BookLoan, {
-         body: { customerName: 'string', customerId: 'string', acctNo: 'string', bvn: 'string' },
-      });
+      setShowAlertDialog(false);
+      submitForm(API_PATH.BookLoan, { body: backendData });
    };
 
    useRequest(
@@ -90,14 +97,14 @@ export const CustomerInformation: React.FC = () => {
          <AlertDialog
             open={showAlertDialog}
             handleClose={() => setShowAlertDialog(false)}
-            handleConfirm={() => handleSubmit()}
+            handleConfirm={handleSubmit}
             title="Do you want to save as draft?"
             subtitle="Requests in drafts would be deleted after 30 days of inactivity."
          />
          <AlertDialog
             open={openEligibilityModal ?? false}
             handleClose={() => setOpenEligibilityModal(false)}
-            title="You cannot proceed to book loan for this customer"
+            title="You cannot book loan for this customer"
             subtitle={customerEligibility.message}
          />
       </FormContainer>

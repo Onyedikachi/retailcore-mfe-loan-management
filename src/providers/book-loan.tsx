@@ -2,16 +2,21 @@ import { Currency, CurrencyListResponse } from '@app/@types';
 import { BookLoanData } from '@app/@types/book-loan';
 import { CustomerData } from '@app/@types/customer';
 import { REQUEST_NAMES } from '@app/constants';
+import { mapBookLoanToSchema } from '@app/mappers/book-loan-mapper';
 import { getDefaultCurrency } from '@app/helper/currency-helper';
 import { CustomerInfoFormValues } from '@app/utils/validators/book-a-loan/customer-info';
 import { FacilityDetailsFormValues } from '@app/utils/validators/book-a-loan/facility-details';
 import { TransactionSettingsFormValues } from '@app/utils/validators/book-a-loan/transaction-settings';
-import { createContext, useContext, useState, ReactNode, useMemo } from 'react';
+import { createContext, useContext, useState, ReactNode, useMemo, useEffect } from 'react';
 import { useRequestData } from 'react-http-query';
 
 type DataType = CustomerInfoFormValues | TransactionSettingsFormValues | FacilityDetailsFormValues;
 type BookLoanSteps = 'customerInformation' | 'facilityDetails' | 'transactionSettings';
 export type AccountNumber = { label: string; subtitle: string; customerId: string };
+export interface LoanProduct {
+   id: string;
+   name: string;
+}
 interface BookLoanContextType {
    bookLoanData: BookLoanData;
    updateBookLoanData: (step: BookLoanSteps, data: DataType) => void;
@@ -26,6 +31,9 @@ interface BookLoanContextType {
       isEligbible: boolean;
       message: string;
    };
+   product?: LoanProduct;
+   backendData: any;
+   getSelectedProduct: (name: string) => void;
 }
 
 const BookLoanContext = createContext<BookLoanContextType | null>(null);
@@ -50,20 +58,35 @@ export const BookLoanProvider = ({ children }: BookLoanProviderProps) => {
    const [accountNumbers, setAccountNumbers] = useState<AccountNumber[]>();
    const [selectedCustomerId, setSelectedCustomerId] = useState<string>();
    const [selectedCustomer, setSelectedCustomer] = useState<CustomerData>();
+   const [product, setProduct] = useState<LoanProduct>();
+   const [backendData, setBackendData] = useState<any>();
+   const [isDraft, setIsDraft] = useState<boolean>();
 
-   const updateBookLoanData = (step: BookLoanSteps, data: DataType) => {
-      setBookLoanData((prevData) => {
-         return { ...prevData, [step]: data };
-      });
+   useEffect(() => {
+      const mappedBackendData = mapBookLoanToSchema(bookLoanData, selectedCustomer, product, isDraft);
+      setBackendData(mappedBackendData);
+   }, [bookLoanData, selectedCustomer, product, isDraft]);
+
+   const getSelectedProduct = (name: string) => {
+      setProduct(undefined);
+   };
+
+   const updateBookLoanData = (step: BookLoanSteps, data?: DataType) => {
+      setIsDraft(step === 'customerInformation' ? true : step === 'facilityDetails' ? true : false);
+      if (data) {
+         setBookLoanData((prevData) => {
+            return { ...prevData, [step]: data };
+         });
+      }
    };
 
    const getCustomersData = (customersData: CustomerData[]) => {
       setCustomers(customersData);
       const customerAccountInfoArray = customersData?.flatMap((customerData: CustomerData) => {
-         const { firstName, surname, otherNames } = customerData.customer_profiles[0];
+         const profile = customerData.customer_profiles[0];
          return customerData.customer_account_balances.map((accountBalance) => ({
             label: accountBalance.accountNumber,
-            subtitle: `${firstName} ${otherNames ?? ''} ${surname}`,
+            subtitle: `${profile?.firstName} ${profile?.otherNames ?? ''} ${profile?.surname}`,
             customerId: customerData.customerId,
          }));
       });
@@ -105,12 +128,25 @@ export const BookLoanProvider = ({ children }: BookLoanProviderProps) => {
          selectedCustomerId,
          selectedCustomer,
          persona,
+         product,
+         backendData,
          customerEligibility,
          updateBookLoanData,
          getSelectedCustomer,
          getCustomersData,
+         getSelectedProduct,
       }),
-      [bookLoanData, defaultCurrency, accountNumbers, selectedCustomerId, persona, customerEligibility]
+      [
+         bookLoanData,
+         defaultCurrency,
+         accountNumbers,
+         selectedCustomer,
+         selectedCustomerId,
+         persona,
+         customerEligibility,
+         product,
+         backendData,
+      ]
    );
 
    return <BookLoanContext.Provider value={contextValue}>{children}</BookLoanContext.Provider>;
