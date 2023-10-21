@@ -11,7 +11,7 @@ import Typography from '@mui/material/Typography';
 import { Button } from '../atoms/Button';
 import { Colors } from '@app/constants/colors';
 import { Dialog as MuiDialog, DialogProps as MuiDialogProps, styled } from '@mui/material';
-import { Previous } from '../icons/Modify';
+import { Previous } from '../icons/Previous';
 
 export interface AlertDialogProps extends Omit<MuiDialogProps, 'maxWidth'> {
    open: boolean;

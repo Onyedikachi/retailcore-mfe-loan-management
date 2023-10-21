@@ -1,5 +1,5 @@
 import { PaddedContainer } from '@app/components/containers/PaddedContainer';
-import { Previous } from '@app/components/icons/Modify';
+import { Previous } from '@app/components/icons/Previous';
 import { SterlingLogoWithText } from '@app/components/icons/SterlingLogoWithText';
 import { Details } from '@app/components/loan-booking/process-summary/Details';
 import { bookingInfo, customerInfo } from '@app/components/loan-booking/process-summary/ProcessSummary';
@@ -9,7 +9,7 @@ import { Box, Button, Divider, Grid } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import { useNavigate } from 'react-router-dom';
 
-export const LoanProdductDetail = () => {
+export const LoanProductDetail = () => {
    const navigate = useNavigate();
    const { defaultCurrency } = useAppContext();
 

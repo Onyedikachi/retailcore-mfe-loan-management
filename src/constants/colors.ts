@@ -21,6 +21,7 @@ export const Colors = {
    TableBgRed: '#FFFBFB',
    Pink: '#FFE9E9',
    Gray50: '#F7F7F7',
+   BorderGray1: '#E5E9EB',
    /** For white text on dark Bg. */
    LightGray2: '#F6F8F9',
    Gray: '#808080',
@@ -43,4 +44,35 @@ export const ColorMaps = {
    info: { backgroundColor: Colors.BgCardInfo, color: Colors.DarkBlue },
    error: { backgroundColor: Colors.BgCardRed, color: Colors.DarKRed },
    default: { backgroundColor: Colors.BgCardGray, color: Colors.DarkGray },
+   plain: { color: '#1E0A3C', bgcolor: '#E5E5EA' },
+   active: { color: '#15692A', bgcolor: '#D4F7DC' },
+   watchList: { color: '#0050C8', bgcolor: '#F0F5FF' },
+   substandard: { color: '#806B00', bgcolor: '#FFF8CC' },
+   doubtful: { color: '#804C00', bgcolor: '#FFEBCC' },
+   lost: { color: '#9F1F17', bgcolor: '#FFD4D2' },
+};
+
+export const statusColors = (status: string) => {
+   switch (status) {
+      case 'Active':
+      case 'Performing':
+      case 'Settled':
+      case 'Approved':
+         return ColorMaps.active;
+      case 'Watchlist':
+      case 'In-Review':
+         return ColorMaps.watchList;
+      case 'Substandard':
+      case 'Non-Performing':
+         return ColorMaps.substandard;
+      case 'Doubtful':
+         return ColorMaps.doubtful;
+      case 'Lost':
+      case 'In-Issue':
+         return ColorMaps.lost;
+      case 'Closed':
+         return ColorMaps.plain;
+      default:
+         return ColorMaps.plain;
+   }
 };

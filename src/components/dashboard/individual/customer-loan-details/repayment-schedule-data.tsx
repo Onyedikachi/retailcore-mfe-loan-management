@@ -1,8 +1,9 @@
 import { Chip } from '@app/components/atoms/Chip';
 import { DateFilter } from '@app/components/calendar/DateFilter';
+import { StyledChip } from '@app/components/loan-management/loan-performance/table-data/performance-body-data';
 import { TableHeaderProps } from '@app/components/table';
+import { statusColors } from '@app/constants/colors';
 import { formattedDate } from '@app/helper/formater';
-import { statusColors } from './customer-loan-details';
 
 export const repayementScheduleHeaderData = (
    filterDate: (startDate?: Date | undefined, endDate?: Date | undefined) => void
@@ -27,6 +28,6 @@ export const repaymentScheduleBodyData = (currency: string) => {
       interest: `${currency} 10,000.00`,
       amountPayable: `${currency} 10,000.00`,
       outStandingBalance: `${currency} 10,000.00`,
-      status: <Chip sx={{ height: '25px', ...statusColors(status) }} label={status} />,
+      status: <StyledChip sx={{ height: '25px', ...statusColors(status) }} label={status} />,
    };
 };

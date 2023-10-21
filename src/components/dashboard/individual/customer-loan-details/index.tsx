@@ -3,7 +3,7 @@ import Dialog from '@app/components/atoms/Dialog';
 import { PaddedContainer } from '@app/components/containers/PaddedContainer';
 import { SterlingLogoWithText } from '@app/components/icons/SterlingLogoWithText';
 import { CustomerInfoDialog } from '@app/components/loan-booking/customer-information/CustomerInfoDialoog';
-import { BasePath } from '@app/constants';
+import { IndividualLoanPath } from '@app/constants';
 import { useAppContext } from '@app/providers/app-provider';
 import { Box, Button, Divider, Grid, Typography } from '@mui/material';
 import { useMemo, useState } from 'react';
@@ -38,7 +38,7 @@ export const ConstomerLoanDetail = () => {
             <SterlingLogoWithText sx={{ mr: 1.5 }} /> Loan Mangement
          </Typography>
          <Box className="fancy-scrollbar" sx={{ overflow: 'auto', maxHeight: '510px', pl: 0.2, pr: 2 }}>
-            <BackArrow route={BasePath} text="Back" />
+            <BackArrow route={IndividualLoanPath} text="Back" />
             <Typography variant="h5" mt={3}>
                {name}
             </Typography>
@@ -97,7 +97,7 @@ export const ConstomerLoanDetail = () => {
             handleClose={() => setOpenLoanAction(false)}
             title={`LOAN ${actionType.toUpperCase()} REQUEST`}
          >
-            <LoanActionRequest action={actionType} />
+            <LoanActionRequest action={actionType} handleSubmit={() => setOpenLoanAction(false)} />
          </Dialog>
       </Box>
    );

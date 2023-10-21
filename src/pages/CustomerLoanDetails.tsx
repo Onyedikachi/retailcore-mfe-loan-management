@@ -1,8 +1,8 @@
 import { PageLayout } from '@app/layouts/PageLayout';
-import { BasePath } from '@app/constants';
+import { IndividualLoanPath } from '@app/constants';
 import { Header } from '@app/components/Header';
 import { StyledContentWrapper } from '@app/components/containers/StyledWrapperContainer';
-import { ConstomerLoanDetail } from '@app/components/loan-management/customer-loan-details';
+import { ConstomerLoanDetail } from '@app/components/dashboard/individual/customer-loan-details';
 
 export const CustomerLoanDetails = () => {
    const name = 'TEMITOPE YUSUF CHUKWUMA';
@@ -12,7 +12,7 @@ export const CustomerLoanDetails = () => {
          header={
             <Header
                title={name ?? ''}
-               backRoute={BasePath}
+               backRoute={IndividualLoanPath}
                sudmodules={['LOAN MANAGEMENT', name?.toUpperCase() ?? '']}
             />
          }

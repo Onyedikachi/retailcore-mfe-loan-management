@@ -2,12 +2,17 @@ import { Permissions } from './permissions';
 import { Navigate } from 'react-router-dom';
 import { DashbordOverview } from '@app/pages/DashboardOverview';
 import { BookIndividualLoan } from '@app/pages/BookIndividualLoan';
+import { LoanPerformance } from '@app/pages/LoanPerformance';
+import { DashboardSMELoan } from '@app/pages/DashboardSMELoan';
+import { DashboardCorperateLoan } from '@app/pages/DashboardCorperateLoan';
+import { DashboardIndividualLoan } from '@app/pages/DashboardIndividualLoan';
 import { CustomerLoanDetails } from '@app/pages/CustomerLoanDetails';
 import { LoanProductDetails } from '@app/pages/LoanProductDetails';
-import { LoanPerformance } from '@app/pages/LoanPerformance';
 
 export const BasePath = '/loan-management';
 export const BookLoanPath = `${BasePath}/book-loan`;
+export const BookIndividualLoanPath = `${BookLoanPath}/individual-loan`;
+export const IndividualLoanPath = `${BasePath}/individual`;
 
 export const RouteMaps = {
    root: {
@@ -18,21 +23,25 @@ export const RouteMaps = {
       element: <DashbordOverview />,
       path: `${BasePath}/overview`,
    },
-   dashboardPersonal: {
-      element: <></>,
-      path: `${BasePath}/personal`,
+   dashboardIndividual: {
+      element: <DashboardIndividualLoan />,
+      path: `${BasePath}/individual`,
    },
    dashboardSME: {
-      element: <></>,
+      element: <DashboardSMELoan />,
       path: `${BasePath}/sme`,
    },
    dashboardCorporate: {
-      element: <></>,
+      element: <DashboardCorperateLoan />,
       path: `${BasePath}/corporate`,
    },
    bookIndividualLoan: {
       element: <BookIndividualLoan />,
       path: `${BookLoanPath}/individual-loan`,
+   },
+   loanPerformance: {
+      element: <LoanPerformance />,
+      path: `${BasePath}/loan-performance`,
    },
    customerLoanDetails: {
       element: <CustomerLoanDetails />,
@@ -41,10 +50,6 @@ export const RouteMaps = {
    loanProductDetails: {
       element: <LoanProductDetails />,
       path: `${BasePath}/loan-product-details`,
-   },
-   loanPerformance: {
-      element: <LoanPerformance />,
-      path: `${BasePath}/loan-performance`,
    },
 };
 
@@ -81,10 +86,16 @@ export const RoutePaths = {
       name: 'Corporate',
       permissions: [],
    },
-   DashboardPersonal: {
-      absolute: RouteMaps.dashboardPersonal.path,
-      relative: '/personal',
-      name: 'Personal',
+   DashboardIndividual: {
+      absolute: RouteMaps.dashboardIndividual.path,
+      relative: '/individual',
+      name: 'Individual',
+      permissions: [],
+   },
+   LoanPerformance: {
+      absolute: RouteMaps.loanPerformance.path,
+      relative: '/loan-performance',
+      name: 'Loan Performance',
       permissions: [],
    },
    CustomerLoanDetails: {
@@ -97,11 +108,5 @@ export const RoutePaths = {
       absolute: RouteMaps.loanProductDetails.path,
       relative: '/loan-product-details',
       name: 'Customer Loan Details',
-   },
-   LoanPerformance: {
-      absolute: RouteMaps.loanPerformance.path,
-      relative: '/loan-performance',
-      name: 'Loan Performance',
-      permissions: [],
    },
 };

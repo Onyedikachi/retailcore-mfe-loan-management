@@ -89,7 +89,7 @@ export const PageLayout = ({ header, content, fullContent = false }: PageLayoutP
                <Box ref={stackHeaderRef}>{header}</Box>
                <ContentBox height={headerHeight && `calc(100% - ${headerHeight}px)`}>
                   <Grid container height="100%" position="relative">
-                     <Grid height="100%" xs item>
+                     <Grid height="100%" xs className="hidden-scrollbar" item sx={{ overflowY: 'auto' }}>
                         {content}
                      </Grid>
                      {!fullContent && (
