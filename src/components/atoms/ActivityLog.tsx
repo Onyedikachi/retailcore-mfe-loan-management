@@ -21,7 +21,7 @@ const VerticalRule = styled(Box)<{ pending: boolean }>(({ pending }) => ({
    marginTop: '-5px',
 }));
 
-const RoundedBullet = styled('div')<{ pending: boolean }>(({ pending}) => ({
+const RoundedBullet = styled('div')<{ pending: boolean }>(({ pending }) => ({
    position: 'relative',
    height: 25,
    width: 25,

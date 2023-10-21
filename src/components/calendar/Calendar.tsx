@@ -56,6 +56,7 @@ export const Calendar: React.FC<CalenderProp> = ({ onClickClear, onDateChange, .
             maxDate={endOfDay(addYears(new Date(), 10))}
             date={date}
             {...prop}
+            data-testid="calendar"
          />
          {buttonWrapperNode &&
             createPortal(

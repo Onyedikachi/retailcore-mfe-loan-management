@@ -13,7 +13,6 @@ import { TextField, AutocompleteRenderInputParams } from '@mui/material';
 import { TestForm } from './test.utils';
 
 describe('Component <FormControlBase />', () => {
- 
    describe('Component <Select />', () => {
       it('should render a select input when control is "select"', () => {
          const selectProps: SelectProps = {
@@ -145,4 +144,3 @@ describe('Component <FormControlBase />', () => {
       });
    });
 });
-
