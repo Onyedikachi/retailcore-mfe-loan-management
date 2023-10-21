@@ -7,6 +7,7 @@ export const environmentVar = () => {
          REFRESH_TOKEN: localStorage.getItem('@sterling_core_refresh'),
          RETAIL_CORE_BASE_URL: 'https://retailcore-accounting-api.dev.bepeerless.co',
          RETAIL_AUTH_BASE_URL: 'https://retailcore-auth-api.dev.bepeerless.co',
+         CUSTOMER_MANAGEMENT_BASE_URL: 'https://customer-management-api.dev.bepeerless.co',
       },
       dev2: {
          API_URL: 'https://loan-management-api.dev.bepeerless.co',
@@ -15,6 +16,7 @@ export const environmentVar = () => {
          REFRESH_TOKEN: localStorage.getItem('@sterling_core_refresh_dev2'),
          RETAIL_CORE_BASE_URL: 'https://dev2-retailcore-accounting-api.dev.bepeerless.co',
          RETAIL_AUTH_BASE_URL: 'https://dev2-retailcore-auth-api.dev.bepeerless.co',
+         CUSTOMER_MANAGEMENT_BASE_URL: 'https://customer-management-api.dev.bepeerless.co',
       },
       qa: {
          API_URL: '',
@@ -23,6 +25,7 @@ export const environmentVar = () => {
          REFRESH_TOKEN: localStorage.getItem(''),
          RETAIL_CORE_BASE_URL: '',
          RETAIL_AUTH_BASE_URL: '',
+         CUSTOMER_MANAGEMENT_BASE_URL: '',
       },
       production: {
          API_URL: '',
@@ -31,6 +34,7 @@ export const environmentVar = () => {
          REFRESH_TOKEN: localStorage.getItem(''),
          RETAIL_CORE_BASE_URL: '',
          RETAIL_AUTH_BASE_URL: '',
+         CUSTOMER_MANAGEMENT_BASE_URL: '',
       },
    };
 

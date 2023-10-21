@@ -16,6 +16,7 @@ export const Colors = {
    LightGray3: '#8F8F8F',
    LightGray4: '#BCBBBB',
    LightGray5: '#667085',
+   LightGray6: '#E5E9EB',
    BorderGray: '#C2C9D1',
    TableBgRed: '#FFFBFB',
    Pink: '#FFE9E9',

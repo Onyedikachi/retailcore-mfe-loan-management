@@ -1,30 +1,62 @@
 import * as FormMeta from '@app/utils/validators/book-a-loan/customer-info';
 import FormContainer from '../../forms/FormContainer';
-import FormControlWrapper from '@app/components/forms/FormControlWrapper';
 import React, { useState } from 'react';
-import { Box, Divider } from '@mui/material';
+import { Box } from '@mui/material';
 import { Button } from '@app/components/atoms';
-import { CustomerAccountInformation } from './CustomerAccountInfo';
 import { Form, Formik } from 'formik';
-import { FormControlBase } from '@app/components/forms/FormControl';
 import AlertDialog from '@app/components/modal/AlertDialog';
+import { useBookLoanContext } from '@app/providers/book-loan';
+import { useStepperContext } from '@app/providers/stepper';
+import { useRequest } from 'react-http-query';
+import { API_PATH, CUSTOMER_MANAGEMENT_PATH } from '@app/constants';
+import { CustomerInfoFields } from './CustomerInfoFields';
 
 export const CustomerInformation: React.FC = () => {
-   const { InputFieldNames, TooltipText } = FormMeta;
    const [isDraft, setIsDraft] = useState(false);
    const [showAlertDialog, setShowAlertDialog] = useState(false);
-   const onSubmit = (values: FormMeta.FormValues) => {
-      if (isDraft) {
-         setShowAlertDialog(true);
+   const [searchInput, setSearchInput] = useState('');
+   const { bookLoanData, updateBookLoanData, getCustomersData, accountNumbers, customerEligibility } =
+      useBookLoanContext();
+   const { handleNavigation } = useStepperContext();
+   const [openEligibilityModal, setOpenEligibilityModal] = useState<boolean>();
+   const { GET_INDIVIDUAL_CUSTOMERS } = CUSTOMER_MANAGEMENT_PATH;
+
+   const onSubmit = (values: FormMeta.CustomerInfoFormValues) => {
+      if (!customerEligibility.isEligbible) {
+         setOpenEligibilityModal(true);
       } else {
-         // TODO: Implement submittion of selected user details to the backed.
+         updateBookLoanData('customerInformation', values);
+         if (isDraft) {
+            setShowAlertDialog(true);
+         } else {
+            handleNavigation('next');
+         }
       }
    };
+
+   const [, submitForm] = useRequest();
+   const handleSubmit = () => {
+      submitForm(API_PATH.BookLoan, {
+         body: { customerName: 'string', customerId: 'string', acctNo: 'string', bvn: 'string' },
+      });
+   };
+
+   useRequest(
+      {
+         onMount: (makeRequest) =>
+            makeRequest(`${GET_INDIVIDUAL_CUSTOMERS}?search=${searchInput}`, {
+               showSuccess: false,
+               showLoader: !accountNumbers,
+            }),
+         onSuccess: (response) => getCustomersData(response.data.data.customer),
+      },
+      [searchInput]
+   );
 
    return (
       <FormContainer>
          <Formik
-            initialValues={FormMeta.initialValues}
+            initialValues={FormMeta.initialValues(bookLoanData.customerInformation)}
             enableReinitialize={true}
             validationSchema={FormMeta.validator()}
             onSubmit={onSubmit}
@@ -32,28 +64,7 @@ export const CustomerInformation: React.FC = () => {
             {(formik) => {
                return (
                   <Form>
-                     <Box sx={{ mb: 6 }}>
-                        <FormControlWrapper
-                           sx={{ width: '25%', mb: 5 }}
-                           name={InputFieldNames.CUSTOMER_ACCOUNT_NO}
-                           label="Customer's Account Number"
-                           required
-                           tooltipText={TooltipText[InputFieldNames.CUSTOMER_ACCOUNT_NO]}
-                        >
-                           <FormControlBase
-                              control="autocomplete"
-                              placeholder="Type to search"
-                              name={InputFieldNames.CUSTOMER_ACCOUNT_NO}
-                              noOptionsText="No match"
-                              options={accountNumbers}
-                              search
-                           />
-                        </FormControlWrapper>
-
-                        {formik.values[InputFieldNames.CUSTOMER_ACCOUNT_NO] && <CustomerAccountInformation />}
-                     </Box>
-
-                     <Divider />
+                     <CustomerInfoFields getSearchInput={(input) => setSearchInput(input)} />
                      <Box display="flex" justifyContent="end" mt={5} mb={2}>
                         {['draft', 'next'].map((type) => {
                            const isNext = type === 'next';
@@ -79,21 +90,16 @@ export const CustomerInformation: React.FC = () => {
          <AlertDialog
             open={showAlertDialog}
             handleClose={() => setShowAlertDialog(false)}
-            handleConfirm={() => {}}
+            handleConfirm={() => handleSubmit()}
             title="Do you want to save as draft?"
             subtitle="Requests in drafts would be deleted after 30 days of inactivity."
+         />
+         <AlertDialog
+            open={openEligibilityModal ?? false}
+            handleClose={() => setOpenEligibilityModal(false)}
+            title="You cannot proceed to book loan for this customer"
+            subtitle={customerEligibility.message}
          />
       </FormContainer>
    );
 };
-
-export const accountNumbers = [
-   { label: '014986724', subtitle: 'Lola' },
-   { label: '014986824', subtitle: 'Tobi' },
-   { label: '014907924', subtitle: 'Timothy' },
-   { label: '010987924', subtitle: 'Oluwaseun' },
-   { label: '016787924', subtitle: 'Lola' },
-   { label: '014987924', subtitle: 'Tobi' },
-   { label: '074987924', subtitle: 'Timothy' },
-   { label: '064987924', subtitle: 'Oluwaseun' },
-];

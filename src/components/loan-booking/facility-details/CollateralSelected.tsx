@@ -4,13 +4,14 @@ import { LoanPrincipalControl } from '@app/components/forms/LoanPrincipalControl
 import * as FormMeta from '@app/utils/validators/book-a-loan/facility-details';
 import { FileUpload } from '@app/components/atoms/FileUpload';
 import { RedBorderContainer } from '@app/components/containers/RedBorderContainer';
+import { useBookLoanContext } from '@app/providers/book-loan';
 
 export const CollateralSelected: React.FC<{ name: string; collateral: string; handleRemove: () => void }> = ({
    collateral,
    name,
    handleRemove,
 }) => {
-   const { InputFieldNames, TooltipText } = FormMeta;
+   const { CollateralFieldNames, TooltipText } = FormMeta;
 
    return (
       <RedBorderContainer sx={{ pb: 2 }}>
@@ -25,10 +26,11 @@ export const CollateralSelected: React.FC<{ name: string; collateral: string; ha
             <Grid item xs={4}>
                <LoanPrincipalControl
                   mb={0}
-                  name={`${name}${InputFieldNames.COLLATERAL_MARKET_VALUE}`}
+                  name={`${name}${CollateralFieldNames.COLLATERAL_MARKET_VALUE}`}
                   label="Market Value"
                   placeholder="Enter market value"
-                  tooltipText={TooltipText[InputFieldNames.COLLATERAL_MARKET_VALUE]}
+                  extraLeft={'NGN'}
+                  tooltipText={TooltipText[CollateralFieldNames.COLLATERAL_MARKET_VALUE]}
                />
             </Grid>
             <Grid item xs={8} mx="auto">
@@ -36,7 +38,7 @@ export const CollateralSelected: React.FC<{ name: string; collateral: string; ha
                   fileTypes={['PDF']}
                   maxSize={1}
                   multiple={true}
-                  name={`${name}${InputFieldNames.COLLATERAL_FILE_UPLOADED}`}
+                  name={`${name}${CollateralFieldNames.COLLATERAL_FILE_UPLOADED}`}
                />
             </Grid>
          </Grid>

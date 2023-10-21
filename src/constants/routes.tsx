@@ -4,6 +4,7 @@ import { DashbordOverview } from '@app/pages/DashboardOverview';
 import { BookIndividualLoan } from '@app/pages/BookIndividualLoan';
 import { CustomerLoanDetails } from '@app/pages/CustomerLoanDetails';
 import { LoanProductDetails } from '@app/pages/LoanProductDetails';
+import { LoanPerformance } from '@app/pages/LoanPerformance';
 
 export const BasePath = '/loan-management';
 export const BookLoanPath = `${BasePath}/book-loan`;
@@ -40,6 +41,10 @@ export const RouteMaps = {
    loanProductDetails: {
       element: <LoanProductDetails />,
       path: `${BasePath}/loan-product-details`,
+   },
+   loanPerformance: {
+      element: <LoanPerformance />,
+      path: `${BasePath}/loan-performance`,
    },
 };
 
@@ -92,6 +97,11 @@ export const RoutePaths = {
       absolute: RouteMaps.loanProductDetails.path,
       relative: '/loan-product-details',
       name: 'Customer Loan Details',
+   },
+   LoanPerformance: {
+      absolute: RouteMaps.loanPerformance.path,
+      relative: '/loan-performance',
+      name: 'Loan Performance',
       permissions: [],
    },
 };

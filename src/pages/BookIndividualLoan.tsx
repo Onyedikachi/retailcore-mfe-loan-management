@@ -5,12 +5,13 @@ import { CustomerInformation, FacilityDetails, LoanBookingHeader, Stepper } from
 import { PageLayout } from '@app/layouts/PageLayout';
 import { useStepperContext } from '@app/providers';
 import { RepaymentSchedule } from '@app/components/loan-booking/repayment-schedule/RepaymentSchedule';
-import { TransactionSettings } from '@app/components/loan-booking/transaction-settings/TransactionSettings';
-import { LoanInformation } from '@app/components/loan-booking/facility-details/LoanInformation';
+import { TransactionSettings } from '@app/components/loan-booking/transaction-settings';
+import { LoanInformation } from '@app/components/loan-booking/loan-information';
 import { ProcessSummary } from '@app/components/loan-booking/process-summary/ProcessSummary';
 import { ActivitySummary } from '@app/components/loan-booking/process-summary/ActivitySummary';
+import { BookLoanProvider } from '@app/providers/book-loan';
 
-const StyledContentWrapper = styled(Box)({
+export const StyledContentWrapper = styled(Box)({
    background: 'white',
    padding: '15px 10px',
    borderRadius: '10px',
@@ -42,37 +43,39 @@ const BookIndividualLoanContent: React.FC<{ getActiveStep: (step: number) => voi
    }, [stepperWrapperRef.current, activeStep]);
 
    return (
-      <Grid container height="100%">
-         <Grid item xs height="100%">
-            <StyledContentWrapper>
-               <Stepper
-                  stepperWrapper={StepperWrapper}
-                  childrenWrapper={StepperContentWrapper}
-                  stepperWrapperProps={{
-                     ref: stepperWrapperRef,
-                  }}
-                  childrenWrapperProps={{
-                     style: { height: `calc(100% - ${(headerHeight ?? 0) + 40}px)` },
-                     className: 'fancy-scrollbar',
-                  }}
-                  stepLabels={['Customer Information', 'Facility Details', 'Transaction Settings']}
-                  hideStepper={activeStep > 2}
-                  hideAtIndex={3}
-               >
-                  <CustomerInformation />
-                  <FacilityDetails />
-                  <TransactionSettings />
-                  <RepaymentSchedule />
-                  <ProcessSummary />
-               </Stepper>
-            </StyledContentWrapper>
-         </Grid>
-         {activeStep > 0 && activeStep != 3 && (
-            <Grid item xs={3} height="100%">
-               {activeStep == 4 ? <ActivitySummary /> : <LoanInformation />}
+      <BookLoanProvider>
+         <Grid container height="100%">
+            <Grid item xs height="100%">
+               <StyledContentWrapper>
+                  <Stepper
+                     stepperWrapper={StepperWrapper}
+                     childrenWrapper={StepperContentWrapper}
+                     stepperWrapperProps={{
+                        ref: stepperWrapperRef,
+                     }}
+                     childrenWrapperProps={{
+                        style: { height: `calc(100% - ${(headerHeight ?? 0) + 40}px)` },
+                        className: 'fancy-scrollbar',
+                     }}
+                     stepLabels={['Customer Information', 'Facility Details', 'Transaction Settings']}
+                     hideStepper={activeStep > 2}
+                     hideAtIndex={3}
+                  >
+                     <CustomerInformation />
+                     <FacilityDetails />
+                     <TransactionSettings />
+                     <RepaymentSchedule />
+                     <ProcessSummary />
+                  </Stepper>
+               </StyledContentWrapper>
             </Grid>
-         )}
-      </Grid>
+            {activeStep > 0 && activeStep != 3 && (
+               <Grid item xs={3} height="100%">
+                  {activeStep == 4 ? <ActivitySummary /> : <LoanInformation />}
+               </Grid>
+            )}
+         </Grid>
+      </BookLoanProvider>
    );
 };
 

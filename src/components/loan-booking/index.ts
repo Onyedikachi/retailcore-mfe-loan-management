@@ -1,3 +1,3 @@
-export * from './facility-details/FacilityDetails';
-export * from './customer-information/CustomerInformation';
+export * from './facility-details';
+export * from './customer-information';
 export * from './Header';

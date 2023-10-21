@@ -3,7 +3,7 @@ export const Periodicity = ['Daily', 'Weekly', 'Monthly', 'Quarterly', 'Annually
 export const Periodicity2 = ['Weekly', 'Monthly', 'Quarterly', 'Bi-Annually', 'Annually'];
 export const PluralizePeriodicity = ['Day(s)', 'Week(s)', 'Month(s)', 'Quarter(s)', 'Years(s)'];
 export const PluralizePeriodicity2 = ['Week(s)', 'Month(s)', 'Quarter(s)', 'Years(s)'];
-export const Periodicity3 = ['Weekly', 'Monthly', 'Quarterly', 'Bi-Annually', 'Annually', 'Custom'];
+export const PeriodWithCustom = ['Weekly', 'Monthly', 'Quarterly', 'Bi-Annually', 'Annually', 'Custom'];
 export const DocumentFomat = ['PDF', 'PNG', 'JPEG', 'XML', 'FIG', 'MS Word', 'PSD'];
 
 export const CommonFormFieldNames = {

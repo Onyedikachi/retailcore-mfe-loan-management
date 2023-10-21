@@ -44,15 +44,17 @@ export interface AutocompleteProps extends MuiAutocompleteProps<any, any, any, a
    applyButton?: React.ReactNode;
    checkbox?: boolean;
    extras?: React.ReactNode;
+   onInputChange?: (newValue: unknown) => void;
    filterOptions?: (
       options: unknown,
       { inputValue }: { inputValue: string }
    ) => (string | AutocompleteOptions)[];
 }
-interface AutocompleteOptions {
+export interface AutocompleteOptions {
    label: string;
    subtitle?: string;
 }
+
 export const Autocomplete: React.FC<AutocompleteProps> = ({
    name,
    search,
@@ -65,6 +67,7 @@ export const Autocomplete: React.FC<AutocompleteProps> = ({
    applyButton,
    extras,
    filterOptions = defaultFilterOption,
+   onInputChange,
    ...otherProps
 }) => {
    const [open, setOpen] = useState(false);
@@ -81,11 +84,12 @@ export const Autocomplete: React.FC<AutocompleteProps> = ({
       } else {
          form.setFieldValue(name, typeof newValue === 'string' ? newValue : newValue?.label);
       }
+      onInputChange?.(newValue);
    };
 
    return (
       <Field name={name}>
-         {({ form }: FieldProps) => {
+         {({ form, field }: FieldProps) => {
             return (
                <>
                   <FormControl fullWidth>
@@ -99,14 +103,20 @@ export const Autocomplete: React.FC<AutocompleteProps> = ({
                         onChange={(event, newValue) => handleChange(event, newValue, form)}
                         getOptionLabel={getOption}
                         filterOptions={filterOptions}
+                        value={field.value}
+                        isOptionEqualToValue={(option, value) => {
+                           return typeof option === 'string'
+                              ? option == value
+                              : (option as AutocompleteOptions)?.label == value;
+                        }}
                         renderOption={(props, option, { selected }) => {
                            return (
                               <React.Fragment key={getOption(option)}>
-                                 {(option as AutocompleteOptions).subtitle ? (
+                                 {(option as AutocompleteOptions)?.subtitle ? (
                                     <Stack component="li" style={{ alignItems: 'flex-start' }} {...props}>
                                        <Typography>{getOption(option)}</Typography>
                                        <Typography fontSize={12}>
-                                          {(option as AutocompleteOptions).subtitle}
+                                          {(option as AutocompleteOptions)?.subtitle}
                                        </Typography>
                                     </Stack>
                                  ) : (
@@ -139,7 +149,7 @@ export const Autocomplete: React.FC<AutocompleteProps> = ({
                         )}
                         {...otherProps}
                         renderTags={(list) => {
-                           let lists = list.map((item: any) => item.label).join(', ');
+                           let lists = list?.map((item: any) => item.label).join(', ');
                            return <span>{lists}</span>;
                         }}
                         renderInput={(params) => {

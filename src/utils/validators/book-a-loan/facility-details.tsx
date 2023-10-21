@@ -1,7 +1,8 @@
 /* eslint-disable max-len */
 
+import { currencyToNumber } from '@app/helper/currency-helper';
 import * as Yup from 'yup';
-export type FormValues = ReturnType<typeof initialValues>;
+
 export const InputFieldNames = {
    PRODUCT_NAME: 'product_name',
    PRODUCT_CATEGORY: 'product_category',
@@ -16,8 +17,6 @@ export const InputFieldNames = {
    START_DATE_NUM: 'start_date_num',
    START_DATE_PERIOD: 'start_date_period',
    COLLATERALS: 'collaterals',
-   COLLATERAL_MARKET_VALUE: 'collateral_market_value',
-   COLLATERAL_FILE_UPLOADED: 'collateral_file',
    EQUITY_CONTRIB: 'equity_contrib',
    ENABLE_MORATORIUM_PERIOD: 'enable_moratorium_period',
    MORATORIUM_PERIOD: 'moratorium_period',
@@ -28,34 +27,52 @@ export const InputFieldNames = {
    GRACE_PERIOD_VALUE: 'grace_period_value',
 } as const;
 
+export const CollateralFieldNames = {
+   COLLATERAL_MARKET_VALUE: 'collateral_market_value',
+   COLLATERAL_FILE_UPLOADED: 'collateral_file',
+} as const;
+
+type CollateralFields = typeof CollateralFieldNames & { id: string };
+
+export type FacilityDetailsFormValues = {
+   [key in (typeof InputFieldNames)[keyof typeof InputFieldNames]]: key extends
+      | 'enable_moratorium_period'
+      | 'enable_grace_period'
+      ? boolean
+      : key extends 'collaterals'
+      ? CollateralFields[]
+      : string;
+};
+
 export const accordionLabels = [
    'Facility Details',
    'Collateral & Equity Contribution',
    'Loan Management Settings',
 ];
 export const recognize_moratorium_period = ['Included in loan tenor', 'Not included in loan tenor'];
-export const initialValues = () => ({
-   [InputFieldNames.PRODUCT_NAME]: '',
-   [InputFieldNames.PRODUCT_CATEGORY]: '',
-   [InputFieldNames.LOAN_PURPOSE]: '',
-   [InputFieldNames.PRINCIPAL]: '',
-   [InputFieldNames.INTEREST_RATE]: '',
-   [InputFieldNames.LOAN_TENURE_NUM]: '',
-   [InputFieldNames.LOAN_TENURE_PERIOD]: '',
-   [InputFieldNames.REPAYMENT_PATTERN]: '',
-   [InputFieldNames.REPAYMENT_FREQUENCY]: '',
-   [InputFieldNames.START_DATE]: '',
-   [InputFieldNames.START_DATE_NUM]: '',
-   [InputFieldNames.START_DATE_PERIOD]: '',
-   [InputFieldNames.COLLATERALS]: [],
-   [InputFieldNames.EQUITY_CONTRIB]: '',
-   [InputFieldNames.ENABLE_MORATORIUM_PERIOD]: false,
-   [InputFieldNames.MORATORIUM_PERIOD]: '',
-   [InputFieldNames.MORATORIUM_PERIOD_VALUE]: '',
-   [InputFieldNames.RECOGNISE_MORATORIUM_PERIOD]: '',
-   [InputFieldNames.ENABLE_GRACE_PERIOD]: false,
-   [InputFieldNames.GRACE_PERIOD]: '',
-   [InputFieldNames.GRACE_PERIOD_VALUE]: '',
+
+export const initialValues = (data?: FacilityDetailsFormValues) => ({
+   [InputFieldNames.PRODUCT_NAME]: data?.[InputFieldNames.PRODUCT_NAME] ?? '',
+   [InputFieldNames.PRODUCT_CATEGORY]: data?.[InputFieldNames.PRODUCT_CATEGORY] ?? '',
+   [InputFieldNames.LOAN_PURPOSE]: data?.[InputFieldNames.LOAN_PURPOSE] ?? '',
+   [InputFieldNames.PRINCIPAL]: data?.[InputFieldNames.PRINCIPAL] ?? '',
+   [InputFieldNames.INTEREST_RATE]: data?.[InputFieldNames.INTEREST_RATE] ?? '',
+   [InputFieldNames.LOAN_TENURE_NUM]: data?.[InputFieldNames.LOAN_TENURE_NUM] ?? '',
+   [InputFieldNames.LOAN_TENURE_PERIOD]: data?.[InputFieldNames.LOAN_TENURE_PERIOD] ?? '',
+   [InputFieldNames.REPAYMENT_PATTERN]: data?.[InputFieldNames.REPAYMENT_PATTERN] ?? '',
+   [InputFieldNames.REPAYMENT_FREQUENCY]: data?.[InputFieldNames.REPAYMENT_FREQUENCY] ?? '',
+   [InputFieldNames.START_DATE]: data?.[InputFieldNames.START_DATE] ?? '',
+   [InputFieldNames.START_DATE_NUM]: data?.[InputFieldNames.START_DATE_NUM] ?? '',
+   [InputFieldNames.START_DATE_PERIOD]: data?.[InputFieldNames.START_DATE_PERIOD] ?? '',
+   [InputFieldNames.COLLATERALS]: data?.[InputFieldNames.COLLATERALS] ?? [],
+   [InputFieldNames.EQUITY_CONTRIB]: data?.[InputFieldNames.EQUITY_CONTRIB] ?? '',
+   [InputFieldNames.ENABLE_MORATORIUM_PERIOD]: data?.[InputFieldNames.ENABLE_MORATORIUM_PERIOD] ?? false,
+   [InputFieldNames.MORATORIUM_PERIOD]: data?.[InputFieldNames.MORATORIUM_PERIOD] ?? '',
+   [InputFieldNames.MORATORIUM_PERIOD_VALUE]: data?.[InputFieldNames.MORATORIUM_PERIOD_VALUE] ?? '',
+   [InputFieldNames.RECOGNISE_MORATORIUM_PERIOD]: data?.[InputFieldNames.RECOGNISE_MORATORIUM_PERIOD] ?? '',
+   [InputFieldNames.ENABLE_GRACE_PERIOD]: data?.[InputFieldNames.ENABLE_GRACE_PERIOD] ?? false,
+   [InputFieldNames.GRACE_PERIOD]: data?.[InputFieldNames.GRACE_PERIOD] ?? '',
+   [InputFieldNames.GRACE_PERIOD_VALUE]: data?.[InputFieldNames.GRACE_PERIOD_VALUE] ?? '',
 });
 
 export const validator = () =>
@@ -71,25 +88,44 @@ const facilityDetails = {
    [InputFieldNames.LOAN_PURPOSE]: Yup.string().required('Enter purpose of loan request'),
    [InputFieldNames.PRINCIPAL]: Yup.string()
       .required('Enter amount')
-      .test(InputFieldNames.PRINCIPAL, 'Must be greater 0', function (value) {
+      .test(InputFieldNames.PRINCIPAL, 'Must be greater than 0', function (value) {
          if (value) {
-            return Number(value.replace(/,/g, '')) > 0;
+            return currencyToNumber(value) > 0;
          }
       }),
-   [InputFieldNames.INTEREST_RATE]: Yup.string().required('Enter interest rate'),
-   [InputFieldNames.LOAN_TENURE_NUM]: Yup.string().required('Field is required'),
+   [InputFieldNames.INTEREST_RATE]: Yup.string()
+      .required('Enter interest rate')
+      .test(InputFieldNames.INTEREST_RATE, 'Must be greater than 0', function (value) {
+         if (value) {
+            return Number(value) > 0;
+         }
+      }),
+   [InputFieldNames.LOAN_TENURE_NUM]: Yup.string()
+      .required('Field is required')
+      .test(InputFieldNames.LOAN_TENURE_NUM, 'Must be greater than 0', function (value) {
+         if (value) {
+            return Number(value) > 0;
+         }
+      }),
    [InputFieldNames.LOAN_TENURE_PERIOD]: Yup.string().required('Field is required'),
    [InputFieldNames.REPAYMENT_PATTERN]: Yup.string().required('Select repayment pattern'),
    [InputFieldNames.REPAYMENT_FREQUENCY]: Yup.string().required('Select repayment frequency'),
    [InputFieldNames.START_DATE]: Yup.string().when(
       InputFieldNames.REPAYMENT_FREQUENCY,
-      (repaymentFrequency, field) =>
-         repaymentFrequency?.[0] == 'Custom' ? field.required('Field is required') : field
+      (repaymentFrequency, field) => (repaymentFrequency?.[0] == 'Custom' ? field : field)
    ),
    [InputFieldNames.START_DATE_NUM]: Yup.string().when(
       InputFieldNames.REPAYMENT_FREQUENCY,
       (repaymentFrequency, field) =>
-         repaymentFrequency?.[0] == 'Custom' ? field.required('Field is required') : field
+         repaymentFrequency?.[0] == 'Custom'
+            ? field
+                 .required('Field is required')
+                 .test(InputFieldNames.START_DATE_NUM, 'Must be greater than 0', function (value) {
+                    if (value) {
+                       return Number(value) > 0;
+                    }
+                 })
+            : field
    ),
    [InputFieldNames.START_DATE_PERIOD]: Yup.string().when(
       InputFieldNames.REPAYMENT_FREQUENCY,
@@ -102,22 +138,28 @@ const colateralAndEquityContrib = {
    [InputFieldNames.COLLATERALS]: Yup.array()
       .of(
          Yup.object().shape({
-            [InputFieldNames.COLLATERAL_MARKET_VALUE]: Yup.string()
+            [CollateralFieldNames.COLLATERAL_MARKET_VALUE]: Yup.string()
                .required('Enter market value for this collateral')
-               .test(InputFieldNames.COLLATERAL_MARKET_VALUE, 'Must be greater 0', function (value) {
-                  if (value) {
-                     return Number(value.replace(/,/g, '')) > 0;
+               .test(
+                  CollateralFieldNames.COLLATERAL_MARKET_VALUE,
+                  'Must be greater than 0',
+                  function (value) {
+                     if (value) {
+                        return currencyToNumber(value) > 0;
+                     }
                   }
-               }),
-            [InputFieldNames.COLLATERAL_FILE_UPLOADED]: Yup.array().required('Attach supporting documents'),
+               ),
+            [CollateralFieldNames.COLLATERAL_FILE_UPLOADED]: Yup.mixed().required(
+               'Attach supporting document(s)'
+            ),
          })
       )
       .required('Add at least one collateral asset.'),
    [InputFieldNames.EQUITY_CONTRIB]: Yup.string()
       .required('Field is required')
-      .test(InputFieldNames.EQUITY_CONTRIB, 'Must be greater 0', function (value) {
+      .test(InputFieldNames.EQUITY_CONTRIB, 'Must be greater than 0', function (value) {
          if (value) {
-            return Number(value.replace(/,/g, '')) > 0;
+            return Number(value) > 0;
          }
       }),
 };
@@ -125,7 +167,16 @@ export const loanManagementSettings = {
    [InputFieldNames.ENABLE_MORATORIUM_PERIOD]: Yup.boolean(),
    [InputFieldNames.MORATORIUM_PERIOD_VALUE]: Yup.string().when(
       InputFieldNames.ENABLE_MORATORIUM_PERIOD,
-      (enableMoratorium, field) => (enableMoratorium?.[0] ? field.required('Field is required') : field)
+      (enableMoratorium, field) =>
+         enableMoratorium?.[0]
+            ? field
+                 .required('Field is required')
+                 .test(InputFieldNames.MORATORIUM_PERIOD_VALUE, 'Must be greater than 0', function (value) {
+                    if (value) {
+                       return Number(value) > 0;
+                    }
+                 })
+            : field
    ),
    [InputFieldNames.MORATORIUM_PERIOD]: Yup.string().when(
       InputFieldNames.ENABLE_MORATORIUM_PERIOD,
@@ -138,7 +189,16 @@ export const loanManagementSettings = {
    [InputFieldNames.ENABLE_GRACE_PERIOD]: Yup.boolean(),
    [InputFieldNames.GRACE_PERIOD_VALUE]: Yup.string().when(
       InputFieldNames.ENABLE_GRACE_PERIOD,
-      (enableGracePeriod, field) => (enableGracePeriod?.[0] ? field.required('Field is required') : field)
+      (enableGracePeriod, field) =>
+         enableGracePeriod?.[0]
+            ? field
+                 .required('Field is required')
+                 .test(InputFieldNames.GRACE_PERIOD_VALUE, 'Must be greater than 0', function (value) {
+                    if (value) {
+                       return Number(value) > 0;
+                    }
+                 })
+            : field
    ),
    [InputFieldNames.GRACE_PERIOD]: Yup.string().when(
       InputFieldNames.ENABLE_GRACE_PERIOD,
@@ -161,7 +221,7 @@ export const TooltipText = {
    [InputFieldNames.REPAYMENT_FREQUENCY]:
       'Select the frequency at which the equated  instalment (EI) will be paid',
    [InputFieldNames.START_DATE]: 'Specify start date',
-   [InputFieldNames.COLLATERAL_MARKET_VALUE]: 'Enter the appraised value of the collateral selected',
+   [CollateralFieldNames.COLLATERAL_MARKET_VALUE]: 'Enter the appraised value of the collateral selected',
    [InputFieldNames.ENABLE_MORATORIUM_PERIOD]:
       'This is the period during which the customer is not required to make loan repayments',
    [InputFieldNames.MORATORIUM_PERIOD]:
