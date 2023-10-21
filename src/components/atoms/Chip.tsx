@@ -18,3 +18,4 @@ export const InputChip = styled(MuiChip)(() => ({
       padding: '0 5px',
    },
 }));
+export const StyledChip = styled(MuiChip)<{ component?: React.ElementType}>(() => ({ padding: 0, borderRadius: '4px', height: '25px' }));

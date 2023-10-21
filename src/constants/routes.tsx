@@ -108,6 +108,5 @@ export const RoutePaths = {
       absolute: RouteMaps.loanProductDetails.path,
       relative: '/loan-product-details',
       name: 'Customer Loan Details',
-      permissions: [],
    },
 };

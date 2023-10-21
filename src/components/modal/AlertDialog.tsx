@@ -11,7 +11,7 @@ import InfoIcon from '@mui/icons-material/Info';
 export interface AlertDialogProps extends Omit<MuiDialogProps, 'maxWidth'> {
    open: boolean;
    handleClose: () => void;
-   handleConfirm: () => void;
+   handleConfirm?: () => void;
    title: string;
    subtitle?: string;
 }
@@ -46,9 +46,11 @@ const AlertDialog: React.FC<AlertDialogProps> = ({ title, subtitle, open, handle
                   <Button onClick={handleClose} variant="outlined">
                      Cancel
                   </Button>
-                  <Button color="primary" onClick={handleConfirm} type="submit" variant="contained">
-                     Confirm
-                  </Button>
+                  {handleConfirm && (
+                     <Button color="primary" onClick={handleConfirm} type="submit" variant="contained">
+                        Confirm
+                     </Button>
+                  )}
                </Box>
             </DialogContent>
          </MuiDialog>

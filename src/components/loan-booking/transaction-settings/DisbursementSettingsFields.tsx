@@ -4,7 +4,6 @@ import { Box } from '@mui/material';
 import { FormControlBase } from '@app/components/forms/FormControl';
 import { useFormikContext } from 'formik';
 import { useFormikHelper } from '@app/hooks/useFormikHelper';
-import { accountNumbers } from '../customer-information';
 
 export const DisbursementSettingsFields = () => {
    const { InputFieldNames, TooltipText, disbursementMethods, disbursementAccounts } = FormMeta;
@@ -105,3 +104,14 @@ export const DisbursementSettingsFields = () => {
       </Box>
    );
 };
+
+export const accountNumbers = [
+   { label: '014986724', subtitle: 'Lola' },
+   { label: '014986824', subtitle: 'Tobi' },
+   { label: '014907924', subtitle: 'Timothy' },
+   { label: '010987924', subtitle: 'Oluwaseun' },
+   { label: '016787924', subtitle: 'Lola' },
+   { label: '014987924', subtitle: 'Tobi' },
+   { label: '074987924', subtitle: 'Timothy' },
+   { label: '064987924', subtitle: 'Oluwaseun' },
+];
