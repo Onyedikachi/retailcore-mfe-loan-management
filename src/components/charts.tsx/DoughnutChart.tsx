@@ -36,6 +36,7 @@ export const DoughnutChart: React.FC<DoughnutChartProps> = ({ width, height, dat
             style={{ width: '100%', maxHeight: height ?? '180px' }}
             data={data(dataDetails.labels, dataDetails.data, dataDetails.backgroundColors)}
             options={options}
+            data-testid="doughnut-chart"
          />
       </Box>
    );

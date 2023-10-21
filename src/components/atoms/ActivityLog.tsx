@@ -1,5 +1,6 @@
 import React from 'react';
 import { Box, Divider, Typography, styled, Stack } from '@mui/material';
+import { Colors } from '@app/constants/colors';
 
 interface Log {
    pending: boolean;
@@ -20,20 +21,20 @@ const VerticalRule = styled(Box)<{ pending: boolean }>(({ pending }) => ({
    marginTop: '-5px',
 }));
 
-const RoundedBullet = styled('div')<{ pending: boolean }>(({ pending, theme: { palette } }) => ({
+const RoundedBullet = styled('div')<{ pending: boolean }>(({ pending }) => ({
    position: 'relative',
    height: 25,
    width: 25,
    borderRadius: '50%',
-   border: `1.5px solid ${pending ? palette.gray.main : palette.success.main}`,
-   background: `${pending ? 'transparent' : palette.success.main}`,
+   border: `1.5px solid ${pending ? Colors.LightGray5 : Colors.Success}`,
+   background: `${pending ? 'transparent' : Colors.Success}`,
    display: 'flex',
    justifyContent: 'center',
    alignItems: 'center',
    '&:before': {
       content: '""',
       position: 'absolute',
-      border: `0.5px solid ${pending ? palette.gray.main : palette.success.main}`,
+      border: `0.5px solid ${pending ? Colors.LightGray5 : Colors.Success}`,
       background: `${pending ? 'transparent' : 'white'}`,
       height: 17,
       width: 17,
@@ -55,7 +56,7 @@ export const ActivityLog: React.FC<ActivityLogProps> = ({ logs, title = 'ACTIVIT
          {!logs && <Typography sx={{ my: 2, fontSize: 12, fontWeight: 400 }}>No activities found</Typography>}
          <Box sx={{ marginTop: '23px' }}>
             {(logs ?? data)?.map(({ pending, title, subtitle, date }, index) => (
-               <Box key={date}>
+               <Box key={title}>
                   <Stack direction="row" alignItems="center" columnGap="12px">
                      <Box>
                         <RoundedBullet pending={!pending} />
@@ -73,7 +74,7 @@ export const ActivityLog: React.FC<ActivityLogProps> = ({ logs, title = 'ACTIVIT
    );
 };
 
-const dateFormater = (timestamp: string) => {
+export const dateFormater = (timestamp: string) => {
    if (timestamp === 'awaiting response') return timestamp;
 
    const date: Date = new Date(timestamp);

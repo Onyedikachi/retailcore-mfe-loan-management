@@ -1,8 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React from 'react';
 import { render, screen } from '@testing-library/react';
 import {
-   InputProps,
    SelectProps,
    SwitchProps,
    RadioGroupProps,
@@ -10,32 +8,11 @@ import {
    AutocompleteProps,
 } from '../../atoms';
 import { FormControlBase } from '../FormControl';
-import { Formik, Form } from 'formik';
-import { Box } from '@mui/system';
-import { ObjectAny } from '@app/@types';
 import userEvent from '@testing-library/user-event';
 import { TextField, AutocompleteRenderInputParams } from '@mui/material';
+import { TestForm } from './test.utils';
 
 describe('Component <FormControlBase />', () => {
-   describe('Component <Input />', () => {
-      it('should render an input when control is "input"', () => {
-         const inputProps: InputProps = {
-            type: 'text',
-            name: 'inputField',
-            placeholder: 'Input Field',
-         };
-
-         const { container } = render(
-            <TestForm>
-               <FormControlBase control="input" {...inputProps} />
-            </TestForm>
-         );
-
-         const inputElement = container.querySelector('input[name="inputField"]') as HTMLInputElement;
-         expect(inputElement).toBeInTheDocument();
-         expect(inputElement.type).toBe('text');
-      });
-   });
    describe('Component <Select />', () => {
       it('should render a select input when control is "select"', () => {
          const selectProps: SelectProps = {
@@ -167,15 +144,3 @@ describe('Component <FormControlBase />', () => {
       });
    });
 });
-
-const TestForm: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-   return (
-      <Box>
-         <Formik initialValues={{ input: '' }} onSubmit={(values: ObjectAny) => {}}>
-            {() => {
-               return <Form>{children}</Form>;
-            }}
-         </Formik>
-      </Box>
-   );
-};

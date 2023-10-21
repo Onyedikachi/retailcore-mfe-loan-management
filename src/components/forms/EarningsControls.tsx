@@ -3,7 +3,7 @@ import { FormControlBase } from './FormControl';
 import { CounterControl } from './CounterControl';
 import { LoanTenurePeriod } from '@app/constants';
 
-interface EarningsControlProps {
+export interface EarningsControlProps {
    extraLeft?: string;
    extraRight?: string;
    firstPlaceHolder?: string;

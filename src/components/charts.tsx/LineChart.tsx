@@ -64,6 +64,7 @@ export const LineChart: React.FC<LineChartProps> = ({ width, height, dataDetails
             style={{ width: '100%', maxHeight: height ?? '180px' }}
             options={options(defaultCurrency?.abbreviation ?? '')}
             data={data(dataDetails.labels, dataDetails.data, dataDetails.backgroundColors)}
+            data-testid="line-chart"
          />
       </Box>
    );

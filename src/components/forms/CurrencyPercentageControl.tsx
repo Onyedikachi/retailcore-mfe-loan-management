@@ -1,5 +1,5 @@
 import { ButtonGroup, InputAdornment } from '@mui/material';
-import { Button, InputChip } from '../atoms';
+import { Button } from '../atoms';
 import { FormControlBase } from './FormControl';
 import FormControlWrapper from './FormControlWrapper';
 import { Colors } from '@app/constants/colors';
