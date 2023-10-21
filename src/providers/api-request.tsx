@@ -33,7 +33,7 @@ export const APIRequestProvider = ({ children }: APIRequestProviderProps) => {
                return { ...payload, headers: { 'Content-Type': 'application/json' } };
             },
             response(payload) {
-               refreshToken();
+               // refreshToken();
                return { ...payload };
             },
          }}
