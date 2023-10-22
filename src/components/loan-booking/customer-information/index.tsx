@@ -30,16 +30,16 @@ export const CustomerInformation: React.FC = () => {
    const { GET_INDIVIDUAL_CUSTOMERS } = CUSTOMER_MANAGEMENT_PATH;
 
    const onSubmit = (values: FormMeta.CustomerInfoFormValues) => {
-      // if (!customerEligibility.isEligbible) {
-      //    setOpenEligibilityModal(true);
-      // } else {
-      updateBookLoanData('customerInformation', values);
-      if (isDraft) {
-         setShowAlertDialog(true);
+      if (!customerEligibility.isEligbible) {
+         setOpenEligibilityModal(true);
       } else {
-         handleNavigation('next');
+         updateBookLoanData('customerInformation', values);
+         if (isDraft) {
+            setShowAlertDialog(true);
+         } else {
+            handleNavigation('next');
+         }
       }
-      // }
    };
 
    const [, submitForm] = useRequest({ onSuccess: (res) => navigate(BasePath) });

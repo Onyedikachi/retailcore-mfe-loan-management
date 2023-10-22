@@ -1,5 +1,7 @@
 /* eslint-disable max-len */
 
+import { LoanProductData } from '@app/@types/loan-product';
+import { TenureMapping, TenureMappingKey } from '@app/constants/forms';
 import { currencyToNumber } from '@app/helper/currency-helper';
 import * as Yup from 'yup';
 
@@ -75,68 +77,122 @@ export const initialValues = (data?: FacilityDetailsFormValues) => ({
    [InputFieldNames.GRACE_PERIOD_VALUE]: data?.[InputFieldNames.GRACE_PERIOD_VALUE] ?? '',
 });
 
-export const validator = () =>
+export const validator = (selectedProduct?: LoanProductData) =>
    Yup.object({
-      ...facilityDetails,
-      ...colateralAndEquityContrib,
-      ...loanManagementSettings,
+      ...facilityDetails(selectedProduct),
+      ...colateralAndEquityContrib(selectedProduct),
+      ...loanManagementSettings(selectedProduct),
    });
 
-const facilityDetails = {
-   [InputFieldNames.PRODUCT_NAME]: Yup.string().required('Enter loan product name'),
-   [InputFieldNames.PRODUCT_CATEGORY]: Yup.string().required('Select a loan product category'),
-   [InputFieldNames.LOAN_PURPOSE]: Yup.string().required('Enter purpose of loan request'),
-   [InputFieldNames.PRINCIPAL]: Yup.string()
-      .required('Enter amount')
-      .test(InputFieldNames.PRINCIPAL, 'Must be greater than 0', function (value) {
-         if (value) {
-            return currencyToNumber(value) > 0;
-         }
-      }),
-   [InputFieldNames.INTEREST_RATE]: Yup.string()
-      .required('Enter interest rate')
-      .test(InputFieldNames.INTEREST_RATE, 'Must be greater than 0', function (value) {
-         if (value) {
-            return Number(value) > 0;
-         }
-      }),
-   [InputFieldNames.LOAN_TENURE_NUM]: Yup.string()
-      .required('Field is required')
-      .test(InputFieldNames.LOAN_TENURE_NUM, 'Must be greater than 0', function (value) {
-         if (value) {
-            return Number(value) > 0;
-         }
-      }),
-   [InputFieldNames.LOAN_TENURE_PERIOD]: Yup.string().required('Field is required'),
-   [InputFieldNames.REPAYMENT_PATTERN]: Yup.string().required('Select repayment pattern'),
-   [InputFieldNames.REPAYMENT_FREQUENCY]: Yup.string().required('Select repayment frequency'),
-   [InputFieldNames.START_DATE]: Yup.string().when(
-      InputFieldNames.REPAYMENT_FREQUENCY,
-      (repaymentFrequency, field) => (repaymentFrequency?.[0] == 'Custom' ? field : field)
-   ),
-   [InputFieldNames.START_DATE_NUM]: Yup.string().when(
-      InputFieldNames.REPAYMENT_FREQUENCY,
-      (repaymentFrequency, field) =>
-         repaymentFrequency?.[0] == 'Custom'
-            ? field
-                 .required('Field is required')
-                 .test(InputFieldNames.START_DATE_NUM, 'Must be greater than 0', function (value) {
-                    if (value) {
-                       return Number(value) > 0;
-                    }
-                 })
-            : field
-   ),
-   [InputFieldNames.START_DATE_PERIOD]: Yup.string().when(
-      InputFieldNames.REPAYMENT_FREQUENCY,
-      (repaymentFrequency, field) =>
-         repaymentFrequency?.[0] == 'Custom' ? field.required('Field is required') : field
-   ),
+const facilityDetails = (selectedProduct?: LoanProductData) => {
+   return {
+      [InputFieldNames.PRODUCT_NAME]: Yup.string().required('Enter loan product name'),
+      [InputFieldNames.LOAN_PURPOSE]: Yup.string().required('Enter purpose of loan request'),
+      [InputFieldNames.PRINCIPAL]: Yup.string()
+         .required('Enter amount')
+         .test(
+            InputFieldNames.PRINCIPAL,
+            'Must not be lesser than the min. principal of the selected product',
+            function (value) {
+               if (value && selectedProduct) {
+                  return currencyToNumber(value) >= selectedProduct?.minLoanPrincipal;
+               }
+            }
+         )
+         .test(
+            InputFieldNames.PRINCIPAL,
+            'Must not be greater than the max. principal of the selected product',
+            function (value) {
+               if (value && selectedProduct) {
+                  return currencyToNumber(value) <= selectedProduct.maxLoanPrincipal;
+               }
+            }
+         ),
+      [InputFieldNames.INTEREST_RATE]: Yup.string()
+         .required('Enter interest rate')
+         .test(
+            InputFieldNames.INTEREST_RATE,
+            'Must not be lesser than the min. interest rate of the selected product',
+            function (value) {
+               if (value && selectedProduct) {
+                  return Number(value) >= selectedProduct?.minInterestRate;
+               }
+            }
+         )
+         .test(
+            InputFieldNames.INTEREST_RATE,
+            'Must not be greater than the max. interest rate of the selected product',
+            function (value) {
+               if (value && selectedProduct) {
+                  return Number(value) <= selectedProduct.maxInterestRate;
+               }
+            }
+         ),
+      [InputFieldNames.LOAN_TENURE_NUM]: Yup.string().required('Field is required'),
+      [InputFieldNames.LOAN_TENURE_PERIOD]: Yup.string()
+         .required('Field is required')
+         .test(
+            InputFieldNames.LOAN_TENURE_PERIOD,
+            'Must not be lesser than the min. loan tenor of the selected product',
+            function (value) {
+               if (value && selectedProduct) {
+                  const min =
+                     selectedProduct?.minLoanTenure *
+                     TenureMapping[selectedProduct?.minLoanTenurePeriod as TenureMappingKey];
+                  const tenor =
+                     Number(this.parent?.[InputFieldNames.LOAN_TENURE_NUM]) *
+                     TenureMapping[value as TenureMappingKey];
+
+                  return tenor >= min;
+               }
+            }
+         )
+         .test(
+            InputFieldNames.LOAN_TENURE_PERIOD,
+            'Must not be greater than the max. loan tenor of the selected product',
+            function (value) {
+               if (value && selectedProduct) {
+                  const max =
+                     selectedProduct?.maxLoanTenure *
+                     TenureMapping[selectedProduct?.maxLoanTenurePeriod as TenureMappingKey];
+                  const tenor =
+                     Number(this.parent?.[InputFieldNames.LOAN_TENURE_NUM]) *
+                     TenureMapping[value as TenureMappingKey];
+
+                  return tenor <= max;
+               }
+            }
+         ),
+      [InputFieldNames.REPAYMENT_PATTERN]: Yup.string().required('Select repayment pattern'),
+      [InputFieldNames.REPAYMENT_FREQUENCY]: Yup.string().required('Select repayment frequency'),
+      [InputFieldNames.START_DATE]: Yup.string().when(
+         InputFieldNames.REPAYMENT_FREQUENCY,
+         (repaymentFrequency, field) => (repaymentFrequency?.[0] == 'Custom' ? field : field)
+      ),
+      [InputFieldNames.START_DATE_NUM]: Yup.string().when(
+         InputFieldNames.REPAYMENT_FREQUENCY,
+         (repaymentFrequency, field) =>
+            repaymentFrequency?.[0] == 'Custom'
+               ? field
+                    .required('Field is required')
+                    .test(InputFieldNames.START_DATE_NUM, 'Must be greater than 0', function (value) {
+                       if (value) {
+                          return Number(value) > 0;
+                       }
+                    })
+               : field
+      ),
+      [InputFieldNames.START_DATE_PERIOD]: Yup.string().when(
+         InputFieldNames.REPAYMENT_FREQUENCY,
+         (repaymentFrequency, field) =>
+            repaymentFrequency?.[0] == 'Custom' ? field.required('Field is required') : field
+      ),
+   };
 };
 
-const colateralAndEquityContrib = {
-   [InputFieldNames.COLLATERALS]: Yup.array()
-      .of(
+const colateralAndEquityContrib = (selectedProduct?: LoanProductData) => {
+   return {
+      [InputFieldNames.COLLATERALS]: Yup.array().of(
          Yup.object().shape({
             [CollateralFieldNames.COLLATERAL_MARKET_VALUE]: Yup.string()
                .required('Enter market value for this collateral')
@@ -149,61 +205,77 @@ const colateralAndEquityContrib = {
                      }
                   }
                ),
-            [CollateralFieldNames.COLLATERAL_FILE_UPLOADED]: Yup.mixed().required(
-               'Attach supporting document(s)'
-            ),
+            [CollateralFieldNames.COLLATERAL_FILE_UPLOADED]: Yup.mixed(),
+            //    .required(
+            //    'Attach supporting document(s)'
+            // ),
          })
-      )
-      .required('Add at least one collateral asset.'),
-   [InputFieldNames.EQUITY_CONTRIB]: Yup.string()
-      .required('Field is required')
-      .test(InputFieldNames.EQUITY_CONTRIB, 'Must be greater than 0', function (value) {
-         if (value) {
-            return Number(value) > 0;
-         }
-      }),
+      ),
+      // .required('Add at least one collateral asset.'),
+      [InputFieldNames.EQUITY_CONTRIB]: Yup.string(),
+      //.required('Field is required')
+      // .test(InputFieldNames.EQUITY_CONTRIB, 'Must be greater than 0', function (value) {
+      //    if (value) {
+      //       return Number(value) > 0;
+      //    }
+      //    return false
+      // }),
+   };
 };
-export const loanManagementSettings = {
-   [InputFieldNames.ENABLE_MORATORIUM_PERIOD]: Yup.boolean(),
-   [InputFieldNames.MORATORIUM_PERIOD_VALUE]: Yup.string().when(
-      InputFieldNames.ENABLE_MORATORIUM_PERIOD,
-      (enableMoratorium, field) =>
-         enableMoratorium?.[0]
-            ? field
-                 .required('Field is required')
-                 .test(InputFieldNames.MORATORIUM_PERIOD_VALUE, 'Must be greater than 0', function (value) {
-                    if (value) {
-                       return Number(value) > 0;
-                    }
-                 })
-            : field
-   ),
-   [InputFieldNames.MORATORIUM_PERIOD]: Yup.string().when(
-      InputFieldNames.ENABLE_MORATORIUM_PERIOD,
-      (enableMoratorium, field) => (enableMoratorium?.[0] ? field.required('Field is required') : field)
-   ),
-   [InputFieldNames.RECOGNISE_MORATORIUM_PERIOD]: Yup.string().when(
-      InputFieldNames.ENABLE_MORATORIUM_PERIOD,
-      (enableMoratorium, field) => (enableMoratorium?.[0] ? field.required('Field is required') : field)
-   ),
-   [InputFieldNames.ENABLE_GRACE_PERIOD]: Yup.boolean(),
-   [InputFieldNames.GRACE_PERIOD_VALUE]: Yup.string().when(
-      InputFieldNames.ENABLE_GRACE_PERIOD,
-      (enableGracePeriod, field) =>
-         enableGracePeriod?.[0]
-            ? field
-                 .required('Field is required')
-                 .test(InputFieldNames.GRACE_PERIOD_VALUE, 'Must be greater than 0', function (value) {
-                    if (value) {
-                       return Number(value) > 0;
-                    }
-                 })
-            : field
-   ),
-   [InputFieldNames.GRACE_PERIOD]: Yup.string().when(
-      InputFieldNames.ENABLE_GRACE_PERIOD,
-      (enableGracePeriod, field) => (enableGracePeriod?.[0] ? field.required('Field is required') : field)
-   ),
+export const loanManagementSettings = (selectedProduct?: LoanProductData) => {
+   return {
+      [InputFieldNames.ENABLE_MORATORIUM_PERIOD]: Yup.boolean(),
+      [InputFieldNames.MORATORIUM_PERIOD_VALUE]: Yup.string().when(
+         InputFieldNames.ENABLE_MORATORIUM_PERIOD,
+         (enableMoratorium, field) => (enableMoratorium?.[0] ? field.required('Field is required') : field)
+      ),
+      [InputFieldNames.MORATORIUM_PERIOD]: Yup.string().when(
+         InputFieldNames.ENABLE_MORATORIUM_PERIOD,
+         (enableMoratorium, field) =>
+            enableMoratorium?.[0]
+               ? field
+                    .required('Field is required')
+                    .test(
+                       InputFieldNames.MORATORIUM_PERIOD,
+                       'Must not be greater than the max. loan tenor of the selected product',
+                       function (value) {
+                          if (value && selectedProduct) {
+                             const max =
+                                selectedProduct?.maxLoanTenure *
+                                TenureMapping[selectedProduct?.maxLoanTenurePeriod as TenureMappingKey];
+                             const moratorium =
+                                Number(this.parent?.[InputFieldNames.LOAN_TENURE_NUM]) *
+                                TenureMapping[value as TenureMappingKey];
+
+                             return moratorium <= max;
+                          }
+                       }
+                    )
+               : field
+      ),
+      [InputFieldNames.RECOGNISE_MORATORIUM_PERIOD]: Yup.string().when(
+         InputFieldNames.ENABLE_MORATORIUM_PERIOD,
+         (enableMoratorium, field) => (enableMoratorium?.[0] ? field.required('Field is required') : field)
+      ),
+      [InputFieldNames.ENABLE_GRACE_PERIOD]: Yup.boolean(),
+      [InputFieldNames.GRACE_PERIOD_VALUE]: Yup.string().when(
+         InputFieldNames.ENABLE_GRACE_PERIOD,
+         (enableGracePeriod, field) =>
+            enableGracePeriod?.[0]
+               ? field
+                    .required('Field is required')
+                    .test(InputFieldNames.GRACE_PERIOD_VALUE, 'Must be greater than 0', function (value) {
+                       if (value) {
+                          return Number(value) > 0;
+                       }
+                    })
+               : field
+      ),
+      [InputFieldNames.GRACE_PERIOD]: Yup.string().when(
+         InputFieldNames.ENABLE_GRACE_PERIOD,
+         (enableGracePeriod, field) => (enableGracePeriod?.[0] ? field.required('Field is required') : field)
+      ),
+   };
 };
 
 export const TooltipText = {

@@ -10,12 +10,16 @@ import { DisbursementSettingsFields } from './DisbursementSettingsFields';
 import { RepaymentSettingsFields } from './RepaymentSettingsFields';
 import AlertDialog from '@app/components/modal/AlertDialog';
 import { useBookLoanContext } from '@app/providers/book-loan';
+import { useNavigate } from 'react-router-dom';
+import { useRequest } from 'react-http-query';
+import { API_PATH, BasePath } from '@app/constants';
 
 export const TransactionSettings: React.FC = () => {
    const [isDraft, setIsDraft] = useState(false);
    const { handleNavigation } = useStepperContext();
    const [showAlertDialog, setShowAlertDialog] = useState(false);
-   const { bookLoanData, updateBookLoanData } = useBookLoanContext();
+   const { bookLoanData, updateBookLoanData, backendData } = useBookLoanContext();
+   const navigate = useNavigate();
 
    const onSubmit = (values: FormMeta.TransactionSettingsFormValues) => {
       updateBookLoanData('transactionSettings', values);
@@ -25,6 +29,13 @@ export const TransactionSettings: React.FC = () => {
          handleNavigation('next');
       }
    };
+
+   const [, submitForm] = useRequest({ onSuccess: (res) => navigate(BasePath) });
+   const handleSubmit = () => {
+      setShowAlertDialog(false);
+      submitForm(API_PATH.BookLoan, { body: backendData });
+   };
+
    return (
       <FormContainer>
          <Formik
@@ -76,7 +87,7 @@ export const TransactionSettings: React.FC = () => {
          <AlertDialog
             open={showAlertDialog}
             handleClose={() => setShowAlertDialog(false)}
-            handleConfirm={() => {}}
+            handleConfirm={handleSubmit}
             title="Do you want to save as draft?"
             subtitle="Requests in drafts would be deleted after 30 days of inactivity."
          />

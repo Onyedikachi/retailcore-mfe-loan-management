@@ -13,6 +13,7 @@ export interface TenureControlProps {
    required?: boolean;
    layout?: 'horizontal' | 'vertical' | undefined;
    layoutFlexGrid?: number[];
+   disabled?: boolean;
 }
 
 export const TenureControl = (props: TenureControlProps) => {
@@ -40,6 +41,7 @@ export const TenureControl = (props: TenureControlProps) => {
                         </InputAdornment>
                      ),
                   }}
+                  disabled={props?.disabled}
                />
             </Grid>
             <Grid item xs={8}>
@@ -48,6 +50,7 @@ export const TenureControl = (props: TenureControlProps) => {
                   name={props.periodName}
                   placeholder="Select period"
                   options={props.loanTenurePeriod ?? LoanTenurePeriod}
+                  disabled={props?.disabled}
                />
             </Grid>
          </Grid>

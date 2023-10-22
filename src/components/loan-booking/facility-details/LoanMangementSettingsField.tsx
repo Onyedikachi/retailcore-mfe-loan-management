@@ -33,7 +33,6 @@ export const LoanManagementSettingsField = () => {
          {getFieldProps(InputFieldNames.ENABLE_MORATORIUM_PERIOD)?.value && (
             <Box pl={3} pr={5}>
                <TenureControl
-                  //TODO: Moratorium period should not be more than loan tenor
                   layoutFlexGrid={[6, 6]}
                   layout="horizontal"
                   fieldLabel="Moratorium Period"
@@ -73,8 +72,9 @@ export const LoanManagementSettingsField = () => {
          {getFieldProps(InputFieldNames.ENABLE_GRACE_PERIOD)?.value && (
             <Box pl={3} pr={5}>
                <TenureControl
+                  //TODO:Ensure validation of this field
                   layout="horizontal"
-                  fieldLabel="Moratorium Period"
+                  fieldLabel="Grace Period"
                   periodName={InputFieldNames.GRACE_PERIOD}
                   numberName={InputFieldNames.GRACE_PERIOD_VALUE}
                   periodTooltipText={TooltipText[InputFieldNames.GRACE_PERIOD]}

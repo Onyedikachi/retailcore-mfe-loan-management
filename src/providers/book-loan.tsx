@@ -9,6 +9,7 @@ import { FacilityDetailsFormValues } from '@app/utils/validators/book-a-loan/fac
 import { TransactionSettingsFormValues } from '@app/utils/validators/book-a-loan/transaction-settings';
 import { createContext, useContext, useState, ReactNode, useMemo, useEffect } from 'react';
 import { useRequestData } from 'react-http-query';
+import { LoanProductData } from '@app/@types/loan-product';
 
 type DataType = CustomerInfoFormValues | TransactionSettingsFormValues | FacilityDetailsFormValues;
 type BookLoanSteps = 'customerInformation' | 'facilityDetails' | 'transactionSettings';
@@ -31,9 +32,12 @@ interface BookLoanContextType {
       isEligbible: boolean;
       message: string;
    };
-   product?: LoanProduct;
+   productNames?: LoanProduct[];
    backendData: any;
+   getProductData: (productData: LoanProductData[]) => void;
    getSelectedProduct: (name: string) => void;
+   selectedProduct: LoanProductData | undefined;
+   resetBookLoanData: () => void;
 }
 
 const BookLoanContext = createContext<BookLoanContextType | null>(null);
@@ -54,30 +58,45 @@ export const BookLoanProvider = ({ children }: BookLoanProviderProps) => {
    const [bookLoanData, setBookLoanData] = useState<BookLoanData>({});
    const currencies = useRequestData<CurrencyListResponse>(REQUEST_NAMES.CURRENCY_LIST);
    const defaultCurrency = getDefaultCurrency(currencies);
+
    const [customers, setCustomers] = useState<CustomerData[]>();
    const [accountNumbers, setAccountNumbers] = useState<AccountNumber[]>();
    const [selectedCustomerId, setSelectedCustomerId] = useState<string>();
    const [selectedCustomer, setSelectedCustomer] = useState<CustomerData>();
-   const [product, setProduct] = useState<LoanProduct>();
+
+   const [allProduct, setAllProduct] = useState<LoanProductData[]>();
+   const [selectedProduct, setSelectedProduct] = useState<LoanProductData>();
+   const [productNames, setProductNames] = useState<LoanProduct[]>();
+
    const [backendData, setBackendData] = useState<any>();
    const [isDraft, setIsDraft] = useState<boolean>();
 
-   useEffect(() => {
-      const mappedBackendData = mapBookLoanToSchema(bookLoanData, selectedCustomer, product, isDraft);
-      setBackendData(mappedBackendData);
-   }, [bookLoanData, selectedCustomer, product, isDraft]);
-
-   const getSelectedProduct = (name: string) => {
-      setProduct(undefined);
-   };
-
-   const updateBookLoanData = (step: BookLoanSteps, data?: DataType) => {
+   const updateBookLoanData = (step?: BookLoanSteps, data?: DataType) => {
       setIsDraft(step === 'customerInformation' ? true : step === 'facilityDetails' ? true : false);
-      if (data) {
+      if (data && step) {
          setBookLoanData((prevData) => {
             return { ...prevData, [step]: data };
          });
       }
+   };
+   const resetBookLoanData = () => {
+      setBookLoanData({});
+   };
+
+   useEffect(() => {
+      const mappedBackendData = mapBookLoanToSchema(bookLoanData, selectedCustomer, selectedProduct, isDraft);
+      setBackendData(mappedBackendData);
+   }, [bookLoanData, selectedCustomer, selectedProduct, isDraft]);
+
+   const getSelectedProduct = (name: string) => {
+      setSelectedProduct(allProduct?.filter((prod) => prod.name === name)[0]);
+   };
+   const getProductData = (allLoanProducts: LoanProductData[]) => {
+      setAllProduct(allLoanProducts);
+      const names = allLoanProducts.map((loan) => {
+         return { name: loan.name, id: loan.id };
+      });
+      setProductNames(names);
    };
 
    const getCustomersData = (customersData: CustomerData[]) => {
@@ -92,7 +111,6 @@ export const BookLoanProvider = ({ children }: BookLoanProviderProps) => {
       });
       setAccountNumbers(customerAccountInfoArray);
    };
-
    const getSelectedCustomer = (id: string) => {
       setSelectedCustomerId(id);
       setSelectedCustomer(
@@ -107,9 +125,9 @@ export const BookLoanProvider = ({ children }: BookLoanProviderProps) => {
          assessments?.sectionName == "Customer's Identity" && assessments?.parameter == 'Customer Persona'
    )?.[0]?.parameterOption;
 
-   const profile = selectedCustomer?.customer_profiles[0];
-   const hasKYC = profile?.status === 'Approved' && profile?.approvalStatus === 'Approved';
    const isActive = selectedCustomer?.status === 'Active';
+   const hasKYC = isActive && selectedCustomer?.approvalStatus === 'Approved';
+
    const customerEligibility: { isEligbible: boolean; message: string } = {
       isEligbible: hasKYC && isActive,
       message:
@@ -128,13 +146,16 @@ export const BookLoanProvider = ({ children }: BookLoanProviderProps) => {
          selectedCustomerId,
          selectedCustomer,
          persona,
-         product,
+         selectedProduct,
+         productNames,
          backendData,
          customerEligibility,
          updateBookLoanData,
          getSelectedCustomer,
          getCustomersData,
          getSelectedProduct,
+         getProductData,
+         resetBookLoanData,
       }),
       [
          bookLoanData,
@@ -144,8 +165,9 @@ export const BookLoanProvider = ({ children }: BookLoanProviderProps) => {
          selectedCustomerId,
          persona,
          customerEligibility,
-         product,
+         selectedProduct,
          backendData,
+         productNames,
       ]
    );
 

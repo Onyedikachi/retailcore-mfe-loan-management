@@ -1,11 +1,11 @@
 import { BookLoanData } from '@app/@types/book-loan';
 import { CustomerData } from '@app/@types/customer';
-import { LoanProduct } from '@app/providers/book-loan';
+import { LoanProductData } from '@app/@types/loan-product';
 
 export const mapBookLoanToSchema = (
    bookLoanData: BookLoanData,
    customers?: CustomerData,
-   product?: LoanProduct,
+   product?: LoanProductData,
    isDraft?: boolean
 ) => {
    const { customerInformation, facilityDetails, transactionSettings } = bookLoanData;
@@ -19,7 +19,7 @@ export const mapBookLoanToSchema = (
       bvn: profile?.bvn,
       productPurpose: facilityDetails?.productPurpose,
       principal: facilityDetails?.principal,
-      interestRate: facilityDetails?.interestRate,
+      interestRate: facilityDetails?.interestRate ? Number(facilityDetails?.interestRate) : undefined,
       tenorValue: facilityDetails?.tenorValue,
       tenorPeriod: facilityDetails?.tenorPeriod,
       isMoratoriumReq: facilityDetails?.isMoratoriumReq,
@@ -34,7 +34,7 @@ export const mapBookLoanToSchema = (
       disburseDate: transactionSettings?.disburseDate,
       otherAcctNo: transactionSettings?.otherAcctNo,
       isDisburseNotReq: transactionSettings?.isDisburseNotReq,
-      notificationChannel: transactionSettings?.notificationChannel,
+      notificationChannel: transactionSettings?.notificationChannel.toString(),
       repaymentChannel: transactionSettings?.repaymentChannel,
       repaymentAcct: transactionSettings?.repaymentAcct,
       isDraft: isDraft ?? false,
@@ -46,6 +46,10 @@ export const mapBookLoanToSchema = (
       equityContribution: facilityDetails?.equity_contrib,
       loanAssets: facilityDetails?.collaterals,
    };
+   type BackendData = typeof backendData;
+   const filteredBackendData = Object.fromEntries(
+      Object.entries(backendData).filter(([, value]) => value !== undefined && value !== '')
+   ) as Partial<BackendData>;
 
-   return backendData;
+   return filteredBackendData;
 };

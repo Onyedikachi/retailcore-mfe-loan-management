@@ -11,12 +11,18 @@ import { ColateralAndEquityContribFields } from './ColateralAndEquityContribFiel
 import { LoanManagementSettingsField } from './LoanMangementSettingsField';
 import AlertDialog from '@app/components/modal/AlertDialog';
 import { useBookLoanContext } from '@app/providers/book-loan';
+import { useNavigate } from 'react-router-dom';
+import { useRequest } from 'react-http-query';
+import { API_PATH, BasePath } from '@app/constants';
 
 export const FacilityDetails: React.FC = () => {
    const [isDraft, setIsDraft] = useState(false);
    const { handleNavigation } = useStepperContext();
    const [showAlertDialog, setShowAlertDialog] = useState(false);
-   const { bookLoanData, updateBookLoanData } = useBookLoanContext();
+   const { bookLoanData, updateBookLoanData, backendData, getProductData, productNames, selectedProduct } =
+      useBookLoanContext();
+   const navigate = useNavigate();
+   const [searchInput, setSearchInput] = useState('');
 
    const onSubmit = (values: FormMeta.FacilityDetailsFormValues) => {
       updateBookLoanData('facilityDetails', values);
@@ -26,12 +32,31 @@ export const FacilityDetails: React.FC = () => {
          handleNavigation('next');
       }
    };
+
+   const [, submitForm] = useRequest({ onSuccess: (res) => navigate(BasePath) });
+   const handleSubmit = () => {
+      setShowAlertDialog(false);
+      submitForm(API_PATH.BookLoan, { body: backendData });
+   };
+
+   useRequest(
+      {
+         onMount: (makeRequest) =>
+            makeRequest(`${API_PATH.GetAllLoanProduct}?SearchTerm=${searchInput}`, {
+               showSuccess: false,
+               showLoader: !productNames,
+            }),
+         onSuccess: (response) => getProductData(response.data.data.items),
+      },
+      [searchInput]
+   );
+
    return (
       <FormContainer>
          <Formik
             enableReinitialize={true}
             initialValues={FormMeta.initialValues(bookLoanData?.facilityDetails)}
-            validationSchema={FormMeta.validator()}
+            validationSchema={FormMeta.validator(selectedProduct)}
             onSubmit={onSubmit}
          >
             {(formik) => {
@@ -39,7 +64,7 @@ export const FacilityDetails: React.FC = () => {
                   <Form>
                      <Box sx={{ mb: 5 }}>
                         <Accordion accordionLabels={FormMeta.accordionLabels}>
-                           <FacilityDetailsFields />
+                           <FacilityDetailsFields getSearchInput={(input) => setSearchInput(input)} />
                            <ColateralAndEquityContribFields />
                            <LoanManagementSettingsField />
                         </Accordion>
@@ -78,7 +103,7 @@ export const FacilityDetails: React.FC = () => {
          <AlertDialog
             open={showAlertDialog}
             handleClose={() => setShowAlertDialog(false)}
-            handleConfirm={() => {}}
+            handleConfirm={handleSubmit}
             title="Do you want to save as draft?"
             subtitle="Requests in drafts would be deleted after 30 days of inactivity."
          />
