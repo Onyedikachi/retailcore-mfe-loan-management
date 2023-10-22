@@ -11,11 +11,13 @@ import { StartDateControl } from '@app/components/forms/StartDateControl';
 import { useFormikHelper } from '@app/hooks/useFormikHelper';
 import { useBookLoanContext } from '@app/providers/book-loan';
 
-export const FacilityDetailsFields = () => {
+export const FacilityDetailsFields: React.FC<{ getSearchInput?: (input: string) => void }> = (props) => {
    const { InputFieldNames, TooltipText } = FormMeta;
-   const { getFieldProps, setFieldValue } = useFormikContext<FormMeta.FacilityDetailsFormValues>();
+   const { getFieldProps } = useFormikContext<FormMeta.FacilityDetailsFormValues>();
    const { resetFieldState } = useFormikHelper();
-   const { defaultCurrency } = useBookLoanContext();
+   const { productNames, getSelectedProduct, selectedProduct } = useBookLoanContext();
+
+   const hasSelectedProduct = getFieldProps(InputFieldNames.PRODUCT_NAME)?.value;
 
    return (
       <Box sx={{ width: '95%' }}>
@@ -32,8 +34,14 @@ export const FacilityDetailsFields = () => {
                control="autocomplete"
                placeholder="Type to search and select"
                noOptionsText="No match"
-               onInputChange={() => setFieldValue(InputFieldNames.PRODUCT_CATEGORY, 'Category Name')}
-               options={loanProductName}
+               onInputChange={(value) => {
+                  getSelectedProduct(value as string);
+               }}
+               options={productNames?.map((prod) => prod.name) ?? []}
+               filterOptions={(option, { inputValue }) => {
+                  props?.getSearchInput?.(inputValue);
+                  return productNames?.map((prod) => prod.name) ?? [];
+               }}
                search
             />
          </FormControlWrapper>
@@ -46,9 +54,9 @@ export const FacilityDetailsFields = () => {
             tooltipText={TooltipText[InputFieldNames.PRODUCT_CATEGORY]}
          >
             <>
-               {getFieldProps(InputFieldNames.PRODUCT_NAME)?.value ? (
+               {hasSelectedProduct ? (
                   <Typography bgcolor="rgba(170, 170, 170, 0.07)" p={1.2}>
-                     Category name
+                     {selectedProduct?.category}
                   </Typography>
                ) : (
                   <Typography variant="body2">Auto-filled from product configuration</Typography>
@@ -67,6 +75,7 @@ export const FacilityDetailsFields = () => {
                control="input"
                placeholder="Enter purpose"
                name={InputFieldNames.LOAN_PURPOSE}
+               disabled={!hasSelectedProduct}
             />
          </FormControlWrapper>
          <LoanPrincipalControl
@@ -75,10 +84,10 @@ export const FacilityDetailsFields = () => {
             layout="horizontal"
             label="Principal"
             layoutFlexGrid={[5.5, 6.5]}
-            extraLeft={defaultCurrency?.abbreviation ?? 'NGN'}
+            extraLeft={selectedProduct?.currency ?? ''}
             placeholder="Enter amount"
             tooltipText={TooltipText[InputFieldNames.PRINCIPAL]}
-            //  TODO: Ensure that Principal is not below the min principal or above the max principal
+            disabled={!hasSelectedProduct}
          />
          <PercentageControl
             layout="horizontal"
@@ -88,7 +97,7 @@ export const FacilityDetailsFields = () => {
             name={InputFieldNames.INTEREST_RATE}
             layoutFlexGrid={[5.5, 6.5]}
             withChip
-            //TODO: Ensure that interest rate is not below the min rate or above the max rate
+            disabled={!hasSelectedProduct}
          />
          <TenureControl
             layout="horizontal"
@@ -97,7 +106,7 @@ export const FacilityDetailsFields = () => {
             numberName={InputFieldNames.LOAN_TENURE_NUM}
             layoutFlexGrid={[5.5, 6.5]}
             periodTooltipText={TooltipText[InputFieldNames.LOAN_TENURE_PERIOD]}
-            //TODO: Ensure tenor number and period is not below the min or above the max tenor
+            disabled={!hasSelectedProduct}
          />
          <FormControlWrapper
             name={InputFieldNames.REPAYMENT_PATTERN}
@@ -112,6 +121,7 @@ export const FacilityDetailsFields = () => {
                name={InputFieldNames.REPAYMENT_PATTERN}
                placeholder="Select pattern"
                options={FormMeta.repaymentPattern}
+               disabled={!hasSelectedProduct}
             />
          </FormControlWrapper>
          <FormControlWrapper
@@ -132,6 +142,7 @@ export const FacilityDetailsFields = () => {
                   resetFieldState(InputFieldNames.START_DATE_NUM);
                   resetFieldState(InputFieldNames.START_DATE_PERIOD);
                }}
+               disabled={!hasSelectedProduct}
             />
          </FormControlWrapper>
          {getFieldProps(InputFieldNames.REPAYMENT_FREQUENCY)?.value == 'Custom' && (
@@ -155,10 +166,3 @@ export const FacilityDetailsFields = () => {
       </Box>
    );
 };
-
-const loanProductName = [
-   'Auto Loan',
-   'Debt Consolidation Loan',
-   'Emergency Cash Loan',
-   'Household Equipment Lease',
-];

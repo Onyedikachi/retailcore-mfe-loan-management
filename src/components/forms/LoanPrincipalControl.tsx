@@ -11,6 +11,7 @@ export type LoanPrincipalControlProps = {
    mb?: number;
    placeholder?: string;
    layoutFlexGrid?: number[];
+   disabled?: boolean;
 };
 
 export const LoanPrincipalControl = ({

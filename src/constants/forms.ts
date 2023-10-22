@@ -29,3 +29,13 @@ export const EligibilityEarningsTypeOptions = [
    { label: 'Fixed', value: 'fixed' },
    { label: '% of Loan Amount', value: 'percent' },
 ];
+export const TenureMapping = {
+   Hours: 1,
+   Days: 24,
+   Weeks: 168,
+   Months: 730,
+   Years: 8766,
+};
+
+export const LoanTenurePeriods = Object.keys(TenureMapping);
+export type TenureMappingKey = keyof typeof TenureMapping;

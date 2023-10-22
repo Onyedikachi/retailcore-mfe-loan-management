@@ -1,24 +1,31 @@
-import { CurrencyListResponse } from '@app/@types';
 import { Button, Tooltip } from '@app/components/atoms';
 import { TableHeaderProps } from '@app/components/table/TableHeader';
 import FormContainer from '@app/components/forms/FormContainer';
 import AlertDialog from '@app/components/modal/AlertDialog';
-import { REQUEST_NAMES } from '@app/constants';
-import { getDefaultCurrency } from '@app/helper/currency-helper';
+import { API_PATH, BasePath } from '@app/constants';
 import { formattedDate } from '@app/helper/formater';
 import { useStepperContext } from '@app/providers';
 import { Box, Divider, Typography } from '@mui/material';
 import { useMemo, useState } from 'react';
-import { useRequestData } from 'react-http-query';
+import { useRequest } from 'react-http-query';
 import { Table } from '@app/components/table';
 import { DateFilter } from '@app/components/calendar/DateFilter';
 import { downloadTableAsPDFByID } from '@app/helper/pdfDownloader';
+import { useBookLoanContext } from '@app/providers/book-loan';
+import { useNavigate } from 'react-router-dom';
 
 export const RepaymentSchedule = () => {
    const [isDraft, setIsDraft] = useState(false);
    const { handleNavigation } = useStepperContext();
-   const currencies = useRequestData<CurrencyListResponse>(REQUEST_NAMES.CURRENCY_LIST);
-   const currency = getDefaultCurrency(currencies)?.abbreviation ?? 'NGN';
+   const { backendData, selectedProduct } = useBookLoanContext();
+   const currency = selectedProduct?.currency;
+   const navigate = useNavigate();
+
+   const [, submitForm] = useRequest({ onSuccess: (res) => navigate(BasePath) });
+   const handleSubmit = () => {
+      setIsDraft(false);
+      submitForm(API_PATH.BookLoan, { body: backendData });
+   };
 
    const schedule: TableHeaderProps = useMemo(() => {
       return {
@@ -32,6 +39,7 @@ export const RepaymentSchedule = () => {
          ],
       };
    }, []);
+
    const tableBody = useMemo(() => {
       return [1, 2].map((item, id) => ({
          date: formattedDate('2022-02-22T15:45:00Z'),
@@ -42,6 +50,7 @@ export const RepaymentSchedule = () => {
          gracePeriod: formattedDate('2022-02-25T15:45:00Z'),
       }));
    }, []);
+
    return (
       <>
          <FormContainer>
@@ -68,7 +77,7 @@ export const RepaymentSchedule = () => {
                   >
                      Download
                   </Button>
-                  <Button variant="outlined" onClick={() => setIsDraft(!isDraft)}>
+                  <Button variant="outlined" onClick={() => setIsDraft(true)}>
                      Save As Draft
                   </Button>
                   <Button onClick={() => handleNavigation('next')}>Next</Button>
@@ -78,7 +87,7 @@ export const RepaymentSchedule = () => {
          <AlertDialog
             open={isDraft}
             handleClose={() => setIsDraft(false)}
-            handleConfirm={() => {}}
+            handleConfirm={handleSubmit}
             title="Do you want to save as draft?"
             subtitle="Requests in drafts would be deleted after 30 days of inactivity."
          />

@@ -8,8 +8,7 @@ export const customerInfo = (customer: CustomerData, persona?: string) => {
    const profile = customer?.customer_profiles[0];
    const { firstName, surname, otherNames, bvn, mobileNumber } = profile;
    const kycStatus =
-      profile.status == 'Approved' && profile.approvalStatus == 'Approved' ? 'Complete' : 'Incomplete';
-
+      customer.status == 'Active' && customer.approvalStatus == 'Approved' ? 'Complete' : 'Incomplete';
    return [
       { key: 'Customer Name', value: `${firstName} ${otherNames ?? ''} ${surname}` },
       { key: 'Customer ID', value: profile.customerNumber },

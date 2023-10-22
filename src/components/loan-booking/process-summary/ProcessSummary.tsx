@@ -10,6 +10,12 @@ import { ResponseDialog } from '@app/components/modal/ResponseDialog';
 import { SubmitIcon } from '@app/components/icons/Submit';
 import { useState } from 'react';
 import { useStepperContext } from '@app/providers';
+import { useNavigate } from 'react-router-dom';
+import { useRequest } from 'react-http-query';
+import { BasePath } from '@app/constants/routes';
+import { useBookLoanContext } from '@app/providers/book-loan';
+import { bookingInfo, customerInfo } from './summary-data';
+import { API_PATH } from '@app/constants/api-path';
 
 const ContainerWrapper = styled(Box)({
    height: 'calc(100% - 95px)',
@@ -22,6 +28,21 @@ export const ProcessSummary = () => {
    const [showCancelDialog, setShowCancelDialog] = useState(false);
    const [showResponseDialog, setShowResponseDialog] = useState(false);
    const { handleNavigation } = useStepperContext();
+   const { bookLoanData, backendData, selectedCustomer, selectedProduct, resetBookLoanData } =
+      useBookLoanContext();
+   const navigate = useNavigate();
+
+   const [, submitForm] = useRequest({ onSuccess: () => setShowResponseDialog(true) });
+   const handleSubmit = () => {
+      submitForm(API_PATH.BookLoan, { body: backendData });
+      setShowResponseDialog(true);
+   };
+
+   const handleCompletedOrClosed = (path?: string) => {
+      handleNavigation(0);
+      resetBookLoanData();
+      path ? navigate(path) : window.location.reload();
+   };
 
    return (
       <>
@@ -31,8 +52,8 @@ export const ProcessSummary = () => {
             </Box>
             <PaddedContainer>
                <Typography fontWeight="600">Individual Loan Details</Typography>
-               <Details title="Booking Information" details={bookingInfo} />
-               <Details title="Customer Information" details={customerInfo} />
+               <Details title="Booking Information" details={bookingInfo(bookLoanData, selectedProduct)} />
+               <Details title="Customer Information" details={customerInfo(selectedCustomer, bookLoanData)} />
             </PaddedContainer>
          </ContainerWrapper>
          <PaddedContainer>
@@ -52,7 +73,7 @@ export const ProcessSummary = () => {
                      color="primary"
                      variant="contained"
                      startIcon={<SubmitIcon />}
-                     onClick={() => setShowResponseDialog(true)}
+                     onClick={handleSubmit}
                   >
                      Submit
                   </Button>
@@ -63,50 +84,18 @@ export const ProcessSummary = () => {
          <AlertDialog
             open={showCancelDialog}
             handleClose={() => setShowCancelDialog(false)}
-            handleConfirm={() => {
-               /** Todo: implement handle confirm function */
-            }}
+            handleConfirm={() => handleCompletedOrClosed(BasePath)}
             title="Do you want to cancel loan booking process?"
          />
          <ResponseDialog
             open={showResponseDialog}
             handleClose={() => setShowResponseDialog(false)}
-            handleNext={() => {
-               /** Todo: implement handle next function */
-            }}
-            handlePrevious={() => {
-               /** Todo: implement handle previous function */
-            }}
+            handleNext={() => handleCompletedOrClosed()}
+            handlePrevious={() => handleCompletedOrClosed(BasePath)}
             title="Loan Disbursement Request Submitted for Approval"
-            subtitle="Do you want to cancel loan booking process?"
             status="success"
             nextText="Book another loan"
          />
       </>
    );
 };
-
-export const bookingInfo = [
-   { key: 'Loan product name', value: 'PayDay Loan' },
-   { key: 'Loan product category', value: 'Chukwuma' },
-   { key: 'Loan purpose', value: 'Temitope' },
-   { key: 'Loan product currency', value: 'Yusuf' },
-   { key: 'Principal ', value: '-' },
-   { key: 'Interest rate', value: 'Male' },
-   { key: 'Loan tenor', value: 'Single' },
-   { key: 'Repayment pattern', value: '-' },
-   { key: 'Repayment frequency', value: 'Male' },
-   { key: 'Repayment amount', value: 'Single' },
-   { key: 'Moratorium period', value: '-' },
-   { key: 'Grace period', value: 'Male' },
-   { key: 'Disbursement method', value: 'Single' },
-   { key: 'Disbursement amount', value: '-' },
-];
-
-export const customerInfo = [
-   { key: 'Customer Name', value: 'Mr', view: true },
-   { key: 'Account Number', value: 'Chukwuma' },
-   { key: 'BVN', value: 'Temitope' },
-   { key: 'Product Currency', value: 'Yusuf' },
-   { key: 'Product Lifecycle ', value: '-' },
-];

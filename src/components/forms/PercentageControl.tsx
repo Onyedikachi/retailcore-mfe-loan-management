@@ -8,6 +8,7 @@ export interface PercentageControlProps extends Omit<WrapperProps, 'children'> {
    required?: boolean;
    placeholder?: string;
    withChip?: boolean;
+   disabled?: boolean;
 }
 
 export const PercentageControl = (props: PercentageControlProps) => {
@@ -25,6 +26,7 @@ export const PercentageControl = (props: PercentageControlProps) => {
             name={props.name}
             control="input"
             ratio
+            disabled={props?.disabled}
             placeholder={props.placeholder ?? '0'}
             InputProps={{
                ...(props.withChip && {

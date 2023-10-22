@@ -4,7 +4,6 @@ import { LoanPrincipalControl } from '@app/components/forms/LoanPrincipalControl
 import * as FormMeta from '@app/utils/validators/book-a-loan/facility-details';
 import { FileUpload } from '@app/components/atoms/FileUpload';
 import { RedBorderContainer } from '@app/components/containers/RedBorderContainer';
-import { useBookLoanContext } from '@app/providers/book-loan';
 
 export const CollateralSelected: React.FC<{ name: string; collateral: string; handleRemove: () => void }> = ({
    collateral,

@@ -14,6 +14,8 @@ import { CheckboxOptionsItemChildren } from '@app/@types/security-document';
 import { RedBorderContainer } from '@app/components/containers/RedBorderContainer';
 import { useFormikHelper } from '@app/hooks/useFormikHelper';
 import { InputErrorText } from '@app/components/forms/InputFieldError';
+import { useBookLoanContext } from '@app/providers/book-loan';
+import { currencyToNumber } from '@app/helper/currency-converter';
 
 export const ColateralAndEquityContribFields = () => {
    const { InputFieldNames } = FormMeta;
@@ -21,6 +23,7 @@ export const ColateralAndEquityContribFields = () => {
    const { getFieldProps, errors } = useFormikContext();
    const { arrayFieldsHelper } = useFormikHelper();
    const collateralValues = getFieldProps(InputFieldNames.COLLATERALS).value;
+   const { selectedProduct } = useBookLoanContext();
 
    return (
       <Box>
@@ -77,20 +80,21 @@ export const ColateralAndEquityContribFields = () => {
                   placeholder="0"
                   name={InputFieldNames.EQUITY_CONTRIB}
                   withChip
+                  disabled={!getFieldProps(InputFieldNames.PRINCIPAL)?.value}
                   layoutFlexGrid={[7, 5]}
                />
             </Grid>
             {getFieldProps(InputFieldNames.EQUITY_CONTRIB)?.value && (
                <Grid item xs={5} pl={4}>
                   <Typography
-                     //TODO: calculate and display the actual equity amount based on the percentage equity
                      component="span"
                      sx={{ py: 1, px: 2, borderRadius: '4px', background: Colors.LightGray2 }}
                   >
                      <Typography component="span" fontWeight="bold" pr={1}>
-                        NGN
+                        {selectedProduct?.currency}
                      </Typography>
-                     10,000
+                     {currencyToNumber(getFieldProps(InputFieldNames.PRINCIPAL)?.value) *
+                        (getFieldProps(InputFieldNames.EQUITY_CONTRIB)?.value / 100)}
                   </Typography>
                </Grid>
             )}

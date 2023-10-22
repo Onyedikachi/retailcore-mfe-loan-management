@@ -2,7 +2,7 @@ import { PaddedContainer } from '@app/components/containers/PaddedContainer';
 import { Previous } from '@app/components/icons/Previous';
 import { SterlingLogoWithText } from '@app/components/icons/SterlingLogoWithText';
 import { Details } from '@app/components/loan-booking/process-summary/Details';
-import { bookingInfo, customerInfo } from '@app/components/loan-booking/process-summary/ProcessSummary';
+import { bookingInfo, customerInfo } from '@app/components/loan-booking/process-summary/summary-data';
 import { CustomerLoanDetailsPath } from '@app/constants/routes';
 import { useAppContext } from '@app/providers/app-provider';
 import { Box, Button, Divider, Grid } from '@mui/material';
@@ -52,8 +52,8 @@ export const LoanProductDetail = () => {
                </Grid>
                <PaddedContainer sx={{ mx: 5, mt: 3 }}>
                   <Typography fontWeight="600">Individual Loan Request Details</Typography>
-                  <Details title="Booking Information" details={bookingInfo} />
-                  <Details title="Customer Information" details={customerInfo} />
+                  <Details title="Booking Information" details={bookingInfo()} />
+                  <Details title="Customer Information" details={customerInfo()} />
                   <Details
                      title="Collateral Information"
                      details={collateralInfo(defaultCurrency?.abbreviation ?? 'NGN')}
