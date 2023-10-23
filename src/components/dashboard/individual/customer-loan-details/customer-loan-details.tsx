@@ -1,29 +1,38 @@
 import { statusColors } from '@app/constants/colors';
 import { Typography } from '@mui/material';
 import { StyledChip } from '../table-data/table-body-data';
+import { BookedLoanData } from '@app/@types/loan-product';
+import { loanStatus } from '@app/constants/dashboard';
+import { format } from 'date-fns';
 
-export const customerLoanInfo = (currency: string) => [
-   { key: 'Loan Product', value: 'PayDay Loan' },
+export const customerLoanInfo = (loan?: BookedLoanData) => [
+   { key: 'Loan Product', value: loan?.product?.name },
    {
       key: 'Status',
-      value: <StyledChip sx={{ ...statusColors('Closed') }} label={'Closed'} />,
+      value: (
+         <StyledChip sx={{ ...statusColors(loanStatus(loan?.status!)!) }} label={loanStatus(loan?.status!)} />
+      ),
    },
-   { key: 'Loan Account Num', value: '09876543210' },
-   { key: 'Tenor', value: '12 months' },
-   { key: 'Date Disbursed', value: '23/09/2020' },
-   { key: 'Amount Disbursed', value: `${currency} 100,000.00` },
-   { key: 'Interest(%)', value: '1.4' },
-   { key: 'Total Repayment', value: `${currency} 110,000.00` },
-   { key: 'Principal Balance', value: `${currency} 24,000.00` },
-   { key: 'Interest Balance', value: `${currency} 4,000.00` },
-   { key: 'Days in Arrears ', value: '1 Week' },
-   { key: 'Penalty Due', value: `${currency} -` },
-   { key: 'Grace Period ', value: '7 Days' },
+   { key: 'Loan Account Num', value: loan?.acctNo },
+   { key: 'Tenor', value: `${loan?.tenorValue} ${loan?.tenorPeriod}` },
+   {
+      key: 'Date Disbursed',
+      value: loan?.disburseDate ? format(new Date(loan?.disburseDate), 'MM/dd/yyyy') : '-',
+   },
+   { key: 'Amount Disbursed', value: `-` },
+   { key: 'Interest(%)', value: loan?.interestRate },
+   { key: 'Total Repayment', value: '-' },
+   { key: 'Principal Balance', value: '-' },
+   { key: 'Interest Balance', value: '-' },
+   { key: 'Days in Arrears ', value: '-' },
+   { key: 'Penalty Due', value: '-' },
+   { key: 'Grace Period ', value: loan?.gracePeriod },
    {
       key: 'Moratorium Period',
       value: (
          <Typography component="span">
-            3 Months <StyledChip sx={{ ...statusColors('Active') }} label={'Active'} />
+            {`${loan?.moratoriumValue} ${loan?.moratoriumPeriod ?? ''}`}
+            <StyledChip sx={{ ...statusColors('Active') }} label={'Active'} />
          </Typography>
       ),
    },

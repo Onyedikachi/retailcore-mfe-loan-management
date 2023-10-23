@@ -5,7 +5,9 @@ import { Typography } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import { format } from 'date-fns';
 import { statusColors } from '@app/constants/colors';
-import { menuFromStatus } from '@app/constants/dashboard';
+import { loanStatus, menuFromStatus } from '@app/constants/dashboard';
+import { BookedLoanData } from '@app/@types/loan-product';
+import { formatCurrency } from '@app/helper/currency-converter';
 
 export const StyledChip = styled(Chip)(() => ({
    padding: 0,
@@ -14,24 +16,28 @@ export const StyledChip = styled(Chip)(() => ({
    fontWeight: '500',
 }));
 
-export const bodyData = (currency: string, loanActions: (selectedAction: string) => void, tab: string) => {
-   const status = 'Performing';
+export const bodyData = (
+   loan: BookedLoanData | undefined,
+   loanActions: (selectedAction: string) => void,
+   tab: string
+) => {
+   const status = tab === 'records' ? '' : loanStatus(loan?.status!);
    return {
       customerName: (
          <>
-            <Typography fontSize="14px"> Omolola Olusanya</Typography>
-            <Typography variant="caption"> 0123456789</Typography>
+            <Typography fontSize="14px">{loan?.customerName}</Typography>
+            <Typography variant="caption">{loan?.acctNo}</Typography>
          </>
       ),
-      loanAmount: `${currency} 10,000.00`,
-      loanProduct: 'PayDay Loan',
-      status: <StyledChip sx={{ ...statusColors(status) }} label={status} />,
-      updatedOn: format(new Date(), 'd MMM yyyy, hh:mm a'),
+      loanAmount: `${loan?.product?.currency ?? ''} ${formatCurrency(loan?.principal!)}`,
+      loanProduct: loan?.product?.name ?? '-',
+      status: status ? <StyledChip sx={{ ...statusColors(status!) }} label={status!} /> : '-',
+      updatedOn: format(new Date(loan?.lastModifiedDate ?? loan?.dateCreated!), 'd MMM yyyy, hh:mm a'),
       filter: (
          <FilterMenu
             checkbox={false}
             filterIcon={<MenuIcon color="primary" />}
-            options={menuFromStatus(status)}
+            options={menuFromStatus(status!)}
             icon
             onFilterChange={(value) => loanActions(value as string)}
          />

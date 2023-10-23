@@ -8,6 +8,7 @@ import { DashboardCorperateLoan } from '@app/pages/DashboardCorperateLoan';
 import { DashboardIndividualLoan } from '@app/pages/DashboardIndividualLoan';
 import { CustomerLoanDetails } from '@app/pages/CustomerLoanDetails';
 import { LoanProductDetails } from '@app/pages/LoanProductDetails';
+import { IndividualLoanDashboardProvider } from '@app/providers/individual-loan-dashboard';
 
 export const BasePath = '/loan-management';
 export const BookLoanPath = `${BasePath}/book-loan`;
@@ -24,7 +25,11 @@ export const RouteMaps = {
       path: `${BasePath}/overview`,
    },
    dashboardIndividual: {
-      element: <DashboardIndividualLoan />,
+      element: (
+         <IndividualLoanDashboardProvider>
+            <DashboardIndividualLoan />
+         </IndividualLoanDashboardProvider>
+      ),
       path: `${BasePath}/individual`,
    },
    dashboardSME: {
@@ -44,11 +49,19 @@ export const RouteMaps = {
       path: `${BasePath}/loan-performance`,
    },
    customerLoanDetails: {
-      element: <CustomerLoanDetails />,
+      element: (
+         <IndividualLoanDashboardProvider>
+            <CustomerLoanDetails />
+         </IndividualLoanDashboardProvider>
+      ),
       path: `${BasePath}/customer-loan-details`,
    },
    loanProductDetails: {
-      element: <LoanProductDetails />,
+      element: (
+         <IndividualLoanDashboardProvider>
+            <LoanProductDetails />
+         </IndividualLoanDashboardProvider>
+      ),
       path: `${BasePath}/loan-product-details`,
    },
 };
@@ -66,13 +79,13 @@ export const RoutePaths = {
       absolute: RouteMaps.bookIndividualLoan.path,
       relative: '/individual-loan',
       name: 'Individual Loan',
-      permissions: [Permissions.CREATE_CREDIT_PRODUCT],
+      permissions: [Permissions.BOOK_LOAN],
    },
    DashboardOverview: {
       absolute: RouteMaps.dashboardOverview.path,
       relative: '/overview',
       name: 'Overview',
-      permissions: [],
+      permissions: [Permissions.VIEW_ALL_LOAN_RECORDS, Permissions.VIEW_ALL_LOAN_REQUESTS],
    },
    DashboardSME: {
       absolute: RouteMaps.dashboardSME.path,
@@ -90,24 +103,24 @@ export const RoutePaths = {
       absolute: RouteMaps.dashboardIndividual.path,
       relative: '/individual',
       name: 'Individual',
-      permissions: [],
+      permissions: [Permissions.VIEW_ALL_LOAN_RECORDS, Permissions.VIEW_ALL_LOAN_REQUESTS],
    },
    LoanPerformance: {
       absolute: RouteMaps.loanPerformance.path,
       relative: '/loan-performance',
       name: 'Loan Performance',
-      permissions: [],
+      permissions: [Permissions.VIEW_ALL_LOAN_RECORDS, Permissions.VIEW_ALL_LOAN_REQUESTS],
    },
    CustomerLoanDetails: {
       absolute: RouteMaps.customerLoanDetails.path,
       relative: '/customer-loan-details',
       name: 'Customer Loan Details',
-      permissions: [],
+      permissions: [Permissions.VIEW_ALL_LOAN_RECORDS, Permissions.VIEW_ALL_LOAN_REQUESTS],
    },
    LoanProductDetails: {
       absolute: RouteMaps.loanProductDetails.path,
       relative: '/loan-product-details',
       name: 'Customer Loan Details',
-      permissions: [],
+      permissions: [Permissions.VIEW_ALL_LOAN_RECORDS, Permissions.VIEW_ALL_LOAN_REQUESTS],
    },
 };

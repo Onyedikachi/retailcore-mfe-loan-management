@@ -1,6 +1,7 @@
 import { BookLoanData } from '@app/@types/book-loan';
 import { CustomerData } from '@app/@types/customer';
-import { LoanProductData } from '@app/@types/loan-product';
+import { BookedLoanData, LoanProductData } from '@app/@types/loan-product';
+import { currencyInputFormatter } from '@app/helper/currency-helper';
 
 export const mapBookLoanToSchema = (
    bookLoanData: BookLoanData,
@@ -52,4 +53,44 @@ export const mapBookLoanToSchema = (
    ) as Partial<BackendData>;
 
    return filteredBackendData;
+};
+
+export const mapSchemaToBookLoan = (loan: BookedLoanData): BookLoanData => {
+   const { currency: formattedCurrency } = currencyInputFormatter(loan.principal.toString());
+   return {
+      customerInformation: { acctNo: loan.acctNo },
+      facilityDetails: {
+         product_name: '',
+         product_category: '',
+         productPurpose: loan.productPurpose,
+         principal: formattedCurrency,
+         interestRate: loan.interestRate.toString(),
+         tenorValue: loan?.tenorValue.toString(),
+         tenorPeriod: loan?.tenorPeriod,
+         repayment_pattern: loan?.repaymentPattern,
+         repayment_frequency: loan?.repaymentFrequency,
+         start_date: loan?.repaymentFrequencyStartDate,
+         start_date_num: loan?.repaymentFrequencyValue,
+         start_date_period: loan?.repaymentFrequencyPeriod,
+         collaterals: [],
+         equity_contrib: loan?.equityContribution?.toString() ?? '',
+         isMoratoriumReq: loan?.isMoratoriumReq,
+         moratoriumPeriod: loan?.moratoriumPeriod ?? '',
+         moratoriumValue: loan?.moratoriumValue.toString() ?? '',
+         recognize_moratorium_period: loan?.moratoriumDuration ?? '',
+         isGraceReq: loan?.isGraceReq,
+         gracePeriod: loan?.gracePeriod,
+         graceValue: loan?.graceValue.toString() ?? '',
+      },
+      transactionSettings: {
+         disburseMethd: loan?.disburseMethd,
+         disburseAcct: loan?.disburseAcct,
+         disburseDate: loan?.disburseDate,
+         otherAcctNo: loan?.otherAcctNo,
+         isDisburseNotReq: loan?.isDisburseNotReq,
+         notificationChannel: [loan?.notificationChannel],
+         repaymentChannel: loan?.repaymentChannel,
+         repaymentAcct: loan?.repaymentAcct,
+      },
+   };
 };

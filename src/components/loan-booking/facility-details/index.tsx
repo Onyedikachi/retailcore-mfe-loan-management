@@ -11,7 +11,7 @@ import { ColateralAndEquityContribFields } from './ColateralAndEquityContribFiel
 import { LoanManagementSettingsField } from './LoanMangementSettingsField';
 import AlertDialog from '@app/components/modal/AlertDialog';
 import { useBookLoanContext } from '@app/providers/book-loan';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useRequest } from 'react-http-query';
 import { API_PATH, BasePath } from '@app/constants';
 
@@ -23,6 +23,8 @@ export const FacilityDetails: React.FC = () => {
       useBookLoanContext();
    const navigate = useNavigate();
    const [searchInput, setSearchInput] = useState('');
+   const [searchParams] = useSearchParams();
+   const id = searchParams.get('id');
 
    const onSubmit = (values: FormMeta.FacilityDetailsFormValues) => {
       updateBookLoanData('facilityDetails', values);
@@ -33,10 +35,15 @@ export const FacilityDetails: React.FC = () => {
       }
    };
 
-   const [, submitForm] = useRequest({ onSuccess: (res) => navigate(BasePath) });
+   const [, submitForm] = useRequest({
+      onSuccess: (res) => {
+         handleNavigation(0);
+         navigate(BasePath);
+      },
+   });
    const handleSubmit = () => {
       setShowAlertDialog(false);
-      submitForm(API_PATH.BookLoan, { body: backendData });
+      submitForm(API_PATH.IndiviualLoan, { body: backendData });
    };
 
    useRequest(

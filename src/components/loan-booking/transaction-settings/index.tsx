@@ -10,7 +10,7 @@ import { DisbursementSettingsFields } from './DisbursementSettingsFields';
 import { RepaymentSettingsFields } from './RepaymentSettingsFields';
 import AlertDialog from '@app/components/modal/AlertDialog';
 import { useBookLoanContext } from '@app/providers/book-loan';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useRequest } from 'react-http-query';
 import { API_PATH, BasePath } from '@app/constants';
 
@@ -18,8 +18,10 @@ export const TransactionSettings: React.FC = () => {
    const [isDraft, setIsDraft] = useState(false);
    const { handleNavigation } = useStepperContext();
    const [showAlertDialog, setShowAlertDialog] = useState(false);
-   const { bookLoanData, updateBookLoanData, backendData } = useBookLoanContext();
+   const { bookLoanData, updateBookLoanData, backendData, resetBookLoanData } = useBookLoanContext();
    const navigate = useNavigate();
+   const [searchParams] = useSearchParams();
+   const id = searchParams.get('id');
 
    const onSubmit = (values: FormMeta.TransactionSettingsFormValues) => {
       updateBookLoanData('transactionSettings', values);
@@ -30,10 +32,15 @@ export const TransactionSettings: React.FC = () => {
       }
    };
 
-   const [, submitForm] = useRequest({ onSuccess: (res) => navigate(BasePath) });
+   const [, submitForm] = useRequest({
+      onSuccess: (res) => {
+         navigate(BasePath);
+         handleNavigation(0);
+      },
+   });
    const handleSubmit = () => {
       setShowAlertDialog(false);
-      submitForm(API_PATH.BookLoan, { body: backendData });
+      submitForm(API_PATH.IndiviualLoan, { body: backendData });
    };
 
    return (

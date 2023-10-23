@@ -21,7 +21,7 @@ interface SelectProps extends MuiSelectProps {
    name: string;
    padding?: string;
    options: string[];
-   placeholder: string;
+   placeholder?: string;
 }
 
 export const UncontrolledSelect: React.FC<SelectProps> = (props) => {
@@ -31,9 +31,8 @@ export const UncontrolledSelect: React.FC<SelectProps> = (props) => {
             variant="outlined"
             id={props.name}
             {...props}
-            defaultValue=""
             displayEmpty
-            renderValue={(value: unknown) => value || <SelectPlaceholder text={props.placeholder} />}
+            renderValue={(value: unknown) => value || <SelectPlaceholder text={props?.placeholder ?? ''} />}
          >
             {props.options.map((option) => (
                <MenuItem value={option} key={option}>

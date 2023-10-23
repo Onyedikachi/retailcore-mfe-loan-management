@@ -5,15 +5,16 @@ import { CustomerInfoDialog } from '../customer-information/CustomerInfoDialoog'
 import { useBookLoanContext } from '@app/providers/book-loan';
 
 interface DetailsProps {
+   customerId?: string;
    title: string;
    details: {
       key: string;
-      value?: string;
+      value?: string | number;
       view?: boolean;
    }[];
 }
 
-export const Details: React.FC<DetailsProps> = ({ title, details }) => {
+export const Details: React.FC<DetailsProps> = ({ title, details, customerId }) => {
    const [openDetailsModal, setOpenDetailsModal] = React.useState(false);
    const { selectedCustomerId } = useBookLoanContext();
 
@@ -22,11 +23,11 @@ export const Details: React.FC<DetailsProps> = ({ title, details }) => {
          <Typography mb={2} mt={3}>
             {title}
          </Typography>
-         <Grid container pl={6}>
-            {details.map(({ key, value, view }, index) => (
-               <React.Fragment key={key + index}>
+         <>
+            {details?.map(({ key, value, view }, index) => (
+               <>
                   {value && (
-                     <>
+                     <Grid container pl={6} key={key}>
                         <Grid item xs={4} fontWeight="bold" mb={2}>
                            <Typography> {key}</Typography>
                         </Grid>
@@ -50,18 +51,18 @@ export const Details: React.FC<DetailsProps> = ({ title, details }) => {
                               )}
                            </Typography>
                         </Grid>
-                     </>
+                     </Grid>
                   )}
-               </React.Fragment>
+               </>
             ))}
-         </Grid>
+         </>
          <Dialog
             minHeight="80%"
             open={openDetailsModal}
             handleClose={() => setOpenDetailsModal(false)}
             title="Customer's Information"
          >
-            <CustomerInfoDialog id={selectedCustomerId} />
+            <CustomerInfoDialog id={customerId ?? selectedCustomerId} />
          </Dialog>
       </>
    );

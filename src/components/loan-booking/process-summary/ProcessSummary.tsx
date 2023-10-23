@@ -10,7 +10,7 @@ import { ResponseDialog } from '@app/components/modal/ResponseDialog';
 import { SubmitIcon } from '@app/components/icons/Submit';
 import { useState } from 'react';
 import { useStepperContext } from '@app/providers';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useRequest } from 'react-http-query';
 import { BasePath } from '@app/constants/routes';
 import { useBookLoanContext } from '@app/providers/book-loan';
@@ -31,10 +31,12 @@ export const ProcessSummary = () => {
    const { bookLoanData, backendData, selectedCustomer, selectedProduct, resetBookLoanData } =
       useBookLoanContext();
    const navigate = useNavigate();
+     const [searchParams] = useSearchParams();
+     const id = searchParams.get('id');
 
    const [, submitForm] = useRequest({ onSuccess: () => setShowResponseDialog(true) });
    const handleSubmit = () => {
-      submitForm(API_PATH.BookLoan, { body: backendData });
+      submitForm(API_PATH.IndiviualLoan, { body: backendData });
       setShowResponseDialog(true);
    };
 

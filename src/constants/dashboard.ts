@@ -1,28 +1,39 @@
 import { StatusCardProps } from '@app/@types/dashboard';
 
-export const creditFilterOptions = [
-   'Created by me',
-   'Initiated by my team',
-   'Created system-wide',
-   'Approved by me',
-   'Approved by my branch',
-   'Approved system-wide',
-];
+export const individualLoanFilterOptions = (key?: string | number) => {
+   return key == tabOptions[0].key
+      ? ['Created system-wide', 'Created by me', 'Created by my branch']
+      : ['Intiated system-wide', 'Intiated by me', 'Intiated by my branch'];
+};
 
-export const tabCardOptions: Record<string, Array<Omit<StatusCardProps, 'isActive' | 'onClick'>>> = {
-   requests: [
-      { label: 'All', value: 0, variant: 'black' },
-      { label: 'Approved', value: 0, variant: 'success' },
-      { label: 'In-Review', value: 0, variant: 'info' },
-      { label: 'In-Issue', value: 0, variant: 'error' },
-      { label: 'draft', value: 0, variant: 'gray' },
-   ],
-   records: [
-      { label: 'All', value: 0, variant: 'black' },
-      { label: 'Performing', value: 0, variant: 'success' },
-      { label: 'Non-Performing', value: 0, variant: 'gray' },
-      { label: 'Closed', value: 0, variant: 'gray' },
-   ],
+export interface DataCount {
+   all?: number;
+   approved?: number;
+   inReview?: number;
+   inIssue?: number;
+   draft?: number;
+   performing?: number;
+   nonPerforming?: number;
+   closed?: number;
+}
+export const tabCardOptions = (
+   dataCount?: DataCount
+): Record<string, Array<Omit<StatusCardProps, 'isActive' | 'onClick'>>> => {
+   return {
+      requests: [
+         { label: 'All', value: dataCount?.all ?? 0, variant: 'black' },
+         { label: 'Approved', value: dataCount?.approved ?? 0, variant: 'success' },
+         { label: 'In-Review', value: dataCount?.inReview ?? 0, variant: 'info' },
+         { label: 'In-Issue', value: dataCount?.inIssue ?? 0, variant: 'error' },
+         { label: 'Draft', value: dataCount?.draft ?? 0, variant: 'gray' },
+      ],
+      records: [
+         { label: 'All', value: dataCount?.all ?? 0, variant: 'black' },
+         { label: 'Performing', value: dataCount?.performing ?? 0, variant: 'success' },
+         { label: 'Non-Performing', value: dataCount?.nonPerforming ?? 0, variant: 'gray' },
+         { label: 'Closed', value: dataCount?.closed ?? 0, variant: 'gray' },
+      ],
+   };
 };
 
 export const tabOptions = [
@@ -69,6 +80,43 @@ export const menuToAction = (menu: string) => {
    }
 };
 
+export const loanStatus = (status: string) => {
+   switch (status) {
+      case 'APPROVED':
+         return 'Approved';
+      case 'IN_REVIEW':
+         return 'In-Review';
+      case 'IN_ISSUE':
+         return 'In-Issue';
+      case 'DRAFT':
+      case 'PENDING':
+         return 'Draft';
+      default:
+         return;
+   }
+};
+
+export const menuActionFromStatus = (menu: string) => {
+   switch (menu) {
+      case 'Approved':
+      case 'Settled':
+      case 'Closed':
+      case 'In-Issue':
+      case 'In-Review':
+      case 'Draft':
+         return ['View Loan Details'];
+      case 'Active':
+      case 'Performing':
+      case 'Non-Performing':
+      case 'Watchlist':
+      case 'Substandard':
+      case 'Doubtful':
+      case 'Lost':
+         return ['View Loan Details', 'Close Loan', 'Liquidate Loan', 'Write-Off Loan'];
+      default:
+         return ['View Loan Details'];
+   }
+};
 export const modifyLoan = (action: string) =>
    action == 'Withdraw & Modify' || action == 'Modify' || action == 'Continue Request';
 

@@ -2,14 +2,14 @@ import { Currency, CurrencyListResponse } from '@app/@types';
 import { BookLoanData } from '@app/@types/book-loan';
 import { CustomerData } from '@app/@types/customer';
 import { REQUEST_NAMES } from '@app/constants';
-import { mapBookLoanToSchema } from '@app/mappers/book-loan-mapper';
+import { mapBookLoanToSchema, mapSchemaToBookLoan } from '@app/mappers/book-loan-mapper';
 import { getDefaultCurrency } from '@app/helper/currency-helper';
 import { CustomerInfoFormValues } from '@app/utils/validators/book-a-loan/customer-info';
 import { FacilityDetailsFormValues } from '@app/utils/validators/book-a-loan/facility-details';
 import { TransactionSettingsFormValues } from '@app/utils/validators/book-a-loan/transaction-settings';
 import { createContext, useContext, useState, ReactNode, useMemo, useEffect } from 'react';
 import { useRequestData } from 'react-http-query';
-import { LoanProductData } from '@app/@types/loan-product';
+import { BookedLoanData, LoanProductData } from '@app/@types/loan-product';
 
 type DataType = CustomerInfoFormValues | TransactionSettingsFormValues | FacilityDetailsFormValues;
 type BookLoanSteps = 'customerInformation' | 'facilityDetails' | 'transactionSettings';
@@ -38,6 +38,8 @@ interface BookLoanContextType {
    getSelectedProduct: (name: string) => void;
    selectedProduct: LoanProductData | undefined;
    resetBookLoanData: () => void;
+   getLoanDataToModify: (loan: BookedLoanData) => void;
+   getCustomer: (customersData: CustomerData) => void;
 }
 
 const BookLoanContext = createContext<BookLoanContextType | null>(null);
@@ -79,9 +81,12 @@ export const BookLoanProvider = ({ children }: BookLoanProviderProps) => {
          });
       }
    };
-   const resetBookLoanData = () => {
-      setBookLoanData({});
+   const getLoanDataToModify = (loan: BookedLoanData) => {
+      const loanContextData = mapSchemaToBookLoan(loan);
+      setBookLoanData(loanContextData);
+      setSelectedCustomerId(loan.customerId);
    };
+   const resetBookLoanData = () => setBookLoanData({});
 
    useEffect(() => {
       const mappedBackendData = mapBookLoanToSchema(bookLoanData, selectedCustomer, selectedProduct, isDraft);
@@ -119,6 +124,7 @@ export const BookLoanProvider = ({ children }: BookLoanProviderProps) => {
          })[0]
       );
    };
+   const getCustomer = (customersData: CustomerData) => setSelectedCustomer(customersData);
 
    const persona: string | undefined = selectedCustomer?.risk_assessments?.filter(
       (assessments) =>
@@ -156,6 +162,8 @@ export const BookLoanProvider = ({ children }: BookLoanProviderProps) => {
          getSelectedProduct,
          getProductData,
          resetBookLoanData,
+         getLoanDataToModify,
+         getCustomer,
       }),
       [
          bookLoanData,
