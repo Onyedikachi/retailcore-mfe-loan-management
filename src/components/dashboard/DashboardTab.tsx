@@ -41,7 +41,7 @@ const StyledTab = styled(MUITab)(() => ({
 
 interface FiltersProps {
    statusOptions: Array<Omit<StatusCardProps, 'isActive' | 'onClick'>>;
-   onStatusClick: (statusKey: number) => void;
+   onStatusClick: (statusKey: string) => void;
    tabOptions: Array<{
       label: string;
       key: number | string;
@@ -57,6 +57,7 @@ interface FiltersProps {
 export const Filters = (props: FiltersProps) => {
    const [activeStatus, setActiveStatus] = useState('All');
    const [searchParams] = useSearchParams();
+   const [defaultInitiator, setDefaultInitiator] = useState(props?.filterOptions?.[0]);
    const navigate = useNavigate();
 
    const defaultActiveTab = searchParams.get('tab') ?? props.defaultTabKey ?? props.tabOptions[0]?.key;
@@ -72,8 +73,9 @@ export const Filters = (props: FiltersProps) => {
 
    const handleStatusCardClick = (key: string) => {
       setActiveStatus(key);
+      props?.onStatusClick(key);
    };
-
+   console.log();
    return (
       <FilterWrapper direction="row">
          <Stack direction="row" gap={6} flex={1}>
@@ -90,7 +92,10 @@ export const Filters = (props: FiltersProps) => {
 
                   return (
                      <StyledTab
-                        onClick={() => props.onTabClick(tab.key)}
+                        onClick={() => {
+                           props.onTabClick(tab.key);
+                           setDefaultInitiator(props?.filterOptions?.[0]);
+                        }}
                         value={tab.key}
                         icon={isActive ? <ArrowRight fontSize="large" color="primary" /> : <></>}
                         iconPosition="start"
@@ -130,9 +135,9 @@ export const Filters = (props: FiltersProps) => {
                <UncontrolledSelect
                   size="small"
                   name="filter"
-                  placeholder={props.filterPlaceholder ?? 'Filter by'}
-                  options={props.filterOptions}
-                  onChange={props.onFilterOptionSelected}
+                  defaultValue={defaultInitiator}
+                  options={props?.filterOptions}
+                  onChange={props?.onFilterOptionSelected}
                   sx={{
                      height: '32px',
                      borderRadius: '6px',

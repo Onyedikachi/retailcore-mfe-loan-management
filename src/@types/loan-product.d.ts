@@ -38,3 +38,89 @@ export interface LoanProductData {
    deleteBy: string | null;
    currentStep: number;
 }
+
+interface BookedLoanData {
+   id: string;
+   productId: string | null;
+   customerName: string;
+   customerId: string;
+   acctNo: string;
+   bvn: string;
+   productPurpose: string;
+   principal: number;
+   interestRate: number;
+   tenorValue: number;
+   tenorPeriod: string;
+   isMoratoriumReq: boolean;
+   moratoriumValue: number;
+   moratoriumPeriod: string | null;
+   moratoriumDuration: string | null;
+   isGraceReq: boolean;
+   graceValue: number;
+   gracePeriod: string;
+   disburseMethd: string;
+   disburseAcct: string;
+   disburseDate: string;
+   otherAcctNo: string;
+   isDisburseNotReq: boolean;
+   notificationChannel: string;
+   repaymentChannel: string;
+   repaymentSource: string;
+   repaymentAcct: string;
+   status: string;
+   tenantId: string;
+   createdBy: string;
+   createdById: string;
+   dateCreated: string;
+   lastModifiedById: string | null;
+   lastModifiedBy: string;
+   lastModifiedDate: string | null;
+   approvedBy: string;
+   approvedById: string | null;
+   approvedDate: string | null;
+   deletedDate: string | null;
+   deletedById: string | null;
+   deleteBy: string;
+   requestStatus: string;
+   repaymentPattern: string;
+   repaymentFrequency: string;
+   repaymentFrequencyStartDate: string;
+   repaymentFrequencyValue: string;
+   repaymentFrequencyPeriod: string;
+   equityContribution: number | null;
+   product: LoanProductData;
+   loanAssets: any[];
+   loanActivities: LoanActivity[];
+}
+
+interface LoanActivity {
+   id: string;
+   commentText: string;
+   action: string;
+   loanId: string;
+   createdById: string;
+   createdBy: string;
+   dateCreated: string;
+   lastModifiedById: string | null;
+   lastModifiedBy: string;
+   lastModifiedDate: string | null;
+   approvedBy: string;
+   approvedById: string | null;
+   approvedDate: string | null;
+   tenantId: string;
+   deletedDate: string | null;
+   deletedById: string | null;
+   deleteBy: string;
+}
+
+interface StatusCounts {
+   pending: number;
+   approved: number;
+   inReview: number;
+   inIssue: number;
+   performing: number;
+   nonPerforming: number;
+   active: number;
+   inActive: number;
+   draft: number;
+}

@@ -3,7 +3,7 @@ import Dialog from '@app/components/atoms/Dialog';
 import { PaddedContainer } from '@app/components/containers/PaddedContainer';
 import { SterlingLogoWithText } from '@app/components/icons/SterlingLogoWithText';
 import { CustomerInfoDialog } from '@app/components/loan-booking/customer-information/CustomerInfoDialoog';
-import { IndividualLoanPath } from '@app/constants';
+import { API_PATH, IndividualLoanPath } from '@app/constants';
 import { useAppContext } from '@app/providers/app-provider';
 import { Box, Button, Divider, Grid, Typography } from '@mui/material';
 import { useMemo, useState } from 'react';
@@ -13,24 +13,33 @@ import { Table } from '@app/components/table/Table';
 import { TableHeaderProps } from '@app/components/table';
 import { repayementScheduleHeaderData, repaymentScheduleBodyData } from './repayment-schedule-data';
 import { LoanActionRequest } from './LoanActionRequest';
+import { useRequest } from 'react-http-query';
+import { useSearchParams } from 'react-router-dom';
+import { useIndividualLoanDashboardContext } from '@app/providers/individual-loan-dashboard';
 
 export const ConstomerLoanDetail = () => {
-   const name = 'Temitope Yusuf Chukuma';
    const [openCustomerDetails, setOpenCustomerDetails] = useState(false);
    const [openLoanAction, setOpenLoanAction] = useState(false);
    const [actionType, setActionType] = useState('');
-   const { defaultCurrency } = useAppContext();
+   const [searchParams] = useSearchParams();
+   const id = searchParams.get('id');
+   const { loanProduct, getLoanProduct } = useIndividualLoanDashboardContext();
 
-   const performing: TableHeaderProps = useMemo(
-      () => repayementScheduleHeaderData((startDate, endDate) => {}),
-      []
-   );
+   // const performing: TableHeaderProps = useMemo(
+   //    () => repayementScheduleHeaderData((startDate, endDate) => {}),
+   //    []
+   // );
 
-   const perfomingTableBody = useMemo(() => {
-      return [1, 2, 3, 4, 5].map((item, id) =>
-         repaymentScheduleBodyData(defaultCurrency?.abbreviation ?? 'NGN')
-      );
-   }, []);
+   // const perfomingTableBody = useMemo(() => {
+   //    return [1, 2, 3, 4, 5].map((item, id) =>
+   //       repaymentScheduleBodyData(defaultCurrency?.abbreviation ?? 'NGN')
+   //    );
+   // }, []);
+
+   useRequest({
+      onMount: (getLoanData) => getLoanData(`${API_PATH.IndiviualLoan}/${id}`, { showSuccess: false }),
+      onSuccess: (response) => getLoanProduct(response.data),
+   });
 
    return (
       <Box px={2} pr={0}>
@@ -40,7 +49,7 @@ export const ConstomerLoanDetail = () => {
          <Box className="fancy-scrollbar" sx={{ overflow: 'auto', maxHeight: '510px', pl: 0.2, pr: 2 }}>
             <BackArrow route={IndividualLoanPath} text="Back" />
             <Typography variant="h5" mt={3}>
-               {name}
+               {loanProduct?.customerName}
             </Typography>
             <Button
                variant="text"
@@ -53,11 +62,11 @@ export const ConstomerLoanDetail = () => {
                <Typography component="span" fontWeight="600" mr={1}>
                   Loan Category:
                </Typography>
-               Performing Loan
+               {loanProduct?.product?.category}
             </Typography>
             <PaddedContainer sx={{ my: 2, p: 3, pt: 1 }}>
                <Grid container>
-                  {customerLoanInfo(defaultCurrency?.abbreviation ?? 'NGN').map(({ key, value }, index) => (
+                  {customerLoanInfo(loanProduct).map(({ key, value }, index) => (
                      <Grid item xs={1.7} mt={3} key={key}>
                         <Typography fontWeight="bold" mb={1} fontSize={14}>
                            {key}
@@ -70,18 +79,19 @@ export const ConstomerLoanDetail = () => {
                </Grid>
                <Divider sx={{ mt: 3, mb: 2 }} />
                <ActionButtons
+                  loanStatus={loanProduct?.status}
                   onClickAction={(action) => {
                      setOpenLoanAction(true);
                      setActionType(action);
                   }}
                />
             </PaddedContainer>
-            <Box py={2} px={1}>
+            {/* <Box py={2} px={1}>
                <Typography mb={2} fontWeight="600">
                   Individual Loan Repayment Schedule
                </Typography>
                <Table headerProps={performing} bodyProps={{ rows: perfomingTableBody }} />
-            </Box>
+            </Box> */}
          </Box>
          <Dialog
             minHeight="80%"
@@ -89,7 +99,7 @@ export const ConstomerLoanDetail = () => {
             handleClose={() => setOpenCustomerDetails(false)}
             title="Customer's Information"
          >
-            <CustomerInfoDialog />
+            <CustomerInfoDialog id={loanProduct?.customerId} />
          </Dialog>
          <Dialog
             minWidth="50%"

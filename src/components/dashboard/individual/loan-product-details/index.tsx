@@ -2,16 +2,25 @@ import { PaddedContainer } from '@app/components/containers/PaddedContainer';
 import { Previous } from '@app/components/icons/Previous';
 import { SterlingLogoWithText } from '@app/components/icons/SterlingLogoWithText';
 import { Details } from '@app/components/loan-booking/process-summary/Details';
-import { bookingInfo, customerInfo } from '@app/components/loan-booking/process-summary/summary-data';
 import { CustomerLoanDetailsPath } from '@app/constants/routes';
-import { useAppContext } from '@app/providers/app-provider';
+import { useIndividualLoanDashboardContext } from '@app/providers/individual-loan-dashboard';
 import { Box, Button, Divider, Grid } from '@mui/material';
 import Typography from '@mui/material/Typography';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
+import { bookingInfo, collateralInfo, customerInfo } from './details-data';
+import { useRequest } from 'react-http-query';
+import { API_PATH } from '@app/constants/api-path';
 
 export const LoanProductDetail = () => {
    const navigate = useNavigate();
-   const { defaultCurrency } = useAppContext();
+   const [searchParams] = useSearchParams();
+   const id = searchParams.get('id');
+   const { loanProduct, getLoanProduct } = useIndividualLoanDashboardContext();
+
+   useRequest({
+      onMount: (getLoanData) => getLoanData(`${API_PATH.IndiviualLoan}/${id}`, { showSuccess: false }),
+      onSuccess: (response) => getLoanProduct(response.data),
+   });
 
    return (
       <Box p={3} pr={0}>
@@ -19,7 +28,7 @@ export const LoanProductDetail = () => {
             <Typography fontSize="20px">PayDay Loan Details</Typography>
             <Button
                sx={{ textTransform: 'none', fontWeight: 400, color: 'inherit', borderColor: '#EEEEEE' }}
-               onClick={() => navigate(CustomerLoanDetailsPath)}
+               onClick={() => navigate(id ? `${CustomerLoanDetailsPath}?id=${id}` : CustomerLoanDetailsPath)}
                variant="outlined"
                startIcon={<Previous />}
             >
@@ -40,33 +49,30 @@ export const LoanProductDetail = () => {
                <Divider sx={{ mt: 3, mb: 2 }} />
                <Grid container textAlign="center" py={2}>
                   <Grid item xs>
-                     <Typography>ACCOUNT NAME: ABC</Typography>
-                     <Typography>18, XYZ, ABCDE, IKEJA LAGOS</Typography>
+                     <Typography>ACCOUNT NAME: {loanProduct?.customerName}</Typography>
+                     {/* <Typography>18, XYZ, ABCDE, IKEJA LAGOS</Typography> */}
                   </Grid>
                   <Grid item xs>
-                     CURRENCY: {defaultCurrency?.abbreviation ?? 'NGN'}
+                     CURRENCY: {loanProduct?.product?.currency}
                   </Grid>
                   <Grid item xs>
-                     ACCOUNT NO: 012345678
+                     ACCOUNT NO: {loanProduct?.acctNo}
                   </Grid>
                </Grid>
                <PaddedContainer sx={{ mx: 5, mt: 3 }}>
                   <Typography fontWeight="600">Individual Loan Request Details</Typography>
-                  <Details title="Booking Information" details={bookingInfo()} />
-                  <Details title="Customer Information" details={customerInfo()} />
+                  <Details title="Booking Information" details={bookingInfo(loanProduct)} />
                   <Details
-                     title="Collateral Information"
-                     details={collateralInfo(defaultCurrency?.abbreviation ?? 'NGN')}
+                     title="Customer Information"
+                     details={customerInfo(loanProduct)}
+                     customerId={loanProduct?.customerId}
                   />
+                  {loanProduct?.loanAssets && loanProduct?.loanAssets.length > 0 && (
+                     <Details title="Collateral Information" details={collateralInfo(loanProduct)} />
+                  )}
                </PaddedContainer>
             </PaddedContainer>
          </Box>
       </Box>
    );
 };
-
-export const collateralInfo = (currency: string) => [
-   { key: 'Collateral Type', value: 'Mr' },
-   { key: 'Address', value: 'Chukwuma' },
-   { key: 'Value', value: `${currency} 110,000.00` },
-];

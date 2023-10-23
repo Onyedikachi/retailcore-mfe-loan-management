@@ -1,15 +1,27 @@
+import { BookedLoanData } from '@app/@types/loan-product';
 import FilterMenu from '@app/components/atoms/FilterMenu';
 import { DateFilter } from '@app/components/calendar/DateFilter';
 import { TableHeaderProps } from '@app/components/table';
 import { tabCardOptions } from '@app/constants/dashboard';
 
 export const headerData = (
+   loanProducts: BookedLoanData[] | undefined,
    filterLoanProduct: (selectedOptions: string[]) => void,
    filterStatus: (selectedOptions: string[]) => void,
    filterDate: (startDate?: Date | undefined, endDate?: Date | undefined) => void,
    tab: string
 ): TableHeaderProps => {
-   const statusOptions = tabCardOptions[tab]?.map((option) => option.label);
+   const statusOptions = tabCardOptions()
+      [tab]?.map((option) => option.label)
+      .slice(1);
+   const uniqueProductNames = new Set();
+     console.log({ loanProducts });
+   loanProducts?.forEach((loan) => {
+      if (loan.product && loan.product.name) {
+         uniqueProductNames.add(loan.product.name);
+      }
+   });
+   const productName = Array.from(uniqueProductNames);
    return {
       data: [
          { key: 'customerName', element: 'CUSTOMER NAME/ID' },
@@ -19,7 +31,7 @@ export const headerData = (
             element: 'LOAN PRODUCT',
             rightIcon: (
                <FilterMenu
-                  options={['PayDay Loan', 'School Fees Loan', 'System Wide']}
+                  options={(productName as string[]) ?? []}
                   onFilterChange={(value) => filterLoanProduct(value as string[])}
                />
             ),

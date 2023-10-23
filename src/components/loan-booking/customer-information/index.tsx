@@ -10,7 +10,7 @@ import { useStepperContext } from '@app/providers/stepper';
 import { useRequest } from 'react-http-query';
 import { API_PATH, BasePath, CUSTOMER_MANAGEMENT_PATH } from '@app/constants';
 import { CustomerInfoFields } from './CustomerInfoFields';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 
 export const CustomerInformation: React.FC = () => {
    const [isDraft, setIsDraft] = useState(false);
@@ -28,6 +28,8 @@ export const CustomerInformation: React.FC = () => {
    const navigate = useNavigate();
    const [openEligibilityModal, setOpenEligibilityModal] = useState<boolean>();
    const { GET_INDIVIDUAL_CUSTOMERS } = CUSTOMER_MANAGEMENT_PATH;
+   const [searchParams] = useSearchParams();
+   const id = searchParams.get('id');
 
    const onSubmit = (values: FormMeta.CustomerInfoFormValues) => {
       if (!customerEligibility.isEligbible) {
@@ -42,10 +44,19 @@ export const CustomerInformation: React.FC = () => {
       }
    };
 
-   const [, submitForm] = useRequest({ onSuccess: (res) => navigate(BasePath) });
+   const [, submitForm] = useRequest({
+      onSuccess: (res) => {
+         navigate(BasePath);
+         handleNavigation(0);
+      },
+   });
    const handleSubmit = () => {
       setShowAlertDialog(false);
-      submitForm(API_PATH.BookLoan, { body: backendData });
+      if (id) {
+         submitForm(`${API_PATH.IndiviualLoan}`, { body: { ...backendData, id: id }, method: 'PUT' });
+      } else {
+         submitForm(API_PATH.IndiviualLoan, { body: backendData });
+      }
    };
 
    useRequest(

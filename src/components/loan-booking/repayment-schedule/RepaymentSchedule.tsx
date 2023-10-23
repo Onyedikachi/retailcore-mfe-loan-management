@@ -12,7 +12,7 @@ import { Table } from '@app/components/table';
 import { DateFilter } from '@app/components/calendar/DateFilter';
 import { downloadTableAsPDFByID } from '@app/helper/pdfDownloader';
 import { useBookLoanContext } from '@app/providers/book-loan';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 
 export const RepaymentSchedule = () => {
    const [isDraft, setIsDraft] = useState(false);
@@ -20,11 +20,13 @@ export const RepaymentSchedule = () => {
    const { backendData, selectedProduct } = useBookLoanContext();
    const currency = selectedProduct?.currency;
    const navigate = useNavigate();
+   const [searchParams] = useSearchParams();
+   const id = searchParams.get('id');
 
    const [, submitForm] = useRequest({ onSuccess: (res) => navigate(BasePath) });
    const handleSubmit = () => {
       setIsDraft(false);
-      submitForm(API_PATH.BookLoan, { body: backendData });
+      submitForm(API_PATH.IndiviualLoan, { body: backendData });
    };
 
    const schedule: TableHeaderProps = useMemo(() => {
