@@ -65,7 +65,7 @@ export const QuickLink = () => {
             <Box>
                <Grid spacing={0} width="100%" marginLeft={0} container>
                   {Array.from(new Array(6)).map((_, index) => (
-                     <QuickLinkItem key={index} label={`Link ${index}`} href={'#'} />
+                     <QuickLinkItem key={index * 2} label={`Link ${index}`} href={'#'} />
                   ))}
                </Grid>
             </Box>

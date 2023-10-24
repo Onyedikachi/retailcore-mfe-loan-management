@@ -9,6 +9,7 @@ import { DashboardIndividualLoan } from '@app/pages/DashboardIndividualLoan';
 import { CustomerLoanDetails } from '@app/pages/CustomerLoanDetails';
 import { LoanProductDetails } from '@app/pages/LoanProductDetails';
 import { IndividualLoanDashboardProvider } from '@app/providers/individual-loan-dashboard';
+import { LoanManagementReview } from '@app/pages/LoanManagementReview';
 
 export const BasePath = '/loan-management';
 export const BookLoanPath = `${BasePath}/book-loan`;
@@ -17,7 +18,7 @@ export const IndividualLoanPath = `${BasePath}/individual`;
 
 export const RouteMaps = {
    root: {
-      element: <Navigate to={`${BasePath}/overview`} />,
+      element: <Navigate to={`${BasePath}/individual`} />,
       path: BasePath,
    },
    dashboardOverview: {
@@ -63,6 +64,10 @@ export const RouteMaps = {
          </IndividualLoanDashboardProvider>
       ),
       path: `${BasePath}/loan-product-details`,
+   },
+   loanReview: {
+      element: <LoanManagementReview />,
+      path: `${BasePath}/review`,
    },
 };
 
@@ -122,5 +127,11 @@ export const RoutePaths = {
       relative: '/loan-product-details',
       name: 'Customer Loan Details',
       permissions: [Permissions.VIEW_ALL_LOAN_RECORDS, Permissions.VIEW_ALL_LOAN_REQUESTS],
+   },
+   LoanReview: {
+      absolute: RouteMaps.loanReview.path,
+      relative: '/review',
+      name: 'Loan Management Review',
+      permissions: [Permissions['AUTHORIZE_BOOKING/RESTRUCTURING_REQUESTS']],
    },
 };

@@ -25,7 +25,7 @@ export const LoanProductDetail = () => {
    return (
       <Box p={3} pr={0}>
          <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 2, pr: 2 }}>
-            <Typography fontSize="20px">PayDay Loan Details</Typography>
+            <Typography fontSize="20px">{loanProduct?.product?.name}</Typography>
             <Button
                sx={{ textTransform: 'none', fontWeight: 400, color: 'inherit', borderColor: '#EEEEEE' }}
                onClick={() => navigate(id ? `${CustomerLoanDetailsPath}?id=${id}` : CustomerLoanDetailsPath)}

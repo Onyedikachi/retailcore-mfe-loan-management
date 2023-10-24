@@ -12,12 +12,12 @@ import { useState } from 'react';
 import { useStepperContext } from '@app/providers';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useRequest } from 'react-http-query';
-import { BasePath } from '@app/constants/routes';
+import { IndividualLoanPath } from '@app/constants/routes';
 import { useBookLoanContext } from '@app/providers/book-loan';
 import { bookingInfo, customerInfo } from './summary-data';
 import { API_PATH } from '@app/constants/api-path';
 
-const ContainerWrapper = styled(Box)({
+export const ContainerWrapper = styled(Box)({
    height: 'calc(100% - 95px)',
    overflow: 'auto',
    paddingTop: '1px 1px 0px 1px',
@@ -28,16 +28,25 @@ export const ProcessSummary = () => {
    const [showCancelDialog, setShowCancelDialog] = useState(false);
    const [showResponseDialog, setShowResponseDialog] = useState(false);
    const { handleNavigation } = useStepperContext();
-   const { bookLoanData, backendData, selectedCustomer, selectedProduct, resetBookLoanData } =
-      useBookLoanContext();
+   const {
+      bookLoanData,
+      backendData,
+      selectedCustomer,
+      selectedProduct,
+      resetBookLoanData,
+      selectedCustomerId,
+   } = useBookLoanContext();
    const navigate = useNavigate();
-     const [searchParams] = useSearchParams();
-     const id = searchParams.get('id');
+   const [searchParams] = useSearchParams();
+   const id = searchParams.get('id');
 
    const [, submitForm] = useRequest({ onSuccess: () => setShowResponseDialog(true) });
    const handleSubmit = () => {
-      submitForm(API_PATH.IndiviualLoan, { body: backendData });
-      setShowResponseDialog(true);
+      if (id) {
+         submitForm(`${API_PATH.IndiviualLoan}`, { body: { ...backendData, id: id }, method: 'PUT' });
+      } else {
+         submitForm(API_PATH.IndiviualLoan, { body: backendData });
+      }
    };
 
    const handleCompletedOrClosed = (path?: string) => {
@@ -55,7 +64,11 @@ export const ProcessSummary = () => {
             <PaddedContainer>
                <Typography fontWeight="600">Individual Loan Details</Typography>
                <Details title="Booking Information" details={bookingInfo(bookLoanData, selectedProduct)} />
-               <Details title="Customer Information" details={customerInfo(selectedCustomer, bookLoanData)} />
+               <Details
+                  title="Customer Information"
+                  details={customerInfo(selectedCustomer, bookLoanData)}
+                  customerId={selectedCustomerId}
+               />
             </PaddedContainer>
          </ContainerWrapper>
          <PaddedContainer>
@@ -86,14 +99,14 @@ export const ProcessSummary = () => {
          <AlertDialog
             open={showCancelDialog}
             handleClose={() => setShowCancelDialog(false)}
-            handleConfirm={() => handleCompletedOrClosed(BasePath)}
+            handleConfirm={() => handleCompletedOrClosed(IndividualLoanPath)}
             title="Do you want to cancel loan booking process?"
          />
          <ResponseDialog
             open={showResponseDialog}
             handleClose={() => setShowResponseDialog(false)}
             handleNext={() => handleCompletedOrClosed()}
-            handlePrevious={() => handleCompletedOrClosed(BasePath)}
+            handlePrevious={() => handleCompletedOrClosed(IndividualLoanPath)}
             title="Loan Disbursement Request Submitted for Approval"
             status="success"
             nextText="Book another loan"

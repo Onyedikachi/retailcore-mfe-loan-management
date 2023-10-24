@@ -15,7 +15,6 @@ export const headerData = (
       [tab]?.map((option) => option.label)
       .slice(1);
    const uniqueProductNames = new Set();
-     console.log({ loanProducts });
    loanProducts?.forEach((loan) => {
       if (loan.product && loan.product.name) {
          uniqueProductNames.add(loan.product.name);

@@ -5,6 +5,7 @@ const { RETAIL_AUTH_BASE_URL, RETAIL_CORE_BASE_URL, CUSTOMER_MANAGEMENT_BASE_URL
 export const API_PATH = {
    IndiviualLoan: `${API_V1}/loan`,
    GetAllLoanProduct: `${API_V1}/product`,
+   RepaymentSchedule: `${API_V1}/loan/loanrepaymentschedule`,
 };
 
 const RETAIL_CORE_V1 = `${RETAIL_CORE_BASE_URL ?? ''}${API_V1}`;

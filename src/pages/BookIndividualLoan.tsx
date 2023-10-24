@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { API_PATH, BasePath, CUSTOMER_MANAGEMENT_PATH } from '@app/constants';
+import { API_PATH, CUSTOMER_MANAGEMENT_PATH, IndividualLoanPath } from '@app/constants';
 import { Box, Grid, styled } from '@mui/material';
 import { CustomerInformation, FacilityDetails, LoanBookingHeader, Stepper } from '@app/components';
 import { PageLayout } from '@app/layouts/PageLayout';
@@ -100,7 +100,10 @@ export const BookIndividualLoan = () => {
    return (
       <PageLayout
          header={
-            <LoanBookingHeader title={activeStep == 4 ? 'PROCESS SUMMARY' : 'BOOK LOAN'} backUrl={BasePath} />
+            <LoanBookingHeader
+               title={activeStep == 4 ? 'PROCESS SUMMARY' : 'BOOK LOAN'}
+               backUrl={IndividualLoanPath}
+            />
          }
          content={
             <BookLoanProvider>

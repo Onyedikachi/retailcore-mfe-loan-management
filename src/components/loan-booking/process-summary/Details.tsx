@@ -1,8 +1,15 @@
 import Dialog from '@app/components/atoms/Dialog';
-import { Grid, Typography } from '@mui/material';
+import { Grid, Typography, styled } from '@mui/material';
 import React from 'react';
 import { CustomerInfoDialog } from '../customer-information/CustomerInfoDialoog';
-import { useBookLoanContext } from '@app/providers/book-loan';
+
+export const ViewChip = styled(Typography)(() => ({
+   marginLeft: '30px',
+   padding: '6px',
+   boxShadow: '1px 1px 3px 0px rgba(0, 0, 0, 0.25)',
+   cursor: 'pointer',
+   display: 'inline',
+}));
 
 interface DetailsProps {
    customerId?: string;
@@ -11,47 +18,50 @@ interface DetailsProps {
       key: string;
       value?: string | number;
       view?: boolean;
+      heading?: string;
+      file?: string;
    }[];
 }
 
 export const Details: React.FC<DetailsProps> = ({ title, details, customerId }) => {
    const [openDetailsModal, setOpenDetailsModal] = React.useState(false);
-   const { selectedCustomerId } = useBookLoanContext();
 
    return (
       <>
-         <Typography mb={2} mt={3}>
+         <Typography mb={2} mt={3} fontWeight="bold">
             {title}
          </Typography>
          <>
-            {details?.map(({ key, value, view }, index) => (
+            {details?.map(({ key, value, view, heading, file }) => (
                <>
                   {value && (
-                     <Grid container pl={6} key={key}>
-                        <Grid item xs={4} fontWeight="bold" mb={2}>
-                           <Typography> {key}</Typography>
-                        </Grid>
-                        <Grid item xs={8} mb={2}>
-                           <Typography variant="body2">
-                              {value}
-                              {view && (
-                                 <Typography
-                                    variant="body2"
-                                    component="span"
-                                    sx={{
-                                       ml: 3,
-                                       p: 0.7,
-                                       boxShadow: '1px 1px 3px 0px rgba(0, 0, 0, 0.25)',
-                                       cursor: 'pointer',
-                                    }}
-                                    onClick={() => setOpenDetailsModal(true)}
-                                 >
-                                    View
-                                 </Typography>
-                              )}
+                     <>
+                        {heading && (
+                           <Typography pl={6} fontWeight="bold" mb={2} sx={{ textDecoration: 'underline' }}>
+                              {heading}
                            </Typography>
+                        )}
+                        <Grid container pl={6} key={key}>
+                           <Grid item xs={4} mb={2}>
+                              <Typography> {key}</Typography>
+                           </Grid>
+                           <Grid item xs={8} mb={2}>
+                              <Typography variant="body2">
+                                 {value}
+                                 {view && (
+                                    <ViewChip variant="body2" onClick={() => setOpenDetailsModal(true)}>
+                                       View
+                                    </ViewChip>
+                                 )}
+                                 {file && (
+                                    <ViewChip variant="body2" onClick={() => {}}>
+                                       View
+                                    </ViewChip>
+                                 )}
+                              </Typography>
+                           </Grid>
                         </Grid>
-                     </Grid>
+                     </>
                   )}
                </>
             ))}
@@ -62,7 +72,7 @@ export const Details: React.FC<DetailsProps> = ({ title, details, customerId }) 
             handleClose={() => setOpenDetailsModal(false)}
             title="Customer's Information"
          >
-            <CustomerInfoDialog id={customerId ?? selectedCustomerId} />
+            <CustomerInfoDialog id={customerId} />
          </Dialog>
       </>
    );

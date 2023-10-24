@@ -96,6 +96,7 @@ export const BookLoanProvider = ({ children }: BookLoanProviderProps) => {
    const getSelectedProduct = (name: string) => {
       setSelectedProduct(allProduct?.filter((prod) => prod.name === name)[0]);
    };
+
    const getProductData = (allLoanProducts: LoanProductData[]) => {
       setAllProduct(allLoanProducts);
       const names = allLoanProducts.map((loan) => {
