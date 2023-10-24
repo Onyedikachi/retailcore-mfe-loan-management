@@ -67,6 +67,7 @@ export const TransactionSettings: React.FC = () => {
                               const isNext = type === 'next';
                               return (
                                  <Button
+                                    id="transaction-settings"
                                     key={type}
                                     color={isNext ? 'primary' : undefined}
                                     onClick={() => setIsDraft(!isNext)}
