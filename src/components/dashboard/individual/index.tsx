@@ -25,7 +25,8 @@ export const IndividualLoan = () => {
    const [initiator, setInitiator] = useState(individualLoanFilterOptions(tab!)[0]);
 
    useRequest({
-      onMount: (makeRequest) => makeRequest(`${API_PATH.IndiviualLoan}?All=${true}`, { showSuccess: false }),
+      onMount: (makeRequest) =>
+         makeRequest(`${API_PATH.IndiviualLoan}?All=${true}&Count=${20}`, { showSuccess: false }),
       onSuccess: (response) =>
          getLoanProducts(response.data.data.loan, response.data.data.statistics, tab as string),
    });

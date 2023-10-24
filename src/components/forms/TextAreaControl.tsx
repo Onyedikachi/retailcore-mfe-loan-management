@@ -7,6 +7,7 @@ export interface TextAreaControlProps {
    label?: string;
    tooltipText?: string;
    placeholder?: string;
+   rows?: number;
 }
 
 export const TextAreaControl = (props: TextAreaControlProps) => {
@@ -20,7 +21,7 @@ export const TextAreaControl = (props: TextAreaControlProps) => {
          <FormControlBase
             control="input"
             multiline
-            rows={4}
+            rows={props?.rows ?? 4}
             variant="outlined"
             placeholder={props.placeholder}
             name={props.name}

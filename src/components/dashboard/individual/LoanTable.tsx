@@ -131,6 +131,7 @@ export const LoanTable = () => {
                bodyProps={{ rows: loanTableBody }}
             />
          </Box>
+         {loanProducts && loanProducts?.length === 0 && <Box textAlign="center">No records found</Box>}
          <Dialog
             minWidth="50%"
             open={openLoanAction}

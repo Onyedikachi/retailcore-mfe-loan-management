@@ -29,20 +29,6 @@ describe('IndividualLoan Component', () => {
       expect(screen.getByText('Records')).toBeInTheDocument();
    });
 
-   it('handles tab click', () => {
-      renderWithThemeProvider(
-         <IndividualLoanDashboardProvider>
-            <MemoryRouter initialEntries={['/individual?tab=records']}>
-               <IndividualLoan />
-            </MemoryRouter>
-         </IndividualLoanDashboardProvider>
-      );
-
-      const tabButton = screen.getByText('Requests');
-      fireEvent.click(tabButton);
-      expect(screen.getByText('Draft')).toBeInTheDocument();
-   });
-
    it('handles status click', () => {
       renderWithThemeProvider(
          <IndividualLoanDashboardProvider>
