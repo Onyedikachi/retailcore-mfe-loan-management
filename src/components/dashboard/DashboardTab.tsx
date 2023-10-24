@@ -113,7 +113,7 @@ export const Filters = (props: FiltersProps) => {
             </TabStack>
             <Stack direction="row" gap="10px" alignItems="center">
                {props.statusOptions?.map((data, index) => (
-                  <Fragment key={index}>
+                  <Fragment key={data?.key}>
                      <StatusCard
                         data-testid="status-card"
                         onClick={() => handleStatusCardClick(data.key ?? data.label)}

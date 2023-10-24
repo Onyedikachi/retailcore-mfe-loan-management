@@ -67,7 +67,7 @@ const AutoCompleteWithTabsControl: React.FC<AutoCompleteWithTabsControlProps> = 
                      <>
                         <Box display="flex" flexWrap="wrap">
                            {selected?.map((item: string) => (
-                              <Typography component="span">{item}, </Typography>
+                              <Typography key={item} component="span">{item}</Typography>
                            ))}
                         </Box>
                         <br />
@@ -110,7 +110,7 @@ const AutoCompleteWithTabsControl: React.FC<AutoCompleteWithTabsControlProps> = 
                   ))}
                </Tabs>
                {props.tabPanels.map((panel, index) => (
-                  <TabPanel value={value} key={'panel' + index} index={index}>
+                  <TabPanel value={value} key={`panel + ${index * 2}`} index={index}>
                      {panel}
                   </TabPanel>
                ))}

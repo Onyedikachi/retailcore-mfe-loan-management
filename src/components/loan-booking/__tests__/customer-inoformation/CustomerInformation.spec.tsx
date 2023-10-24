@@ -1,9 +1,6 @@
-import { formTestUtil } from '@app/test/form-util';
-import { CreateProductSetup, silentError, fetchMock, render, act, fireEvent } from '@app/test/setup';
-import * as FormMeta from '@app/utils/validators/book-a-loan/customer-info';
+import { CreateProductSetup, silentError, render, act, fireEvent } from '@app/test/setup';
 import { CustomerInformation } from '../../customer-information';
 import userEvent from '@testing-library/user-event';
-const { InputFieldNames } = FormMeta;
 import { BookLoanProvider } from '@app/providers/book-loan';
 
 const submitButtonSelector = '#customer-info';

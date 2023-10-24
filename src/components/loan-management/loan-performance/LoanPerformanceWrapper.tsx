@@ -49,7 +49,7 @@ export const LoanPerformanceSummary: React.FC<LoanPerformanceSummaryProps> = (pr
                ))}
             </Tabs>
             {props.tabPanels.map((panel, index) => (
-               <TabPanel value={value} key={`${panel}${index}`} index={index}>
+               <TabPanel value={value} key={`${panel}${index * 2}`} index={index}>
                   <Box className="fancy-scrollbar" sx={{ height: '300px', overflow: 'auto' }}>
                      {panel}
                   </Box>
