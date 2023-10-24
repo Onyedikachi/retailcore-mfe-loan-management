@@ -1,4 +1,5 @@
 import { BookedLoanData } from '@app/@types/loan-product';
+import { format } from 'date-fns';
 
 export const bookingInfo = (loanProduct: BookedLoanData | undefined) => {
    return [
@@ -29,7 +30,12 @@ export const bookingInfo = (loanProduct: BookedLoanData | undefined) => {
          key: 'Disbursement account',
          value: loanProduct?.disburseAcct,
       },
-      { key: 'Disbursement date', value: loanProduct?.disburseDate },
+      {
+         key: 'Disbursement date',
+         value: loanProduct?.disburseDate
+            ? format(new Date(loanProduct?.disburseDate), 'd MMM yyyy, hh:mm a')
+            : '',
+      },
    ];
 };
 

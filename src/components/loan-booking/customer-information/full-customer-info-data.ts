@@ -1,4 +1,5 @@
 import { CustomerData } from '@app/@types/customer';
+import { format } from 'date-fns';
 
 export const customerInfo = (customer?: CustomerData) => {
    const profile = customer?.customer_profiles?.[0];
@@ -12,7 +13,7 @@ export const customerInfo = (customer?: CustomerData) => {
          { key: 'Mother’s Maiden Name', value: profile?.mothersMaidenName },
          { key: 'Gender', value: profile?.gender },
          { key: 'Marital Status', value: profile?.maritalStatus },
-         { key: 'Date of Birth ', value: profile?.dateOfBirth },
+         { key: 'Date of Birth ', value: format(new Date(profile?.dateOfBirth ?? ''), 'yyyy-MM-dd') },
          { key: 'Country', value: profile?.country },
          { key: 'State of Origin', value: profile?.stateOfOrigin },
          { key: 'LGA', value: profile?.lga },

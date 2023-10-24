@@ -8,7 +8,7 @@ import AlertDialog from '@app/components/modal/AlertDialog';
 import { useBookLoanContext } from '@app/providers/book-loan';
 import { useStepperContext } from '@app/providers/stepper';
 import { useRequest } from 'react-http-query';
-import { API_PATH, BasePath, CUSTOMER_MANAGEMENT_PATH } from '@app/constants';
+import { API_PATH, CUSTOMER_MANAGEMENT_PATH, IndividualLoanPath } from '@app/constants';
 import { CustomerInfoFields } from './CustomerInfoFields';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
@@ -46,7 +46,7 @@ export const CustomerInformation: React.FC = () => {
 
    const [, submitForm] = useRequest({
       onSuccess: (res) => {
-         navigate(BasePath);
+         navigate(IndividualLoanPath);
          handleNavigation(0);
       },
    });

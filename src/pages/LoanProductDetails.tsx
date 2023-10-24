@@ -5,9 +5,11 @@ import { StyledContentWrapper } from '@app/components/containers/StyledWrapperCo
 import { LoanProductDetail } from '@app/components/dashboard/individual/loan-product-details';
 import { BookLoanProvider } from '@app/providers/book-loan';
 import { useSearchParams } from 'react-router-dom';
+import { useIndividualLoanDashboardContext } from '@app/providers/individual-loan-dashboard';
 
 export const LoanProductDetails = () => {
-   const name = 'Pay Day Loan';
+   const { loanProduct } = useIndividualLoanDashboardContext();
+   const name = loanProduct?.customerName?.toUpperCase() ?? '';
    const [searchParams] = useSearchParams();
    const id = searchParams.get('id');
 
@@ -15,9 +17,9 @@ export const LoanProductDetails = () => {
       <PageLayout
          header={
             <Header
-               title={name ?? ''}
+               title={name}
                backRoute={id ? `${CustomerLoanDetailsPath}?id=${id}` : CustomerLoanDetailsPath}
-               sudmodules={['LOAN MANAGEMENT', 'LOAN DETAILS', name?.toUpperCase() ?? '']}
+               sudmodules={['LOAN MANAGEMENT', 'LOAN DETAILS', name]}
             />
          }
          content={

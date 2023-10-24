@@ -17,7 +17,7 @@ export const IndividualLoanPath = `${BasePath}/individual`;
 
 export const RouteMaps = {
    root: {
-      element: <Navigate to={`${BasePath}/overview`} />,
+      element: <Navigate to={`${BasePath}/individual`} />,
       path: BasePath,
    },
    dashboardOverview: {

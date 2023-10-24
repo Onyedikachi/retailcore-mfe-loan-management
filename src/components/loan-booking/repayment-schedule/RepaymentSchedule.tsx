@@ -2,7 +2,7 @@ import { Button, Tooltip } from '@app/components/atoms';
 import { TableHeaderProps } from '@app/components/table/TableHeader';
 import FormContainer from '@app/components/forms/FormContainer';
 import AlertDialog from '@app/components/modal/AlertDialog';
-import { API_PATH, BasePath } from '@app/constants';
+import { API_PATH, IndividualLoanPath } from '@app/constants';
 import { formattedDate } from '@app/helper/formater';
 import { useStepperContext } from '@app/providers';
 import { Box, Divider, Typography } from '@mui/material';
@@ -17,18 +17,30 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 export const RepaymentSchedule = () => {
    const [isDraft, setIsDraft] = useState(false);
    const { handleNavigation } = useStepperContext();
-   const { backendData, selectedProduct } = useBookLoanContext();
+   const { backendData, selectedProduct, bookLoanData } = useBookLoanContext();
    const currency = selectedProduct?.currency;
    const navigate = useNavigate();
    const [searchParams] = useSearchParams();
    const id = searchParams.get('id');
 
-   const [, submitForm] = useRequest({ onSuccess: (res) => navigate(BasePath) });
+   const [, submitForm] = useRequest({ onSuccess: (res) => navigate(IndividualLoanPath) });
    const handleSubmit = () => {
       setIsDraft(false);
-      submitForm(API_PATH.IndiviualLoan, { body: backendData });
+      if (id) {
+         submitForm(`${API_PATH.IndiviualLoan}`, { body: { ...backendData, id: id }, method: 'PUT' });
+      } else {
+         submitForm(API_PATH.IndiviualLoan, { body: backendData });
+      }
    };
 
+   // useRequest({
+   //    onMount: (makeRequest) =>
+   //       makeRequest(`${API_PATH.RepaymentSchedule}`, {
+   //          showSuccess: false,
+   //          body: { ...mapRepaymentScheduleToSchema(bookLoanData, selectedProduct) },
+   //       }),
+   //    onSuccess: (response) => console.log(response.data.data),
+   // });
    const schedule: TableHeaderProps = useMemo(() => {
       return {
          data: [
@@ -43,7 +55,7 @@ export const RepaymentSchedule = () => {
    }, []);
 
    const tableBody = useMemo(() => {
-      return [1, 2].map((item, id) => ({
+      return [].map((item, id) => ({
          date: formattedDate('2022-02-22T15:45:00Z'),
          principal: `${currency} 8,333.33`,
          interest: `${currency} 461.67`,

@@ -4,7 +4,7 @@ import * as FormMeta from '@app/utils/validators/book-a-loan/facility-details';
 import Accordion from '@app/components/accordion/Accordion';
 import { Button } from '@app/components/atoms';
 import FormContainer from '@app/components/forms/FormContainer';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useStepperContext } from '@app/providers';
 import { FacilityDetailsFields } from './FacilityDetailsFields';
 import { ColateralAndEquityContribFields } from './ColateralAndEquityContribField';
@@ -13,14 +13,21 @@ import AlertDialog from '@app/components/modal/AlertDialog';
 import { useBookLoanContext } from '@app/providers/book-loan';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useRequest } from 'react-http-query';
-import { API_PATH, BasePath } from '@app/constants';
+import { API_PATH, IndividualLoanPath } from '@app/constants';
 
 export const FacilityDetails: React.FC = () => {
    const [isDraft, setIsDraft] = useState(false);
    const { handleNavigation } = useStepperContext();
    const [showAlertDialog, setShowAlertDialog] = useState(false);
-   const { bookLoanData, updateBookLoanData, backendData, getProductData, productNames, selectedProduct } =
-      useBookLoanContext();
+   const {
+      bookLoanData,
+      updateBookLoanData,
+      backendData,
+      getProductData,
+      productNames,
+      selectedProduct,
+      getSelectedProduct,
+   } = useBookLoanContext();
    const navigate = useNavigate();
    const [searchInput, setSearchInput] = useState('');
    const [searchParams] = useSearchParams();
@@ -38,12 +45,16 @@ export const FacilityDetails: React.FC = () => {
    const [, submitForm] = useRequest({
       onSuccess: (res) => {
          handleNavigation(0);
-         navigate(BasePath);
+         navigate(IndividualLoanPath);
       },
    });
    const handleSubmit = () => {
       setShowAlertDialog(false);
-      submitForm(API_PATH.IndiviualLoan, { body: backendData });
+      if (id) {
+         submitForm(`${API_PATH.IndiviualLoan}`, { body: { ...backendData, id: id }, method: 'PUT' });
+      } else {
+         submitForm(API_PATH.IndiviualLoan, { body: backendData });
+      }
    };
 
    useRequest(
@@ -57,6 +68,10 @@ export const FacilityDetails: React.FC = () => {
       },
       [searchInput]
    );
+
+   useEffect(() => {
+      id && getSelectedProduct(bookLoanData.facilityDetails?.product_name ?? '');
+   }, [id]);
 
    return (
       <FormContainer>
@@ -80,7 +95,10 @@ export const FacilityDetails: React.FC = () => {
                      <Box display="flex" alignItems="center" justifyContent="space-between" mt={5} mb={2}>
                         <Button
                            color={'gray' as any}
-                           onClick={() => handleNavigation('back')}
+                           onClick={() => {
+                              updateBookLoanData('facilityDetails', formik.values);
+                              handleNavigation('back');
+                           }}
                            variant="outlined"
                         >
                            Previous

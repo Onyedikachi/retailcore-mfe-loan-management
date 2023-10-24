@@ -119,7 +119,7 @@ export const LoanTable = () => {
             handleSearch={setSearchText}
             handleRefresh={() => getLoans(`${API_PATH.IndiviualLoan}?All=${true}`, { showSuccess: false })}
             handleDownload={() =>
-               downloadAsCSVByID(`loan ${tab}`, `Individual Loan ${capitalizeString(tab!)}`)
+               downloadAsCSVByID(`loan-table`, `Individual Loan ${capitalizeString(tab!)}`)
             }
             searchPlaceholder="Search by product name/code"
          />

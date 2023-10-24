@@ -31,13 +31,16 @@ export const ProcessSummary = () => {
    const { bookLoanData, backendData, selectedCustomer, selectedProduct, resetBookLoanData } =
       useBookLoanContext();
    const navigate = useNavigate();
-     const [searchParams] = useSearchParams();
-     const id = searchParams.get('id');
+   const [searchParams] = useSearchParams();
+   const id = searchParams.get('id');
 
    const [, submitForm] = useRequest({ onSuccess: () => setShowResponseDialog(true) });
    const handleSubmit = () => {
-      submitForm(API_PATH.IndiviualLoan, { body: backendData });
-      setShowResponseDialog(true);
+      if (id) {
+         submitForm(`${API_PATH.IndiviualLoan}`, { body: { ...backendData, id: id }, method: 'PUT' });
+      } else {
+         submitForm(API_PATH.IndiviualLoan, { body: backendData });
+      }
    };
 
    const handleCompletedOrClosed = (path?: string) => {

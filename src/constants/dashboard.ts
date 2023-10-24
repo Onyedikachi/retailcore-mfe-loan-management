@@ -1,4 +1,5 @@
 import { StatusCardProps } from '@app/@types/dashboard';
+import { Permissions } from './permissions';
 
 export const individualLoanFilterOptions = (key?: string | number) => {
    return key == tabOptions[0].key
@@ -37,8 +38,8 @@ export const tabCardOptions = (
 };
 
 export const tabOptions = [
-   { label: 'Records', key: 'records' },
-   { label: 'Requests', key: 'requests' },
+   { label: 'Records', key: 'records', permissions: [Permissions.VIEW_ALL_LOAN_RECORDS] },
+   { label: 'Requests', key: 'requests', permissions: [Permissions.VIEW_ALL_LOAN_REQUESTS] },
 ];
 
 export const menuFromStatus = (menu: string) => {

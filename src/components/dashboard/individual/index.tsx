@@ -6,6 +6,7 @@ import { LoanTable } from './LoanTable';
 import { useRequest } from 'react-http-query';
 import { API_PATH } from '@app/constants/api-path';
 import { useIndividualLoanDashboardContext } from '@app/providers/individual-loan-dashboard';
+import { useSearchParams } from 'react-router-dom';
 
 const StyledContentWrapper = styled(Stack)({
    gap: '27px',
@@ -16,25 +17,21 @@ const StyledContentWrapper = styled(Stack)({
 });
 
 export const IndividualLoan = () => {
-   const [tabKey, setTabKey] = useState<string | number>(tabOptions[0]?.key);
    const [queryByStatus, setQueryByStatus] = useState<string[]>();
-
-   const handleTabChange = (tabKey: number | string) => {
-      console.log(tabKey);
-      setTabKey(tabKey);
-   };
+   const [searchParams] = useSearchParams();
+   const tab = searchParams.get('tab');
 
    const { getLoanProducts, dataCount } = useIndividualLoanDashboardContext();
-   const [initiator, setInitiator] = useState(individualLoanFilterOptions(tabKey)[0]);
+   const [initiator, setInitiator] = useState(individualLoanFilterOptions(tab!)[0]);
 
    useRequest({
       onMount: (makeRequest) => makeRequest(`${API_PATH.IndiviualLoan}?All=${true}`, { showSuccess: false }),
       onSuccess: (response) =>
-         getLoanProducts(response.data.data.loan, response.data.data.statistics, tabKey as string),
+         getLoanProducts(response.data.data.loan, response.data.data.statistics, tab as string),
    });
    const [, getLoans] = useRequest({
       onSuccess: (response) =>
-         getLoanProducts(response.data.data.loan, response.data.data.statistics, tabKey as string),
+         getLoanProducts(response.data.data.loan, response.data.data.statistics, tab as string),
    });
    useEffect(() => {
       const transformedArray = queryByStatus?.map((item) => item.toUpperCase().replace(/-/g, '_'));
@@ -51,14 +48,14 @@ export const IndividualLoan = () => {
    return (
       <StyledContentWrapper>
          <Filters
-            defaultTabKey={tabKey}
-            tabKey={tabKey}
-            onTabClick={handleTabChange}
+            defaultTabKey={tab!}
+            tabKey={tab!}
+            onTabClick={(tab) => {}}
             onStatusClick={(label) => setQueryByStatus([label])}
-            statusOptions={tabCardOptions(dataCount)[tabKey]}
+            statusOptions={tabCardOptions(dataCount)[tab!]}
             tabOptions={tabOptions}
             onFilterOptionSelected={(event: SelectChangeEvent<any>) => setInitiator(event.target.value)}
-            filterOptions={individualLoanFilterOptions(tabKey)}
+            filterOptions={individualLoanFilterOptions(tab!)}
          />
          <LoanTable />
       </StyledContentWrapper>

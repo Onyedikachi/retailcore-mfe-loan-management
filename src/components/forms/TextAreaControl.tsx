@@ -1,4 +1,3 @@
-import { CommonFormFieldNames, CommonTooltipText } from '@app/constants';
 import { FormControlBase } from './FormControl';
 import FormControlWrapper from './FormControlWrapper';
 
