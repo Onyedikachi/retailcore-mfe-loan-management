@@ -88,6 +88,7 @@ export const CustomerInformation: React.FC = () => {
                            const isNext = type === 'next';
                            return (
                               <Button
+                                 id="customer-info"
                                  key={type}
                                  sx={{ ...(isNext && { ml: 2 }) }}
                                  color={isNext ? 'primary' : undefined}

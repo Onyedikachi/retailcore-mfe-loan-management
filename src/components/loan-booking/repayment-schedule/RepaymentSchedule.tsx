@@ -72,6 +72,7 @@ export const RepaymentSchedule = () => {
                </Button>
                <Box display="flex" gap={3}>
                   <Button
+                     id="download-repayment"
                      variant="outlined"
                      onClick={() =>
                         downloadTableAsPDFByID('schedule', 'Loan Repayment Schedule', 'repayment schedule')
@@ -79,10 +80,12 @@ export const RepaymentSchedule = () => {
                   >
                      Download
                   </Button>
-                  <Button variant="outlined" onClick={() => setIsDraft(true)}>
+                  <Button variant="outlined" onClick={() => setIsDraft(true)} id="repayment-save">
                      Save As Draft
                   </Button>
-                  <Button onClick={() => handleNavigation('next')}>Next</Button>
+                  <Button onClick={() => handleNavigation('next')} id="repayment-next">
+                     Next
+                  </Button>
                </Box>
             </Box>
          </FormContainer>

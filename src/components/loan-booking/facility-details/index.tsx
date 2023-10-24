@@ -90,6 +90,7 @@ export const FacilityDetails: React.FC = () => {
                               const isNext = type === 'next';
                               return (
                                  <Button
+                                    id="facility-details"
                                     key={type}
                                     color={isNext ? 'primary' : undefined}
                                     onClick={() => setIsDraft(!isNext)}
