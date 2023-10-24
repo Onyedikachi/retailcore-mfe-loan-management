@@ -1,5 +1,5 @@
 import { formTestUtil } from '@app/test/form-util';
-import { CreateProductSetup, silentError, render, act, fireEvent, getAllByRole } from '@app/test/setup';
+import { CreateProductSetup, silentError, render, act, fireEvent } from '@app/test/setup';
 import * as FormMeta from '@app/utils/validators/book-a-loan/transaction-settings';
 import { TransactionSettings } from '../../transaction-settings';
 const { InputFieldNames } = FormMeta;
@@ -84,21 +84,6 @@ describe('<TransactionSettings/>', () => {
                disabled: true,
             },
          },
-         // {
-         //    testDescription:
-         //       'Should display `Select one notification channel` when user toggles Enable disbursement notif field',
-         //    selector: notificationCheckSelector,
-         //    acts: [
-         //       { selector: notificationCheckSelector, click: true },
-         //       { selector: notificationCheckSelector, click: true },
-         //       { blur: true },
-         //    ],
-         //    expectedText: 'Select one notification channel',
-         //    buttonStatus: {
-         //       selector: submitButtonSelector,
-         //       disabled: true,
-         //    },
-         // },
       ]);
    });
    describe('<TransactionSettings /> - RepaymentSettings', () => {

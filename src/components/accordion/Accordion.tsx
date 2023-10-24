@@ -66,7 +66,7 @@ const Accordion: React.FC<AccordionProps> = ({ accordionLabels, children, ...oth
       <>
          {accordionLabels.map((label, index) => (
             <CustomAccordion
-               key={'accordion' + index}
+               key={`accordion' + ${index * 2} `}
                onChange={handleChange(index)}
                expanded={expanded === index}
                {...otherProps}
