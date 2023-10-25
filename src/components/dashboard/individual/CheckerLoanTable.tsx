@@ -56,31 +56,27 @@ export const CheckerLoanTable = () => {
    const [, getLoans] = useRequest({
       onSuccess: (response) => getLoanProducts(response.data.data.loan, response.data.data.statistics),
    });
+
    useEffect(() => {
-      getLoans(`${API_PATH.IndividualLoan}${searchText ? `?Search=${searchText}` : `?All=${true}`}`, {
-         showSuccess: false,
-      });
+      const searchParam = searchText ? `?Search=${searchText}` : `?All=${true}`;
+      const loanPath = `${API_PATH.IndividualLoan}${searchParam}`;
+      getLoans(loanPath, { showSuccess: false });
    }, [searchText]);
 
    useEffect(() => {
       const transformedArray = queryByStatus?.map((item) => item.toUpperCase().replace(/-/g, '_'));
-      getLoans(
-         `${API_PATH.IndividualLoan}${
-            (transformedArray ?? []).length > 0
-               ? `?status=${JSON.stringify(transformedArray)}`
-               : `?All=${true}`
-         }`,
-         { showSuccess: false }
-      );
+      const statusQuery =
+         (transformedArray ?? []).length > 0 ? `?status=${JSON.stringify(transformedArray)}` : `?All=${true}`;
+      const loanPath = `${API_PATH.IndividualLoan}${statusQuery}`;
+      getLoans(loanPath, { showSuccess: false });
    }, [queryByStatus]);
 
    useEffect(() => {
-      getLoans(
-         `${API_PATH.IndividualLoan}${
-            queryByDate ? `?StartDate=${queryByDate[0]}&EndDate=${queryByDate[1]}` : `?All=${true}`
-         }`,
-         { showSuccess: false }
-      );
+      const dateQuery = queryByDate
+         ? `?StartDate=${queryByDate[0]}&EndDate=${queryByDate[1]}`
+         : `?All=${true}`;
+      const loanPath = `${API_PATH.IndividualLoan}${dateQuery}`;
+      getLoans(loanPath, { showSuccess: false });
    }, [queryByDate]);
 
    return (

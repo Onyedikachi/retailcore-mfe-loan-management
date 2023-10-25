@@ -2,11 +2,17 @@ import { StatusCardProps } from '@app/@types/dashboard';
 import { Permissions } from './permissions';
 
 export const individualLoanFilterOptions = (key?: string | number, isUserAChecker?: boolean) => {
-   return key == tabOptions[0].key
-      ? ['Created system-wide', 'Created by me', 'Created by my branch']
-      : isUserAChecker
-      ? ['Sent system-wide', 'Sent by me', 'Sent by my branch']
-      : ['Intiated system-wide', 'Intiated by me', 'Intiated by my branch'];
+   let options;
+
+   if (key == tabOptions[0].key) {
+      options = ['Created system-wide', 'Created by me', 'Created by my branch'];
+   } else if (isUserAChecker) {
+      options = ['Sent system-wide', 'Sent by me', 'Sent by my branch'];
+   } else {
+      options = ['Initiated system-wide', 'Initiated by me', 'Initiated by my branch'];
+   }
+
+   return options;
 };
 
 export interface DataCount {
