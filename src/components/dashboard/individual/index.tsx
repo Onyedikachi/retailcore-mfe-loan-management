@@ -7,7 +7,6 @@ import { useRequest } from 'react-http-query';
 import { API_PATH } from '@app/constants/api-path';
 import { useIndividualLoanDashboardContext } from '@app/providers/individual-loan-dashboard';
 import { useSearchParams } from 'react-router-dom';
-import { usePermission } from '@app/hooks/usePermission';
 import { CheckerLoanTable } from './CheckerLoanTable';
 
 const StyledContentWrapper = styled(Stack)({
@@ -22,8 +21,7 @@ export const IndividualLoan = () => {
    const [queryByStatus, setQueryByStatus] = useState<string[]>();
    const [searchParams] = useSearchParams();
    const tab = searchParams.get('tab');
-   const { isUserAChecker } = usePermission();
-   const checker = isUserAChecker;
+   const checker = false;
 
    const { getLoanProducts, dataCount } = useIndividualLoanDashboardContext();
    const [initiator, setInitiator] = useState(individualLoanFilterOptions(tab!)[0]);
