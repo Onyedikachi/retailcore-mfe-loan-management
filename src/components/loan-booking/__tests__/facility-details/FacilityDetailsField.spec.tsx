@@ -1,5 +1,5 @@
 import { formTestUtil } from '@app/test/form-util';
-import { CreateProductSetup, silentError, render, act, fireEvent, getAllByRole } from '@app/test/setup';
+import { CreateProductSetup, silentError, render, act, fireEvent } from '@app/test/setup';
 import * as FormMeta from '@app/utils/validators/book-a-loan/facility-details';
 import { FacilityDetails } from '../../facility-details';
 const { InputFieldNames } = FormMeta;
@@ -38,7 +38,7 @@ describe('<FacilityDetails /> ', () => {
                </BookLoanProvider>
             </CreateProductSetup>
          );
-         const { container, getByTestId } = screen;
+         const { container } = screen;
          const facilityDetailsNextbtn = container.querySelector(submitButtonSelector);
          await act(async () => {
             fireEvent.click(facilityDetailsNextbtn!);
@@ -54,7 +54,7 @@ describe('<FacilityDetails /> ', () => {
             </CreateProductSetup>
          );
 
-         const { container, getByTestId } = screen;
+         const { container } = screen;
          const facilityDetailsNextbtn = container.querySelector(submitButtonSelector);
          await act(async () => {
             fireEvent.click(facilityDetailsNextbtn!);
@@ -71,7 +71,7 @@ describe('<FacilityDetails /> ', () => {
             </CreateProductSetup>
          );
 
-         const { container, getByTestId } = screen;
+         const { container } = screen;
          const facilityDetailsNextbtn = container.querySelector(submitButtonSelector);
          await act(async () => {
             fireEvent.click(facilityDetailsNextbtn!);
@@ -80,7 +80,7 @@ describe('<FacilityDetails /> ', () => {
       });
    });
 
-   describe('<FacilityDetails /> - ColateralAndEquityContribFields', () => {
+   describe('<FacilityDetails /> - CollateralAndEquityContribFields', () => {
       formTestUtil(
          <CreateProductSetup>
             <BookLoanProvider>

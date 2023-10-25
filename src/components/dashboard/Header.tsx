@@ -18,7 +18,7 @@ export const DashboardHeader = () => {
    const location = useLocation();
 
    const handleSearch = () => {
-      // TODO: Search will be handled by a provider,
+      return;
    };
 
    return (

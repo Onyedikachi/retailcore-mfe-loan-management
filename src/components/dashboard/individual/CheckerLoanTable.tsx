@@ -18,8 +18,6 @@ export const CheckerLoanTable = () => {
    const [searchParams] = useSearchParams();
    const tab = searchParams.get('tab');
    const [searchText, setSearchText] = useState('');
-   const [queryByType, setQueryByType] = useState<string[]>();
-   const [queryByReviewer, setQueryByReviewer] = useState<string[]>();
    const [queryByStatus, setQueryByStatus] = useState<string[]>();
    const [queryByDate, setQueryByDate] = useState<string[]>();
    const { isUserAChecker } = usePermission();
@@ -31,8 +29,8 @@ export const CheckerLoanTable = () => {
       () =>
          headerData(
             loanProducts,
-            (type) => setQueryByType(type),
-            (reviewer) => setQueryByReviewer(reviewer),
+            (type) => {},
+            (reviewer) => {},
             (loanStatus) => setQueryByStatus(loanStatus),
             (startDate, endDate) => {
                const start = format(new Date(startDate!), 'yyyy-MM-dd');
@@ -59,33 +57,15 @@ export const CheckerLoanTable = () => {
       onSuccess: (response) => getLoanProducts(response.data.data.loan, response.data.data.statistics),
    });
    useEffect(() => {
-      getLoans(`${API_PATH.IndiviualLoan}${searchText ? `?Search=${searchText}` : `?All=${true}`}`, {
+      getLoans(`${API_PATH.IndividualLoan}${searchText ? `?Search=${searchText}` : `?All=${true}`}`, {
          showSuccess: false,
       });
    }, [searchText]);
 
-   // useEffect(() => {
-   //    getLoans(
-   //       `${API_PATH.IndiviualLoan}${
-   //          (queryByType ?? []).length > 0 ? `?Type=${JSON.stringify(queryByType)}` : `?All=${true}`
-   //       }`,
-   //       { showSuccess: false }
-   //    );
-   // }, [queryByType]);
-
-   // useEffect(() => {
-   //    getLoans(
-   //       `${API_PATH.IndiviualLoan}${
-   //          (queryByType ?? []).length > 0 ? `?Reviewer=${JSON.stringify(queryByType)}` : `?All=${true}`
-   //       }`,
-   //       { showSuccess: false }
-   //    );
-   // }, [queryByReviewer]);
-
    useEffect(() => {
       const transformedArray = queryByStatus?.map((item) => item.toUpperCase().replace(/-/g, '_'));
       getLoans(
-         `${API_PATH.IndiviualLoan}${
+         `${API_PATH.IndividualLoan}${
             (transformedArray ?? []).length > 0
                ? `?status=${JSON.stringify(transformedArray)}`
                : `?All=${true}`
@@ -96,7 +76,7 @@ export const CheckerLoanTable = () => {
 
    useEffect(() => {
       getLoans(
-         `${API_PATH.IndiviualLoan}${
+         `${API_PATH.IndividualLoan}${
             queryByDate ? `?StartDate=${queryByDate[0]}&EndDate=${queryByDate[1]}` : `?All=${true}`
          }`,
          { showSuccess: false }
@@ -107,7 +87,7 @@ export const CheckerLoanTable = () => {
       <Box sx={{ p: 2, pt: 3, bgcolor: 'white', borderRadius: 2, border: '1px solid #E5E9EB' }}>
          <TableHeading
             handleSearch={setSearchText}
-            handleRefresh={() => getLoans(`${API_PATH.IndiviualLoan}?All=${true}`, { showSuccess: false })}
+            handleRefresh={() => getLoans(`${API_PATH.IndividualLoan}?All=${true}`, { showSuccess: false })}
             handleDownload={() =>
                downloadAsCSVByID(`checker-loan-table`, `Individual Loan ${capitalizeString(tab!)}`)
             }

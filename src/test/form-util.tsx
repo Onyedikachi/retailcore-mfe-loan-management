@@ -80,7 +80,7 @@ const triggerEvent = async (acts: TestMeta['acts'][0], actElement: any, screen: 
    await act(async () => {
       for (const actKey of actsKeys) {
          if (!acts[actKey]) continue;
-         
+
          await eventInitiator(acts, actKey, actElement);
       }
    });

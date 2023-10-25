@@ -43,9 +43,9 @@ export const ProcessSummary = () => {
    const [, submitForm] = useRequest({ onSuccess: () => setShowResponseDialog(true) });
    const handleSubmit = () => {
       if (id) {
-         submitForm(`${API_PATH.IndiviualLoan}`, { body: { ...backendData, id: id }, method: 'PUT' });
+         submitForm(`${API_PATH.IndividualLoan}`, { body: { ...backendData, id: id }, method: 'PUT' });
       } else {
-         submitForm(API_PATH.IndiviualLoan, { body: backendData });
+         submitForm(API_PATH.IndividualLoan, { body: backendData });
       }
    };
 

@@ -13,7 +13,6 @@ export const LoanRejection: React.FC<{ handleSubmit?: () => void }> = ({ handleS
    const { initialValues, validationSchema, Fields } = FormMeta;
 
    const onSubmit = (values: FormMeta.FormValues) => {
-      // TODO: Implement submittion of  details to the backend.
       handleSubmit?.();
    };
 

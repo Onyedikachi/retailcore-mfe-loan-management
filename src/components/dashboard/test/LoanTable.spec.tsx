@@ -28,7 +28,7 @@ describe('LoanTable Component', () => {
 
    beforeEach(() => {
       fetchMock.mockResponse((req) => {
-         if (req.url.includes(API_PATH.IndiviualLoan)) return Promise.resolve(JSON.stringify({ data: '' }));
+         if (req.url.includes(API_PATH.IndividualLoan)) return Promise.resolve(JSON.stringify({ data: '' }));
          else return Promise.reject({});
       });
    });

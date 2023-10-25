@@ -33,6 +33,7 @@ export const ActionButtons: React.FC<ActionButtonsProps> = ({ onClickAction, loa
       <>
          {actions?.map((action, index) => (
             <Button
+               key={action}
                variant="text"
                startIcon={listActionsItems[index].icon}
                sx={{ color: 'inherit', px: 1, mr: 2 }}

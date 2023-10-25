@@ -32,7 +32,7 @@ export const CustomerInformation: React.FC = () => {
    const id = searchParams.get('id');
 
    const onSubmit = (values: FormMeta.CustomerInfoFormValues) => {
-      if (!customerEligibility.isEligbible) {
+      if (!customerEligibility.isEligible) {
          setOpenEligibilityModal(true);
       } else {
          updateBookLoanData('customerInformation', values);
@@ -53,19 +53,20 @@ export const CustomerInformation: React.FC = () => {
    const handleSubmit = () => {
       setShowAlertDialog(false);
       if (id) {
-         submitForm(`${API_PATH.IndiviualLoan}`, { body: { ...backendData, id: id }, method: 'PUT' });
+         submitForm(`${API_PATH.IndividualLoan}`, { body: { ...backendData, id: id }, method: 'PUT' });
       } else {
-         submitForm(API_PATH.IndiviualLoan, { body: backendData });
+         submitForm(API_PATH.IndividualLoan, { body: backendData });
       }
    };
 
    useRequest(
       {
-         onMount: (makeRequest) =>
+         onMount: (makeRequest) => {
             makeRequest(`${GET_INDIVIDUAL_CUSTOMERS}?search=${searchInput}`, {
                showSuccess: false,
                showLoader: !accountNumbers,
-            }),
+            });
+         },
          onSuccess: (response) => getCustomersData(response.data.data.customer),
       },
       [searchInput]

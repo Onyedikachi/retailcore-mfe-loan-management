@@ -3,7 +3,6 @@ import { Loader } from '@app/components/Loader';
 import { environmentVar } from '@app/constants';
 import { RequestProvider } from 'react-http-query';
 import { axiosInstance } from '@Sterling/shared';
-import { refreshToken } from '@app/utils/refresh-token';
 
 interface APIRequestProviderProps {
    children: React.ReactNode;
@@ -26,6 +25,8 @@ export const APIRequestProvider = ({ children }: APIRequestProviderProps) => {
       return <AlertSnackbar alertType="success" message={response.message ?? 'Request Successful'} />;
    };
 
+   const renderLoader = () => <Loader />;
+
    return (
       <RequestProvider
          interceptors={{
@@ -33,11 +34,10 @@ export const APIRequestProvider = ({ children }: APIRequestProviderProps) => {
                return { ...payload, headers: { 'Content-Type': 'application/json' } };
             },
             response(payload) {
-               // refreshToken();
                return { ...payload };
             },
          }}
-         onLoading={() => <Loader />}
+         onLoading={renderLoader}
          onError={renderErrorSnackBar}
          onSuccess={renderSuccessSnackbar}
          baseUrl={baseUrl}

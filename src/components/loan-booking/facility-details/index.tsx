@@ -7,8 +7,8 @@ import FormContainer from '@app/components/forms/FormContainer';
 import { useEffect, useState } from 'react';
 import { useStepperContext } from '@app/providers';
 import { FacilityDetailsFields } from './FacilityDetailsFields';
-import { ColateralAndEquityContribFields } from './ColateralAndEquityContribField';
-import { LoanManagementSettingsField } from './LoanMangementSettingsField';
+import { CollateralAndEquityContribFields } from './CollateralAndEquityContribField';
+import { LoanManagementSettingsField } from './LoanManagementSettingsField';
 import AlertDialog from '@app/components/modal/AlertDialog';
 import { useBookLoanContext } from '@app/providers/book-loan';
 import { useNavigate, useSearchParams } from 'react-router-dom';
@@ -51,19 +51,20 @@ export const FacilityDetails: React.FC = () => {
    const handleSubmit = () => {
       setShowAlertDialog(false);
       if (id) {
-         submitForm(`${API_PATH.IndiviualLoan}`, { body: { ...backendData, id: id }, method: 'PUT' });
+         submitForm(`${API_PATH.IndividualLoan}`, { body: { ...backendData, id: id }, method: 'PUT' });
       } else {
-         submitForm(API_PATH.IndiviualLoan, { body: backendData });
+         submitForm(API_PATH.IndividualLoan, { body: backendData });
       }
    };
 
    useRequest(
       {
-         onMount: (makeRequest) =>
+         onMount: (makeRequest) => {
             makeRequest(`${API_PATH.GetAllLoanProduct}?SearchTerm=${searchInput}`, {
                showSuccess: false,
                showLoader: !productNames,
-            }),
+            });
+         },
          onSuccess: (response) => getProductData(response.data.data.items),
       },
       [searchInput]
@@ -87,7 +88,7 @@ export const FacilityDetails: React.FC = () => {
                      <Box sx={{ mb: 5 }}>
                         <Accordion accordionLabels={FormMeta.accordionLabels}>
                            <FacilityDetailsFields getSearchInput={(input) => setSearchInput(input)} />
-                           <ColateralAndEquityContribFields />
+                           <CollateralAndEquityContribFields />
                            <LoanManagementSettingsField />
                         </Accordion>
                      </Box>

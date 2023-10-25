@@ -2,7 +2,7 @@ import { PageLayout } from '@app/layouts/PageLayout';
 import { IndividualLoanPath } from '@app/constants';
 import { Header } from '@app/components/Header';
 import { StyledContentWrapper } from '@app/components/containers/StyledWrapperContainer';
-import { ConstomerLoanDetail } from '@app/components/dashboard/individual/customer-loan-details';
+import { CustomerLoanDetail } from '@app/components/dashboard/individual/customer-loan-details';
 import { useIndividualLoanDashboardContext } from '@app/providers/individual-loan-dashboard';
 
 export const CustomerLoanDetails = () => {
@@ -20,7 +20,7 @@ export const CustomerLoanDetails = () => {
          }
          content={
             <StyledContentWrapper>
-               <ConstomerLoanDetail />
+               <CustomerLoanDetail />
             </StyledContentWrapper>
          }
          fullContent={true}

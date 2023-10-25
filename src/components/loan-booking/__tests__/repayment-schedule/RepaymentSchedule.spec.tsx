@@ -29,7 +29,7 @@ describe('<RepaymentSchedule />', () => {
                </BookLoanProvider>
             </CreateProductSetup>
          );
-         const { container, getByTestId } = screen;
+         const { container } = screen;
          const downlaodButtonSelectorbtn = container.querySelector(downlaodButtonSelector);
          expect((downlaodButtonSelectorbtn as HTMLButtonElement).disabled).toBeFalsy();
       });
@@ -53,7 +53,7 @@ describe('<RepaymentSchedule />', () => {
                </BookLoanProvider>
             </CreateProductSetup>
          );
-         const { container, getByTestId } = screen;
+         const { container } = screen;
          const nextButtonSelectorbtn = container.querySelector(nextButtonSelector);
          expect((nextButtonSelectorbtn as HTMLButtonElement).disabled).toBeFalsy();
       });

@@ -2,7 +2,7 @@ import { Button } from '@app/components/atoms';
 import Dialog from '@app/components/atoms/Dialog';
 import { Box, Grid, Typography } from '@mui/material';
 import React from 'react';
-import { CustomerInfoDialog } from './CustomerInfoDialoog';
+import { CustomerInfoDialog } from './CustomerInfoDialog';
 import { useBookLoanContext } from '@app/providers/book-loan';
 import { customerInfo, riskStatusColor } from './customer-info-data';
 

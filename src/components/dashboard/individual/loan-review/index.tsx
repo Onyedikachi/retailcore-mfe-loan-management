@@ -31,7 +31,9 @@ export const LoanReview = () => {
 
    const [, fetchCustomer] = useRequest({ onSuccess: (res) => getCustomer(res.data.data) });
    useRequest({
-      onMount: (getLoanData) => getLoanData(`${API_PATH.IndiviualLoan}/${id}`, { showSuccess: false }),
+      onMount: (getLoanData) => {
+         getLoanData(`${API_PATH.IndividualLoan}/${id}`, { showSuccess: false });
+      },
       onSuccess: (response) => {
          getLoanProduct(response.data);
          fetchCustomer(`${GET_CUSTOMER}/${response.data?.customerId}`, { showSuccess: false });

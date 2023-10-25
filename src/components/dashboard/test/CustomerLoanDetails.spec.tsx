@@ -26,7 +26,7 @@ describe('LoanProductDetails Component', () => {
 
    beforeEach(() => {
       fetchMock.mockResponse((req) => {
-         if (req.url.includes(API_PATH.IndiviualLoan))
+         if (req.url.includes(API_PATH.IndividualLoan))
             return Promise.resolve(JSON.stringify(mockLoanProduct));
          else return Promise.reject({});
       });

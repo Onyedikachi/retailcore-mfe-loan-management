@@ -13,8 +13,9 @@ export const Root = () => {
 
    // This request fetches currency list & caches for the usage elsewhere, so request is only being made once.
    useRequest({
-      onMount: (getCurrencyList) =>
-         getCurrencyList(RETAIL_CORE_API_PATH.GET_CURRENCY, { showSuccess: false }),
+      onMount: (getCurrencyList) => {
+         getCurrencyList(RETAIL_CORE_API_PATH.GET_CURRENCY, { showSuccess: false });
+      },
       memoryStorage: true,
       name: REQUEST_NAMES.CURRENCY_LIST,
    });
