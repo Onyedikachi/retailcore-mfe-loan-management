@@ -17,13 +17,19 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 export const RepaymentSchedule = () => {
    const [isDraft, setIsDraft] = useState(false);
    const { handleNavigation } = useStepperContext();
-   const { backendData, selectedProduct, bookLoanData } = useBookLoanContext();
+   const { backendData, selectedProduct, resetBookLoanData } = useBookLoanContext();
    const currency = selectedProduct?.currency;
    const navigate = useNavigate();
    const [searchParams] = useSearchParams();
    const id = searchParams.get('id');
 
-   const [, submitForm] = useRequest({ onSuccess: (res) => navigate(IndividualLoanPath) });
+   const [, submitForm] = useRequest({
+      onSuccess: (res) => {
+         navigate(IndividualLoanPath);
+         handleNavigation(0);
+         resetBookLoanData();
+      },
+   });
    const handleSubmit = () => {
       setIsDraft(false);
       if (id) {
@@ -33,14 +39,6 @@ export const RepaymentSchedule = () => {
       }
    };
 
-   // useRequest({
-   //    onMount: (makeRequest) =>
-   //       makeRequest(`${API_PATH.RepaymentSchedule}`, {
-   //          showSuccess: false,
-   //          body: { ...mapRepaymentScheduleToSchema(bookLoanData, selectedProduct) },
-   //       }),
-   //    onSuccess: (response) => console.log(response.data.data),
-   // });
    const schedule: TableHeaderProps = useMemo(() => {
       return {
          data: [

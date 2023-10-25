@@ -6,7 +6,7 @@ export const initialValues = { [Fields.REASON]: '', [Fields.DOC]: '', [Fields.NO
 
 export const validationSchema = Yup.object().shape({
    [Fields.REASON]: Yup.string().required('Provide a reason for this action'),
-   [Fields.DOC]: Yup.mixed().required('Provide supporting document'),
+   [Fields.DOC]: Yup.mixed(),
    [Fields.NOTIFY]: Yup.boolean(),
 });
 

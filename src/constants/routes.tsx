@@ -73,6 +73,7 @@ export const RouteMaps = {
 
 export const CustomerLoanDetailsPath = RouteMaps.customerLoanDetails.path;
 export const LoanProductPath = RouteMaps.loanProductDetails.path;
+export const ReviewLoanPath = RouteMaps.loanReview.path;
 
 export const Routes = Object.values(RouteMaps).map(({ element, path }) => ({
    element,

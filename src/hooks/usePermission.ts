@@ -1,6 +1,7 @@
 import React from 'react';
 import { auth$ } from '@Sterling/shared';
 import { AuthenticatedUserPayload } from '@app/@types/authenticated-user';
+import { Permissions } from '@app/constants';
 
 export const usePermission = () => {
    const [authPayload, setAuthPayload] = React.useState<AuthenticatedUserPayload | null>(null);
@@ -29,10 +30,17 @@ export const usePermission = () => {
    const checkPermission = (permissions: string[]) =>
       permissions?.some((role) => userPermissions?.includes(role));
 
+   const checkerPermissions = [
+      Permissions['AUTHORIZE_BOOKING/RESTRUCTURING_REQUESTS'],
+      Permissions['AUTHORIZE_LIQUIDATION/WRITE-OFF_REQUESTS'],
+   ];
+   const isUserAChecker = checkerPermissions?.some((element) => userPermissions?.includes(element));
+
    return {
       ...authPayload,
       checkPermission,
       authLoaded,
+      isUserAChecker,
       isSuperAdmin: authPayload?.user?.tenant_admin,
    };
 };

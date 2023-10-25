@@ -60,6 +60,7 @@ export const statusColors = (status: string) => {
       case 'Approved':
          return ColorMaps.active;
       case 'Watchlist':
+      case 'Pending':
       case 'In-Review':
          return ColorMaps.watchList;
       case 'Substandard':

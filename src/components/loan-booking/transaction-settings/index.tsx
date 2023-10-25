@@ -109,6 +109,3 @@ export const TransactionSettings: React.FC = () => {
       </FormContainer>
    );
 };
-function navigate(IndividualLoanPath: any) {
-   throw new Error('Function not implemented.');
-}
