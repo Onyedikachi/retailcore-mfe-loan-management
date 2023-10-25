@@ -79,7 +79,7 @@ export const LoanTable = () => {
 
    useEffect(() => {
       const queryParams = searchText ? `?Search=${searchText}` : `?All=${true}`;
-      const url = `${API_PATH.IndiviualLoan}${queryParams}`;
+      const url = `${API_PATH.IndividualLoan}${queryParams}`;
       getLoans(url, { showSuccess: false });
    }, [searchText]);
 
@@ -88,7 +88,7 @@ export const LoanTable = () => {
          (queryByProductName ?? []).length > 0
             ? `?LoanProduct=${JSON.stringify(queryByProductName)}`
             : `?All=${true}`;
-      const url = `${API_PATH.IndiviualLoan}${queryParam}`;
+      const url = `${API_PATH.IndividualLoan}${queryParam}`;
       getLoans(url, { showSuccess: false });
    }, [queryByProductName]);
 
@@ -96,7 +96,7 @@ export const LoanTable = () => {
       const transformedArray = queryByStatus?.map((item) => item.toUpperCase().replace(/-/g, '_'));
       const queryParam =
          (transformedArray ?? []).length > 0 ? `?status=${JSON.stringify(transformedArray)}` : `?All=${true}`;
-      const url = `${API_PATH.IndiviualLoan}${queryParam}`;
+      const url = `${API_PATH.IndividualLoan}${queryParam}`;
       getLoans(url, { showSuccess: false });
    }, [queryByStatus]);
 
@@ -104,7 +104,7 @@ export const LoanTable = () => {
       const queryParam = queryByDate
          ? `?StartDate=${queryByDate[0]}&EndDate=${queryByDate[1]}`
          : `?All=${true}`;
-      const url = `${API_PATH.IndiviualLoan}${queryParam}`;
+      const url = `${API_PATH.IndividualLoan}${queryParam}`;
       getLoans(url, { showSuccess: false });
    }, [queryByDate]);
 
@@ -112,7 +112,7 @@ export const LoanTable = () => {
       <Box sx={{ p: 2, pt: 3, bgcolor: 'white', borderRadius: 2, border: '1px solid #E5E9EB' }}>
          <TableHeading
             handleSearch={setSearchText}
-            handleRefresh={() => getLoans(`${API_PATH.IndiviualLoan}?All=${true}`, { showSuccess: false })}
+            handleRefresh={() => getLoans(`${API_PATH.IndividualLoan}?All=${true}`, { showSuccess: false })}
             handleDownload={() =>
                downloadAsCSVByID(`loan-table`, `Individual Loan ${capitalizeString(tab!)}`)
             }

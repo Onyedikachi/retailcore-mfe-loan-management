@@ -18,7 +18,9 @@ export const LoanProductDetail = () => {
    const { loanProduct, getLoanProduct } = useIndividualLoanDashboardContext();
 
    useRequest({
-      onMount: (getLoanData) => getLoanData(`${API_PATH.IndiviualLoan}/${id}`, { showSuccess: false }),
+      onMount: (getLoanData) => {
+         getLoanData(`${API_PATH.IndividualLoan}/${id}`, { showSuccess: false });
+      },
       onSuccess: (response) => getLoanProduct(response.data),
    });
 
@@ -50,7 +52,6 @@ export const LoanProductDetail = () => {
                <Grid container textAlign="center" py={2}>
                   <Grid item xs>
                      <Typography>ACCOUNT NAME: {loanProduct?.customerName}</Typography>
-                     {/* <Typography>18, XYZ, ABCDE, IKEJA LAGOS</Typography> */}
                   </Grid>
                   <Grid item xs>
                      CURRENCY: {loanProduct?.product?.currency}

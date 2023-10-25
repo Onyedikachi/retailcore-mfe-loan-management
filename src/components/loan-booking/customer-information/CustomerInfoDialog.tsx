@@ -15,7 +15,9 @@ export const CustomerInfoDialog: FC<{ id?: string }> = ({ id }) => {
 
    useRequest(
       {
-         onMount: (makeRequest) => makeRequest(`${GET_CUSTOMER}/${id}`, { showSuccess: false }),
+         onMount: (makeRequest) => {
+            makeRequest(`${GET_CUSTOMER}/${id}`, { showSuccess: false });
+         },
          onSuccess: (response) => setDetails(response.data.data),
       },
       [id]

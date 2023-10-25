@@ -29,7 +29,7 @@ interface BookLoanContextType {
    selectedCustomer: CustomerData | undefined;
    persona: string | undefined;
    customerEligibility: {
-      isEligbible: boolean;
+      isEligible: boolean;
       message: string;
    };
    productNames?: LoanProduct[];
@@ -144,8 +144,8 @@ export const BookLoanProvider = ({ children }: BookLoanProviderProps) => {
       message = "Customer's Account Status is Inactive";
    }
 
-   const customerEligibility: { isEligbible: boolean; message: string } = {
-      isEligbible: hasKYC && isActive,
+   const customerEligibility: { isEligible: boolean; message: string } = {
+      isEligible: hasKYC && isActive,
       message: message,
    };
 

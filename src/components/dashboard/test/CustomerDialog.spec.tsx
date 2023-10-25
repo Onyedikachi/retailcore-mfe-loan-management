@@ -7,7 +7,7 @@ import fetchMock from 'jest-fetch-mock';
 import { silentError } from '@app/test/setup';
 import { BookLoanProvider } from '@app/providers/book-loan';
 import { mockCustomerData } from './test.utils';
-import { CustomerInfoDialog } from '@app/components/loan-booking/customer-information/CustomerInfoDialoog';
+import { CustomerInfoDialog } from '@app/components/loan-booking/customer-information/CustomerInfoDialog';
 
 fetchMock.enableMocks();
 

@@ -27,7 +27,7 @@ export const IndividualLoan = () => {
 
    useRequest({
       onMount: (makeRequest) => {
-         makeRequest(`${API_PATH.IndiviualLoan}?All=${true}&Count=${20}`, { showSuccess: false });
+         makeRequest(`${API_PATH.IndividualLoan}?All=${true}&Count=${20}`, { showSuccess: false });
       },
       onSuccess: (response) =>
          getLoanProducts(response.data.data.loan, response.data.data.statistics, tab as string),
@@ -39,7 +39,7 @@ export const IndividualLoan = () => {
    useEffect(() => {
       const transformedArray = queryByStatus?.map((item) => item.toUpperCase().replace(/-/g, '_'));
       getLoans(
-         `${API_PATH.IndiviualLoan}${
+         `${API_PATH.IndividualLoan}${
             (transformedArray ?? []).length > 0 && !transformedArray?.includes('ALL')
                ? `?status=${JSON.stringify(transformedArray)}`
                : `?All=${true}`

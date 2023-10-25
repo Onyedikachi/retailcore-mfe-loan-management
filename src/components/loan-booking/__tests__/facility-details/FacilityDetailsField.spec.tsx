@@ -80,7 +80,7 @@ describe('<FacilityDetails /> ', () => {
       });
    });
 
-   describe('<FacilityDetails /> - ColateralAndEquityContribFields', () => {
+   describe('<FacilityDetails /> - CollateralAndEquityContribFields', () => {
       formTestUtil(
          <CreateProductSetup>
             <BookLoanProvider>

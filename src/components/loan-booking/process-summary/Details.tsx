@@ -1,7 +1,7 @@
 import Dialog from '@app/components/atoms/Dialog';
 import { Grid, Typography, styled } from '@mui/material';
 import React from 'react';
-import { CustomerInfoDialog } from '../customer-information/CustomerInfoDialoog';
+import { CustomerInfoDialog } from '../customer-information/CustomerInfoDialog';
 
 export const ViewChip = styled(Typography)(() => ({
    marginLeft: '30px',

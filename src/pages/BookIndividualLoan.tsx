@@ -56,7 +56,7 @@ const BookIndividualLoanContent: React.FC<{ getActiveStep: (step: number) => voi
       },
    });
    useEffect(() => {
-      id && getLoanProductModify(`${API_PATH.IndiviualLoan}/${id}`, { showSuccess: false });
+      id && getLoanProductModify(`${API_PATH.IndividualLoan}/${id}`, { showSuccess: false });
    }, [id]);
 
    return (

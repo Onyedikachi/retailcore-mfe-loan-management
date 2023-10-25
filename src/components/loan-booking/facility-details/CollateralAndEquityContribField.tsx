@@ -17,7 +17,7 @@ import { InputErrorText } from '@app/components/forms/InputFieldError';
 import { useBookLoanContext } from '@app/providers/book-loan';
 import { currencyToNumber } from '@app/helper/currency-converter';
 
-export const ColateralAndEquityContribFields = () => {
+export const CollateralAndEquityContribFields = () => {
    const { InputFieldNames } = FormMeta;
    const [showAddCollateral, setShowAddCollateral] = useState(false);
    const { getFieldProps, errors } = useFormikContext();

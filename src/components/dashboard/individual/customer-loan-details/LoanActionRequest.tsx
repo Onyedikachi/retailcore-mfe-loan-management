@@ -20,7 +20,7 @@ export const LoanActionRequest: React.FC<{ action: string; id: string; handleSub
 
    const [, submitForm] = useRequest({});
    const onSubmit = (values: FormMeta.FormValues) => {
-      submitForm(`${API_PATH.IndiviualLoan}/${id}/action`, {
+      submitForm(`${API_PATH.IndividualLoan}/${id}/action`, {
          body: {
             action: menuToAPIAction(action),
             comment: values.reason,

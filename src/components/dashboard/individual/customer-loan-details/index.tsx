@@ -2,7 +2,7 @@ import { BackArrow } from '@app/components/atoms/BackArrow';
 import Dialog from '@app/components/atoms/Dialog';
 import { PaddedContainer } from '@app/components/containers/PaddedContainer';
 import { SterlingLogoWithText } from '@app/components/icons/SterlingLogoWithText';
-import { CustomerInfoDialog } from '@app/components/loan-booking/customer-information/CustomerInfoDialoog';
+import { CustomerInfoDialog } from '@app/components/loan-booking/customer-information/CustomerInfoDialog';
 import { API_PATH, IndividualLoanPath } from '@app/constants';
 import { Box, Button, Divider, Grid, Typography } from '@mui/material';
 import { useState } from 'react';
@@ -13,7 +13,7 @@ import { useRequest } from 'react-http-query';
 import { useSearchParams } from 'react-router-dom';
 import { useIndividualLoanDashboardContext } from '@app/providers/individual-loan-dashboard';
 
-export const ConstomerLoanDetail = () => {
+export const CustomerLoanDetail = () => {
    const [openCustomerDetails, setOpenCustomerDetails] = useState(false);
    const [openLoanAction, setOpenLoanAction] = useState(false);
    const [actionType, setActionType] = useState('');
@@ -23,7 +23,7 @@ export const ConstomerLoanDetail = () => {
 
    useRequest({
       onMount: (getLoanData) => {
-         getLoanData(`${API_PATH.IndiviualLoan}/${id}`, { showSuccess: false });
+         getLoanData(`${API_PATH.IndividualLoan}/${id}`, { showSuccess: false });
       },
       onSuccess: (response) => getLoanProduct(response.data),
    });
@@ -31,7 +31,7 @@ export const ConstomerLoanDetail = () => {
    return (
       <Box px={2} pr={0}>
          <Typography display="flex" alignItems="center" fontWeight="600">
-            <SterlingLogoWithText sx={{ mr: 1.5 }} /> Loan Mangement
+            <SterlingLogoWithText sx={{ mr: 1.5 }} /> Loan Management
          </Typography>
          <Box className="fancy-scrollbar" sx={{ overflow: 'auto', maxHeight: '510px', pl: 0.2, pr: 2 }}>
             <BackArrow route={IndividualLoanPath} text="Back" />
