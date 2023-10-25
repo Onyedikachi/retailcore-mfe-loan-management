@@ -11,7 +11,7 @@ import {
    CheckBoxGroup,
    CheckBoxGroupProps,
 } from '../atoms';
-import { Autocomplete, AutocompleteProps } from '../atoms/AutocompleteInput';
+import { Autocomplete, AutocompleteProps } from '../atoms/auto-complete';
 import { DateControl, DateControlProps } from './DateControl';
 
 export type ControlType = 'input' | 'select' | 'switch' | 'checkboxGroup' | 'radio' | 'autocomplete' | 'date';
