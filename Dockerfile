@@ -15,7 +15,8 @@ RUN yarn install --frozen-lockfile
 # COPY ./dist /dist
 # COPY webpack.config.js babel.config.json nginx.conf tsconfig.json commitlint.config.js .env ./
 
-COPY . /app/
+COPY webpack.config.js babel.config.json nginx.conf tsconfig.json commitlint.config.js /app/
+COPY src /app/src
 
 # Build the application (replace with your build command)
 RUN yarn build
