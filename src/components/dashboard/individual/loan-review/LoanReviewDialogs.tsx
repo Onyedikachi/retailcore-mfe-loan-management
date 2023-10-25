@@ -5,6 +5,8 @@ import { useNavigate } from 'react-router-dom';
 import { IndividualLoanPath } from '@app/constants/routes';
 import { ResponseDialog } from '@app/components/modal/ResponseDialog';
 import { LoanRejection } from './LoanRejction';
+import { API_PATH } from '@app/constants';
+import { useRequest } from 'react-http-query';
 interface DialogStates {
    showCancelDialog: boolean;
    setShowCancelDialog: React.Dispatch<React.SetStateAction<boolean>>;
@@ -14,6 +16,7 @@ interface DialogStates {
    setShowResponseDialog: React.Dispatch<React.SetStateAction<boolean>>;
    showRejectDialog: boolean;
    setShowRejectDialog: React.Dispatch<React.SetStateAction<boolean>>;
+   id: string;
 }
 export const LoanReviewDialogs: React.FC<DialogStates> = ({
    showCancelDialog,
@@ -24,6 +27,7 @@ export const LoanReviewDialogs: React.FC<DialogStates> = ({
    setShowResponseDialog,
    showRejectDialog,
    setShowRejectDialog,
+   id,
 }) => {
    const navigate = useNavigate();
 
@@ -32,9 +36,10 @@ export const LoanReviewDialogs: React.FC<DialogStates> = ({
       navigate(IndividualLoanPath);
    };
 
+   const [, submitForm] = useRequest({ onSuccess: (response) => setShowResponseDialog(true) });
    const handleApprovalConfirm = () => {
       setShowApprovalDialog(false);
-      navigate(IndividualLoanPath);
+      submitForm(`${API_PATH.IndiviualLoan}/${id}/action`, { body: { action: 'APPROVED' }, method: 'PUT' });
    };
 
    const handleResponseNext = () => {

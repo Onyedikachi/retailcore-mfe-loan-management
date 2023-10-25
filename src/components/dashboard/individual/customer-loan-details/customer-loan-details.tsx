@@ -2,15 +2,18 @@ import { statusColors } from '@app/constants/colors';
 import { Typography } from '@mui/material';
 import { StyledChip } from '../table-data/table-body-data';
 import { BookedLoanData } from '@app/@types/loan-product';
-import { loanStatus } from '@app/constants/dashboard';
 import { format } from 'date-fns';
+import { transformText } from '@app/helper/string';
 
 export const customerLoanInfo = (loan?: BookedLoanData) => [
    { key: 'Loan Product', value: loan?.product?.name },
    {
       key: 'Status',
       value: (
-         <StyledChip sx={{ ...statusColors(loanStatus(loan?.status!)!) }} label={loanStatus(loan?.status!)} />
+         <StyledChip
+            sx={{ ...statusColors(transformText(loan?.status!)!) }}
+            label={transformText(loan?.status!)}
+         />
       ),
    },
    { key: 'Loan Account Num', value: loan?.acctNo },

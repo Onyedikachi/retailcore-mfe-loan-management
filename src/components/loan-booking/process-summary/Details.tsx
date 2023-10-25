@@ -16,7 +16,7 @@ interface DetailsProps {
    title: string;
    details: {
       key: string;
-      value?: string | number;
+      value: any;
       view?: boolean;
       heading?: string;
       file?: string;

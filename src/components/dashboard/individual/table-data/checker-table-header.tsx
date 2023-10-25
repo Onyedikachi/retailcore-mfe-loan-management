@@ -6,32 +6,37 @@ import { tabCardOptions } from '@app/constants/dashboard';
 
 export const headerData = (
    loanProducts: BookedLoanData[] | undefined,
-   filterLoanProduct: (selectedOptions: string[]) => void,
+   filterType: (selectedOptions: string[]) => void,
+   filterReviewer: (selectedOptions: string[]) => void,
    filterStatus: (selectedOptions: string[]) => void,
    filterDate: (startDate?: Date | undefined, endDate?: Date | undefined, staticRange?: string) => void,
+   isUserAChecker: boolean,
    tab: string
 ): TableHeaderProps => {
-   const statusOptions = tabCardOptions()
+   const statusOptions = tabCardOptions(undefined, isUserAChecker)
       [tab]?.map((option) => option.label)
       .slice(1);
-   const uniqueProductNames = new Set();
-   loanProducts?.forEach((loan) => {
-      if (loan?.product && loan?.product?.name) {
-         uniqueProductNames.add(loan.product.name);
-      }
-   });
-   const productName = Array.from(uniqueProductNames);
+
    return {
       data: [
-         { key: 'customerName', element: 'CUSTOMER NAME/ID' },
-         { key: 'loanAmount', element: 'LOAN AMOUNT' },
+         { key: 'request', element: 'REQUEST' },
          {
-            key: 'loanProduct',
-            element: 'LOAN PRODUCT',
+            key: 'type',
+            element: 'TYPE',
             rightIcon: (
                <FilterMenu
-                  options={(productName as string[]) ?? []}
-                  onFilterChange={(value) => filterLoanProduct(value as string[])}
+                  options={['Booking', 'Restructuring']}
+                  onFilterChange={(value) => filterType(value as string[])}
+               />
+            ),
+         },
+         {
+            key: 'reviewer',
+            element: 'REVIEWER',
+            rightIcon: (
+               <FilterMenu
+                  options={['Adeola Adeola', 'Olamide Olamide']}
+                  onFilterChange={(value) => filterReviewer(value as string[])}
                />
             ),
          },

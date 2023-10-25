@@ -11,16 +11,32 @@ import { LoanReviewDialogs } from './LoanReviewDialogs';
 import { ReviewActionButtons } from './ReviewActions';
 import { useSearchParams } from 'react-router-dom';
 import { ViewActionButtons } from './ViewActions';
+import { useRequest } from 'react-http-query';
+import { API_PATH, CUSTOMER_MANAGEMENT_PATH } from '@app/constants/api-path';
+import { useIndividualLoanDashboardContext } from '@app/providers/individual-loan-dashboard';
+import { useBookLoanContext } from '@app/providers/book-loan';
 
 export const LoanReview = () => {
-   const loanStatus = 'IN_REVIEW';
    const [searchParams] = useSearchParams();
    const id = searchParams.get('id');
    const action = searchParams.get('action');
+   const isReview = action === 'Review';
    const [showCancelDialog, setShowCancelDialog] = useState(false);
    const [showApprovalDialog, setShowApprovalDialog] = useState(false);
    const [showResponseDialog, setShowResponseDialog] = useState(false);
    const [showRejectDialog, setShowRejectDialog] = useState(false);
+   const { getLoanProduct, loanProduct } = useIndividualLoanDashboardContext();
+   const { selectedCustomer, getCustomer } = useBookLoanContext();
+   const { GET_CUSTOMER } = CUSTOMER_MANAGEMENT_PATH;
+
+   const [, fetchCustomer] = useRequest({ onSuccess: (res) => getCustomer(res.data.data) });
+   useRequest({
+      onMount: (getLoanData) => getLoanData(`${API_PATH.IndiviualLoan}/${id}`, { showSuccess: false }),
+      onSuccess: (response) => {
+         getLoanProduct(response.data);
+         fetchCustomer(`${GET_CUSTOMER}/${response.data?.customerId}`, { showSuccess: false });
+      },
+   });
 
    return (
       <Grid container height="100%">
@@ -34,28 +50,34 @@ export const LoanReview = () => {
                         endLabel={'Approval'}
                      />
                   </Box>
-                  <PaddedContainer mb={2}>
-                     <Typography sx={{ fontWeight: 600 }}>Last request review status</Typography>
-                  </PaddedContainer>
+                  {isReview && (
+                     <PaddedContainer mb={2}>
+                        <Typography sx={{ fontWeight: 600 }}>Last request review status</Typography>
+                     </PaddedContainer>
+                  )}
+
                   <PaddedContainer pl={5}>
                      <Typography fontWeight="600">Individual Loan Booking Request Details</Typography>
-                     {detailsList().map((details, index) => (
+                     {detailsList(loanProduct, selectedCustomer).map((details, index) => (
                         <Details
                            key={details.title}
                            title={details.title}
                            details={details.details}
-                           customerId={index === 1 ? 'id' : ''}
+                           customerId={index === 1 ? loanProduct?.customerId : ''}
                         />
                      ))}
                   </PaddedContainer>
                </ContainerWrapper>
                <PaddedContainer sx={{ ml: 3 }}>
-                  <ReviewActionButtons
-                     onCancel={() => setShowCancelDialog(true)}
-                     onReject={() => setShowRejectDialog(true)}
-                     onApprove={() => setShowApprovalDialog(true)}
-                  />
-                  <ViewActionButtons />
+                  {isReview ? (
+                     <ReviewActionButtons
+                        onCancel={() => setShowCancelDialog(true)}
+                        onReject={() => setShowRejectDialog(true)}
+                        onApprove={() => setShowApprovalDialog(true)}
+                     />
+                  ) : (
+                     <ViewActionButtons />
+                  )}
                </PaddedContainer>
             </StyledContentWrapper>
          </Grid>
@@ -64,6 +86,7 @@ export const LoanReview = () => {
             <ActivitySummary />
          </Grid>
          <LoanReviewDialogs
+            id={id ?? ''}
             showCancelDialog={showCancelDialog}
             setShowCancelDialog={setShowCancelDialog}
             showApprovalDialog={showApprovalDialog}
