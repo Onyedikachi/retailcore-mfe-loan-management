@@ -76,19 +76,31 @@ const performActions = async (acts: TestMeta['acts'], elementSelector: string, s
 
 const triggerEvent = async (acts: TestMeta['acts'][0], actElement: any, screen: any) => {
    const actsKeys = Object.keys(acts) as Array<keyof typeof acts>;
-   const user = userEvent.setup();
+
    await act(async () => {
       for (const actKey of actsKeys) {
-         if (actKey === 'focus' && acts[actKey]) fireEvent.focus(actElement);
-         if (actKey === 'blur' && acts[actKey]) fireEvent.blur(actElement);
-         if (actKey === 'typeText' && acts[actKey]) await user.type(actElement, acts[actKey] ?? '');
-         if (actKey === 'click' && acts[actKey]) fireEvent.click(actElement);
-         if (actKey === 'clear' && acts[actKey]) await user.clear(actElement);
-         if (actKey === 'mousedown' && acts[actKey]) fireEvent.mouseDown(actElement);
+         if (!acts[actKey]) continue;
+         
+         await eventInitiator(acts, actKey, actElement);
       }
    });
 
    checkExpectations(screen.baseElement, actElement, acts, screen);
+};
+
+const eventInitiator = async <T extends TestMeta['acts'][0] = TestMeta['acts'][0]>(
+   acts: T,
+   actKey: keyof T,
+   actElement: any
+) => {
+   const user = userEvent.setup();
+
+   if (actKey === 'focus') fireEvent.focus(actElement);
+   if (actKey === 'blur') fireEvent.blur(actElement);
+   if (actKey === 'typeText' && actKey) await user.type(actElement, (acts[actKey] as string) ?? '');
+   if (actKey === 'click') fireEvent.click(actElement);
+   if (actKey === 'clear') await user.clear(actElement);
+   if (actKey === 'mousedown') fireEvent.mouseDown(actElement);
 };
 
 const testForm = (
