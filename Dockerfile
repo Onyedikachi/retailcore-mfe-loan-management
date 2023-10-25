@@ -5,7 +5,7 @@ FROM node:18-alpine AS builder
 WORKDIR /app
 
 # Copy package.json and yarn.lock to the container
-COPY package.json yarn.lock ./
+COPY package.json yarn.lock /app/
 
 # Install dependencies using Yarn
 RUN yarn install --frozen-lockfile
@@ -15,7 +15,7 @@ RUN yarn install --frozen-lockfile
 # COPY ./dist /dist
 # COPY webpack.config.js babel.config.json nginx.conf tsconfig.json commitlint.config.js .env ./
 
-COPY . .
+COPY . /app/
 
 # Build the application (replace with your build command)
 RUN yarn build
