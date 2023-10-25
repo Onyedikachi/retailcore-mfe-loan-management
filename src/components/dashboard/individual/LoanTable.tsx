@@ -76,46 +76,36 @@ export const LoanTable = () => {
    const [, getLoans] = useRequest({
       onSuccess: (response) => getLoanProducts(response.data.data.loan, response.data.data.statistics),
    });
-   // const [, deleteRequest] = useRequest({
-   // onSuccess: (response) => console.log(response),
-   //   getLoanProducts(response.data.data.loan, response.data.data.statistics),
-   // });
 
    useEffect(() => {
-      getLoans(`${API_PATH.IndiviualLoan}${searchText ? `?Search=${searchText}` : `?All=${true}`}`, {
-         showSuccess: false,
-      });
+      const queryParams = searchText ? `?Search=${searchText}` : `?All=${true}`;
+      const url = `${API_PATH.IndiviualLoan}${queryParams}`;
+      getLoans(url, { showSuccess: false });
    }, [searchText]);
+
    useEffect(() => {
-      getLoans(
-         `${API_PATH.IndiviualLoan}${
-            (queryByProductName ?? []).length > 0
-               ? `?LoanProduct=${JSON.stringify(queryByProductName)}`
-               : `?All=${true}`
-         }`,
-         { showSuccess: false }
-      );
+      const queryParam =
+         (queryByProductName ?? []).length > 0
+            ? `?LoanProduct=${JSON.stringify(queryByProductName)}`
+            : `?All=${true}`;
+      const url = `${API_PATH.IndiviualLoan}${queryParam}`;
+      getLoans(url, { showSuccess: false });
    }, [queryByProductName]);
 
    useEffect(() => {
       const transformedArray = queryByStatus?.map((item) => item.toUpperCase().replace(/-/g, '_'));
-      getLoans(
-         `${API_PATH.IndiviualLoan}${
-            (transformedArray ?? []).length > 0
-               ? `?status=${JSON.stringify(transformedArray)}`
-               : `?All=${true}`
-         }`,
-         { showSuccess: false }
-      );
+      const queryParam =
+         (transformedArray ?? []).length > 0 ? `?status=${JSON.stringify(transformedArray)}` : `?All=${true}`;
+      const url = `${API_PATH.IndiviualLoan}${queryParam}`;
+      getLoans(url, { showSuccess: false });
    }, [queryByStatus]);
 
    useEffect(() => {
-      getLoans(
-         `${API_PATH.IndiviualLoan}${
-            queryByDate ? `?StartDate=${queryByDate[0]}&EndDate=${queryByDate[1]}` : `?All=${true}`
-         }`,
-         { showSuccess: false }
-      );
+      const queryParam = queryByDate
+         ? `?StartDate=${queryByDate[0]}&EndDate=${queryByDate[1]}`
+         : `?All=${true}`;
+      const url = `${API_PATH.IndiviualLoan}${queryParam}`;
+      getLoans(url, { showSuccess: false });
    }, [queryByDate]);
 
    return (
@@ -153,7 +143,6 @@ export const LoanTable = () => {
             open={openDeleteAction}
             handleClose={() => setOpenDeleteAction(false)}
             handleConfirm={() => {
-               //deleteRequest(API_PATH.IndiviualLoan, { body: { loanId: id }, method: 'DELETE' });
                setOpenDeleteAction(false);
             }}
             title="Do you want to withdraw and delete request?"

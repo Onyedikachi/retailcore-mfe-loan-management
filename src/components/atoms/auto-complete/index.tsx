@@ -75,7 +75,7 @@ export const Autocomplete: React.FC<AutocompleteProps> = ({
    const { debouncedValue, setDebouncedValue } = useDebounce<string>(debounceTime);
 
    useEffect(() => {
-      handleSearch?.(debouncedValue || '');
+      handleSearch?.(debouncedValue ?? '');
    }, [debouncedValue]);
 
    const handleChange = (event: SyntheticEvent<Element, Event>, newValue: any, form: FieldProps['form']) => {

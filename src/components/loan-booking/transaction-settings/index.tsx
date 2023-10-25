@@ -18,7 +18,7 @@ export const TransactionSettings: React.FC = () => {
    const [isDraft, setIsDraft] = useState(false);
    const { handleNavigation } = useStepperContext();
    const [showAlertDialog, setShowAlertDialog] = useState(false);
-   const { bookLoanData, updateBookLoanData, backendData, resetBookLoanData } = useBookLoanContext();
+   const { bookLoanData, updateBookLoanData, backendData } = useBookLoanContext();
    const navigate = useNavigate();
    const [searchParams] = useSearchParams();
    const id = searchParams.get('id');

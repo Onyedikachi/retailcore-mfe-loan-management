@@ -68,6 +68,9 @@ export const initialValues = (data?: FacilityDetailsFormValues) => ({
    [InputFieldNames.START_DATE_PERIOD]: data?.[InputFieldNames.START_DATE_PERIOD] ?? '',
    [InputFieldNames.COLLATERALS]: data?.[InputFieldNames.COLLATERALS] ?? [],
    [InputFieldNames.EQUITY_CONTRIB]: data?.[InputFieldNames.EQUITY_CONTRIB] ?? '',
+   ...otherInitialValues(data),
+});
+const otherInitialValues = (data?: FacilityDetailsFormValues) => ({
    [InputFieldNames.ENABLE_MORATORIUM_PERIOD]: data?.[InputFieldNames.ENABLE_MORATORIUM_PERIOD] ?? false,
    [InputFieldNames.MORATORIUM_PERIOD]: data?.[InputFieldNames.MORATORIUM_PERIOD] ?? '',
    [InputFieldNames.MORATORIUM_PERIOD_VALUE]: data?.[InputFieldNames.MORATORIUM_PERIOD_VALUE] ?? '',
@@ -167,7 +170,8 @@ const facilityDetails = (selectedProduct?: LoanProductData) => {
       [InputFieldNames.REPAYMENT_FREQUENCY]: Yup.string().required('Select repayment frequency'),
       [InputFieldNames.START_DATE]: Yup.string().when(
          InputFieldNames.REPAYMENT_FREQUENCY,
-         (repaymentFrequency, field) => (repaymentFrequency?.[0] == 'Custom' ? field : field)
+         (repaymentFrequency, field) =>
+            repaymentFrequency?.[0] == 'Custom' ? field.required('Field is required') : field
       ),
       [InputFieldNames.START_DATE_NUM]: Yup.string().when(
          InputFieldNames.REPAYMENT_FREQUENCY,

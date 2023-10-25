@@ -8,7 +8,7 @@ interface AutocompleteWithCheckBoxControlProps {
    label: string;
    placeholder?: string;
    options: any;
-   layout?: 'horizontal' | 'vertical' | undefined;
+   layout?: 'horizontal' | 'vertical';
    addButtonText: string;
    applyButtonText: string;
    handleAddButton: () => void;

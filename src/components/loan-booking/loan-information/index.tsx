@@ -5,7 +5,7 @@ import { useBookLoanContext } from '@app/providers/book-loan';
 import { LoanProductData } from '@app/@types/loan-product';
 
 export const LoanInformation = () => {
-   const { bookLoanData, selectedProduct } = useBookLoanContext();
+   const { selectedProduct } = useBookLoanContext();
 
    return (
       <Box p={2} borderRadius="5px" bgcolor="white" ml={2} height="100%">

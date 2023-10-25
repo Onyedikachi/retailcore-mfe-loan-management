@@ -13,7 +13,7 @@ export interface CurrencyPercentageControlProps {
    tooltipText?: string;
    placeholder?: string;
    withChip?: boolean;
-   layout?: 'horizontal' | 'vertical' | undefined;
+   layout?: 'horizontal' | 'vertical';
    labelDescription?: string;
    mb?: number;
 }
@@ -43,6 +43,7 @@ export const CurrencyPercentageControl = (props: CurrencyPercentageControlProps)
                      <ButtonGroup sx={{ mb: 1 }}>
                         {['currency', 'percent'].map((value, index) => (
                            <Button
+                              key={value}
                               variant="outlined"
                               sx={{
                                  background: inputType == value ? Colors.Pink : '',

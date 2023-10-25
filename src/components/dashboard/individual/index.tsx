@@ -24,11 +24,11 @@ export const IndividualLoan = () => {
    const checker = false;
 
    const { getLoanProducts, dataCount } = useIndividualLoanDashboardContext();
-   const [initiator, setInitiator] = useState(individualLoanFilterOptions(tab!)[0]);
 
    useRequest({
-      onMount: (makeRequest) =>
-         makeRequest(`${API_PATH.IndiviualLoan}?All=${true}&Count=${20}`, { showSuccess: false }),
+      onMount: (makeRequest) => {
+         makeRequest(`${API_PATH.IndiviualLoan}?All=${true}&Count=${20}`, { showSuccess: false });
+      },
       onSuccess: (response) =>
          getLoanProducts(response.data.data.loan, response.data.data.statistics, tab as string),
    });
@@ -57,7 +57,7 @@ export const IndividualLoan = () => {
             onStatusClick={(label) => setQueryByStatus([label])}
             statusOptions={tabCardOptions(dataCount, checker)[tab!]}
             tabOptions={tabOptions}
-            onFilterOptionSelected={(event: SelectChangeEvent<any>) => setInitiator(event.target.value)}
+            onFilterOptionSelected={(event: SelectChangeEvent<any>) => {}}
             filterOptions={individualLoanFilterOptions(tab!, checker)}
          />
          {checker && tab === 'requests' ? <CheckerLoanTable /> : <LoanTable />}

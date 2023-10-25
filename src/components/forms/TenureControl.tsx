@@ -11,7 +11,7 @@ export interface TenureControlProps {
    numberName: string;
    loanTenurePeriod?: Array<string>;
    required?: boolean;
-   layout?: 'horizontal' | 'vertical' | undefined;
+   layout?: 'horizontal' | 'vertical';
    layoutFlexGrid?: number[];
    disabled?: boolean;
 }

@@ -17,7 +17,6 @@ interface AutoCompleteWithTabsControlProps {
 const AutoCompleteWithTabsControl: React.FC<AutoCompleteWithTabsControlProps> = (props) => {
    const [value, setValue] = useState(0);
    const [isPopperOpen, setIsPopperOpen] = useState(false);
-   const [searchQuery, setSearchQuery] = useState('');
    const anchorRef = useRef<HTMLDivElement>(null);
    const popperRef = useRef<HTMLDivElement>(null);
    const { getFieldProps, setFieldValue } = useFormikContext();
@@ -44,7 +43,6 @@ const AutoCompleteWithTabsControl: React.FC<AutoCompleteWithTabsControlProps> = 
    };
 
    const handleInputChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-      setSearchQuery(event.target.value);
       setIsPopperOpen(true);
    };
 

@@ -1,4 +1,3 @@
-import { Chip } from '@app/components/atoms/Chip';
 import { DateFilter } from '@app/components/calendar/DateFilter';
 import { StyledChip } from '@app/components/loan-management/loan-performance/table-data/performance-body-data';
 import { TableHeaderProps } from '@app/components/table';

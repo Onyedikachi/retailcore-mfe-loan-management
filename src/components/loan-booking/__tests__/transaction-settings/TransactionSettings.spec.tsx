@@ -34,7 +34,7 @@ describe('<TransactionSettings/>', () => {
                </BookLoanProvider>
             </CreateProductSetup>
          );
-         const { container, getByTestId } = screen;
+         const { container } = screen;
          const facilityDetailsNextbtn = container.querySelector(submitButtonSelector);
          await act(async () => {
             fireEvent.click(facilityDetailsNextbtn!);

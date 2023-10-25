@@ -27,7 +27,6 @@ export const ColateralAndEquityContribFields = () => {
 
    return (
       <Box>
-         {/* TODO: This should only show if this loan product been booked require collateral */}
          <Box display="flex" justifyContent="space-between" mb={3}>
             <Typography variant="body2" display="flex" alignItems="center">
                <InfoOutlinedIcon sx={{ fontSize: 16, mr: 1 }} />
@@ -114,7 +113,6 @@ export const ColateralAndEquityContribFields = () => {
                      'id'
                   );
                }}
-               //TODO: Collaterals on the list should be only those related to the loan product
                items={loanCollaterals.map(({ labelName, id: loanId }) => ({
                   labelName: labelName,
                   checked: collateralValues?.some(({ id }: { id: string }) => id === loanId),

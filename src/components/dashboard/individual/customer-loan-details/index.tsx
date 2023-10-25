@@ -21,19 +21,10 @@ export const ConstomerLoanDetail = () => {
    const id = searchParams.get('id');
    const { loanProduct, getLoanProduct } = useIndividualLoanDashboardContext();
 
-   // const performing: TableHeaderProps = useMemo(
-   //    () => repayementScheduleHeaderData((startDate, endDate) => {}),
-   //    []
-   // );
-
-   // const perfomingTableBody = useMemo(() => {
-   //    return [1, 2, 3, 4, 5].map((item, id) =>
-   //       repaymentScheduleBodyData(defaultCurrency?.abbreviation ?? 'NGN')
-   //    );
-   // }, []);
-
    useRequest({
-      onMount: (getLoanData) => getLoanData(`${API_PATH.IndiviualLoan}/${id}`, { showSuccess: false }),
+      onMount: (getLoanData) => {
+         getLoanData(`${API_PATH.IndiviualLoan}/${id}`, { showSuccess: false });
+      },
       onSuccess: (response) => getLoanProduct(response.data),
    });
 
@@ -82,12 +73,6 @@ export const ConstomerLoanDetail = () => {
                   }}
                />
             </PaddedContainer>
-            {/* <Box py={2} px={1}>
-               <Typography mb={2} fontWeight="600">
-                  Individual Loan Repayment Schedule
-               </Typography>
-               <Table headerProps={performing} bodyProps={{ rows: perfomingTableBody }} />
-            </Box> */}
          </Box>
          <Dialog
             minHeight="80%"
