@@ -7,6 +7,7 @@ import { useRequest } from 'react-http-query';
 import { API_PATH } from '@app/constants/api-path';
 import { useIndividualLoanDashboardContext } from '@app/providers/individual-loan-dashboard';
 import { useSearchParams } from 'react-router-dom';
+import { CheckerLoanTable } from './CheckerLoanTable';
 
 const StyledContentWrapper = styled(Stack)({
    gap: '27px',
@@ -20,6 +21,7 @@ export const IndividualLoan = () => {
    const [queryByStatus, setQueryByStatus] = useState<string[]>();
    const [searchParams] = useSearchParams();
    const tab = searchParams.get('tab');
+   const checker = false;
 
    const { getLoanProducts, dataCount } = useIndividualLoanDashboardContext();
    const [initiator, setInitiator] = useState(individualLoanFilterOptions(tab!)[0]);
@@ -53,12 +55,12 @@ export const IndividualLoan = () => {
             tabKey={tab!}
             onTabClick={(tab) => {}}
             onStatusClick={(label) => setQueryByStatus([label])}
-            statusOptions={tabCardOptions(dataCount)[tab!]}
+            statusOptions={tabCardOptions(dataCount, checker)[tab!]}
             tabOptions={tabOptions}
             onFilterOptionSelected={(event: SelectChangeEvent<any>) => setInitiator(event.target.value)}
-            filterOptions={individualLoanFilterOptions(tab!)}
+            filterOptions={individualLoanFilterOptions(tab!, checker)}
          />
-         <LoanTable />
+         {checker && tab === 'requests' ? <CheckerLoanTable /> : <LoanTable />}
       </StyledContentWrapper>
    );
 };

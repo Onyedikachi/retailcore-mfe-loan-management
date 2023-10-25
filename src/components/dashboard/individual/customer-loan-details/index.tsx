@@ -4,14 +4,10 @@ import { PaddedContainer } from '@app/components/containers/PaddedContainer';
 import { SterlingLogoWithText } from '@app/components/icons/SterlingLogoWithText';
 import { CustomerInfoDialog } from '@app/components/loan-booking/customer-information/CustomerInfoDialoog';
 import { API_PATH, IndividualLoanPath } from '@app/constants';
-import { useAppContext } from '@app/providers/app-provider';
 import { Box, Button, Divider, Grid, Typography } from '@mui/material';
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import { customerLoanInfo } from './customer-loan-details';
 import { ActionButtons } from './ActionButtons';
-import { Table } from '@app/components/table/Table';
-import { TableHeaderProps } from '@app/components/table';
-import { repayementScheduleHeaderData, repaymentScheduleBodyData } from './repayment-schedule-data';
 import { LoanActionRequest } from './LoanActionRequest';
 import { useRequest } from 'react-http-query';
 import { useSearchParams } from 'react-router-dom';
@@ -107,7 +103,11 @@ export const ConstomerLoanDetail = () => {
             handleClose={() => setOpenLoanAction(false)}
             title={`LOAN ${actionType.toUpperCase()} REQUEST`}
          >
-            <LoanActionRequest action={actionType} handleSubmit={() => setOpenLoanAction(false)} />
+            <LoanActionRequest
+               action={actionType}
+               id={id ?? ''}
+               handleSubmit={() => setOpenLoanAction(false)}
+            />
          </Dialog>
       </Box>
    );

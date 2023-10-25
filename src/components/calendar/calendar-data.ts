@@ -1,10 +1,10 @@
 import { Range } from 'react-date-range';
 import { addDays, endOfDay, startOfMonth, endOfMonth, addMonths, isSameDay } from 'date-fns';
 
-export const customStaticRanges = (
+export const allTimeDateRange = (
    onStaticRangeSelected?: (label: string, date: { startDate: Date; endDate: Date }) => void
-) => [
-   {
+) => {
+   return {
       label: 'All Time',
       date: { startDate: new Date(), endDate: new Date(new Date().setFullYear(1925)) },
       range() {
@@ -14,7 +14,13 @@ export const customStaticRanges = (
          isSelectedRange(this.date, range) && onStaticRangeSelected?.(this.label, this.date);
          return isSelectedRange(this.date, range);
       },
-   },
+   };
+};
+
+export const customStaticRanges = (
+   onStaticRangeSelected?: (label: string, date: { startDate: Date; endDate: Date }) => void
+) => [
+   allTimeDateRange(onStaticRangeSelected),
    {
       label: 'Last 7 days',
       date: { startDate: addDays(new Date(), -7), endDate: endOfDay(new Date()) },
@@ -83,7 +89,7 @@ export const customStaticRanges = (
    },
 ];
 
-const isSelectedRange = (range: Range, selectedRange: Range): boolean => {
+export const isSelectedRange = (range: Range, selectedRange: Range): boolean => {
    return (
       isSameDay(range.startDate as Date, selectedRange.startDate as Date) &&
       isSameDay(range.endDate as Date, selectedRange.endDate as Date)

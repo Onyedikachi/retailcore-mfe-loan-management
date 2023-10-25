@@ -3,6 +3,7 @@ import { IndividualLoanPath } from '@app/constants';
 import { Header } from '@app/components/Header';
 import { IndividualLoanDashboardProvider } from '@app/providers/individual-loan-dashboard';
 import { LoanReview } from '@app/components/dashboard/individual/loan-review';
+import { BookLoanProvider } from '@app/providers/book-loan';
 
 export const LoanManagementReview = () => {
    return (
@@ -16,9 +17,9 @@ export const LoanManagementReview = () => {
          }
          content={
             <IndividualLoanDashboardProvider>
-               <IndividualLoanDashboardProvider>
+               <BookLoanProvider>
                   <LoanReview />
-               </IndividualLoanDashboardProvider>
+               </BookLoanProvider>
             </IndividualLoanDashboardProvider>
          }
          fullContent={true}
