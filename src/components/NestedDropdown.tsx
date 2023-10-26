@@ -5,11 +5,14 @@ import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import { Button, Menu, MenuItemProps } from './atoms';
 import { ProductTypesMenuOptions } from '@app/constants/configurations';
 import { MenuItemContentsProps } from '@app/@types';
+import { usePermission } from '@app/hooks/usePermission';
+import { Permissions } from '@app/constants';
 
 type StepLevel = 1 | 2 | 3;
 
 export const NestedDropdown: React.FC = () => {
    const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+   const { checkPermission } = usePermission();
 
    const handleMenuItemClick = (level: StepLevel) => {
       const clickEvent: MenuItemProps['onClick'] = (event) => {
@@ -32,6 +35,7 @@ export const NestedDropdown: React.FC = () => {
             sx={{ paddingY: 0.7 }}
             variant="contained"
             startIcon={<AddIcon />}
+            disabled={!checkPermission([Permissions.BOOK_LOAN])}
             onClick={(event) => handleMenuItemClick(1)(event as any, { label: '' })}
          >
             Book Loan

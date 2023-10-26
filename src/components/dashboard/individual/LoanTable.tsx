@@ -27,7 +27,7 @@ export const LoanTable = () => {
    const [queryByDate, setQueryByDate] = useState<string[]>();
    const [openLoanAction, setOpenLoanAction] = useState(false);
    const [openDeleteAction, setOpenDeleteAction] = useState(false);
-   const [idToDelete, setIdToDelete] = useState('');
+   const [id, setId] = useState('');
    const navigate = useNavigate();
    const { loanProducts, getLoanProducts } = useIndividualLoanDashboardContext();
 
@@ -37,10 +37,14 @@ export const LoanTable = () => {
             loanProducts,
             (loanProduct) => setQueryByProductName(loanProduct),
             (loanStatus) => setQueryByStatus(loanStatus),
-            (startDate, endDate) => {
-               const start = format(new Date(startDate!), 'yyyy-MM-dd');
-               const end = format(new Date(endDate!), 'yyyy-MM-dd');
-               setQueryByDate([start, end]);
+            (startDate, endDate, label) => {
+               if (startDate || endDate) {
+                  const start = format(new Date(startDate!), 'yyyy-MM-dd');
+                  const end = format(new Date(endDate!), 'yyyy-MM-dd');
+                  setQueryByDate([start, end]);
+               } else {
+                  setQueryByDate(undefined);
+               }
             },
             tab!!
          ),
@@ -48,10 +52,11 @@ export const LoanTable = () => {
    );
 
    const loanTableBody = useMemo(() => {
-      return (loanProducts ?? [])?.map((item, id) => {
+      return (loanProducts ?? [])?.map((item) => {
          return bodyData(
             item,
             (selectedAction) => {
+               setId(item.id);
                setAction(selectedAction);
                if (selectedAction == 'View') {
                   navigate(`${CustomerLoanDetailsPath}?id=${item.id}`);
@@ -61,7 +66,6 @@ export const LoanTable = () => {
                   navigate(`${BookIndividualLoanPath}?id=${item.id}`);
                } else if (deleteLoan(selectedAction)) {
                   setOpenDeleteAction(true);
-                  setIdToDelete(item.id);
                }
             },
             tab!!
@@ -72,54 +76,45 @@ export const LoanTable = () => {
    const [, getLoans] = useRequest({
       onSuccess: (response) => getLoanProducts(response.data.data.loan, response.data.data.statistics),
    });
+
    useEffect(() => {
-      getLoans(`${API_PATH.IndiviualLoan}${searchText ? `?Search=${searchText}` : `?All=${true}`}`, {
-         showSuccess: false,
-      });
+      const queryParams = searchText ? `?Search=${searchText}` : `?All=${true}`;
+      const url = `${API_PATH.IndividualLoan}${queryParams}`;
+      getLoans(url, { showSuccess: false });
    }, [searchText]);
+
    useEffect(() => {
-      getLoans(
-         `${API_PATH.IndiviualLoan}${
-            (queryByProductName ?? []).length > 0
-               ? `?LoanProduct=${JSON.stringify(queryByProductName)}`
-               : `?All=${true}`
-         }`,
-         { showSuccess: false }
-      );
+      const queryParam =
+         (queryByProductName ?? []).length > 0
+            ? `?LoanProduct=${JSON.stringify(queryByProductName)}`
+            : `?All=${true}`;
+      const url = `${API_PATH.IndividualLoan}${queryParam}`;
+      getLoans(url, { showSuccess: false });
    }, [queryByProductName]);
 
    useEffect(() => {
       const transformedArray = queryByStatus?.map((item) => item.toUpperCase().replace(/-/g, '_'));
-      getLoans(
-         `${API_PATH.IndiviualLoan}${
-            (transformedArray ?? []).length > 0
-               ? `?status=${JSON.stringify(transformedArray)}`
-               : `?All=${true}`
-         }`,
-         { showSuccess: false }
-      );
+      const queryParam =
+         (transformedArray ?? []).length > 0 ? `?status=${JSON.stringify(transformedArray)}` : `?All=${true}`;
+      const url = `${API_PATH.IndividualLoan}${queryParam}`;
+      getLoans(url, { showSuccess: false });
    }, [queryByStatus]);
 
    useEffect(() => {
-      getLoans(
-         `${API_PATH.IndiviualLoan}${
-            queryByDate ? `?StartDate=${queryByDate[0]}&EndDate=${queryByDate[1]}` : `?All=${true}`
-         }`,
-         { showSuccess: false }
-      );
+      const queryParam = queryByDate
+         ? `?StartDate=${queryByDate[0]}&EndDate=${queryByDate[1]}`
+         : `?All=${true}`;
+      const url = `${API_PATH.IndividualLoan}${queryParam}`;
+      getLoans(url, { showSuccess: false });
    }, [queryByDate]);
-
-   // const [, deleteRequest] = useRequest({
-   //    onSuccess: (response) => getLoans(`${API_PATH.IndiviualLoan}?All=${true}`, { showSuccess: false }),
-   // });
 
    return (
       <Box sx={{ p: 2, pt: 3, bgcolor: 'white', borderRadius: 2, border: '1px solid #E5E9EB' }}>
          <TableHeading
             handleSearch={setSearchText}
-            handleRefresh={() => getLoans(`${API_PATH.IndiviualLoan}?All=${true}`, { showSuccess: false })}
+            handleRefresh={() => getLoans(`${API_PATH.IndividualLoan}?All=${true}`, { showSuccess: false })}
             handleDownload={() =>
-               downloadAsCSVByID(`loan ${tab}`, `Individual Loan ${capitalizeString(tab!)}`)
+               downloadAsCSVByID(`loan-table`, `Individual Loan ${capitalizeString(tab!)}`)
             }
             searchPlaceholder="Search by product name/code"
          />
@@ -131,19 +126,24 @@ export const LoanTable = () => {
                bodyProps={{ rows: loanTableBody }}
             />
          </Box>
+         {loanProducts && loanProducts?.length === 0 && <Box textAlign="center">No records found</Box>}
          <Dialog
             minWidth="50%"
             open={openLoanAction}
             handleClose={() => setOpenLoanAction(false)}
             title={`LOAN ${menuToAction(action)?.toUpperCase()} REQUEST`}
          >
-            <LoanActionRequest action={menuToAction(action)!} handleSubmit={() => setOpenLoanAction(false)} />
+            <LoanActionRequest
+               action={menuToAction(action)!}
+               id={id}
+               handleSubmit={() => setOpenLoanAction(false)}
+            />
          </Dialog>
          <AlertDialog
             open={openDeleteAction}
             handleClose={() => setOpenDeleteAction(false)}
             handleConfirm={() => {
-               // deleteRequest(API_PATH.IndiviualLoan, { body: { loanId: idToDelete }, method: 'DELETE' })
+               setOpenDeleteAction(false);
             }}
             title="Do you want to withdraw and delete request?"
          />

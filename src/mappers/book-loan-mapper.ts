@@ -1,7 +1,7 @@
 import { BookLoanData } from '@app/@types/book-loan';
 import { CustomerData } from '@app/@types/customer';
 import { BookedLoanData, LoanProductData } from '@app/@types/loan-product';
-import { currencyInputFormatter } from '@app/helper/currency-helper';
+import { currencyInputFormatter, currencyToNumber } from '@app/helper/currency-helper';
 
 export const mapBookLoanToSchema = (
    bookLoanData: BookLoanData,
@@ -60,8 +60,8 @@ export const mapSchemaToBookLoan = (loan: BookedLoanData): BookLoanData => {
    return {
       customerInformation: { acctNo: loan.acctNo },
       facilityDetails: {
-         product_name: '',
-         product_category: '',
+         product_name: loan.product.name,
+         product_category: loan.product.category,
          productPurpose: loan.productPurpose,
          principal: formattedCurrency,
          interestRate: loan.interestRate.toString(),
@@ -93,4 +93,26 @@ export const mapSchemaToBookLoan = (loan: BookedLoanData): BookLoanData => {
          repaymentAcct: loan?.repaymentAcct,
       },
    };
+};
+
+export const mapRepaymentScheduleToSchema = (bookLoanData: BookLoanData, product?: LoanProductData) => {
+   const data = {
+      productId: product?.id,
+      principal: currencyToNumber(bookLoanData?.facilityDetails?.principal ?? ''),
+      tenorPeriod: bookLoanData?.facilityDetails?.tenorPeriod,
+      tenorValue: bookLoanData?.facilityDetails?.tenorValue,
+      moratoriumValue: bookLoanData?.facilityDetails?.moratoriumValue,
+      moratoriumPeriod: bookLoanData?.facilityDetails?.moratoriumPeriod,
+      interestRate: Number(bookLoanData?.facilityDetails?.interestRate),
+      disbursementDate: bookLoanData?.transactionSettings?.disburseDate
+         ? new Date(bookLoanData?.transactionSettings?.disburseDate)
+         : undefined,
+      gracePeriod: bookLoanData?.facilityDetails?.gracePeriod,
+   };
+   type Data = typeof data;
+   const filteredData = Object.fromEntries(
+      Object.entries(data).filter(([, value]) => value !== undefined && value !== '')
+   ) as Partial<Data>;
+
+   return filteredData;
 };

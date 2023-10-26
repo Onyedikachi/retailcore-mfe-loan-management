@@ -2,7 +2,6 @@ import { Box, Grid, IconButton, List, ListItem } from '@mui/material';
 import InsertDriveFileOutlinedIcon from '@mui/icons-material/InsertDriveFileOutlined';
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 import { Colors } from '@app/constants/colors';
-import { InputSuccessText } from '../forms/InputFieldError';
 
 export const SelectedFilesToUpload: React.FC<{
    filesMeta: Array<{ name: string; url: string }>;

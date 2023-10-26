@@ -2,7 +2,7 @@ import { Button, Tooltip } from '@app/components/atoms';
 import { TableHeaderProps } from '@app/components/table/TableHeader';
 import FormContainer from '@app/components/forms/FormContainer';
 import AlertDialog from '@app/components/modal/AlertDialog';
-import { API_PATH, BasePath } from '@app/constants';
+import { API_PATH, IndividualLoanPath } from '@app/constants';
 import { formattedDate } from '@app/helper/formater';
 import { useStepperContext } from '@app/providers';
 import { Box, Divider, Typography } from '@mui/material';
@@ -17,16 +17,26 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 export const RepaymentSchedule = () => {
    const [isDraft, setIsDraft] = useState(false);
    const { handleNavigation } = useStepperContext();
-   const { backendData, selectedProduct } = useBookLoanContext();
+   const { backendData, selectedProduct, resetBookLoanData } = useBookLoanContext();
    const currency = selectedProduct?.currency;
    const navigate = useNavigate();
    const [searchParams] = useSearchParams();
    const id = searchParams.get('id');
 
-   const [, submitForm] = useRequest({ onSuccess: (res) => navigate(BasePath) });
+   const [, submitForm] = useRequest({
+      onSuccess: (res) => {
+         navigate(IndividualLoanPath);
+         handleNavigation(0);
+         resetBookLoanData();
+      },
+   });
    const handleSubmit = () => {
       setIsDraft(false);
-      submitForm(API_PATH.IndiviualLoan, { body: backendData });
+      if (id) {
+         submitForm(`${API_PATH.IndividualLoan}`, { body: { ...backendData, id: id }, method: 'PUT' });
+      } else {
+         submitForm(API_PATH.IndividualLoan, { body: backendData });
+      }
    };
 
    const schedule: TableHeaderProps = useMemo(() => {
@@ -43,7 +53,7 @@ export const RepaymentSchedule = () => {
    }, []);
 
    const tableBody = useMemo(() => {
-      return [1, 2].map((item, id) => ({
+      return [].map((item, id) => ({
          date: formattedDate('2022-02-22T15:45:00Z'),
          principal: `${currency} 8,333.33`,
          interest: `${currency} 461.67`,
@@ -72,6 +82,7 @@ export const RepaymentSchedule = () => {
                </Button>
                <Box display="flex" gap={3}>
                   <Button
+                     id="download-repayment"
                      variant="outlined"
                      onClick={() =>
                         downloadTableAsPDFByID('schedule', 'Loan Repayment Schedule', 'repayment schedule')
@@ -79,10 +90,12 @@ export const RepaymentSchedule = () => {
                   >
                      Download
                   </Button>
-                  <Button variant="outlined" onClick={() => setIsDraft(true)}>
+                  <Button variant="outlined" onClick={() => setIsDraft(true)} id="repayment-save">
                      Save As Draft
                   </Button>
-                  <Button onClick={() => handleNavigation('next')}>Next</Button>
+                  <Button onClick={() => handleNavigation('next')} id="repayment-next">
+                     Next
+                  </Button>
                </Box>
             </Box>
          </FormContainer>

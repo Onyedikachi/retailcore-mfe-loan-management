@@ -7,15 +7,28 @@ import { TextAreaControl } from '@app/components/forms/TextAreaControl';
 import { FileUpload } from '@app/components/atoms/FileUpload';
 import { Button } from '@app/components/atoms/Button';
 import { InputErrorText } from '@app/components/forms/InputFieldError';
+import { useRequest } from 'react-http-query';
+import { API_PATH } from '@app/constants/api-path';
+import { menuToAPIAction } from '@app/constants/dashboard';
 
-export const LoanActionRequest: React.FC<{ action: string; handleSubmit?: () => void }> = ({
+export const LoanActionRequest: React.FC<{ action: string; id: string; handleSubmit?: () => void }> = ({
+   id,
    action,
    handleSubmit,
 }) => {
    const { initialValues, validationSchema, Fields } = FormMeta;
 
+   const [, submitForm] = useRequest({});
    const onSubmit = (values: FormMeta.FormValues) => {
-      // TODO: Implement submittion of  details to the backend.
+      submitForm(`${API_PATH.IndividualLoan}/${id}/action`, {
+         body: {
+            action: menuToAPIAction(action),
+            comment: values.reason,
+            // fileUrl: values.doc ?? undefined,
+            // notify: values.notify ?? undefined,
+         },
+         method: 'PUT',
+      });
       handleSubmit?.();
    };
 

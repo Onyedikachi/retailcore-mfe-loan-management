@@ -1,9 +1,18 @@
 import { StatusCardProps } from '@app/@types/dashboard';
+import { Permissions } from './permissions';
 
-export const individualLoanFilterOptions = (key?: string | number) => {
-   return key == tabOptions[0].key
-      ? ['Created system-wide', 'Created by me', 'Created by my branch']
-      : ['Intiated system-wide', 'Intiated by me', 'Intiated by my branch'];
+export const individualLoanFilterOptions = (key?: string | number, isUserAChecker?: boolean) => {
+   let options;
+
+   if (key == tabOptions[0].key) {
+      options = ['Created system-wide', 'Created by me', 'Created by my branch'];
+   } else if (isUserAChecker) {
+      options = ['Sent system-wide', 'Sent by me', 'Sent by my branch'];
+   } else {
+      options = ['Initiated system-wide', 'Initiated by me', 'Initiated by my branch'];
+   }
+
+   return options;
 };
 
 export interface DataCount {
@@ -15,18 +24,27 @@ export interface DataCount {
    performing?: number;
    nonPerforming?: number;
    closed?: number;
+   rejected?: number;
 }
 export const tabCardOptions = (
-   dataCount?: DataCount
+   dataCount?: DataCount,
+   isUserAChecker?: boolean
 ): Record<string, Array<Omit<StatusCardProps, 'isActive' | 'onClick'>>> => {
    return {
-      requests: [
-         { label: 'All', value: dataCount?.all ?? 0, variant: 'black' },
-         { label: 'Approved', value: dataCount?.approved ?? 0, variant: 'success' },
-         { label: 'In-Review', value: dataCount?.inReview ?? 0, variant: 'info' },
-         { label: 'In-Issue', value: dataCount?.inIssue ?? 0, variant: 'error' },
-         { label: 'Draft', value: dataCount?.draft ?? 0, variant: 'gray' },
-      ],
+      requests: isUserAChecker
+         ? [
+              { label: 'All', value: dataCount?.all ?? 0, variant: 'black' },
+              { label: 'Approved', value: dataCount?.approved ?? 0, variant: 'success' },
+              { label: 'Pending', value: dataCount?.inReview ?? 0, variant: 'info' },
+              { label: 'Rejected', value: dataCount?.rejected ?? 0, variant: 'error' },
+           ]
+         : [
+              { label: 'All', value: dataCount?.all ?? 0, variant: 'black' },
+              { label: 'Approved', value: dataCount?.approved ?? 0, variant: 'success' },
+              { label: 'In-Review', value: dataCount?.inReview ?? 0, variant: 'info' },
+              { label: 'In-Issue', value: dataCount?.inIssue ?? 0, variant: 'error' },
+              { label: 'Draft', value: dataCount?.draft ?? 0, variant: 'gray' },
+           ],
       records: [
          { label: 'All', value: dataCount?.all ?? 0, variant: 'black' },
          { label: 'Performing', value: dataCount?.performing ?? 0, variant: 'success' },
@@ -37,8 +55,8 @@ export const tabCardOptions = (
 };
 
 export const tabOptions = [
-   { label: 'Records', key: 'records' },
-   { label: 'Requests', key: 'requests' },
+   { label: 'Records', key: 'records', permissions: [Permissions.VIEW_ALL_LOAN_RECORDS] },
+   { label: 'Requests', key: 'requests', permissions: [Permissions.VIEW_ALL_LOAN_REQUESTS] },
 ];
 
 export const menuFromStatus = (menu: string) => {
@@ -79,18 +97,14 @@ export const menuToAction = (menu: string) => {
          return;
    }
 };
-
-export const loanStatus = (status: string) => {
-   switch (status) {
-      case 'APPROVED':
-         return 'Approved';
-      case 'IN_REVIEW':
-         return 'In-Review';
-      case 'IN_ISSUE':
-         return 'In-Issue';
-      case 'DRAFT':
-      case 'PENDING':
-         return 'Draft';
+export const menuToAPIAction = (menu: string) => {
+   switch (menu) {
+      case loanActions[0]:
+         return 'LIQUIDATED';
+      case loanActions[1]:
+         return 'CLOSED';
+      case loanActions[2]:
+         return 'WRITE_OFF';
       default:
          return;
    }

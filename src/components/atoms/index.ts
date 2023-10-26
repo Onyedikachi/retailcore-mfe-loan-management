@@ -11,4 +11,4 @@ export * from './DragContainer';
 export * from './MenuItems';
 export * from './Menu';
 export * from './Tooltip';
-export * from './AutocompleteInput';
+export * from './auto-complete';

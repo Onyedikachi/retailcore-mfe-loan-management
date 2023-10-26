@@ -20,7 +20,6 @@ export const CollateralSelected: React.FC<{ name: string; collateral: string; ha
                <CancelIcon sx={{ color: 'primary.main' }} />
             </IconButton>
          </Box>
-         {/* TODO: Market value must not be lesser than that specified for the collateral */}
          <Grid container mt={2} mb={0.5}>
             <Grid item xs={4}>
                <LoanPrincipalControl

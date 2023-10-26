@@ -1,8 +1,8 @@
-import { isNullish } from '@app/helper';
-import { fireEvent, render } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
 import React from 'react';
+import userEvent from '@testing-library/user-event';
 import { act } from 'react-dom/test-utils';
+import { fireEvent, render } from '@testing-library/react';
+import { isNullish } from '@app/helper';
 
 type TestExpectations = {
    /** Text that is expected to be present in the DOM. */
@@ -67,32 +67,40 @@ const performActions = async (acts: TestMeta['acts'], elementSelector: string, s
       const actElement = act.selector
          ? findQueryElement(screen, act.selector)
          : findQueryElement(screen, elementSelector);
-
       if (!actElement) {
          throw Error(`Can't find query element with selector ${act.selector}.`);
       }
-
       await triggerEvent(act, actElement, screen);
    }
 };
 
-const triggerEvent = async (
-   { focus, blur, typeText, clear, click, mousedown, ...otherProps }: TestMeta['acts'][0],
-   actElement: any,
-   screen: any
+const triggerEvent = async (acts: TestMeta['acts'][0], actElement: any, screen: any) => {
+   const actsKeys = Object.keys(acts) as Array<keyof typeof acts>;
+
+   await act(async () => {
+      for (const actKey of actsKeys) {
+         if (!acts[actKey]) continue;
+
+         await eventInitiator(acts, actKey, actElement);
+      }
+   });
+
+   checkExpectations(screen.baseElement, actElement, acts, screen);
+};
+
+const eventInitiator = async <T extends TestMeta['acts'][0] = TestMeta['acts'][0]>(
+   acts: T,
+   actKey: keyof T,
+   actElement: any
 ) => {
    const user = userEvent.setup();
 
-   await act(async () => {
-      if (focus) fireEvent.focus(actElement);
-      if (blur) fireEvent.blur(actElement);
-      if (typeText) await user.type(actElement, typeText);
-      if (click) fireEvent.click(actElement);
-      if (clear) await user.clear(actElement);
-      if (mousedown) fireEvent.mouseDown(actElement);
-   });
-
-   checkExpectations(screen.baseElement, actElement, otherProps);
+   if (actKey === 'focus') fireEvent.focus(actElement);
+   if (actKey === 'blur') fireEvent.blur(actElement);
+   if (actKey === 'typeText' && actKey) await user.type(actElement, (acts[actKey] as string) ?? '');
+   if (actKey === 'click') fireEvent.click(actElement);
+   if (actKey === 'clear') await user.clear(actElement);
+   if (actKey === 'mousedown') fireEvent.mouseDown(actElement);
 };
 
 const testForm = (
@@ -101,12 +109,9 @@ const testForm = (
 ) => {
    it(testMeta.testDescription, async () => {
       const screen = render(component);
-      const queryElement = findQueryElement(screen, testMeta.selector);
-
       await performActions(testMeta.acts, testMeta.selector, screen);
-
-      checkExpectations(screen.baseElement, queryElement, testMeta);
-
+      const queryElement = findQueryElement(screen, testMeta.selector);
+      checkExpectations(screen.baseElement, queryElement, testMeta, screen);
       const { buttonStatus } = testMeta;
       if (buttonStatus) {
          const buttonElement = screen.container.querySelector(buttonStatus.selector);
@@ -118,43 +123,36 @@ const testForm = (
 const checkExpectations = (
    baseElement: HTMLElement,
    expectedElement: HTMLElement,
-   expectation: TestExpectations
+   expectation: TestExpectations,
+   screen: any
 ) => {
    if (expectation.expectedText) {
       expect(baseElement).toHaveTextContent(expectation.expectedText);
    }
-
    if (expectation.expectedNotText) {
       expect(baseElement).not.toHaveTextContent(expectation.expectedNotText);
    }
-
    if (!isNullish(expectation.expectedInputValue)) {
       expect((expectedElement as HTMLInputElement).value).toBe(expectation.expectedInputValue);
    }
-
    if (!isNullish(expectation.expectedTextLength)) {
       expect((expectedElement as HTMLInputElement).value).toHaveLength(expectation.expectedTextLength!);
    }
-
    if (expectation.expectedClass) {
       expect(expectedElement).toHaveClass(expectation.expectedClass);
    }
-
    if (!isNullish(expectation.expectedChecked)) {
       const checkElement = getExpectedElement(screen, expectedElement, expectation.expectedChecked!);
       expect((checkElement as HTMLInputElement).checked).toBe(!!expectation.expectedChecked);
    }
-
    if (!isNullish(expectation.expectedNotChecked)) {
       const checkElement = getExpectedElement(screen, expectedElement, expectation.expectedNotChecked!);
       expect((checkElement as HTMLInputElement).checked).toBe(!expectation.expectedNotChecked);
    }
-
    if (!isNullish(expectation.expectedInDOM)) {
       const element = getExpectedElement(screen, expectedElement, expectation.expectedInDOM!);
       expectation.expectedInDOM ? expect(element).toBeInTheDocument() : expect(element).toBeNull();
    }
-
    if (!isNullish(expectation.expectedNotInDOM)) {
       const element = getExpectedElement(screen, expectedElement, expectation.expectedNotInDOM!);
       expectation.expectedNotInDOM ? expect(element).toBeNull() : expect(element).toBeInTheDocument();

@@ -7,7 +7,7 @@ export type LoanPrincipalControlProps = {
    tooltipText?: string;
    required?: boolean;
    extraLeft?: string;
-   layout?: 'horizontal' | 'vertical' | undefined;
+   layout?: 'horizontal' | 'vertical';
    mb?: number;
    placeholder?: string;
    layoutFlexGrid?: number[];

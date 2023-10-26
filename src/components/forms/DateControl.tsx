@@ -49,6 +49,16 @@ export const DateControl: React.FC<DateControlProps> = ({
       }
    }, [date]);
 
+   let minDate: Date | undefined;
+
+   if (props.minDate) {
+      minDate = props.maxDate;
+   } else if (minDateString) {
+      minDate = parse(minDateString, 'dd/MM/yyyy', new Date());
+   } else {
+      minDate = undefined;
+   }
+
    return (
       <Field name={name}>
          {({ field }: FieldProps) => {
@@ -92,13 +102,7 @@ export const DateControl: React.FC<DateControlProps> = ({
                               setDate(date);
                               setAnchorEl(null);
                            }}
-                           minDate={
-                              props.minDate
-                                 ? props.maxDate
-                                 : minDateString
-                                 ? parse(minDateString, 'dd/MM/yyyy', new Date())
-                                 : undefined
-                           }
+                           minDate={minDate}
                            onClickClear={() => setFieldValue(name, '')}
                            {...(props as CalenderProp)}
                         />

@@ -72,7 +72,6 @@ export const LoanManagementSettingsField = () => {
          {getFieldProps(InputFieldNames.ENABLE_GRACE_PERIOD)?.value && (
             <Box pl={3} pr={5}>
                <TenureControl
-                  //TODO:Ensure validation of this field
                   layout="horizontal"
                   fieldLabel="Grace Period"
                   periodName={InputFieldNames.GRACE_PERIOD}

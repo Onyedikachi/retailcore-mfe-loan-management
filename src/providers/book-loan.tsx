@@ -29,7 +29,7 @@ interface BookLoanContextType {
    selectedCustomer: CustomerData | undefined;
    persona: string | undefined;
    customerEligibility: {
-      isEligbible: boolean;
+      isEligible: boolean;
       message: string;
    };
    productNames?: LoanProduct[];
@@ -74,7 +74,8 @@ export const BookLoanProvider = ({ children }: BookLoanProviderProps) => {
    const [isDraft, setIsDraft] = useState<boolean>();
 
    const updateBookLoanData = (step?: BookLoanSteps, data?: DataType) => {
-      setIsDraft(step === 'customerInformation' ? true : step === 'facilityDetails' ? true : false);
+      const isDraft = step === 'customerInformation' || step === 'facilityDetails';
+      setIsDraft(isDraft);
       if (data && step) {
          setBookLoanData((prevData) => {
             return { ...prevData, [step]: data };
@@ -96,6 +97,7 @@ export const BookLoanProvider = ({ children }: BookLoanProviderProps) => {
    const getSelectedProduct = (name: string) => {
       setSelectedProduct(allProduct?.filter((prod) => prod.name === name)[0]);
    };
+
    const getProductData = (allLoanProducts: LoanProductData[]) => {
       setAllProduct(allLoanProducts);
       const names = allLoanProducts.map((loan) => {
@@ -133,15 +135,18 @@ export const BookLoanProvider = ({ children }: BookLoanProviderProps) => {
 
    const isActive = selectedCustomer?.status === 'Active';
    const hasKYC = isActive && selectedCustomer?.approvalStatus === 'Approved';
+   let message = '';
+   if (!hasKYC && !isActive) {
+      message = "Customer's KYC is Incomplete and Account Status is Inactive";
+   } else if (!hasKYC) {
+      message = "Customer's KYC is Incomplete";
+   } else if (!isActive) {
+      message = "Customer's Account Status is Inactive";
+   }
 
-   const customerEligibility: { isEligbible: boolean; message: string } = {
-      isEligbible: hasKYC && isActive,
-      message:
-         !hasKYC && !isActive
-            ? "Customer's KYC is Incomplete and Account Status is Inactive"
-            : !hasKYC
-            ? "Customer's KYC is Incomplete"
-            : "Customer's  Account Status is Inactive",
+   const customerEligibility: { isEligible: boolean; message: string } = {
+      isEligible: hasKYC && isActive,
+      message: message,
    };
 
    const contextValue = useMemo<BookLoanContextType>(

@@ -10,11 +10,12 @@ import {
    Box,
 } from '@mui/material';
 import { Field, FieldProps, ErrorMessage } from 'formik';
-import { InputErrorText } from '../forms/InputFieldError';
+import { InputErrorText } from '../../forms/InputFieldError';
 import React, { SyntheticEvent, useEffect, useState } from 'react';
 import SearchIcon from '@mui/icons-material/Search';
 import useDebounce from '@app/hooks/useDebounce';
-import Checkbox from './Checkbox';
+import Checkbox from '../Checkbox';
+import { Listbox } from './Listbox';
 
 export const StyledAutocomplete = styled(MuiAutocomplete)(() => {
    return {};
@@ -74,7 +75,7 @@ export const Autocomplete: React.FC<AutocompleteProps> = ({
    const { debouncedValue, setDebouncedValue } = useDebounce<string>(debounceTime);
 
    useEffect(() => {
-      handleSearch?.(debouncedValue || '');
+      handleSearch?.(debouncedValue ?? '');
    }, [debouncedValue]);
 
    const handleChange = (event: SyntheticEvent<Element, Event>, newValue: any, form: FieldProps['form']) => {
@@ -85,6 +86,10 @@ export const Autocomplete: React.FC<AutocompleteProps> = ({
          form.setFieldValue(name, typeof newValue === 'string' ? newValue : newValue?.label);
       }
       onInputChange?.(newValue);
+   };
+
+   const renderListComponent = (componentProps: React.HTMLAttributes<HTMLElement>) => {
+      return <Listbox addButton={addButton} applyButton={applyButton} componentProps={componentProps} />;
    };
 
    return (
@@ -122,7 +127,7 @@ export const Autocomplete: React.FC<AutocompleteProps> = ({
                                  ) : (
                                     <Box component="li" {...props} sx={{ py: 0 }}>
                                        {checkbox && <Checkbox sx={{ mr: 2, py: 0 }} checked={selected} />}
-                                       {getOption(option)} {extras && extras}
+                                       {getOption(option)} {extras ?? ''}
                                     </Box>
                                  )}
                               </React.Fragment>
@@ -132,24 +137,10 @@ export const Autocomplete: React.FC<AutocompleteProps> = ({
                            className: 'fancy-scrollbar',
                            style: { maxHeight: listBoxMaxHeight ?? '250px', fontSize: '14px' },
                         }}
-                        ListboxComponent={(componentProps) => (
-                           <>
-                              {addButton && (
-                                 <Box pt={1.5} display="flex" justifyContent="flex-end">
-                                    {addButton}
-                                 </Box>
-                              )}
-                              <ul {...componentProps} />
-                              {applyButton && (
-                                 <Box py={1} display="flex" justifyContent="flex-end">
-                                    {applyButton}
-                                 </Box>
-                              )}
-                           </>
-                        )}
+                        ListboxComponent={renderListComponent}
                         {...otherProps}
                         renderTags={(list) => {
-                           let lists = list?.map((item: any) => item.label).join(', ');
+                           const lists = list?.map((item: any) => item.label).join(', ');
                            return <span>{lists}</span>;
                         }}
                         renderInput={(params) => {
