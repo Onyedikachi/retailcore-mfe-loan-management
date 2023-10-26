@@ -1,6 +1,9 @@
 # Use the Node.js base image
 FROM node:18-alpine AS builder
 
+RUN addgroup -S nonroot \
+    && adduser -S nonroot -G nonroot
+
 # Set the working directory inside the container
 WORKDIR /app
 
@@ -8,7 +11,7 @@ WORKDIR /app
 COPY package.json yarn.lock /app/
 
 # Install dependencies using Yarn
-RUN yarn install --frozen-lockfile
+RUN yarn install --ignore-scripts --frozen-lockfile  
 
 # Copy the application code to the container
 # COPY ./src /src
@@ -28,5 +31,7 @@ COPY nginx.conf /etc/nginx/nginx.conf
 COPY --from=builder /app/dist /usr/share/nginx/html
 
 EXPOSE 80
+
+USER nonroot
 
 CMD ["nginx", "-g", "daemon off;"]
