@@ -40,9 +40,9 @@ export const IndividualLoanDashboardProvider = ({ children }: IndividualLoanDash
          inIssue: loanProducts?.filter((product) => product.status === 'IN_ISSUE').length,
          draft: loanProducts?.filter((product) => product.status === 'DRAFT' || product.status === 'PENDING')
             .length,
-         performing: 0,
-         nonPerforming: 0,
-         closed: 0,
+         performing: loanProducts?.filter((product) => product.status === 'PERFORMING').length,
+         nonPerforming: loanProducts?.filter((product) => product.status === 'NON_PERFORMING').length,
+         closed: loanProducts?.filter((product) => product.status === 'CLOSED').length,
       };
       setDataCount(count);
    };

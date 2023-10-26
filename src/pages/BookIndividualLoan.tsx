@@ -12,6 +12,7 @@ import { ActivitySummary } from '@app/components/loan-booking/process-summary/Ac
 import { BookLoanProvider, useBookLoanContext } from '@app/providers/book-loan';
 import { useSearchParams } from 'react-router-dom';
 import { useRequest } from 'react-http-query';
+import { IndividualLoanDashboardProvider } from '@app/providers/individual-loan-dashboard';
 
 export const StyledContentWrapper = styled(Box)({
    background: 'white',
@@ -106,9 +107,11 @@ export const BookIndividualLoan = () => {
             />
          }
          content={
-            <BookLoanProvider>
-               <BookIndividualLoanContent getActiveStep={(step) => setActiveStep(step)} />
-            </BookLoanProvider>
+            <IndividualLoanDashboardProvider>
+               <BookLoanProvider>
+                  <BookIndividualLoanContent getActiveStep={(step) => setActiveStep(step)} />
+               </BookLoanProvider>
+            </IndividualLoanDashboardProvider>
          }
          fullContent={true}
       />

@@ -90,7 +90,8 @@ const removeAllByValue =
 const updateField =
    (getFieldProps: GetFieldProps, setFieldValue: SetFieldValue, baseName: string) =>
    (value: any, formikKey?: string, valueKey?: string) => {
-      let fieldValues = getFieldProps(`${baseName}`).value ?? [];
+      const initialValues = getFieldProps(`${baseName}`).value;
+      let fieldValues = initialValues ? [...initialValues] : [];
       const values = Array.isArray(value) ? value : [value];
       const _formikKey = formikKey ?? Symbol();
       const _valueKey = valueKey ?? _formikKey;
@@ -99,24 +100,30 @@ const updateField =
          if (
             !fieldValues.find(
                (fieldValue: any) =>
-                  (fieldValue?.[_formikKey] ?? fieldValue) === (_value?.[_valueKey] ?? _value)
+                  getFieldValues(fieldValue, _formikKey) === getFieldValues(_value, _valueKey)
             )
          ) {
-            fieldValues.push(_value);
+            const newValue = getFieldValues(_value, _valueKey);
+            fieldValues.push(formikKey ? { [formikKey]: newValue } : newValue);
          }
       });
 
       fieldValues.forEach((fieldValue: any) => {
          if (
             !values.find(
-               (_value: any) => (fieldValue?.[_formikKey] ?? fieldValue) === (_value?.[_valueKey] ?? _value)
+               (_value: any) => getFieldValues(fieldValue, formikKey) === getFieldValues(_value, _valueKey)
             )
          ) {
             fieldValues = fieldValues.filter(
-               (_value: any) => (_value?.[_formikKey] ?? _value) !== (fieldValue?.[_formikKey] ?? fieldValue)
+               (_value: any) => getFieldValues(_value, _formikKey) !== getFieldValues(fieldValue, _formikKey)
             );
          }
       });
 
       setFieldValue(`${baseName}`, fieldValues);
    };
+
+const getFieldValues = (value: unknown, key: PropertyKey = Symbol()) => {
+   if (typeof value === 'object' && (value as any)?.[key]) return (value as any)[key];
+   return value;
+};

@@ -11,8 +11,9 @@ import { API_PATH, ReviewLoanPath } from '@app/constants';
 import { capitalizeString } from '@app/helper/string';
 import { useIndividualLoanDashboardContext } from '@app/providers/individual-loan-dashboard';
 import { useRequest } from 'react-http-query';
-import { format } from 'date-fns';
 import { usePermission } from '@app/hooks/usePermission';
+import { tableQuery, handleDateQuery } from './table-data/table-actions';
+import { Count } from '@app/constants/dashboard';
 
 export const CheckerLoanTable = () => {
    const [searchParams] = useSearchParams();
@@ -32,11 +33,7 @@ export const CheckerLoanTable = () => {
             (type) => {},
             (reviewer) => {},
             (loanStatus) => setQueryByStatus(loanStatus),
-            (startDate, endDate) => {
-               const start = format(new Date(startDate!), 'yyyy-MM-dd');
-               const end = format(new Date(endDate!), 'yyyy-MM-dd');
-               setQueryByDate([start, end]);
-            },
+            (startDate, endDate) => handleDateQuery(startDate, endDate, setQueryByDate),
             isUserAChecker,
             tab!!
          ),
@@ -58,32 +55,19 @@ export const CheckerLoanTable = () => {
    });
 
    useEffect(() => {
-      const searchParam = searchText ? `?Search=${searchText}` : `?All=${true}`;
-      const loanPath = `${API_PATH.IndividualLoan}${searchParam}`;
-      getLoans(loanPath, { showSuccess: false });
-   }, [searchText]);
-
-   useEffect(() => {
-      const transformedArray = queryByStatus?.map((item) => item.toUpperCase().replace(/-/g, '_'));
-      const statusQuery =
-         (transformedArray ?? []).length > 0 ? `?status=${JSON.stringify(transformedArray)}` : `?All=${true}`;
-      const loanPath = `${API_PATH.IndividualLoan}${statusQuery}`;
-      getLoans(loanPath, { showSuccess: false });
-   }, [queryByStatus]);
-
-   useEffect(() => {
-      const dateQuery = queryByDate
-         ? `?StartDate=${queryByDate[0]}&EndDate=${queryByDate[1]}`
-         : `?All=${true}`;
-      const loanPath = `${API_PATH.IndividualLoan}${dateQuery}`;
-      getLoans(loanPath, { showSuccess: false });
-   }, [queryByDate]);
+      const queryParams = tableQuery(searchText, undefined, queryByStatus, queryByDate);
+      const urlSearchParams = new URLSearchParams(queryParams).toString();
+      const url = `${API_PATH.IndividualLoan}?${urlSearchParams}`;
+      getLoans(url, { showSuccess: false });
+   }, [searchText, queryByStatus, queryByDate]);
 
    return (
       <Box sx={{ p: 2, pt: 3, bgcolor: 'white', borderRadius: 2, border: '1px solid #E5E9EB' }}>
          <TableHeading
             handleSearch={setSearchText}
-            handleRefresh={() => getLoans(`${API_PATH.IndividualLoan}?All=${true}`, { showSuccess: false })}
+            handleRefresh={() =>
+               getLoans(`${API_PATH.IndividualLoan}?All=${true}&Count=${Count}`, { showSuccess: false })
+            }
             handleDownload={() =>
                downloadAsCSVByID(`checker-loan-table`, `Individual Loan ${capitalizeString(tab!)}`)
             }

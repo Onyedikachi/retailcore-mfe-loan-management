@@ -71,8 +71,10 @@ export const FacilityDetails: React.FC = () => {
    );
 
    useEffect(() => {
-      id && getSelectedProduct(bookLoanData.facilityDetails?.product_name ?? '');
-   }, [id]);
+      if (id && (productNames ?? [])?.length > 0) {
+         getSelectedProduct(bookLoanData.facilityDetails?.product_name ?? '');
+      }
+   }, [id, productNames]);
 
    return (
       <FormContainer>

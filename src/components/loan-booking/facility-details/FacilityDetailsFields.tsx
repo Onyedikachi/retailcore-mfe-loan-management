@@ -13,7 +13,7 @@ import { useBookLoanContext } from '@app/providers/book-loan';
 
 export const FacilityDetailsFields: React.FC<{ getSearchInput?: (input: string) => void }> = (props) => {
    const { InputFieldNames, TooltipText } = FormMeta;
-   const { getFieldProps } = useFormikContext<FormMeta.FacilityDetailsFormValues>();
+   const { getFieldProps, validate, values } = useFormikContext<FormMeta.FacilityDetailsFormValues>();
    const { resetFieldState } = useFormikHelper();
    const { productNames, getSelectedProduct, selectedProduct } = useBookLoanContext();
 
@@ -36,6 +36,7 @@ export const FacilityDetailsFields: React.FC<{ getSearchInput?: (input: string) 
                noOptionsText="No match"
                onInputChange={(value) => {
                   getSelectedProduct(value as string);
+                  validate?.(values);
                }}
                options={productNames?.map((prod) => prod.name) ?? []}
                filterOptions={(option, { inputValue }) => {
