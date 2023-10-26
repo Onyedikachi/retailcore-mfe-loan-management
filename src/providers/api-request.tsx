@@ -18,11 +18,17 @@ export const APIRequestProvider = ({ children }: APIRequestProviderProps) => {
       if (Array.isArray(errorMessage)) {
          errorMessage = errorMessage.join(', ');
       }
-      return <AlertSnackbar alertType="error" message={errorMessage} />;
+      return <AlertSnackbar alertType="error" title="Error" message={errorMessage} />;
    };
 
    const renderSuccessSnackbar = (response: any) => {
-      return <AlertSnackbar alertType="success" message={response.message ?? 'Request Successful'} />;
+      return (
+         <AlertSnackbar
+            alertType="success"
+            title="Success"
+            message={response.message ?? 'Request Successful'}
+         />
+      );
    };
 
    const renderLoader = () => <Loader />;

@@ -37,6 +37,7 @@ export const BoxShadowIconButton = styled(IconButton)(() => ({
    width: 30,
    height: 30,
 }));
+
 export const BoxShadowEditIconButton = styled(IconButton)(() => ({
    backgroundColor: Colors.White,
    boxShadow: '0px 2px 8px rgba(0, 0, 0, 0.25)',

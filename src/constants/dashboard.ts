@@ -1,18 +1,21 @@
 import { StatusCardProps } from '@app/@types/dashboard';
-import { Permissions } from './permissions';
 
-export const individualLoanFilterOptions = (key?: string | number, isUserAChecker?: boolean) => {
+export const Count = 20;
+export const individualLoanFilterOptions = (
+   key?: string | number,
+   isUserAChecker?: boolean,
+   accessAllRecords?: boolean,
+   accessAllRequests?: boolean
+) => {
    let options;
-
+   const checkerOptions = ['Sent by me', 'Sent system-wide'];
    if (key == tabOptions[0].key) {
-      options = ['Created system-wide', 'Created by me', 'Created by my branch'];
-   } else if (isUserAChecker) {
-      options = ['Sent system-wide', 'Sent by me', 'Sent by my branch'];
+      options = ['Created by me', 'Created system-wide'];
+      return accessAllRecords ? options : options.filter((op) => !op.includes('system-wide'));
    } else {
-      options = ['Initiated system-wide', 'Initiated by me', 'Initiated by my branch'];
+      options = ['Initiated by me', 'Initiated system-wide', ...(isUserAChecker ? checkerOptions : [])];
+      return accessAllRequests ? options : options.filter((op) => !op.includes('system-wide'));
    }
-
-   return options;
 };
 
 export interface DataCount {
@@ -26,12 +29,13 @@ export interface DataCount {
    closed?: number;
    rejected?: number;
 }
+
 export const tabCardOptions = (
    dataCount?: DataCount,
-   isUserAChecker?: boolean
+   checkerOption?: boolean
 ): Record<string, Array<Omit<StatusCardProps, 'isActive' | 'onClick'>>> => {
    return {
-      requests: isUserAChecker
+      requests: checkerOption
          ? [
               { label: 'All', value: dataCount?.all ?? 0, variant: 'black' },
               { label: 'Approved', value: dataCount?.approved ?? 0, variant: 'success' },
@@ -55,8 +59,8 @@ export const tabCardOptions = (
 };
 
 export const tabOptions = [
-   { label: 'Records', key: 'records', permissions: [Permissions.VIEW_ALL_LOAN_RECORDS] },
-   { label: 'Requests', key: 'requests', permissions: [Permissions.VIEW_ALL_LOAN_REQUESTS] },
+   { label: 'Records', key: 'records' },
+   { label: 'Requests', key: 'requests' },
 ];
 
 export const menuFromStatus = (menu: string) => {

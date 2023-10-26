@@ -30,17 +30,26 @@ export const usePermission = () => {
    const checkPermission = (permissions: string[]) =>
       permissions?.some((role) => userPermissions?.includes(role));
 
-   const checkerPermissions = [
+   const checker = [
       Permissions['AUTHORIZE_BOOKING/RESTRUCTURING_REQUESTS'],
       Permissions['AUTHORIZE_LIQUIDATION/WRITE-OFF_REQUESTS'],
    ];
-   const isUserAChecker = checkerPermissions?.some((element) => userPermissions?.includes(element));
+   const allRecords = [Permissions.VIEW_ALL_LOAN_RECORDS];
+   const allRequest = [Permissions.VIEW_ALL_LOAN_REQUESTS];
+   const isSuperAdmin = authPayload?.user?.tenant_admin;
+
+   const isUserAChecker = isSuperAdmin ?? checker?.some((element) => userPermissions?.includes(element));
+   const accessAllRecords = isSuperAdmin ?? allRecords?.some((element) => userPermissions?.includes(element));
+   const accessAllRequests =
+      isSuperAdmin ?? allRequest?.some((element) => userPermissions?.includes(element));
 
    return {
       ...authPayload,
       checkPermission,
       authLoaded,
       isUserAChecker,
-      isSuperAdmin: authPayload?.user?.tenant_admin,
+      isSuperAdmin,
+      accessAllRecords,
+      accessAllRequests,
    };
 };

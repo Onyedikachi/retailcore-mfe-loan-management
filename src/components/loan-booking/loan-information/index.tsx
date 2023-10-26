@@ -3,6 +3,8 @@ import { AccordionVariant } from '@app/components/accordion/Accordion';
 import { GridComponent } from './GridComponent';
 import { useBookLoanContext } from '@app/providers/book-loan';
 import { LoanProductData } from '@app/@types/loan-product';
+import { Fragment } from 'react';
+import { formatCurrency } from '@app/helper/currency-converter';
 
 export const LoanInformation = () => {
    const { selectedProduct } = useBookLoanContext();
@@ -29,7 +31,7 @@ export const LoanInformation = () => {
                            return index != 1 ? (
                               <GridComponent key={key} property={key} value={value?.toString()} />
                            ) : (
-                              <>
+                              <Fragment key={key}>
                                  <Typography sx={{ textDecoration: 'underline', fontSize: 13, mb: 2 }}>
                                     Applicable collateral assets
                                  </Typography>
@@ -38,7 +40,7 @@ export const LoanInformation = () => {
                                     Equity Contribution
                                  </Typography>
                                  <GridComponent property={'Contribution'} value={''} />
-                              </>
+                              </Fragment>
                            );
                         })
                      )}
@@ -65,8 +67,8 @@ const details = (selectedProduct: LoanProductData | undefined) => {
    return {
       facilityDetails: [
          { key: 'Currency', value: selectedProduct?.currency },
-         { key: 'Min. Principal', value: selectedProduct?.minLoanPrincipal },
-         { key: 'Max. Principal', value: selectedProduct?.maxLoanPrincipal },
+         { key: 'Min. Principal', value: formatCurrency(selectedProduct?.minLoanPrincipal ?? '') },
+         { key: 'Max. Principal', value: formatCurrency(selectedProduct?.maxLoanPrincipal ?? '') },
          { key: 'Min. Interest Rate', value: selectedProduct?.minInterestRate },
          { key: 'Max. Interest Rate', value: selectedProduct?.maxInterestRate },
          {

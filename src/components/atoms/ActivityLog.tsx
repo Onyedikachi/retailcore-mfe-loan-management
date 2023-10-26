@@ -44,7 +44,7 @@ const RoundedBullet = styled('div')<{ pending: boolean }>(({ pending }) => ({
 
 export const ActivityLog: React.FC<ActivityLogProps> = ({ logs, title = 'ACTIVITY LOG' }) => {
    const data: Array<Log> = [
-      { pending: false, subtitle: 'Verify and Submit request for processing', title: 'Pending Actitvity' },
+      { pending: true, subtitle: 'Verify and Submit request for processing', title: 'Pending Activity' },
    ];
 
    return (
@@ -59,11 +59,16 @@ export const ActivityLog: React.FC<ActivityLogProps> = ({ logs, title = 'ACTIVIT
                <Box key={title}>
                   <Stack direction="row" alignItems="center" columnGap="12px">
                      <Box>
-                        <RoundedBullet pending={!pending} />
+                        <RoundedBullet pending={pending} />
                      </Box>
                      <Box flex={1}>
                         <Typography variant="body2">{title}</Typography>
-                        <Typography variant="caption">{date ? dateFormater(date) : subtitle} </Typography>
+                        {subtitle && (
+                           <Typography variant="caption" display="block">
+                              {subtitle}
+                           </Typography>
+                        )}
+                        {date && <Typography variant="caption">{dateFormatter(date)} </Typography>}
                      </Box>
                   </Stack>
                   {(logs ?? data).length - 1 !== index && <VerticalRule pending={pending} />}
@@ -74,7 +79,7 @@ export const ActivityLog: React.FC<ActivityLogProps> = ({ logs, title = 'ACTIVIT
    );
 };
 
-export const dateFormater = (timestamp: string) => {
+export const dateFormatter = (timestamp: string) => {
    if (timestamp === 'awaiting response') return timestamp;
 
    const date: Date = new Date(timestamp);
