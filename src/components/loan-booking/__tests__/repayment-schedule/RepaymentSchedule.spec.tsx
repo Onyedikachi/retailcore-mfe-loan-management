@@ -1,4 +1,4 @@
-import { CreateProductSetup, silentError, render } from '@app/test/setup';
+import { CreateProductSetup, silentError, render } from '@app/tests/setup';
 import { RepaymentSchedule } from '../../repayment-schedule/RepaymentSchedule';
 import { BookLoanProvider } from '@app/providers/book-loan';
 

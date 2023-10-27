@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
-import { TestForm } from './test.utils';
 import { RangeControl } from '../RangeControl';
+import { TestForm } from '@app/tests/form-util';
 
 describe('RangeControl component', () => {
    it('should render RangeControl component with provided props', () => {

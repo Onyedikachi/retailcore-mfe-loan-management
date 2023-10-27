@@ -1,10 +1,10 @@
 import { Permissions } from './permissions';
 import { Navigate } from 'react-router-dom';
-import { DashbordOverview } from '@app/pages/DashboardOverview';
+import { DashboardOverview } from '@app/pages/DashboardOverview';
 import { BookIndividualLoan } from '@app/pages/BookIndividualLoan';
 import { LoanPerformance } from '@app/pages/LoanPerformance';
 import { DashboardSMELoan } from '@app/pages/DashboardSMELoan';
-import { DashboardCorperateLoan } from '@app/pages/DashboardCorperateLoan';
+import { DashboardCorporateLoan } from '@app/pages/DashboardCorporateLoan';
 import { DashboardIndividualLoan } from '@app/pages/DashboardIndividualLoan';
 import { CustomerLoanDetails } from '@app/pages/CustomerLoanDetails';
 import { LoanProductDetails } from '@app/pages/LoanProductDetails';
@@ -22,7 +22,7 @@ export const RouteMaps = {
       path: BasePath,
    },
    dashboardOverview: {
-      element: <DashbordOverview />,
+      element: <DashboardOverview />,
       path: `${BasePath}/overview`,
    },
    dashboardIndividual: {
@@ -38,7 +38,7 @@ export const RouteMaps = {
       path: `${BasePath}/sme`,
    },
    dashboardCorporate: {
-      element: <DashboardCorperateLoan />,
+      element: <DashboardCorporateLoan />,
       path: `${BasePath}/corporate`,
    },
    bookIndividualLoan: {
@@ -109,25 +109,25 @@ export const RoutePaths = {
       absolute: RouteMaps.dashboardIndividual.path,
       relative: '/individual',
       name: 'Individual',
-      permissions: [Permissions.VIEW_ALL_LOAN_RECORDS, Permissions.VIEW_ALL_LOAN_REQUESTS],
+      permissions: [Permissions.BOOK_LOAN],
    },
    LoanPerformance: {
       absolute: RouteMaps.loanPerformance.path,
       relative: '/loan-performance',
       name: 'Loan Performance',
-      permissions: [Permissions.VIEW_ALL_LOAN_RECORDS, Permissions.VIEW_ALL_LOAN_REQUESTS],
+      permissions: [],
    },
    CustomerLoanDetails: {
       absolute: RouteMaps.customerLoanDetails.path,
       relative: '/customer-loan-details',
       name: 'Customer Loan Details',
-      permissions: [Permissions.VIEW_ALL_LOAN_RECORDS, Permissions.VIEW_ALL_LOAN_REQUESTS],
+      permissions: [Permissions.BOOK_LOAN],
    },
    LoanProductDetails: {
       absolute: RouteMaps.loanProductDetails.path,
       relative: '/loan-product-details',
       name: 'Customer Loan Details',
-      permissions: [Permissions.VIEW_ALL_LOAN_RECORDS, Permissions.VIEW_ALL_LOAN_REQUESTS],
+      permissions: [Permissions.BOOK_LOAN],
    },
    LoanReview: {
       absolute: RouteMaps.loanReview.path,

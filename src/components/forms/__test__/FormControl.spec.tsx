@@ -10,7 +10,7 @@ import {
 import { FormControlBase } from '../FormControl';
 import userEvent from '@testing-library/user-event';
 import { TextField, AutocompleteRenderInputParams } from '@mui/material';
-import { TestForm } from './test.utils';
+import { TestForm } from '@app/tests/form-util';
 
 describe('Component <FormControlBase />', () => {
    describe('Component <Select />', () => {

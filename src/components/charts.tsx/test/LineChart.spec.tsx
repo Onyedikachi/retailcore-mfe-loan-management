@@ -1,6 +1,6 @@
 import { screen } from '@testing-library/react';
-import { LineChart } from '../LineChart'; // Replace with the correct import path
-import { renderWithThemeProvider } from '@app/components/atoms/test/test.utils';
+import { LineChart } from '../LineChart';
+import { renderWithThemeProvider } from '@app/tests/theme.utils';
 
 describe('LineChart component', () => {
    it('should render a LineChart with provided data', () => {
