@@ -6,18 +6,19 @@ import { API_PATH, IndividualLoanPath } from '@app/constants';
 import { formattedDate } from '@app/helper/formater';
 import { useStepperContext } from '@app/providers';
 import { Box, Divider, Typography } from '@mui/material';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useRequest } from 'react-http-query';
 import { Table } from '@app/components/table';
 import { DateFilter } from '@app/components/calendar/DateFilter';
 import { downloadTableAsPDFByID } from '@app/helper/pdfDownloader';
 import { useBookLoanContext } from '@app/providers/book-loan';
 import { useNavigate, useSearchParams } from 'react-router-dom';
+import { mapRepaymentScheduleToSchema } from '@app/mappers/book-loan-mapper';
 
 export const RepaymentSchedule = () => {
    const [isDraft, setIsDraft] = useState(false);
    const { handleNavigation } = useStepperContext();
-   const { backendData, selectedProduct, resetBookLoanData } = useBookLoanContext();
+   const { backendData, selectedProduct, resetBookLoanData, bookLoanData } = useBookLoanContext();
    const currency = selectedProduct?.currency;
    const navigate = useNavigate();
    const [searchParams] = useSearchParams();
@@ -38,6 +39,15 @@ export const RepaymentSchedule = () => {
          submitForm(API_PATH.IndividualLoan, { body: backendData });
       }
    };
+
+   const [, getSchedule] = useRequest({
+      onSuccess: (res) => console.log(res.data),
+   });
+   useEffect(() => {
+      getSchedule(`${API_PATH.RepaymentSchedule}`, {
+         body: mapRepaymentScheduleToSchema(bookLoanData, selectedProduct),
+      });
+   }, []);
 
    const schedule: TableHeaderProps = useMemo(() => {
       return {
