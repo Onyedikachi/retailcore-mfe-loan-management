@@ -1,13 +1,13 @@
 import { screen, fireEvent, act } from '@testing-library/react';
-import { renderWithThemeProvider } from '@app/components/atoms/test/test.utils';
+import { renderWithThemeProvider } from '@app/tests/theme.utils';
 import { API_PATH } from '@app/constants';
 import { MemoryRouter } from 'react-router-dom';
 import { IndividualLoanDashboardProvider } from '@app/providers/individual-loan-dashboard';
 import fetchMock from 'jest-fetch-mock';
-import { silentError } from '@app/test/setup';
+import { silentError } from '@app/tests/setup';
 import { LoanProductDetail } from '../individual/loan-product-details';
 import { BookLoanProvider } from '@app/providers/book-loan';
-import { mockLoanProduct } from './test.utils';
+import { mockLoanProduct } from '../../../tests/test.utils';
 
 fetchMock.enableMocks();
 

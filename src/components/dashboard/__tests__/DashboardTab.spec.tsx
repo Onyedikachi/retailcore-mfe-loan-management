@@ -1,7 +1,7 @@
 import { fireEvent, screen } from '@testing-library/react';
 import { Filters } from '../DashboardTab';
 import { tabCardOptions } from '@app/constants/dashboard';
-import { renderWithThemeProvider } from '@app/components/atoms/test/test.utils';
+import { renderWithThemeProvider } from '@app/tests/theme.utils';
 import { MemoryRouter } from 'react-router-dom';
 
 describe('Filters Component', () => {

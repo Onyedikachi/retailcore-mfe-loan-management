@@ -1,6 +1,6 @@
 import { render } from '@testing-library/react';
 import { BookLoanProvider } from '@app/providers/book-loan';
-import { mockProductData } from '@app/components/dashboard/test/test.utils';
+import { mockProductData } from '@app/tests/test.utils';
 import { LoanInformation } from '../loan-information';
 
 jest.mock('../../../providers/book-loan', () => ({
