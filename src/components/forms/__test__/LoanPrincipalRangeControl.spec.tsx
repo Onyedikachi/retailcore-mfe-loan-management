@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
-import { TestForm } from './test.utils';
 import { LoanPrincipalRangeControl, LoanPrincipalControlProps } from '../LoanPrincipalRangeControl';
+import { TestForm } from '@app/tests/form-util';
 
 describe('LoanPrincipalRangeControl component', () => {
    const defaultProps: LoanPrincipalControlProps = {

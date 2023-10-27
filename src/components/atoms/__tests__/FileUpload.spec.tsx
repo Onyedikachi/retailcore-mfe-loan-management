@@ -1,7 +1,7 @@
 import { screen } from '@testing-library/react';
-import { FileUpload } from '../FileUpload'; // Replace with the correct import path
-import { renderWithThemeProvider } from './test.utils';
-import { TestForm } from '@app/components/forms/__test__/test.utils';
+import { FileUpload } from '../FileUpload';
+import { renderWithThemeProvider } from '@app/tests/theme.utils';
+import { TestForm } from '@app/tests/form-util';
 
 describe('FileUpload', () => {
    it('should handle file uploads and removals', async () => {

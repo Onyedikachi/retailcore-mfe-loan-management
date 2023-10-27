@@ -3,6 +3,8 @@ import userEvent from '@testing-library/user-event';
 import { act } from 'react-dom/test-utils';
 import { fireEvent, render } from '@testing-library/react';
 import { isNullish } from '@app/helper';
+import { Box } from '@mui/system';
+import { Formik, Form } from 'formik';
 
 type TestExpectations = {
    /** Text that is expected to be present in the DOM. */
@@ -169,3 +171,16 @@ export const formTestUtil =
    (testMeta: Array<TestMeta>) => {
       testMeta.forEach((meta) => testForm(component, meta));
    };
+
+export type ObjectAny = { [key: string]: any };
+export const TestForm: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+   return (
+      <Box>
+         <Formik initialValues={{ input: '' }} onSubmit={(values: ObjectAny) => {}}>
+            {() => {
+               return <Form>{children}</Form>;
+            }}
+         </Formik>
+      </Box>
+   );
+};

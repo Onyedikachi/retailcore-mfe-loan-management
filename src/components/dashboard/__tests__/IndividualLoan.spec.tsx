@@ -1,7 +1,7 @@
 import { screen, fireEvent } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { IndividualLoan } from '../individual';
-import { renderWithThemeProvider } from '@app/components/atoms/test/test.utils';
+import { renderWithThemeProvider } from '@app/tests/theme.utils';
 import { IndividualLoanDashboardProvider } from '@app/providers/individual-loan-dashboard';
 
 jest.mock('../../../providers/individual-loan-dashboard', () => ({

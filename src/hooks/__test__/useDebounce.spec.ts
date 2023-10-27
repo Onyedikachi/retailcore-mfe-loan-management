@@ -1,6 +1,6 @@
 import { renderHook } from '@testing-library/react-hooks';
 import useDebounce from '../useDebounce';
-import { act, delay, fetchMock } from '@app/test/setup';
+import { act, delay, fetchMock } from '@app/tests/setup';
 import { useDebounceRequests } from '../useDebounceRequest';
 
 describe('useDebounce', () => {

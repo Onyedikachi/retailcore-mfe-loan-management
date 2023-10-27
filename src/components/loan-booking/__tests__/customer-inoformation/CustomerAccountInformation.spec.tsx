@@ -1,7 +1,7 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import { BookLoanProvider } from '@app/providers/book-loan';
 import { CustomerAccountInformation } from '../../customer-information/CustomerAccountInfo';
-import { mockCustomerData } from '@app/components/dashboard/test/test.utils';
+import { mockCustomerData } from '@app/tests/test.utils';
 
 jest.mock('../../../../providers/book-loan', () => ({
    BookLoanProvider: jest.fn(({ children }) => children),

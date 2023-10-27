@@ -1,10 +1,10 @@
 import { MemoryRouter } from 'react-router-dom';
-import { renderWithThemeProvider } from '@app/components/atoms/test/test.utils';
 import { IndividualLoanDashboardProvider } from '@app/providers/individual-loan-dashboard';
 import { BookIndividualLoan } from '../BookIndividualLoan';
 import { BookLoanProvider } from '@app/providers/book-loan';
 import { StepperProvider } from '@app/providers/stepper';
-import { mockedBookLoanData } from '@app/components/dashboard/test/test.utils';
+import { mockedBookLoanData } from '@app/tests/test.utils';
+import { renderWithThemeProvider } from '@app/tests/theme.utils';
 
 jest.mock('../../providers/individual-loan-dashboard', () => ({
    IndividualLoanDashboardProvider: jest.fn(({ children }) => children),

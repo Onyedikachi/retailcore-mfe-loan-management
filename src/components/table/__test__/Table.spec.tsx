@@ -1,6 +1,6 @@
 import { render } from '@testing-library/react';
 import { Table } from '../Table';
-import { GeneralAppSetup } from '@app/test/setup';
+import { GeneralAppSetup } from '@app/tests/setup';
 
 describe('<Table />', () => {
    it('should not render table header if only bodyProps is given.', () => {

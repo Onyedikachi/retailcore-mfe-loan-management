@@ -1,5 +1,5 @@
 import { AddButton } from '../AddButton';
-import { renderWithThemeProvider } from './test.utils';
+import { renderWithThemeProvider } from '@app/tests/theme.utils';
 import { fireEvent } from '@testing-library/react';
 import { Colors } from '@app/constants/colors';
 

@@ -1,5 +1,5 @@
 import { renderHook } from '@testing-library/react-hooks';
-import mockUserProfile from '@app/test/mocks/user-profile.json';
+import mockUserProfile from '@app/tests/mocks/user-profile.json';
 import { auth$ } from '@Sterling/shared';
 import { usePermission } from '../usePermission';
 
