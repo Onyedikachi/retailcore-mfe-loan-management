@@ -1,6 +1,5 @@
-import React from 'react';
 import { render } from '@testing-library/react';
-import { ActivityLog, dateFormater } from '../ActivityLog';
+import { ActivityLog, dateFormatter } from '../ActivityLog';
 
 describe('ActivityLog Component', () => {
    it('renders the title correctly', () => {
@@ -17,7 +16,7 @@ describe('ActivityLog Component', () => {
 
    it('renders logs correctly', () => {
       const logs = [
-         { pending: false, subtitle: 'Verify and Submit request for processing', title: 'Pending Actitvity' },
+         { pending: false, subtitle: 'Verify and Submit request for processing', title: 'Pending Activity' },
       ];
 
       const { getByText } = render(<ActivityLog logs={logs} title="Custom Title" />);
@@ -27,16 +26,16 @@ describe('ActivityLog Component', () => {
          expect(getByText(log.subtitle)).toBeInTheDocument();
       });
    });
-   describe('dateFormater Function', () => {
+   describe('dateFormatter Function', () => {
       it('formats a valid timestamp correctly', () => {
          const timestamp = '2023-10-19T10:30:00Z';
-         const formattedDate = dateFormater(timestamp);
+         const formattedDate = dateFormatter(timestamp);
          expect(/Oct \d{2}, 2023 \[\d{2}:\d{2} [APap][Mm]\]/.test(formattedDate)).toBe(true);
       });
 
       it('returns "awaiting response" for the special timestamp', () => {
          const timestamp = 'awaiting response';
-         const formattedDate = dateFormater(timestamp);
+         const formattedDate = dateFormatter(timestamp);
          expect(formattedDate).toBe('awaiting response');
       });
    });

@@ -1,6 +1,6 @@
 import { render, fireEvent, screen } from '@testing-library/react';
 import { FormControlBase } from '../FormControl';
-import { TestForm } from './test.utils';
+import { TestForm } from '@app/tests/form-util';
 
 describe('<CheckBoxGroup />', () => {
    it('renders correctly with options', () => {

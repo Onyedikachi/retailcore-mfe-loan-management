@@ -8,7 +8,6 @@ import { StatusCard } from './DashboardStatusCard';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { StatusCardProps } from '@app/@types/dashboard';
 import { UncontrolledSelect } from '../atoms/select';
-import { usePermission } from '@app/hooks/usePermission';
 
 const FilterWrapper = styled(Stack)(() => ({
    backgroundColor: 'white',
@@ -61,7 +60,6 @@ export const Filters = (props: FiltersProps) => {
    const [searchParams] = useSearchParams();
    const [defaultInitiator, setDefaultInitiator] = useState<string>();
    const navigate = useNavigate();
-   const { checkPermission } = usePermission();
 
    const defaultActiveTab = searchParams.get('tab') ?? props.defaultTabKey ?? props.tabOptions[0]?.key;
 
@@ -72,7 +70,10 @@ export const Filters = (props: FiltersProps) => {
       navigate(`?tab=${newValue}`);
    };
 
-   useEffect(() => navigate(`?tab=${defaultActiveTab}`), []);
+   useEffect(() => {
+      navigate(`?tab=${defaultActiveTab}`);
+      setDefaultInitiator(props?.filterOptions?.[0]);
+   }, [defaultActiveTab]);
 
    const handleStatusCardClick = (key: string) => {
       setActiveStatus(key);
@@ -101,7 +102,6 @@ export const Filters = (props: FiltersProps) => {
                         key={tab.key}
                         label={tab.label}
                         data-testid="tab-card"
-                        disabled={!checkPermission(tab?.permissions ?? [])}
                         sx={{
                            fontSize: isActive ? '20px' : '18px',
                            fontWeight: isActive ? 600 : 400,
@@ -113,7 +113,7 @@ export const Filters = (props: FiltersProps) => {
             </TabStack>
             <Stack direction="row" gap="10px" alignItems="center">
                {props.statusOptions?.map((data, index) => (
-                  <Fragment key={data?.key}>
+                  <Fragment key={`${data?.key}${index * 2}`}>
                      <StatusCard
                         data-testid="status-card"
                         onClick={() => handleStatusCardClick(data.key ?? data.label)}

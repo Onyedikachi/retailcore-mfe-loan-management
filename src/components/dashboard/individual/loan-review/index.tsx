@@ -65,7 +65,7 @@ export const LoanReview = () => {
                            key={details.title}
                            title={details.title}
                            details={details.details}
-                           customerId={index === 1 ? loanProduct?.customerId : ''}
+                           customerId={loanProduct?.customerId}
                         />
                      ))}
                   </PaddedContainer>

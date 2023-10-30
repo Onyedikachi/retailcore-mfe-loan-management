@@ -1,7 +1,7 @@
 import { screen } from '@testing-library/react';
 import { CurrencyPercentageControl, CurrencyPercentageControlProps } from '../CurrencyPercentageControl';
-import { TestForm } from './test.utils';
-import { renderWithThemeProvider } from '@app/components/atoms/test/test.utils';
+import { renderWithThemeProvider } from '@app/tests/theme.utils';
+import { TestForm } from '@app/tests/form-util';
 
 describe('CurrencyPercentageControl component', () => {
    it('should render CurrencyPercentageControl component with provided props', () => {

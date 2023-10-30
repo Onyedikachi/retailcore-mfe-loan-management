@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import { EarningsControl, EarningsControlProps } from '../EarningsControls';
-import { TestForm } from './test.utils';
+import { TestForm } from '@app/tests/form-util';
 
 describe('EarningsControl component', () => {
    const defaultProps: EarningsControlProps = {

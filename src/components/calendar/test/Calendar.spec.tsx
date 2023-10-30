@@ -1,6 +1,6 @@
 import { screen, fireEvent } from '@testing-library/react';
-import { Calendar } from '../Calendar'; // Replace with the correct import path
-import { renderWithThemeProvider } from '@app/components/atoms/test/test.utils';
+import { Calendar } from '../Calendar';
+import { renderWithThemeProvider } from '@app/tests/theme.utils';
 
 describe('Calendar component', () => {
    it('should render a Calendar with clear and today buttons', () => {

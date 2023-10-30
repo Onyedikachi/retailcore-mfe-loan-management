@@ -1,7 +1,7 @@
 import { screen } from '@testing-library/react';
-import '@testing-library/jest-dom/extend-expect'; // Import to use expect extensions
+import '@testing-library/jest-dom/extend-expect';
 import { DoughnutChart } from '../DoughnutChart';
-import { renderWithThemeProvider } from '@app/components/atoms/test/test.utils';
+import { renderWithThemeProvider } from '@app/tests/theme.utils';
 
 describe('DoughnutChart component', () => {
    it('should render a DoughnutChart with provided data', () => {

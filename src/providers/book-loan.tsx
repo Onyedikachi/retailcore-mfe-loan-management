@@ -95,14 +95,16 @@ export const BookLoanProvider = ({ children }: BookLoanProviderProps) => {
    }, [bookLoanData, selectedCustomer, selectedProduct, isDraft]);
 
    const getSelectedProduct = (name: string) => {
-      setSelectedProduct(allProduct?.filter((prod) => prod.name === name)[0]);
+      setSelectedProduct(allProduct?.filter((prod) => prod.name === name || prod.id == name)[0]);
    };
 
    const getProductData = (allLoanProducts: LoanProductData[]) => {
       setAllProduct(allLoanProducts);
-      const names = allLoanProducts.map((loan) => {
-         return { name: loan.name, id: loan.id };
-      });
+      const names = allLoanProducts
+         ?.filter((e) => e.requestStatus === 'Approved' && e.status === 'Active')
+         .map((loan) => {
+            return { name: loan.name, id: loan.id };
+         });
       setProductNames(names);
    };
 

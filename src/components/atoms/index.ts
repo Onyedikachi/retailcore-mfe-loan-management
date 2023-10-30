@@ -7,7 +7,6 @@ export * from './Switch';
 export * from './Radio';
 export * from './CheckBoxGroup';
 export * from './Dialog';
-export * from './DragContainer';
 export * from './MenuItems';
 export * from './Menu';
 export * from './Tooltip';

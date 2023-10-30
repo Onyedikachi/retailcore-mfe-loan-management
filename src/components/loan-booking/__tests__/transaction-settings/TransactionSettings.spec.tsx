@@ -1,5 +1,5 @@
-import { formTestUtil } from '@app/test/form-util';
-import { CreateProductSetup, silentError, render, act, fireEvent } from '@app/test/setup';
+import { formTestUtil } from '@app/tests/form-util';
+import { CreateProductSetup, silentError, render, act, fireEvent } from '@app/tests/setup';
 import * as FormMeta from '@app/utils/validators/book-a-loan/transaction-settings';
 import { TransactionSettings } from '../../transaction-settings';
 const { InputFieldNames } = FormMeta;
