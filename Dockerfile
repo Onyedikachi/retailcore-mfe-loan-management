@@ -20,7 +20,7 @@ COPY ./sonar-project.properties /src/sonar-project.properties
 COPY ./tsconfig.json /src/tsconfig.json
 COPY ./webpack.config.js /src/webpack.config.js
  
-RUN npm run build:dev
+RUN yarn install --ignore-scripts --frozen-lockfile
  
 # Stage 2 - Serve the application using Nginx
 FROM ghcr.io/sterling-retailcore-team/nginx-base-image:3.17
