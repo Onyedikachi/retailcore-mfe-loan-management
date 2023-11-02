@@ -7,16 +7,15 @@ COPY package*.json ./
  
 RUN npm install --legacy-peer-deps --ignore-scripts
  
-COPY ./environments /src/environments
 COPY ./src /src/src/
 COPY ./babel.config.json /src/babel.config.json
 COPY ./cert.pem /src/cert.pem
 COPY ./Dockerfile /src/Dockerfile
 COPY ./jest.config.js /src/jest.config.js
-COPY ./key.pes /src/key.pes
+COPY ./key.pem /src/key.pem
 COPY ./nginx.conf /src/nginx.conf
 COPY ./package.json /src/package.json
-COPY ./package-lock.json /src/package-lock.json
+COPY ./yarn.lock /src/yarn.lock
 COPY ./sonar-project.properties /src/sonar-project.properties
 COPY ./tsconfig.json /src/tsconfig.json
 COPY ./webpack.config.js /src/webpack.config.js
