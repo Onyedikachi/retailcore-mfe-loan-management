@@ -28,6 +28,8 @@ export const bodyData = (
       status = 'Pending';
    } else if (getStatus === 'Pending') {
       status = 'Draft';
+   } else if (getStatus === 'Reject') {
+      status = 'Rejected';
    } else {
       status = getStatus;
    }
@@ -36,7 +38,7 @@ export const bodyData = (
    return {
       request: 'Individual Loan Booking',
       type: 'Booking',
-      reviewer: loan?.status === 'Pending' ? '-' : 'Adekunle Ciroma',
+      reviewer: transformText(loan?.status!) === 'In-Review' ? '-' : loan?.loanActivities[0]?.createdBy,
       status: (
          <StyledChip sx={{ ...statusColors(status) }}>
             {status} <VisibilityIcon sx={{ fontSize: 16, ml: 1 }} />

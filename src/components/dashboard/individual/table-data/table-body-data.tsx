@@ -20,11 +20,18 @@ export const StyledChip = styled(Chip)(() => ({
 export const bodyData = (
    loan: BookedLoanData | undefined,
    loanActions: (selectedAction: string) => void,
-   tab: string
+   tab: string,
+   permissions?: any
 ) => {
    const getStatus = tab === 'records' ? '' : transformText(loan?.status!);
-   const status = getStatus === 'Pending' ? 'Draft' : getStatus;
-
+   let status;
+   if (getStatus === 'Pending') {
+      status = 'Draft';
+   } else if (getStatus === 'Reject') {
+      status = 'In-Issue';
+   } else {
+      status = getStatus;
+   }
    return {
       customerName: (
          <>
@@ -40,7 +47,7 @@ export const bodyData = (
          <FilterMenu
             checkbox={false}
             filterIcon={<MenuIcon color="primary" />}
-            options={menuFromStatus(status)}
+            options={menuFromStatus(status, permissions)}
             icon
             onFilterChange={(value) => loanActions(value as string)}
          />

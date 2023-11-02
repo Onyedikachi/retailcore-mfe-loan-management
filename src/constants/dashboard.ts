@@ -1,4 +1,6 @@
 import { StatusCardProps } from '@app/@types/dashboard';
+import { StatusCounts } from '@app/@types/loan-product';
+import { PermissionHelperProps } from '@app/hooks/usePermission';
 
 export const Count = 20;
 export const individualLoanFilterOptions = (
@@ -8,7 +10,7 @@ export const individualLoanFilterOptions = (
    accessAllRequests?: boolean
 ) => {
    let options;
-   const checkerOptions = ['Sent by me', 'Sent system-wide'];
+   const checkerOptions = ['Sent to me', 'Sent system-wide'];
    if (key == tabOptions[0].key) {
       options = ['Created by me', 'Created system-wide'];
       return accessAllRecords ? options : options.filter((op) => !op.includes('system-wide'));
@@ -18,20 +20,8 @@ export const individualLoanFilterOptions = (
    }
 };
 
-export interface DataCount {
-   all?: number;
-   approved?: number;
-   inReview?: number;
-   inIssue?: number;
-   draft?: number;
-   performing?: number;
-   nonPerforming?: number;
-   closed?: number;
-   rejected?: number;
-}
-
 export const tabCardOptions = (
-   dataCount?: DataCount,
+   dataCount?: StatusCounts,
    checkerOption?: boolean
 ): Record<string, Array<Omit<StatusCardProps, 'isActive' | 'onClick'>>> => {
    return {
@@ -39,7 +29,7 @@ export const tabCardOptions = (
          ? [
               { label: 'All', value: dataCount?.all ?? 0, variant: 'black' },
               { label: 'Approved', value: dataCount?.approved ?? 0, variant: 'success' },
-              { label: 'Pending', value: dataCount?.inReview ?? 0, variant: 'info' },
+              { label: 'Pending', value: dataCount?.pending ?? 0, variant: 'info' },
               { label: 'Rejected', value: dataCount?.rejected ?? 0, variant: 'error' },
            ]
          : [
@@ -63,7 +53,19 @@ export const tabOptions = [
    { label: 'Requests', key: 'requests' },
 ];
 
-export const menuFromStatus = (menu: string) => {
+const actionOptions = (permissions?: PermissionHelperProps) => {
+   const options = ['View', 'Liquidate Loan', 'Close Loan Account', 'Write-Off Loan'];
+   if (!permissions?.canLiquidate) {
+      return options.filter((option) => option != 'Liquidate Loan');
+   } else if (!permissions?.canWriteOff) {
+      return options.filter((option) => option != 'Write-Off Loan');
+   } else if (!permissions?.isUserAChecker) {
+      return options.filter((option) => option != 'Close Loan Account');
+   } else {
+      return options;
+   }
+};
+export const menuFromStatus = (menu: string, permissions?: PermissionHelperProps) => {
    switch (menu) {
       case 'Approved':
       case 'Settled':
@@ -82,7 +84,7 @@ export const menuFromStatus = (menu: string) => {
       case 'Substandard':
       case 'Doubtful':
       case 'Lost':
-         return ['View', 'Liquidate Loan', 'Close Loan Account', 'Write-Off Loan'];
+         return actionOptions(permissions);
       default:
          return ['View'];
    }
@@ -104,17 +106,17 @@ export const menuToAction = (menu: string) => {
 export const menuToAPIAction = (menu: string) => {
    switch (menu) {
       case loanActions[0]:
-         return 'LIQUIDATED';
+         return 'LIQUIDATE';
       case loanActions[1]:
          return 'CLOSED';
       case loanActions[2]:
-         return 'WRITE_OFF';
+         return 'WRITEOFFLOAN';
       default:
          return;
    }
 };
 
-export const menuActionFromStatus = (menu: string) => {
+export const menuActionFromStatus = (menu: string, permissions?: PermissionHelperProps) => {
    switch (menu) {
       case 'Approved':
       case 'Settled':
@@ -130,7 +132,7 @@ export const menuActionFromStatus = (menu: string) => {
       case 'Substandard':
       case 'Doubtful':
       case 'Lost':
-         return ['View Loan Details', 'Close Loan', 'Liquidate Loan', 'Write-Off Loan'];
+         return actionOptions(permissions);
       default:
          return ['View Loan Details'];
    }

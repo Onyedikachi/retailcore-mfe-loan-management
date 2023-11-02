@@ -12,6 +12,7 @@ export type LoanPrincipalControlProps = {
    placeholder?: string;
    layoutFlexGrid?: number[];
    disabled?: boolean;
+   onChange?: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
 };
 
 export const LoanPrincipalControl = ({
@@ -24,6 +25,7 @@ export const LoanPrincipalControl = ({
    placeholder,
    layoutFlexGrid,
    mb,
+   onChange,
    ...otherProps
 }: LoanPrincipalControlProps) => {
    return (
@@ -39,6 +41,7 @@ export const LoanPrincipalControl = ({
          <FormControlBase
             name={name}
             currency
+            onChange={onChange}
             placeholder={placeholder ?? '0'}
             extraLeft={extraLeft ?? extraLeft}
             {...otherProps}

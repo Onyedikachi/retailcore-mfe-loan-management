@@ -70,6 +70,8 @@ export const statusColors = (status: string) => {
          return ColorMaps.doubtful;
       case 'Lost':
       case 'In-Issue':
+      case 'Reject':
+      case 'Rejected':
          return ColorMaps.lost;
       case 'Closed':
          return ColorMaps.plain;

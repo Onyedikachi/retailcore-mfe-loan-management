@@ -17,6 +17,14 @@ export const headerData = (
       [tab]?.map((option) => option.label)
       .slice(1);
 
+   const uniqueReviewer = new Set();
+   loanProducts?.forEach((loan) => {
+      if (loan?.loanActivities?.length > 0 && loan?.loanActivities[0]?.createdBy) {
+         uniqueReviewer.add(loan?.loanActivities[0]?.createdBy);
+      }
+   });
+   const reviewer = Array.from(uniqueReviewer) as string[];
+
    return {
       data: [
          { key: 'request', element: 'REQUEST' },
@@ -35,7 +43,7 @@ export const headerData = (
             element: 'REVIEWER',
             rightIcon: (
                <FilterMenu
-                  options={['Adeola Adeola', 'Olamide Olamide']}
+                  options={reviewer ?? []}
                   onFilterChange={(value) => filterReviewer(value as string[])}
                />
             ),

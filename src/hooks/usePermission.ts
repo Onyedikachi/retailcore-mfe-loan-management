@@ -3,7 +3,19 @@ import { auth$ } from '@Sterling/shared';
 import { AuthenticatedUserPayload } from '@app/@types/authenticated-user';
 import { Permissions } from '@app/constants';
 
-export const usePermission = () => {
+export interface PermissionHelperProps {
+   checkPermission: (permissions: string[]) => boolean;
+   authLoaded?: boolean;
+   isUserAChecker?: boolean;
+   isSuperAdmin?: boolean;
+   accessAllRecords?: boolean;
+   accessAllRequests?: boolean;
+   canLiquidate?: boolean;
+   canWriteOff?: boolean;
+   [key: string]: any;
+}
+
+export const usePermission = (): PermissionHelperProps => {
    const [authPayload, setAuthPayload] = React.useState<AuthenticatedUserPayload | null>(null);
    const [authLoaded, setAuthLoaded] = React.useState<boolean>(false);
 
@@ -37,11 +49,15 @@ export const usePermission = () => {
    const allRecords = [Permissions.VIEW_ALL_LOAN_RECORDS];
    const allRequest = [Permissions.VIEW_ALL_LOAN_REQUESTS];
    const isSuperAdmin = authPayload?.user?.tenant_admin;
+   const liquidate = [Permissions.LIQUIDATE_LOAN];
+   const writeOff = [Permissions['WRITE-OFF_LOAN']];
 
    const isUserAChecker = isSuperAdmin ?? checker?.some((element) => userPermissions?.includes(element));
    const accessAllRecords = isSuperAdmin ?? allRecords?.some((element) => userPermissions?.includes(element));
    const accessAllRequests =
       isSuperAdmin ?? allRequest?.some((element) => userPermissions?.includes(element));
+   const canLiquidate = isUserAChecker ?? liquidate?.some((element) => userPermissions?.includes(element));
+   const canWriteOff = isUserAChecker ?? writeOff?.some((element) => userPermissions?.includes(element));
 
    return {
       ...authPayload,
@@ -51,5 +67,7 @@ export const usePermission = () => {
       isSuperAdmin,
       accessAllRecords,
       accessAllRequests,
+      canLiquidate,
+      canWriteOff,
    };
 };
