@@ -67,7 +67,7 @@ export const Input: React.FC<InputProps> = ({
                            {...field}
                            label={props.label && props.placeholder}
                            onChange={(e) => handleChange(e, form)}
-                           type={props.type || 'text'}
+                           type={props.type ?? 'text'}
                            error={!!(form.errors[props.name] && form.touched[props.name])}
                            inputProps={{ autoComplete: 'off', ...props.inputProps }}
                         />
@@ -75,10 +75,9 @@ export const Input: React.FC<InputProps> = ({
                      {extraRight && <Typography ml={1}>{extraRight}</Typography>}
                   </Box>
                   {showErrorMessage && (
-                     <ErrorMessage
-                        name={props.name}
-                        children={(error: string) => <InputErrorText errorText={error} />}
-                     />
+                     <ErrorMessage name={props.name}>
+                        {(error: string) => <InputErrorText errorText={error} />}
+                     </ErrorMessage>
                   )}
                </>
             );
@@ -103,7 +102,7 @@ export const UncontrolledInput: React.FC<InputProps> = (props) => {
             id={props.name}
             {...props}
             label={props.label && props.placeholder}
-            type={props.type || 'text'}
+            type={props.type ?? 'text'}
          />
       </FormControl>
    );

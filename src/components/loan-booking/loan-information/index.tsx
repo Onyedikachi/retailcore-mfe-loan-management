@@ -2,12 +2,10 @@ import { Box, Divider, List, Typography } from '@mui/material';
 import { AccordionVariant } from '@app/components/accordion/Accordion';
 import { GridComponent } from './GridComponent';
 import { useBookLoanContext } from '@app/providers/book-loan';
-import { LoanProductData } from '@app/@types/loan-product';
-import { Fragment } from 'react';
-import { formatCurrency } from '@app/helper/currency-converter';
+import { loanProductSections, details } from './details-data';
 
 export const LoanInformation = () => {
-   const { selectedProduct } = useBookLoanContext();
+   const { selectedProduct, inputtedPrincipal } = useBookLoanContext();
 
    return (
       <Box p={2} borderRadius="5px" bgcolor="white" ml={2} height="100%">
@@ -26,23 +24,15 @@ export const LoanInformation = () => {
             <Box className="fancy-scrollbar" sx={{ height: 'calc(100% - 130px)', overflow: 'auto' }}>
                <List>
                   <AccordionVariant accordionLabels={loanProductSections}>
-                     {Object.values(details(selectedProduct)).map((detail, index) =>
-                        detail.map(({ key, value }) => {
-                           return index != 1 ? (
-                              <GridComponent key={key} property={key} value={value?.toString()} />
-                           ) : (
-                              <Fragment key={key}>
-                                 <Typography sx={{ textDecoration: 'underline', fontSize: 13, mb: 2 }}>
-                                    Applicable collateral assets
-                                 </Typography>
-                                 <GridComponent property={`Collateral 1`} value={''} />
-                                 <Typography sx={{ textDecoration: 'underline', fontSize: 13, mb: 2 }}>
-                                    Equity Contribution
-                                 </Typography>
-                                 <GridComponent property={'Contribution'} value={''} />
-                              </Fragment>
-                           );
-                        })
+                     {Object.values(details(selectedProduct, inputtedPrincipal)).map((detail, index) =>
+                        detail.map(({ key, value, heading }) => (
+                           <GridComponent
+                              key={key}
+                              property={key}
+                              value={value?.toString()}
+                              heading={heading}
+                           />
+                        ))
                      )}
                   </AccordionVariant>
                </List>
@@ -50,55 +40,4 @@ export const LoanInformation = () => {
          )}
       </Box>
    );
-};
-
-const loanProductSections = [
-   'Facility Details',
-   'Collateral & Equity Contribution',
-   'Loan Management Settings',
-   'Charges & Taxes',
-   'Penalty Setup',
-   'Disbursement Settings',
-   'Repayment Settings',
-   'Account Entires',
-];
-
-const details = (selectedProduct: LoanProductData | undefined) => {
-   return {
-      facilityDetails: [
-         { key: 'Currency', value: selectedProduct?.currency },
-         { key: 'Min. Principal', value: formatCurrency(selectedProduct?.minLoanPrincipal ?? '') },
-         { key: 'Max. Principal', value: formatCurrency(selectedProduct?.maxLoanPrincipal ?? '') },
-         { key: 'Min. Interest Rate', value: selectedProduct?.minInterestRate },
-         { key: 'Max. Interest Rate', value: selectedProduct?.maxInterestRate },
-         {
-            key: 'Min. Loan Tenor',
-            value: `${selectedProduct?.minLoanTenure} ${selectedProduct?.minLoanTenurePeriod}`,
-         },
-         {
-            key: 'Max. Tenor',
-            value: `${selectedProduct?.maxLoanTenure} ${selectedProduct?.maxLoanTenurePeriod}`,
-         },
-      ],
-      collateral: [{ key: 'collateral', value: '' }],
-      loanManagementSettings: [
-         { key: 'Moratorium Period', value: '' },
-         { key: 'Duration', value: '' },
-         { key: 'Grace Period', value: '' },
-      ],
-      chargesAndTaxes: [
-         { key: 'Disbursement Method', value: '' },
-         { key: 'Disbursement Date', value: '' },
-         { key: 'Disbursement Account', value: '' },
-         { key: 'Other Account No', value: '' },
-         { key: 'Notification channel', value: '' },
-      ],
-      penaltySetup: [
-         { key: 'Repayment Channel', value: '' },
-         { key: 'Repayment Account', value: '' },
-      ],
-      disbursementSetting: [],
-      repaymentSetting: [],
-      accountEntries: [],
-   };
 };

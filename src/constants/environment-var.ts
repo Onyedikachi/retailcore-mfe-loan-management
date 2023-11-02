@@ -19,13 +19,13 @@ export const environmentVar = () => {
          CUSTOMER_MANAGEMENT_BASE_URL: 'https://customer-management-api.dev.bepeerless.co',
       },
       qa: {
-         API_URL: '',
+         API_URL: 'https://loan-managementms-api.qa.bepeerless.co',
          CORE_TOKEN: localStorage.getItem(''),
          CORE_TOKEN_NAME: '',
          REFRESH_TOKEN: localStorage.getItem(''),
-         RETAIL_CORE_BASE_URL: '',
+         RETAIL_CORE_BASE_URL: 'https://retailcore-accounting-api.qa.bepeerless.co',
          RETAIL_AUTH_BASE_URL: '',
-         CUSTOMER_MANAGEMENT_BASE_URL: '',
+         CUSTOMER_MANAGEMENT_BASE_URL: 'https://customer-management-api.qa.bepeerless.co',
       },
       production: {
          API_URL: '',
@@ -42,5 +42,6 @@ export const environmentVar = () => {
    const url = location.host;
 
    if (url.includes('dev') && !url.includes('dev2')) envName = 'dev';
+   if (url.includes('qa')) envName = 'qa';
    return env[envName];
 };

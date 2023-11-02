@@ -90,6 +90,7 @@ export const mockProductData = {
    deletedById: null,
    deleteBy: null,
    currentStep: 2,
+   productEligibilityCriteriaRequirement: { requireEquityContrib: true },
 };
 
 export const mockedBookLoanData = {

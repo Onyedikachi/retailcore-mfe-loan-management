@@ -60,7 +60,8 @@ export const mapSchemaToBookLoan = (loan: BookedLoanData): BookLoanData => {
    return {
       customerInformation: { acctNo: loan.acctNo },
       facilityDetails: {
-         product_name: loan.product.name,
+         productId: loan?.product?.id ?? loan?.productId,
+         product_name: loan.product?.name,
          product_category: loan.product.category,
          productPurpose: loan.productPurpose,
          principal: formattedCurrency,
@@ -96,12 +97,14 @@ export const mapSchemaToBookLoan = (loan: BookedLoanData): BookLoanData => {
 };
 
 export const mapRepaymentScheduleToSchema = (bookLoanData: BookLoanData, product?: LoanProductData) => {
+   const moratoriumVal = Number(bookLoanData?.facilityDetails?.moratoriumValue);
+
    const data = {
       productId: product?.id,
       principal: currencyToNumber(bookLoanData?.facilityDetails?.principal ?? ''),
       tenorPeriod: bookLoanData?.facilityDetails?.tenorPeriod,
-      tenorValue: bookLoanData?.facilityDetails?.tenorValue,
-      moratoriumValue: bookLoanData?.facilityDetails?.moratoriumValue,
+      tenorValue: Number(bookLoanData?.facilityDetails?.tenorValue),
+      moratoriumValue: moratoriumVal > 0 ? moratoriumVal : undefined,
       moratoriumPeriod: bookLoanData?.facilityDetails?.moratoriumPeriod,
       moratoriumDuration: bookLoanData?.facilityDetails?.recognize_moratorium_period,
       isMoratoriumReq: bookLoanData?.facilityDetails?.isMoratoriumReq,

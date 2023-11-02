@@ -1,5 +1,6 @@
 import { ActivityLog } from '@app/components/atoms/ActivityLog';
 import { API_PATH } from '@app/constants';
+import { capitalizeString } from '@app/helper/string';
 import { useIndividualLoanDashboardContext } from '@app/providers/individual-loan-dashboard';
 import { Box } from '@mui/material';
 import { useRequest } from 'react-http-query';
@@ -9,12 +10,22 @@ export const ActivitySummary = () => {
    const [searchParams] = useSearchParams();
    const id = searchParams.get('id');
    const { getLoanProduct, loanProduct } = useIndividualLoanDashboardContext();
-   const activities = loanProduct?.loanActivities?.map((activity) => ({
-      pending: false,
-      date: activity.dateCreated,
-      subtitle: activity.createdBy,
-      title: activity.commentText,
-   }));
+   const activities = loanProduct?.loanActivities?.map((activity) => {
+      let action = activity.action;
+      if (action === 'REJECT') {
+         action = 'Loan Rejection';
+      } else if (action === 'CREATE LOAN') {
+         action = 'Initiate Loan Booking';
+      } else if (action === 'APPROVED') {
+         action = 'Loan Approval';
+      }
+      return {
+         pending: false,
+         date: activity.dateCreated,
+         subtitle: activity.createdBy,
+         title: `Action: ${capitalizeString(action?.toLowerCase())}`,
+      };
+   });
 
    useRequest(
       {

@@ -13,7 +13,7 @@ import { useIndividualLoanDashboardContext } from '@app/providers/individual-loa
 import { useRequest } from 'react-http-query';
 import { LoanTableDialogs } from './LoanTableDialogs';
 import { tableQuery, handleActions, handleDateQuery } from './table-data/table-actions';
-import { Count } from '@app/constants/dashboard';
+import { usePermission } from '@app/hooks/usePermission';
 
 export const LoanTable = () => {
    const [searchParams] = useSearchParams();
@@ -28,6 +28,7 @@ export const LoanTable = () => {
    const [id, setId] = useState('');
    const navigate = useNavigate();
    const { loanProducts, getLoanProducts } = useIndividualLoanDashboardContext();
+   const permission = usePermission();
 
    const loanTableHeader: TableHeaderProps = useMemo(
       () =>
@@ -50,10 +51,11 @@ export const LoanTable = () => {
                setAction(selectedAction);
                handleActions(selectedAction, navigate, item, setOpenLoanAction, setOpenDeleteAction);
             },
-            tab!!
+            tab!!,
+            permission
          );
       });
-   }, [tab, loanProducts]);
+   }, [tab, loanProducts, permission]);
 
    const [, getLoans] = useRequest({
       onSuccess: (response) => getLoanProducts(response.data.data.loan, response.data.data.statistics),
@@ -70,9 +72,7 @@ export const LoanTable = () => {
       <Box sx={{ p: 2, pt: 3, bgcolor: 'white', borderRadius: 2, border: '1px solid #E5E9EB' }}>
          <TableHeading
             handleSearch={setSearchText}
-            handleRefresh={() =>
-               getLoans(`${API_PATH.IndividualLoan}?All=${true}&Count=${Count}`, { showSuccess: false })
-            }
+            handleRefresh={() => getLoans(`${API_PATH.IndividualLoan}?All=${true}`, { showSuccess: false })}
             handleDownload={() =>
                downloadAsCSVByID(`loan-table`, `Individual Loan ${capitalizeString(tab!)}`)
             }

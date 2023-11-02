@@ -3,7 +3,8 @@ import { CreateProductSetup, silentError, render, act, fireEvent } from '@app/te
 import * as FormMeta from '@app/utils/validators/book-a-loan/facility-details';
 import { FacilityDetails } from '../../facility-details';
 const { InputFieldNames } = FormMeta;
-import { BookLoanProvider } from '@app/providers/book-loan';
+import { BookLoanProvider } from '../../../../providers/book-loan';
+import { mockProductData } from '@app/tests/test.utils';
 
 const submitButtonSelector = '#facility-details';
 const equityContribSelector = `input[name='${InputFieldNames.EQUITY_CONTRIB}']`;
@@ -14,7 +15,15 @@ const graceperiodSelector = `input[name='${InputFieldNames.GRACE_PERIOD}']`;
 const gracenumberSelector = `input[name='${InputFieldNames.GRACE_PERIOD_VALUE}']`;
 const recognizeMoratoriumSelector = `#mui-component-select-${InputFieldNames.RECOGNISE_MORATORIUM_PERIOD}`;
 
+jest.mock('../../../../providers/book-loan', () => ({
+   BookLoanProvider: jest.fn(({ children }) => children),
+   useBookLoanContext: jest.fn(),
+}));
 describe('<FacilityDetails /> ', () => {
+   const mockContextValue = { selectedProduct: mockProductData };
+
+   require('../../../../providers/book-loan').useBookLoanContext.mockReturnValue(mockContextValue);
+
    /* eslint-disable no-console */
    let errorConsole: any | null = null;
    let warnConsole: any | null = null;

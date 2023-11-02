@@ -13,7 +13,6 @@ import { useIndividualLoanDashboardContext } from '@app/providers/individual-loa
 import { useRequest } from 'react-http-query';
 import { usePermission } from '@app/hooks/usePermission';
 import { tableQuery, handleDateQuery } from './table-data/table-actions';
-import { Count } from '@app/constants/dashboard';
 
 export const CheckerLoanTable = () => {
    const [searchParams] = useSearchParams();
@@ -34,20 +33,25 @@ export const CheckerLoanTable = () => {
             (reviewer) => {},
             (loanStatus) => setQueryByStatus(loanStatus),
             (startDate, endDate) => handleDateQuery(startDate, endDate, setQueryByDate),
-            isUserAChecker,
+            isUserAChecker ?? false,
             tab!!
          ),
       [tab, loanProducts, isUserAChecker]
    );
 
    const loanTableBody = useMemo(() => {
-      return (loanProducts ?? [])?.map((item, id) => {
-         return bodyData(
-            item,
-            (selectedAction) => navigate(`${ReviewLoanPath}?id=${item.id}&action=${selectedAction}`),
-            tab!!
-         );
-      });
+      return (loanProducts ?? [])
+         .filter((item) => {
+            const allowedStatuses = ['APPROVED', 'IN_REVIEW', 'REJECT'];
+            return allowedStatuses.includes(item.status);
+         })
+         ?.map((item, id) => {
+            return bodyData(
+               item,
+               (selectedAction) => navigate(`${ReviewLoanPath}?id=${item.id}&action=${selectedAction}`),
+               tab!!
+            );
+         });
    }, [tab, loanProducts]);
 
    const [, getLoans] = useRequest({
@@ -55,7 +59,7 @@ export const CheckerLoanTable = () => {
    });
 
    useEffect(() => {
-      const queryParams = tableQuery(searchText, undefined, queryByStatus, queryByDate);
+      const queryParams = tableQuery(searchText, undefined, queryByStatus, queryByDate, true);
       const urlSearchParams = new URLSearchParams(queryParams).toString();
       const url = `${API_PATH.IndividualLoan}?${urlSearchParams}`;
       getLoans(url, { showSuccess: false });
@@ -65,9 +69,7 @@ export const CheckerLoanTable = () => {
       <Box sx={{ p: 2, pt: 3, bgcolor: 'white', borderRadius: 2, border: '1px solid #E5E9EB' }}>
          <TableHeading
             handleSearch={setSearchText}
-            handleRefresh={() =>
-               getLoans(`${API_PATH.IndividualLoan}?All=${true}&Count=${Count}`, { showSuccess: false })
-            }
+            handleRefresh={() => getLoans(`${API_PATH.IndividualLoan}?All=${true}`, { showSuccess: false })}
             handleDownload={() =>
                downloadAsCSVByID(`checker-loan-table`, `Individual Loan ${capitalizeString(tab!)}`)
             }

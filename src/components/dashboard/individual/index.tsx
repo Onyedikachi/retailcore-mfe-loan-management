@@ -1,7 +1,7 @@
 import { Filters } from '@app/components/dashboard/DashboardTab';
 import { SelectChangeEvent, Stack, styled } from '@mui/material';
 import { useEffect, useState } from 'react';
-import { individualLoanFilterOptions, tabOptions, tabCardOptions, Count } from '@app/constants/dashboard';
+import { individualLoanFilterOptions, tabOptions, tabCardOptions } from '@app/constants/dashboard';
 import { LoanTable } from './LoanTable';
 import { useRequest } from 'react-http-query';
 import { API_PATH } from '@app/constants/api-path';
@@ -29,7 +29,7 @@ export const IndividualLoan = () => {
 
    useRequest({
       onMount: (makeRequest) => {
-         makeRequest(`${API_PATH.IndividualLoan}?All=${true}&Count=${Count}`, { showSuccess: false });
+         makeRequest(`${API_PATH.IndividualLoan}?All=${true}`, { showSuccess: false });
       },
       onSuccess: (response) =>
          getLoanProducts(response.data.data.loan, response.data.data.statistics, tab as string),
@@ -44,8 +44,8 @@ export const IndividualLoan = () => {
       getLoans(
          `${API_PATH.IndividualLoan}${
             (transformedArray ?? []).length > 0 && !transformedArray?.includes('ALL')
-               ? `?status=${JSON.stringify(transformedArray)}&Count=${Count}`
-               : `?All=${true}&Count=${Count}`
+               ? `?status=${JSON.stringify(transformedArray)}`
+               : `?All=${true}`
          }`,
          { showSuccess: false }
       );
