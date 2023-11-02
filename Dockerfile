@@ -18,7 +18,6 @@ COPY ./nginx.conf /src/nginx.conf
 COPY ./package.json /src/package.json
 COPY ./package-lock.json /src/package-lock.json
 COPY ./paths.js /src/paths.js
-COPY ./prettierrc.js /src/prettierrc.js
 COPY ./sonar-project.properties /src/sonar-project.properties
 COPY ./tsconfig.json /src/tsconfig.json
 COPY ./webpack.config.js /src/webpack.config.js
