@@ -43,12 +43,7 @@ export const FacilityDetails: React.FC = () => {
       }
    };
 
-   const [, submitForm] = useRequest({
-      onSuccess: (res) => {
-         handleNavigation(0);
-         navigate(IndividualLoanPath);
-      },
-   });
+   const [, submitForm] = useRequest({ onSuccess: (res) => navigate(IndividualLoanPath) });
    const handleSubmit = () => {
       setShowAlertDialog(false);
       if (id) {

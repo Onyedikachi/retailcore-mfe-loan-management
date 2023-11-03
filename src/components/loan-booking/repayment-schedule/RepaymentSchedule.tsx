@@ -29,7 +29,6 @@ export const RepaymentSchedule = () => {
    const [, submitForm] = useRequest({
       onSuccess: (res) => {
          navigate(IndividualLoanPath);
-         handleNavigation(0);
          resetBookLoanData();
       },
    });

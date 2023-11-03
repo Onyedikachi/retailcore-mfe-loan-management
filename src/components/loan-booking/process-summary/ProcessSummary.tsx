@@ -53,7 +53,6 @@ export const ProcessSummary = () => {
    };
 
    const handleCompletedOrClosed = (path?: string) => {
-      handleNavigation(0);
       resetBookLoanData();
       path ? navigate(path) : window.location.reload();
    };

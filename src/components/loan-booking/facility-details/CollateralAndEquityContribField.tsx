@@ -15,7 +15,7 @@ import { RedBorderContainer } from '@app/components/containers/RedBorderContaine
 import { useFormikHelper } from '@app/hooks/useFormikHelper';
 import { InputErrorText } from '@app/components/forms/InputFieldError';
 import { useBookLoanContext } from '@app/providers/book-loan';
-import { currencyToNumber } from '@app/helper/currency-converter';
+import { currencyToNumber, formatCurrency } from '@app/helper/currency-converter';
 import { eligibilityCriteria } from '@app/constants/book-loan';
 
 export const CollateralAndEquityContribFields = () => {
@@ -104,8 +104,10 @@ export const CollateralAndEquityContribFields = () => {
                         <Typography component="span" fontWeight="bold" pr={1}>
                            {selectedProduct?.currency}
                         </Typography>
-                        {currencyToNumber(getFieldProps(InputFieldNames.PRINCIPAL)?.value) *
-                           (getFieldProps(InputFieldNames.EQUITY_CONTRIB)?.value / 100)}
+                        {formatCurrency(
+                           currencyToNumber(getFieldProps(InputFieldNames.PRINCIPAL)?.value) *
+                              (getFieldProps(InputFieldNames.EQUITY_CONTRIB)?.value / 100)
+                        )}
                      </Typography>
                   </Grid>
                )}
