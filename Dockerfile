@@ -32,7 +32,7 @@ RUN addgroup -S appuser && adduser -S appuser -G appuser
 COPY nginx.conf /etc/nginx/nginx.conf
  
 # Copy built application from the build stage
-COPY --from=build /src/dist /usr/share/nginx/html
+COPY --from=builder /app/dist /usr/share/nginx/html
  
 # Adjust ownership of copied files to "appuser"
 RUN chown -R appuser:appuser /usr/share/nginx/html && \

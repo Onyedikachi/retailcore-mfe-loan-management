@@ -3,7 +3,7 @@ import { API_PATH, CUSTOMER_MANAGEMENT_PATH, IndividualLoanPath } from '@app/con
 import { Box, Grid, styled } from '@mui/material';
 import { CustomerInformation, FacilityDetails, LoanBookingHeader, Stepper } from '@app/components';
 import { PageLayout } from '@app/layouts/PageLayout';
-import { useStepperContext } from '@app/providers';
+import { StepperProvider, useStepperContext } from '@app/providers';
 import { RepaymentSchedule } from '@app/components/loan-booking/repayment-schedule/RepaymentSchedule';
 import { TransactionSettings } from '@app/components/loan-booking/transaction-settings';
 import { LoanInformation } from '@app/components/loan-booking/loan-information';
@@ -109,7 +109,9 @@ export const BookIndividualLoan = () => {
          content={
             <IndividualLoanDashboardProvider>
                <BookLoanProvider>
-                  <BookIndividualLoanContent getActiveStep={(step) => setActiveStep(step)} />
+                  <StepperProvider>
+                     <BookIndividualLoanContent getActiveStep={(step) => setActiveStep(step)} />
+                  </StepperProvider>
                </BookLoanProvider>
             </IndividualLoanDashboardProvider>
          }

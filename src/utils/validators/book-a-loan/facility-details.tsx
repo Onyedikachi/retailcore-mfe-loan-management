@@ -228,7 +228,7 @@ const colateralAndEquityContrib = (selectedProduct?: LoanProductData) => {
       // .required('Add at least one collateral asset.'),
       [InputFieldNames.EQUITY_CONTRIB]: Yup.string()
          .test(InputFieldNames.EQUITY_CONTRIB, 'Field is required', function (value) {
-            return eligibility?.requireEquityContrib;
+            return eligibility?.requireEquityContrib && !!Number(value);
          })
          .test(
             InputFieldNames.EQUITY_CONTRIB,
@@ -254,8 +254,8 @@ const colateralAndEquityContrib = (selectedProduct?: LoanProductData) => {
             InputFieldNames.EQUITY_CONTRIB,
             `Should not be greater than ${eligibility?.contributionValueTo}%, as configured for the selected product`,
             function (value) {
-               if (value && eligibility?.equityContribType === 'range') {
-                  return Number(value) <= eligibility?.contributionValueFrom;
+               if (value && eligibility?.equityContribType.includes('ange')) {
+                  return Number(value) <= eligibility?.contributionValueTo;
                }
                return true;
             }
