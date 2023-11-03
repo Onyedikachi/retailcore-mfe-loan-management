@@ -96,7 +96,7 @@ export const BookLoanProvider = ({ children }: BookLoanProviderProps) => {
 
    const getProductData = (allLoanProducts: LoanProductData[]) => {
       const names = allLoanProducts
-         //  ?.filter((e) => e.requestStatus === 'Approved' && e.status === 'Active')
+         ?.filter((e) => e.requestStatus === 'Approved' && e.status === 'Active')
          .map((loan) => {
             return { name: loan.name, id: loan.id };
          });
