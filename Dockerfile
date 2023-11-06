@@ -1,5 +1,5 @@
 # Use the Node.js base image
-FROM ghcr.io/sterling-retailcore-team/node-base-image:18 AS build
+FROM node:18-alpine AS builder
 
 RUN addgroup -S appuser && adduser -S appuser -G appuser
 
@@ -23,7 +23,7 @@ COPY src /app/src
 # Build the application (replace with your build command)
 RUN yarn build
 # Stage 2 - Serve the application using Nginx
-FROM ghcr.io/sterling-retailcore-team/nginx-base-image:3.17
+FROM nginx:latest
 
 COPY nginx.conf /etc/nginx/nginx.conf
 
