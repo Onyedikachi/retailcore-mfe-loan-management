@@ -32,13 +32,6 @@ COPY --from=builder /app/dist /usr/share/nginx/html
 
 EXPOSE 80
 
-RUN chown -R appuser:appuser /usr/share/nginx/html && \
-    chown -R appuser:appuser /var/cache/nginx && \
-    chown -R appuser:appuser /var/run && \
-    chown -R appuser:appuser /var/log/nginx && \
-    touch /var/run/nginx.pid && \
-    chown appuser:appuser /var/run/nginx.pid
-
 USER appuser
 
 CMD ["nginx", "-g", "daemon off;"]
