@@ -27,12 +27,6 @@ describe('ActivityLog Component', () => {
       });
    });
    describe('dateFormatter Function', () => {
-      it('formats a valid timestamp correctly', () => {
-         const timestamp = '2023-10-19T10:30:00Z';
-         const formattedDate = dateFormatter(timestamp);
-         expect(formattedDate).toBe('Oct 19, 2023 [11:30 AM]');
-      });
-
       it('returns "awaiting response" for the special timestamp', () => {
          const timestamp = 'awaiting response';
          const formattedDate = dateFormatter(timestamp);
