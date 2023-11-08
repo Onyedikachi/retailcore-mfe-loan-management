@@ -27,6 +27,7 @@ export const FacilityDetails: React.FC = () => {
       productNames,
       selectedProduct,
       getSelectedProduct,
+      getInputtedPrincipal,
    } = useBookLoanContext();
    const navigate = useNavigate();
    const [searchInput, setSearchInput] = useState('');
@@ -34,7 +35,7 @@ export const FacilityDetails: React.FC = () => {
    const id = searchParams.get('id');
 
    const onSubmit = (values: FormMeta.FacilityDetailsFormValues) => {
-      updateBookLoanData('facilityDetails', values);
+      updateBookLoanData('facilityDetails', { ...values, productId: selectedProduct?.id ?? '' });
       if (isDraft) {
          setShowAlertDialog(true);
       } else {
@@ -42,12 +43,7 @@ export const FacilityDetails: React.FC = () => {
       }
    };
 
-   const [, submitForm] = useRequest({
-      onSuccess: (res) => {
-         handleNavigation(0);
-         navigate(IndividualLoanPath);
-      },
-   });
+   const [, submitForm] = useRequest({ onSuccess: (res) => navigate(IndividualLoanPath) });
    const handleSubmit = () => {
       setShowAlertDialog(false);
       if (id) {
@@ -70,9 +66,13 @@ export const FacilityDetails: React.FC = () => {
       [searchInput]
    );
 
+   const [, getProductDetail] = useRequest({ onSuccess: (res) => getSelectedProduct(res.data.data) });
    useEffect(() => {
-      if (id && (productNames ?? [])?.length > 0) {
-         getSelectedProduct(bookLoanData.facilityDetails?.product_name ?? '');
+      if (id || (id && (productNames ?? [])?.length > 0)) {
+         getInputtedPrincipal(bookLoanData.facilityDetails?.principal ?? '');
+         getProductDetail(`${API_PATH.GetAllLoanProduct}/${bookLoanData.facilityDetails?.productId}`, {
+            showSuccess: false,
+         });
       }
    }, [id, productNames]);
 
@@ -99,7 +99,10 @@ export const FacilityDetails: React.FC = () => {
                         <Button
                            color={'gray' as any}
                            onClick={() => {
-                              updateBookLoanData('facilityDetails', formik.values);
+                              updateBookLoanData('facilityDetails', {
+                                 ...formik.values,
+                                 productId: selectedProduct?.id ?? '',
+                              });
                               handleNavigation('back');
                            }}
                            variant="outlined"

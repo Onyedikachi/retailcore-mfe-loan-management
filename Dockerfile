@@ -1,37 +1,51 @@
-# Use the Node.js base image
-FROM node:18-alpine AS builder
+# Stage 1 - Build the application
+FROM ghcr.io/sterling-retailcore-team/node-base-image:18 AS build
 
-RUN addgroup -S nonroot \
-    && adduser -S nonroot -G nonroot
+WORKDIR /src
 
-# Set the working directory inside the container
-WORKDIR /app
+COPY package.json yarn.lock ./
 
-# Copy package.json and yarn.lock to the container
-COPY package.json yarn.lock /app/
+RUN yarn --ignore-scripts
 
-# Install dependencies using Yarn
-RUN yarn install --ignore-scripts --frozen-lockfile  
+COPY ./src /src/src/
+COPY ./.eslintrc.js /src/.eslintrc.js
+COPY ./babel.config.json /src/babel.config.json
+COPY ./cert.pem /src/cert.pem
+COPY ./Dockerfile /src/Dockerfile
+COPY ./jest.config.js /src/jest.config.js
+COPY ./key.pem /src/key.pem
+COPY ./nginx.conf /src/nginx.conf
+COPY ./package.json /src/package.json
+COPY ./.prettierrc.js /src/.prettierrc.js
+COPY ./sonar-project.properties /src/sonar-project.properties
+COPY ./tsconfig.json /src/tsconfig.json
+COPY ./webpack.config.js /src/webpack.config.js
 
-# Copy the application code to the container
-# COPY ./src /src
-# COPY ./dist /dist
-# COPY webpack.config.js babel.config.json nginx.conf tsconfig.json commitlint.config.js .env ./
+RUN yarn --ignore-scripts build:webpack
 
-COPY webpack.config.js babel.config.json nginx.conf tsconfig.json commitlint.config.js /app/
-COPY src /app/src
-
-# Build the application (replace with your build command)
-RUN yarn build
 # Stage 2 - Serve the application using Nginx
-FROM nginx:latest
+FROM ghcr.io/sterling-retailcore-team/nginx-base-image:3.17
 
+# Create a non-root user named "appuser" for Nginx
+RUN addgroup -S appuser && adduser -S appuser -G appuser
+
+# Copy Nginx configuration
 COPY nginx.conf /etc/nginx/nginx.conf
 
-COPY --from=builder /app/dist /usr/share/nginx/html
+# Copy built application from the build stage
+COPY --from=build /src/dist /usr/share/nginx/html
 
-EXPOSE 80
+# Adjust ownership of copied files to "appuser"
+RUN chown -R appuser:appuser /usr/share/nginx/html && \
+    chown -R appuser:appuser /var/cache/nginx && \
+    chown -R appuser:appuser /var/run && \
+    chown -R appuser:appuser /var/log/nginx && \
+    touch /var/run/nginx.pid && \
+    chown appuser:appuser /var/run/nginx.pid
 
-USER nonroot
+# Switch to the non-root user for running Nginx
+USER appuser
+
+EXPOSE 8080
 
 CMD ["nginx", "-g", "daemon off;"]

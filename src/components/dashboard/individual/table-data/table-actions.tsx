@@ -1,5 +1,5 @@
 import { BookedLoanData } from '@app/@types/loan-product';
-import { Count, deleteLoan, menuToAction, modifyLoan } from '@app/constants/dashboard';
+import { deleteLoan, menuToAction, modifyLoan } from '@app/constants/dashboard';
 import { BookIndividualLoanPath, CustomerLoanDetailsPath } from '@app/constants/routes';
 import { format } from 'date-fns';
 import { NavigateFunction } from 'react-router-dom';
@@ -8,10 +8,10 @@ export const tableQuery = (
    searchText: string,
    queryByProductName: string[] | undefined,
    queryByStatus: string[] | undefined,
-   queryByDate: string[] | undefined
+   queryByDate: string[] | undefined,
+   checker?: boolean
 ) => {
    const queryParams: { [key: string]: any } = {};
-   queryParams.Count = Count;
    if (searchText) {
       queryParams.Search = searchText;
    }
@@ -20,7 +20,10 @@ export const tableQuery = (
    }
    if (queryByStatus && queryByStatus.length > 0) {
       queryParams.status = JSON.stringify(
-         queryByStatus.map((status) => status.toUpperCase().replace(/-/g, '_'))
+         queryByStatus.map((status) => {
+            let stat = checker && status == 'Pending' ? 'In-Review' : status;
+            return stat.toUpperCase().replace(/-/g, '_');
+         })
       );
    }
    if (queryByDate && queryByDate.length === 2) {

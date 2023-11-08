@@ -14,8 +14,9 @@ const FilterWrapper = styled(Stack)(() => ({
    color: 'GrayText',
    borderRadius: '8px',
    border: `1px solid ${Colors.BorderGray1}`,
-   gap: '72px',
+   minHeight: 112,
    justifyContent: 'space-between',
+   overflowX: 'auto',
 }));
 
 const TabStack = styled(Tabs)(() => ({

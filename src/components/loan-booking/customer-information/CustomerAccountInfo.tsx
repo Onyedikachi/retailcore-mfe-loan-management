@@ -15,18 +15,18 @@ export const CustomerAccountInformation: React.FC = () => {
          <Typography variant="h4">Customer’s Information</Typography>
          <Grid container>
             {customerInfo(selectedCustomer!, persona).map(({ key, value }, index) => {
+               let color;
+               if (key == 'Customer Persona') {
+                  color = 'info.main';
+               } else if (key == 'Risk Status') {
+                  color = riskStatusColor(value as string);
+               } else {
+                  color = 'inherit';
+               }
                return (
                   <Grid item xs={3} mt={3} key={key} pr={1.5}>
                      <Typography fontWeight="bold">{key}</Typography>
-                     <Typography
-                        color={
-                           key == 'Customer Persona' || key == 'Risk Status'
-                              ? riskStatusColor(value as string)
-                              : 'inherit'
-                        }
-                     >
-                        {value}
-                     </Typography>
+                     <Typography color={color}>{value}</Typography>
                      {index == 0 && (
                         <Typography>
                            <Button

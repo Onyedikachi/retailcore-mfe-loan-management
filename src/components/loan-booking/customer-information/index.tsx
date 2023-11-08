@@ -44,12 +44,7 @@ export const CustomerInformation: React.FC = () => {
       }
    };
 
-   const [, submitForm] = useRequest({
-      onSuccess: (res) => {
-         navigate(IndividualLoanPath);
-         handleNavigation(0);
-      },
-   });
+   const [, submitForm] = useRequest({ onSuccess: (res) => navigate(IndividualLoanPath) });
    const handleSubmit = () => {
       setShowAlertDialog(false);
       if (id) {

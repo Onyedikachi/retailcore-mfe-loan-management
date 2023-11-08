@@ -4,20 +4,28 @@ import { Box, Typography } from '@mui/material';
 import { FormControlBase } from '@app/components/forms/FormControl';
 import { LoanPrincipalControl } from '@app/components/forms/LoanPrincipalControl';
 import { PercentageControl } from '@app/components/forms/PercentageControl';
-import { PeriodWithCustom } from '@app/constants';
+import { API_PATH, PeriodWithCustom } from '@app/constants';
 import { TenureControl } from '@app/components/forms/TenureControl';
 import { useFormikContext } from 'formik';
 import { StartDateControl } from '@app/components/forms/StartDateControl';
 import { useFormikHelper } from '@app/hooks/useFormikHelper';
 import { useBookLoanContext } from '@app/providers/book-loan';
+import { useEffect, useState } from 'react';
+import { useRequest } from 'react-http-query';
 
 export const FacilityDetailsFields: React.FC<{ getSearchInput?: (input: string) => void }> = (props) => {
    const { InputFieldNames, TooltipText } = FormMeta;
    const { getFieldProps, validate, values } = useFormikContext<FormMeta.FacilityDetailsFormValues>();
    const { resetFieldState } = useFormikHelper();
-   const { productNames, getSelectedProduct, selectedProduct } = useBookLoanContext();
-
+   const { productNames, getSelectedProduct, selectedProduct, getInputtedPrincipal } = useBookLoanContext();
+   const [loanProductId, setLoanProductId] = useState<string>();
    const hasSelectedProduct = getFieldProps(InputFieldNames.PRODUCT_NAME)?.value;
+
+   const [, getProductDetail] = useRequest({ onSuccess: (res) => getSelectedProduct(res.data.data) });
+   useEffect(() => {
+      loanProductId &&
+         getProductDetail(`${API_PATH.GetAllLoanProduct}/${loanProductId}`, { showSuccess: false });
+   }, [loanProductId]);
 
    return (
       <Box sx={{ width: '95%' }}>
@@ -35,8 +43,8 @@ export const FacilityDetailsFields: React.FC<{ getSearchInput?: (input: string) 
                placeholder="Type to search and select"
                noOptionsText="No match"
                onInputChange={(value) => {
-                  getSelectedProduct(value as string);
                   validate?.(values);
+                  setLoanProductId(productNames?.filter((prod) => prod.name == value)[0]?.id);
                }}
                options={productNames?.map((prod) => prod.name) ?? []}
                filterOptions={(option, { inputValue }) => {
@@ -84,6 +92,7 @@ export const FacilityDetailsFields: React.FC<{ getSearchInput?: (input: string) 
             name={InputFieldNames.PRINCIPAL}
             layout="horizontal"
             label="Principal"
+            onChange={(e) => getInputtedPrincipal(e.target.value)}
             layoutFlexGrid={[5.5, 6.5]}
             extraLeft={selectedProduct?.currency ?? ''}
             placeholder="Enter amount"

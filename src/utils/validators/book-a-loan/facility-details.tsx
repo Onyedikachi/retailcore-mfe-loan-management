@@ -1,6 +1,6 @@
 /* eslint-disable max-len */
-
 import { LoanProductData } from '@app/@types/loan-product';
+import { eligibilityCriteria, findInterestRates } from '@app/constants/book-loan';
 import { TenureMapping, TenureMappingKey } from '@app/constants/forms';
 import { currencyToNumber } from '@app/helper/currency-helper';
 import * as Yup from 'yup';
@@ -118,7 +118,12 @@ const facilityDetails = (selectedProduct?: LoanProductData) => {
             'Must not be lesser than the min. interest rate of the selected product',
             function (value) {
                if (value && selectedProduct) {
-                  return Number(value) >= selectedProduct?.minInterestRate;
+                  const { minInterestRate } = findInterestRates(
+                     selectedProduct,
+                     currencyToNumber(this.parent?.[InputFieldNames.PRINCIPAL] ?? '')
+                  );
+
+                  return Number(value) >= minInterestRate;
                }
             }
          )
@@ -127,7 +132,11 @@ const facilityDetails = (selectedProduct?: LoanProductData) => {
             'Must not be greater than the max. interest rate of the selected product',
             function (value) {
                if (value && selectedProduct) {
-                  return Number(value) <= selectedProduct.maxInterestRate;
+                  const { maxInterestRate } = findInterestRates(
+                     selectedProduct,
+                     currencyToNumber(this.parent?.[InputFieldNames.PRINCIPAL] ?? '')
+                  );
+                  return Number(value) <= maxInterestRate;
                }
             }
          ),
@@ -195,6 +204,7 @@ const facilityDetails = (selectedProduct?: LoanProductData) => {
 };
 
 const colateralAndEquityContrib = (selectedProduct?: LoanProductData) => {
+   const eligibility = eligibilityCriteria(selectedProduct);
    return {
       [InputFieldNames.COLLATERALS]: Yup.array().of(
          Yup.object().shape({
@@ -216,14 +226,40 @@ const colateralAndEquityContrib = (selectedProduct?: LoanProductData) => {
          })
       ),
       // .required('Add at least one collateral asset.'),
-      [InputFieldNames.EQUITY_CONTRIB]: Yup.string(),
-      //.required('Field is required')
-      // .test(InputFieldNames.EQUITY_CONTRIB, 'Must be greater than 0', function (value) {
-      //    if (value) {
-      //       return Number(value) > 0;
-      //    }
-      //    return false
-      // }),
+      [InputFieldNames.EQUITY_CONTRIB]: Yup.string()
+         .test(InputFieldNames.EQUITY_CONTRIB, 'Field is required', function (value) {
+            return eligibility?.requireEquityContrib && !!Number(value);
+         })
+         .test(
+            InputFieldNames.EQUITY_CONTRIB,
+            `Should be equal to ${eligibility?.contributionValueFrom}%, as configured for the selected product`,
+            function (value) {
+               if (value && eligibility?.equityContribType.includes('ixed')) {
+                  return Number(value) === eligibility?.contributionValueFrom;
+               }
+               return true;
+            }
+         )
+         .test(
+            InputFieldNames.EQUITY_CONTRIB,
+            `Should not be lesser than ${eligibility?.contributionValueFrom}%, as configured for the selected product`,
+            function (value) {
+               if (value && eligibility?.equityContribType.includes('ange')) {
+                  return Number(value) >= eligibility?.contributionValueFrom;
+               }
+               return true;
+            }
+         )
+         .test(
+            InputFieldNames.EQUITY_CONTRIB,
+            `Should not be greater than ${eligibility?.contributionValueTo}%, as configured for the selected product`,
+            function (value) {
+               if (value && eligibility?.equityContribType.includes('ange')) {
+                  return Number(value) <= eligibility?.contributionValueTo;
+               }
+               return true;
+            }
+         ),
    };
 };
 export const loanManagementSettings = (selectedProduct?: LoanProductData) => {

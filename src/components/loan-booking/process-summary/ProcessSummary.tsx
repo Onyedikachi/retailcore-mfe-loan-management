@@ -43,14 +43,16 @@ export const ProcessSummary = () => {
    const [, submitForm] = useRequest({ onSuccess: () => setShowResponseDialog(true) });
    const handleSubmit = () => {
       if (id) {
-         submitForm(`${API_PATH.IndividualLoan}`, { body: { ...backendData, id: id }, method: 'PUT' });
+         submitForm(`${API_PATH.IndividualLoan}`, {
+            body: { ...backendData, id: id, showSuccess: false },
+            method: 'PUT',
+         });
       } else {
-         submitForm(API_PATH.IndividualLoan, { body: backendData });
+         submitForm(API_PATH.IndividualLoan, { body: backendData, showSuccess: false });
       }
    };
 
    const handleCompletedOrClosed = (path?: string) => {
-      handleNavigation(0);
       resetBookLoanData();
       path ? navigate(path) : window.location.reload();
    };

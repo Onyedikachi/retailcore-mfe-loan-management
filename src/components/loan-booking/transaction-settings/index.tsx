@@ -32,12 +32,7 @@ export const TransactionSettings: React.FC = () => {
       }
    };
 
-   const [, submitForm] = useRequest({
-      onSuccess: (res) => {
-         navigate(IndividualLoanPath);
-         handleNavigation(0);
-      },
-   });
+   const [, submitForm] = useRequest({ onSuccess: (res) => navigate(IndividualLoanPath) });
    const handleSubmit = () => {
       setShowAlertDialog(false);
       if (id) {
@@ -89,7 +84,7 @@ export const TransactionSettings: React.FC = () => {
                                     type="submit"
                                     variant={isNext ? 'contained' : 'outlined'}
                                  >
-                                    {isNext ? 'Generate Repayement Schedule' : 'Save As Draft'}
+                                    {isNext ? 'Generate Repayment Schedule' : 'Save As Draft'}
                                  </Button>
                               );
                            })}
