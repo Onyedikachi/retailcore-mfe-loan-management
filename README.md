@@ -29,7 +29,7 @@ To set up the application on your local system, follow these steps:
 
     `yarn start:standalone`
 
-    This will launch the application and you can access it in your browser at `http://localhost:8083/loan-management`.
+    This will launch the application and you can access it in your browser at `http://localhost:8083/loan-management`
 
 
 ## Scripts
