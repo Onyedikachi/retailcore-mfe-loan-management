@@ -30,7 +30,7 @@ describe('ActivityLog Component', () => {
       it('formats a valid timestamp correctly', () => {
          const timestamp = '2023-10-19T10:30:00Z';
          const formattedDate = dateFormatter(timestamp);
-         expect(/Oct \d{2}, 2023 \[\d{2}:\d{2} [APap][Mm]\]/.test(formattedDate)).toBe(true);
+         expect(formattedDate).toBe('Oct 19, 2023 [11:30 AM]');
       });
 
       it('returns "awaiting response" for the special timestamp', () => {
