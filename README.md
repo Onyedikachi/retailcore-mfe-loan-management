@@ -10,7 +10,7 @@ To set up the application on your local system, follow these steps:
 
    Clone the repository by running the following command:
 
-   `git clone https://github.com/sterling-retailcore-team/retailcore-mfe-loan-management.git `
+   `git clone https://github.com/sterling-retailcore-team/retailcore-mfe-loan-management.git`
 
 
 2. **Install dependencies:**
