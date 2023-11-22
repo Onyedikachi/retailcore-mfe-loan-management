@@ -4,11 +4,11 @@ export interface LoanProductData {
    description: string;
    code: string;
    type: string;
-   typeId: string | null;
+   typeId?: string;
    category: string;
-   categoryId: string | null;
-   subCategory: string | null;
-   subCategoryId: string | null;
+   categoryId?: string;
+   subCategory?: string;
+   subCategoryId?: string;
    currency: string;
    currencyId: string;
    maxLoanTenure: number;
@@ -21,27 +21,96 @@ export interface LoanProductData {
    maxInterestRate: number;
    allowMultipleReq: boolean;
    isDraft: boolean;
-   status: string;
+   status?: string;
    requestStatus: string;
    createdById: string;
    createdBy: string;
    dateCreated: string;
-   lastModifiedById: string | null;
-   lastModifiedBy: string | null;
-   lastModifiedDate: string | null;
-   approvedBy: string | null;
-   approvedById: string | null;
-   approvedDate: string | null;
-   tenantId: string | null;
-   deletedDate: string | null;
-   deletedById: string | null;
-   deleteBy: string | null;
+   lastModifiedById?: string;
+   lastModifiedBy?: string;
+   lastModifiedDate?: string;
+   approvedBy?: string;
+   approvedById?: string;
+   approvedDate?: string;
+   tenantId: string;
+   deletedDate?: string;
+   deletedById?: string;
+   deleteBy?: string;
    currentStep: number;
+   productEligibilityCriteriaRequirement:
+      | ProductEligibilityCriteriaRequirement[]
+      | ProductEligibilityCriteriaRequirement;
+   pricingConfiguration: PricingConfiguration[] | PricingConfiguration;
+   chargesTaxesPenalty: ChargesTaxesPenalty[];
+   accountingEntry?: any;
 }
 
-interface BookedLoanData {
+interface ProductEligibilityCriteriaRequirement {
+   status?: string;
+   earnType?: string;
+   earnValue: number;
+   earnPeriodValue: number;
+   earnPeriod?: string;
+   requireEarning: boolean;
+   requireEquityContrib: boolean;
+   equityContribType: string;
+   contributionValueFrom: number;
+   contributionValueTo: number;
+   requireSecurity: boolean;
+   requireOtherEligibilityCriteria: boolean;
+   hasEligibility: boolean;
+   isDraft: boolean;
+   productId: string;
+   eligibilityCriteriaSecurityDocs?: any;
    id: string;
-   productId: string | null;
+   approvedBy?: string;
+   approvedById?: string;
+   approvedDate?: string;
+   lastModifiedById?: string;
+   lastModifiedBy?: string;
+   lastModifiedDate?: string;
+   createdById: string;
+   createdBy: string;
+   dateCreated: string;
+   tenantId: string;
+   deletedDate?: string;
+   deletedById?: string;
+   deleteBy?: string;
+}
+
+interface PricingConfiguration {
+   intCalcMethod: string;
+   intComputeDays: string;
+   intRateConfigBand: string;
+   productId: string;
+   id: string;
+   deletedDate?: string;
+   deletedById?: string;
+   deleteBy?: string;
+}
+
+interface IntRateConfigBand {
+   MaxInterestRate: number;
+   MaxPrincipalValue?: string;
+   MinInterestRate: number;
+   MinPrincipalValue?: string;
+}
+interface ChargesTaxesPenalty {
+   chargeTaxEvent: string;
+   isPenaltyReq: boolean;
+   breachPenalty: string;
+   interestRate: number;
+   productId: string;
+   chargeAndTaxes?: any;
+   id: string;
+   deletedDate?: str;
+   deletedById?: str;
+   deleteBy?: str;
+}
+
+export interface BookedLoanData {
+   id: string;
+   productId?: string;
    customerName: string;
    customerId: string;
    acctNo: string;
@@ -114,13 +183,25 @@ interface LoanActivity {
 }
 
 interface StatusCounts {
-   pending: number;
-   approved: number;
-   inReview: number;
-   inIssue: number;
-   performing: number;
-   nonPerforming: number;
-   active: number;
-   inActive: number;
-   draft: number;
+   pending?: number;
+   approved?: number;
+   inReview?: number;
+   inIssue?: number;
+   performing?: number;
+   nonPerforming?: number;
+   active?: number;
+   inActive?: number;
+   draft?: number;
+   all?: number;
+   closed?: number;
+   rejected?: number;
+}
+interface LoanPaymentSchedule {
+   monthlyInterest: number;
+   principalPayment: number;
+   repaymentAmount: number;
+   openingBalance: number;
+   outstandingBalance: number;
+   disbursementDate: string;
+   gracePeriod: string;
 }

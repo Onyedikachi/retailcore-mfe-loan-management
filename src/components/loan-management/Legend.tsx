@@ -27,7 +27,7 @@ export const Legend: React.FC<{
                item
                xs={4}
                display="flex"
-               key={label + index}
+               key={`${label + index * 2}`}
                justifyContent={dataDetails.labelAmount ? 'start' : 'center'}
             >
                <RoundedDot sx={{ backgroundColor: dataDetails.backgroundColors[index] }} />

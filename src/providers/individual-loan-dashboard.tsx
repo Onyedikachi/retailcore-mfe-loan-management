@@ -1,11 +1,10 @@
 import { BookedLoanData, StatusCounts } from '@app/@types/loan-product';
-import { DataCount } from '@app/constants/dashboard';
 import { createContext, useContext, ReactNode, useMemo, useState } from 'react';
 
 interface IndividualLoanDashboardContextType {
    loanProducts?: BookedLoanData[];
    getLoanProducts: (loanProducts: BookedLoanData[], stats: StatusCounts, tab?: string) => void;
-   dataCount?: DataCount;
+   dataCount?: StatusCounts;
    getLoanProduct: (loan: BookedLoanData) => void;
    loanProduct?: BookedLoanData;
 }
@@ -29,20 +28,22 @@ interface IndividualLoanDashboardProviderProps {
 export const IndividualLoanDashboardProvider = ({ children }: IndividualLoanDashboardProviderProps) => {
    const [loanProducts, setLoanProducts] = useState<BookedLoanData[]>();
    const [loanProduct, setLoanProduct] = useState<BookedLoanData>();
-   const [dataCount, setDataCount] = useState<DataCount>();
+   const [dataCount, setDataCount] = useState<StatusCounts>();
 
    const getLoanProducts = (loanProducts: BookedLoanData[], stats: StatusCounts, tab?: string) => {
       setLoanProducts(loanProducts);
+      const rejected = loanProducts?.filter((product) => product.status === 'REJECT').length;
       const count = {
          all: loanProducts.length,
-         approved: loanProducts?.filter((product) => product.status === 'APPROVED').length,
-         inReview: loanProducts?.filter((product) => product.status === 'IN_REVIEW').length,
-         inIssue: loanProducts?.filter((product) => product.status === 'IN_ISSUE').length,
-         draft: loanProducts?.filter((product) => product.status === 'DRAFT' || product.status === 'PENDING')
-            .length,
-         performing: 0,
-         nonPerforming: 0,
-         closed: 0,
+         approved: stats?.approved,
+         inReview: stats?.inReview,
+         inIssue: (stats?.inIssue ?? 0) + (stats?.rejected ?? rejected),
+         pending: stats?.inIssue,
+         draft: (stats?.draft ?? 0) + (stats?.pending ?? 0),
+         performing: stats?.performing,
+         nonPerforming: stats?.nonPerforming,
+         closed: stats?.closed,
+         rejected: stats?.rejected ?? rejected,
       };
       setDataCount(count);
    };

@@ -10,9 +10,6 @@ export const CustomerInfoFields: React.FC<{ getSearchInput?: (input: string) => 
    const { InputFieldNames, TooltipText } = FormMeta;
    const { getSelectedCustomer, accountNumbers, selectedCustomer } = useBookLoanContext();
 
-   //   const { getFieldProps } = useFormikContext<FormMeta.CustomerInfoFormValues>();
-   //   const isCustomerSelected = getFieldProps(InputFieldNames.CUSTOMER_ACCOUNT_NO)?.value;
-
    return (
       <>
          <Box sx={{ mb: 6 }}>

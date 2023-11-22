@@ -8,7 +8,7 @@ import AlertDialog from '@app/components/modal/AlertDialog';
 import { useBookLoanContext } from '@app/providers/book-loan';
 import { useStepperContext } from '@app/providers/stepper';
 import { useRequest } from 'react-http-query';
-import { API_PATH, BasePath, CUSTOMER_MANAGEMENT_PATH } from '@app/constants';
+import { API_PATH, CUSTOMER_MANAGEMENT_PATH, IndividualLoanPath } from '@app/constants';
 import { CustomerInfoFields } from './CustomerInfoFields';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
@@ -32,7 +32,7 @@ export const CustomerInformation: React.FC = () => {
    const id = searchParams.get('id');
 
    const onSubmit = (values: FormMeta.CustomerInfoFormValues) => {
-      if (!customerEligibility.isEligbible) {
+      if (!customerEligibility.isEligible) {
          setOpenEligibilityModal(true);
       } else {
          updateBookLoanData('customerInformation', values);
@@ -44,28 +44,24 @@ export const CustomerInformation: React.FC = () => {
       }
    };
 
-   const [, submitForm] = useRequest({
-      onSuccess: (res) => {
-         navigate(BasePath);
-         handleNavigation(0);
-      },
-   });
+   const [, submitForm] = useRequest({ onSuccess: (res) => navigate(IndividualLoanPath) });
    const handleSubmit = () => {
       setShowAlertDialog(false);
       if (id) {
-         submitForm(`${API_PATH.IndiviualLoan}`, { body: { ...backendData, id: id }, method: 'PUT' });
+         submitForm(`${API_PATH.IndividualLoan}`, { body: { ...backendData, id: id }, method: 'PUT' });
       } else {
-         submitForm(API_PATH.IndiviualLoan, { body: backendData });
+         submitForm(API_PATH.IndividualLoan, { body: backendData });
       }
    };
 
    useRequest(
       {
-         onMount: (makeRequest) =>
+         onMount: (makeRequest) => {
             makeRequest(`${GET_INDIVIDUAL_CUSTOMERS}?search=${searchInput}`, {
                showSuccess: false,
                showLoader: !accountNumbers,
-            }),
+            });
+         },
          onSuccess: (response) => getCustomersData(response.data.data.customer),
       },
       [searchInput]
@@ -88,6 +84,7 @@ export const CustomerInformation: React.FC = () => {
                            const isNext = type === 'next';
                            return (
                               <Button
+                                 id="customer-info"
                                  key={type}
                                  sx={{ ...(isNext && { ml: 2 }) }}
                                  color={isNext ? 'primary' : undefined}

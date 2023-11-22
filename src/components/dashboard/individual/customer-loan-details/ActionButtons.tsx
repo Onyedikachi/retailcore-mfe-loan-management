@@ -7,6 +7,8 @@ import { WriteOff } from '@app/components/icons/WriteOff';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { LoanProductPath } from '@app/constants/routes';
 import { menuActionFromStatus } from '@app/constants/dashboard';
+import { usePermission } from '@app/hooks/usePermission';
+import { transformText } from '@app/helper/string';
 
 interface ActionButtonsProps {
    onClickAction: (action: string) => void;
@@ -17,7 +19,8 @@ export const ActionButtons: React.FC<ActionButtonsProps> = ({ onClickAction, loa
    const [searchParams] = useSearchParams();
    const id = searchParams.get('id');
    const navigate = useNavigate();
-   const actions = menuActionFromStatus(loanStatus ?? '');
+   const permission = usePermission();
+   const actions = menuActionFromStatus(transformText(loanStatus ?? ''), permission);
 
    const listActionsItems = [
       {
@@ -33,6 +36,7 @@ export const ActionButtons: React.FC<ActionButtonsProps> = ({ onClickAction, loa
       <>
          {actions?.map((action, index) => (
             <Button
+               key={action}
                variant="text"
                startIcon={listActionsItems[index].icon}
                sx={{ color: 'inherit', px: 1, mr: 2 }}

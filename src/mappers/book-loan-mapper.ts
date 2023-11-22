@@ -1,7 +1,7 @@
 import { BookLoanData } from '@app/@types/book-loan';
 import { CustomerData } from '@app/@types/customer';
 import { BookedLoanData, LoanProductData } from '@app/@types/loan-product';
-import { currencyInputFormatter } from '@app/helper/currency-helper';
+import { currencyInputFormatter, currencyToNumber } from '@app/helper/currency-helper';
 
 export const mapBookLoanToSchema = (
    bookLoanData: BookLoanData,
@@ -60,8 +60,9 @@ export const mapSchemaToBookLoan = (loan: BookedLoanData): BookLoanData => {
    return {
       customerInformation: { acctNo: loan.acctNo },
       facilityDetails: {
-         product_name: '',
-         product_category: '',
+         productId: loan?.product?.id ?? loan?.productId,
+         product_name: loan.product?.name,
+         product_category: loan.product.category,
          productPurpose: loan.productPurpose,
          principal: formattedCurrency,
          interestRate: loan.interestRate.toString(),
@@ -93,4 +94,31 @@ export const mapSchemaToBookLoan = (loan: BookedLoanData): BookLoanData => {
          repaymentAcct: loan?.repaymentAcct,
       },
    };
+};
+
+export const mapRepaymentScheduleToSchema = (bookLoanData: BookLoanData, product?: LoanProductData) => {
+   const moratoriumVal = Number(bookLoanData?.facilityDetails?.moratoriumValue);
+
+   const data = {
+      productId: product?.id,
+      principal: currencyToNumber(bookLoanData?.facilityDetails?.principal ?? ''),
+      tenorPeriod: bookLoanData?.facilityDetails?.tenorPeriod,
+      tenorValue: Number(bookLoanData?.facilityDetails?.tenorValue),
+      moratoriumValue: moratoriumVal > 0 ? moratoriumVal : undefined,
+      moratoriumPeriod: bookLoanData?.facilityDetails?.moratoriumPeriod,
+      moratoriumDuration: bookLoanData?.facilityDetails?.recognize_moratorium_period,
+      isMoratoriumReq: bookLoanData?.facilityDetails?.isMoratoriumReq,
+      isGraceReq: bookLoanData?.facilityDetails?.isGraceReq,
+      interestRate: Number(bookLoanData?.facilityDetails?.interestRate),
+      disbursementDate: bookLoanData?.transactionSettings?.disburseDate
+         ? new Date(bookLoanData?.transactionSettings?.disburseDate)
+         : undefined,
+      gracePeriod: bookLoanData?.facilityDetails?.gracePeriod,
+   };
+   type Data = typeof data;
+   const filteredData = Object.fromEntries(
+      Object.entries(data).filter(([, value]) => value !== undefined && value !== '')
+   ) as Partial<Data>;
+
+   return filteredData;
 };

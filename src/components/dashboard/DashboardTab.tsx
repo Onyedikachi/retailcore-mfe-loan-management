@@ -14,8 +14,9 @@ const FilterWrapper = styled(Stack)(() => ({
    color: 'GrayText',
    borderRadius: '8px',
    border: `1px solid ${Colors.BorderGray1}`,
-   gap: '72px',
+   minHeight: 112,
    justifyContent: 'space-between',
+   overflowX: 'auto',
 }));
 
 const TabStack = styled(Tabs)(() => ({
@@ -45,6 +46,7 @@ interface FiltersProps {
    tabOptions: Array<{
       label: string;
       key: number | string;
+      permissions?: string[];
    }>;
    onTabClick: (tabKey: number | string) => void;
    defaultTabKey?: number | string;
@@ -57,7 +59,7 @@ interface FiltersProps {
 export const Filters = (props: FiltersProps) => {
    const [activeStatus, setActiveStatus] = useState('All');
    const [searchParams] = useSearchParams();
-   const [defaultInitiator, setDefaultInitiator] = useState(props?.filterOptions?.[0]);
+   const [defaultInitiator, setDefaultInitiator] = useState<string>();
    const navigate = useNavigate();
 
    const defaultActiveTab = searchParams.get('tab') ?? props.defaultTabKey ?? props.tabOptions[0]?.key;
@@ -69,16 +71,18 @@ export const Filters = (props: FiltersProps) => {
       navigate(`?tab=${newValue}`);
    };
 
-   useEffect(() => navigate(`?tab=${defaultActiveTab}`), []);
+   useEffect(() => {
+      navigate(`?tab=${defaultActiveTab}`);
+      setDefaultInitiator(props?.filterOptions?.[0]);
+   }, [defaultActiveTab]);
 
    const handleStatusCardClick = (key: string) => {
       setActiveStatus(key);
       props?.onStatusClick(key);
    };
-   console.log();
    return (
       <FilterWrapper direction="row">
-         <Stack direction="row" gap={6} flex={1}>
+         <Stack direction="row" gap={3} flex={1}>
             <TabStack
                value={activeTab}
                onChange={handleTabChange}
@@ -92,15 +96,13 @@ export const Filters = (props: FiltersProps) => {
 
                   return (
                      <StyledTab
-                        onClick={() => {
-                           props.onTabClick(tab.key);
-                           setDefaultInitiator(props?.filterOptions?.[0]);
-                        }}
+                        onClick={() => props.onTabClick(tab.key)}
                         value={tab.key}
                         icon={isActive ? <ArrowRight fontSize="large" color="primary" /> : <></>}
                         iconPosition="start"
                         key={tab.key}
                         label={tab.label}
+                        data-testid="tab-card"
                         sx={{
                            fontSize: isActive ? '20px' : '18px',
                            fontWeight: isActive ? 600 : 400,
@@ -112,8 +114,9 @@ export const Filters = (props: FiltersProps) => {
             </TabStack>
             <Stack direction="row" gap="10px" alignItems="center">
                {props.statusOptions?.map((data, index) => (
-                  <Fragment key={index}>
+                  <Fragment key={`${data?.key}${index * 2}`}>
                      <StatusCard
+                        data-testid="status-card"
                         onClick={() => handleStatusCardClick(data.key ?? data.label)}
                         isActive={(data?.key ?? data.label) === activeStatus}
                         {...data}
@@ -135,9 +138,12 @@ export const Filters = (props: FiltersProps) => {
                <UncontrolledSelect
                   size="small"
                   name="filter"
-                  defaultValue={defaultInitiator}
+                  value={defaultInitiator ?? props?.filterOptions?.[0]}
                   options={props?.filterOptions}
-                  onChange={props?.onFilterOptionSelected}
+                  onChange={(event: SelectChangeEvent<any>) => {
+                     setDefaultInitiator(event.target.value);
+                     props?.onFilterOptionSelected(event);
+                  }}
                   sx={{
                      height: '32px',
                      borderRadius: '6px',

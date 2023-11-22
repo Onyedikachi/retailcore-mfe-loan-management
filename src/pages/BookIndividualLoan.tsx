@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react';
-import { API_PATH, BasePath, CUSTOMER_MANAGEMENT_PATH } from '@app/constants';
+import { API_PATH, CUSTOMER_MANAGEMENT_PATH, IndividualLoanPath } from '@app/constants';
 import { Box, Grid, styled } from '@mui/material';
 import { CustomerInformation, FacilityDetails, LoanBookingHeader, Stepper } from '@app/components';
 import { PageLayout } from '@app/layouts/PageLayout';
-import { useStepperContext } from '@app/providers';
+import { StepperProvider, useStepperContext } from '@app/providers';
 import { RepaymentSchedule } from '@app/components/loan-booking/repayment-schedule/RepaymentSchedule';
 import { TransactionSettings } from '@app/components/loan-booking/transaction-settings';
 import { LoanInformation } from '@app/components/loan-booking/loan-information';
@@ -12,6 +12,7 @@ import { ActivitySummary } from '@app/components/loan-booking/process-summary/Ac
 import { BookLoanProvider, useBookLoanContext } from '@app/providers/book-loan';
 import { useSearchParams } from 'react-router-dom';
 import { useRequest } from 'react-http-query';
+import { IndividualLoanDashboardProvider } from '@app/providers/individual-loan-dashboard';
 
 export const StyledContentWrapper = styled(Box)({
    background: 'white',
@@ -56,7 +57,7 @@ const BookIndividualLoanContent: React.FC<{ getActiveStep: (step: number) => voi
       },
    });
    useEffect(() => {
-      id && getLoanProductModify(`${API_PATH.IndiviualLoan}/${id}`, { showSuccess: false });
+      id && getLoanProductModify(`${API_PATH.IndividualLoan}/${id}`, { showSuccess: false });
    }, [id]);
 
    return (
@@ -100,12 +101,19 @@ export const BookIndividualLoan = () => {
    return (
       <PageLayout
          header={
-            <LoanBookingHeader title={activeStep == 4 ? 'PROCESS SUMMARY' : 'BOOK LOAN'} backUrl={BasePath} />
+            <LoanBookingHeader
+               title={activeStep == 4 ? 'PROCESS SUMMARY' : 'BOOK LOAN'}
+               backUrl={IndividualLoanPath}
+            />
          }
          content={
-            <BookLoanProvider>
-               <BookIndividualLoanContent getActiveStep={(step) => setActiveStep(step)} />
-            </BookLoanProvider>
+            <IndividualLoanDashboardProvider>
+               <BookLoanProvider>
+                  <StepperProvider>
+                     <BookIndividualLoanContent getActiveStep={(step) => setActiveStep(step)} />
+                  </StepperProvider>
+               </BookLoanProvider>
+            </IndividualLoanDashboardProvider>
          }
          fullContent={true}
       />

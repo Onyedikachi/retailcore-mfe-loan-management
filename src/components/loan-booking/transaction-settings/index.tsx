@@ -12,13 +12,13 @@ import AlertDialog from '@app/components/modal/AlertDialog';
 import { useBookLoanContext } from '@app/providers/book-loan';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useRequest } from 'react-http-query';
-import { API_PATH, BasePath } from '@app/constants';
+import { API_PATH, IndividualLoanPath } from '@app/constants';
 
 export const TransactionSettings: React.FC = () => {
    const [isDraft, setIsDraft] = useState(false);
    const { handleNavigation } = useStepperContext();
    const [showAlertDialog, setShowAlertDialog] = useState(false);
-   const { bookLoanData, updateBookLoanData, backendData, resetBookLoanData } = useBookLoanContext();
+   const { bookLoanData, updateBookLoanData, backendData } = useBookLoanContext();
    const navigate = useNavigate();
    const [searchParams] = useSearchParams();
    const id = searchParams.get('id');
@@ -32,15 +32,14 @@ export const TransactionSettings: React.FC = () => {
       }
    };
 
-   const [, submitForm] = useRequest({
-      onSuccess: (res) => {
-         navigate(BasePath);
-         handleNavigation(0);
-      },
-   });
+   const [, submitForm] = useRequest({ onSuccess: (res) => navigate(IndividualLoanPath) });
    const handleSubmit = () => {
       setShowAlertDialog(false);
-      submitForm(API_PATH.IndiviualLoan, { body: backendData });
+      if (id) {
+         submitForm(`${API_PATH.IndividualLoan}`, { body: { ...backendData, id: id }, method: 'PUT' });
+      } else {
+         submitForm(API_PATH.IndividualLoan, { body: backendData });
+      }
    };
 
    return (
@@ -64,7 +63,10 @@ export const TransactionSettings: React.FC = () => {
                      <Box display="flex" alignItems="center" justifyContent="space-between" mt={5} mb={2}>
                         <Button
                            color={'gray' as any}
-                           onClick={() => handleNavigation('back')}
+                           onClick={() => {
+                              updateBookLoanData('transactionSettings', formik.values);
+                              handleNavigation('back');
+                           }}
                            variant="outlined"
                         >
                            Previous
@@ -74,6 +76,7 @@ export const TransactionSettings: React.FC = () => {
                               const isNext = type === 'next';
                               return (
                                  <Button
+                                    id="transaction-settings"
                                     key={type}
                                     color={isNext ? 'primary' : undefined}
                                     onClick={() => setIsDraft(!isNext)}
@@ -81,7 +84,7 @@ export const TransactionSettings: React.FC = () => {
                                     type="submit"
                                     variant={isNext ? 'contained' : 'outlined'}
                                  >
-                                    {isNext ? 'Generate Repayement Schedule' : 'Save As Draft'}
+                                    {isNext ? 'Generate Repayment Schedule' : 'Save As Draft'}
                                  </Button>
                               );
                            })}

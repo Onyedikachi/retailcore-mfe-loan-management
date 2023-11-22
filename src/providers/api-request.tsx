@@ -3,7 +3,6 @@ import { Loader } from '@app/components/Loader';
 import { environmentVar } from '@app/constants';
 import { RequestProvider } from 'react-http-query';
 import { axiosInstance } from '@Sterling/shared';
-import { refreshToken } from '@app/utils/refresh-token';
 
 interface APIRequestProviderProps {
    children: React.ReactNode;
@@ -19,12 +18,20 @@ export const APIRequestProvider = ({ children }: APIRequestProviderProps) => {
       if (Array.isArray(errorMessage)) {
          errorMessage = errorMessage.join(', ');
       }
-      return <AlertSnackbar alertType="error" message={errorMessage} />;
+      return <AlertSnackbar alertType="error" title="Error" message={errorMessage} />;
    };
 
    const renderSuccessSnackbar = (response: any) => {
-      return <AlertSnackbar alertType="success" message={response.message ?? 'Request Successful'} />;
+      return (
+         <AlertSnackbar
+            alertType="success"
+            title="Success"
+            message={response.message ?? 'Request Successful'}
+         />
+      );
    };
+
+   const renderLoader = () => <Loader />;
 
    return (
       <RequestProvider
@@ -33,11 +40,10 @@ export const APIRequestProvider = ({ children }: APIRequestProviderProps) => {
                return { ...payload, headers: { 'Content-Type': 'application/json' } };
             },
             response(payload) {
-               // refreshToken();
                return { ...payload };
             },
          }}
-         onLoading={() => <Loader />}
+         onLoading={renderLoader}
          onError={renderErrorSnackBar}
          onSuccess={renderSuccessSnackbar}
          baseUrl={baseUrl}

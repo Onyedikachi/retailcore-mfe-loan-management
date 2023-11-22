@@ -65,7 +65,7 @@ function FilterMenu({ options, onFilterChange, checkbox = true, filterIcon, icon
          >
             {options?.map((option, index) => {
                return checkbox ? (
-                  <MenuItem key={`${option}+${index}`} sx={{ py: 0, height: '30px', fontSize: 14 }}>
+                  <MenuItem key={`${option}+${index * 2}`} sx={{ py: 0, height: '30px', fontSize: 14 }}>
                      <>
                         <Checkbox
                            value={option}
@@ -77,7 +77,7 @@ function FilterMenu({ options, onFilterChange, checkbox = true, filterIcon, icon
                   </MenuItem>
                ) : (
                   <MenuItem
-                     key={`${option}+${index}`}
+                     key={`${option}+${index * 2}`}
                      sx={{ py: 0, height: '30px', fontSize: 14 }}
                      onClick={() => {
                         setSelectedOption(option);

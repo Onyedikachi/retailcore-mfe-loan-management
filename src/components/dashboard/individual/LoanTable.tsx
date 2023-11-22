@@ -7,15 +7,13 @@ import { downloadAsCSVByID } from '@app/helper/csvDownloader';
 import { TableHeading } from '@app/components/loan-management/TableHeading';
 import { bodyData } from './table-data/table-body-data';
 import { headerData } from './table-data/table-header-data';
-import Dialog from '@app/components/atoms/Dialog';
-import { LoanActionRequest } from './customer-loan-details/LoanActionRequest';
-import { API_PATH, BookIndividualLoanPath, CustomerLoanDetailsPath } from '@app/constants';
+import { API_PATH } from '@app/constants';
 import { capitalizeString } from '@app/helper/string';
-import { deleteLoan, menuToAction, modifyLoan } from '@app/constants/dashboard';
-import AlertDialog from '@app/components/modal/AlertDialog';
 import { useIndividualLoanDashboardContext } from '@app/providers/individual-loan-dashboard';
 import { useRequest } from 'react-http-query';
-import { format } from 'date-fns';
+import { LoanTableDialogs } from './LoanTableDialogs';
+import { tableQuery, handleActions, handleDateQuery } from './table-data/table-actions';
+import { usePermission } from '@app/hooks/usePermission';
 
 export const LoanTable = () => {
    const [searchParams] = useSearchParams();
@@ -27,9 +25,10 @@ export const LoanTable = () => {
    const [queryByDate, setQueryByDate] = useState<string[]>();
    const [openLoanAction, setOpenLoanAction] = useState(false);
    const [openDeleteAction, setOpenDeleteAction] = useState(false);
-   const [idToDelete, setIdToDelete] = useState('');
+   const [id, setId] = useState('');
    const navigate = useNavigate();
    const { loanProducts, getLoanProducts } = useIndividualLoanDashboardContext();
+   const permission = usePermission();
 
    const loanTableHeader: TableHeaderProps = useMemo(
       () =>
@@ -37,89 +36,45 @@ export const LoanTable = () => {
             loanProducts,
             (loanProduct) => setQueryByProductName(loanProduct),
             (loanStatus) => setQueryByStatus(loanStatus),
-            (startDate, endDate) => {
-               const start = format(new Date(startDate!), 'yyyy-MM-dd');
-               const end = format(new Date(endDate!), 'yyyy-MM-dd');
-               setQueryByDate([start, end]);
-            },
+            (startDate, endDate) => handleDateQuery(startDate, endDate, setQueryByDate),
             tab!!
          ),
       [tab, loanProducts]
    );
 
    const loanTableBody = useMemo(() => {
-      return (loanProducts ?? [])?.map((item, id) => {
+      return (loanProducts ?? [])?.map((item) => {
          return bodyData(
             item,
             (selectedAction) => {
+               setId(item.id);
                setAction(selectedAction);
-               if (selectedAction == 'View') {
-                  navigate(`${CustomerLoanDetailsPath}?id=${item.id}`);
-               } else if (menuToAction(selectedAction)) {
-                  setOpenLoanAction(true);
-               } else if (modifyLoan(selectedAction)) {
-                  navigate(`${BookIndividualLoanPath}?id=${item.id}`);
-               } else if (deleteLoan(selectedAction)) {
-                  setOpenDeleteAction(true);
-                  setIdToDelete(item.id);
-               }
+               handleActions(selectedAction, navigate, item, setOpenLoanAction, setOpenDeleteAction);
             },
-            tab!!
+            tab!!,
+            permission
          );
       });
-   }, [tab, loanProducts]);
+   }, [tab, loanProducts, permission]);
 
    const [, getLoans] = useRequest({
       onSuccess: (response) => getLoanProducts(response.data.data.loan, response.data.data.statistics),
    });
-   useEffect(() => {
-      getLoans(`${API_PATH.IndiviualLoan}${searchText ? `?Search=${searchText}` : `?All=${true}`}`, {
-         showSuccess: false,
-      });
-   }, [searchText]);
-   useEffect(() => {
-      getLoans(
-         `${API_PATH.IndiviualLoan}${
-            (queryByProductName ?? []).length > 0
-               ? `?LoanProduct=${JSON.stringify(queryByProductName)}`
-               : `?All=${true}`
-         }`,
-         { showSuccess: false }
-      );
-   }, [queryByProductName]);
 
    useEffect(() => {
-      const transformedArray = queryByStatus?.map((item) => item.toUpperCase().replace(/-/g, '_'));
-      getLoans(
-         `${API_PATH.IndiviualLoan}${
-            (transformedArray ?? []).length > 0
-               ? `?status=${JSON.stringify(transformedArray)}`
-               : `?All=${true}`
-         }`,
-         { showSuccess: false }
-      );
-   }, [queryByStatus]);
-
-   useEffect(() => {
-      getLoans(
-         `${API_PATH.IndiviualLoan}${
-            queryByDate ? `?StartDate=${queryByDate[0]}&EndDate=${queryByDate[1]}` : `?All=${true}`
-         }`,
-         { showSuccess: false }
-      );
-   }, [queryByDate]);
-
-   // const [, deleteRequest] = useRequest({
-   //    onSuccess: (response) => getLoans(`${API_PATH.IndiviualLoan}?All=${true}`, { showSuccess: false }),
-   // });
+      const queryParams = tableQuery(searchText, queryByProductName, queryByStatus, queryByDate);
+      const urlSearchParams = new URLSearchParams(queryParams).toString();
+      const url = `${API_PATH.IndividualLoan}?${urlSearchParams}`;
+      getLoans(url, { showSuccess: false });
+   }, [searchText, queryByProductName, queryByStatus, queryByDate]);
 
    return (
       <Box sx={{ p: 2, pt: 3, bgcolor: 'white', borderRadius: 2, border: '1px solid #E5E9EB' }}>
          <TableHeading
             handleSearch={setSearchText}
-            handleRefresh={() => getLoans(`${API_PATH.IndiviualLoan}?All=${true}`, { showSuccess: false })}
+            handleRefresh={() => getLoans(`${API_PATH.IndividualLoan}?All=${true}`, { showSuccess: false })}
             handleDownload={() =>
-               downloadAsCSVByID(`loan ${tab}`, `Individual Loan ${capitalizeString(tab!)}`)
+               downloadAsCSVByID(`loan-table`, `Individual Loan ${capitalizeString(tab!)}`)
             }
             searchPlaceholder="Search by product name/code"
          />
@@ -131,21 +86,14 @@ export const LoanTable = () => {
                bodyProps={{ rows: loanTableBody }}
             />
          </Box>
-         <Dialog
-            minWidth="50%"
-            open={openLoanAction}
-            handleClose={() => setOpenLoanAction(false)}
-            title={`LOAN ${menuToAction(action)?.toUpperCase()} REQUEST`}
-         >
-            <LoanActionRequest action={menuToAction(action)!} handleSubmit={() => setOpenLoanAction(false)} />
-         </Dialog>
-         <AlertDialog
-            open={openDeleteAction}
-            handleClose={() => setOpenDeleteAction(false)}
-            handleConfirm={() => {
-               // deleteRequest(API_PATH.IndiviualLoan, { body: { loanId: idToDelete }, method: 'DELETE' })
-            }}
-            title="Do you want to withdraw and delete request?"
+         {loanProducts && loanProducts?.length === 0 && <Box textAlign="center">No records found</Box>}
+         <LoanTableDialogs
+            action={action}
+            id={id}
+            openLoanAction={openLoanAction}
+            setOpenLoanAction={setOpenLoanAction}
+            openDeleteAction={openDeleteAction}
+            setOpenDeleteAction={setOpenDeleteAction}
          />
       </Box>
    );

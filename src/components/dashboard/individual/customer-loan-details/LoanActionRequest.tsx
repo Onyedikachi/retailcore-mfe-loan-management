@@ -7,15 +7,38 @@ import { TextAreaControl } from '@app/components/forms/TextAreaControl';
 import { FileUpload } from '@app/components/atoms/FileUpload';
 import { Button } from '@app/components/atoms/Button';
 import { InputErrorText } from '@app/components/forms/InputFieldError';
+import { useRequest } from 'react-http-query';
+import { API_PATH } from '@app/constants/api-path';
+import { menuToAPIAction } from '@app/constants/dashboard';
+import { useIndividualLoanDashboardContext } from '@app/providers/individual-loan-dashboard';
 
-export const LoanActionRequest: React.FC<{ action: string; handleSubmit?: () => void }> = ({
+export const LoanActionRequest: React.FC<{ action: string; id: string; handleSubmit?: () => void }> = ({
+   id,
    action,
    handleSubmit,
 }) => {
    const { initialValues, validationSchema, Fields } = FormMeta;
+   const { getLoanProducts } = useIndividualLoanDashboardContext();
 
+   const [, getLoans] = useRequest({
+      onSuccess: (response) => getLoanProducts(response.data.data.loan, response.data.data.statistics),
+   });
+
+   const [, submitForm] = useRequest({
+      onSuccess: () => {
+         getLoans(`${API_PATH.IndividualLoan}?All=${true}`, { showSuccess: false });
+      },
+   });
    const onSubmit = (values: FormMeta.FormValues) => {
-      // TODO: Implement submittion of  details to the backend.
+      submitForm(`${API_PATH.IndividualLoan}/${id}/action`, {
+         body: {
+            action: menuToAPIAction(action),
+            comment: values.reason,
+            fileUrl: values.doc ? values.doc : undefined,
+            notify: values.notify ?? undefined,
+         },
+         method: 'PUT',
+      });
       handleSubmit?.();
    };
 

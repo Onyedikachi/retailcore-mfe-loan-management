@@ -4,30 +4,38 @@ import * as FormMeta from '@app/utils/validators/book-a-loan/facility-details';
 import Accordion from '@app/components/accordion/Accordion';
 import { Button } from '@app/components/atoms';
 import FormContainer from '@app/components/forms/FormContainer';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useStepperContext } from '@app/providers';
 import { FacilityDetailsFields } from './FacilityDetailsFields';
-import { ColateralAndEquityContribFields } from './ColateralAndEquityContribField';
-import { LoanManagementSettingsField } from './LoanMangementSettingsField';
+import { CollateralAndEquityContribFields } from './CollateralAndEquityContribField';
+import { LoanManagementSettingsField } from './LoanManagementSettingsField';
 import AlertDialog from '@app/components/modal/AlertDialog';
 import { useBookLoanContext } from '@app/providers/book-loan';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useRequest } from 'react-http-query';
-import { API_PATH, BasePath } from '@app/constants';
+import { API_PATH, IndividualLoanPath } from '@app/constants';
 
 export const FacilityDetails: React.FC = () => {
    const [isDraft, setIsDraft] = useState(false);
    const { handleNavigation } = useStepperContext();
    const [showAlertDialog, setShowAlertDialog] = useState(false);
-   const { bookLoanData, updateBookLoanData, backendData, getProductData, productNames, selectedProduct } =
-      useBookLoanContext();
+   const {
+      bookLoanData,
+      updateBookLoanData,
+      backendData,
+      getProductData,
+      productNames,
+      selectedProduct,
+      getSelectedProduct,
+      getInputtedPrincipal,
+   } = useBookLoanContext();
    const navigate = useNavigate();
    const [searchInput, setSearchInput] = useState('');
    const [searchParams] = useSearchParams();
    const id = searchParams.get('id');
 
    const onSubmit = (values: FormMeta.FacilityDetailsFormValues) => {
-      updateBookLoanData('facilityDetails', values);
+      updateBookLoanData('facilityDetails', { ...values, productId: selectedProduct?.id ?? '' });
       if (isDraft) {
          setShowAlertDialog(true);
       } else {
@@ -35,28 +43,38 @@ export const FacilityDetails: React.FC = () => {
       }
    };
 
-   const [, submitForm] = useRequest({
-      onSuccess: (res) => {
-         handleNavigation(0);
-         navigate(BasePath);
-      },
-   });
+   const [, submitForm] = useRequest({ onSuccess: (res) => navigate(IndividualLoanPath) });
    const handleSubmit = () => {
       setShowAlertDialog(false);
-      submitForm(API_PATH.IndiviualLoan, { body: backendData });
+      if (id) {
+         submitForm(`${API_PATH.IndividualLoan}`, { body: { ...backendData, id: id }, method: 'PUT' });
+      } else {
+         submitForm(API_PATH.IndividualLoan, { body: backendData });
+      }
    };
 
    useRequest(
       {
-         onMount: (makeRequest) =>
+         onMount: (makeRequest) => {
             makeRequest(`${API_PATH.GetAllLoanProduct}?SearchTerm=${searchInput}`, {
                showSuccess: false,
                showLoader: !productNames,
-            }),
+            });
+         },
          onSuccess: (response) => getProductData(response.data.data.items),
       },
       [searchInput]
    );
+
+   const [, getProductDetail] = useRequest({ onSuccess: (res) => getSelectedProduct(res.data.data) });
+   useEffect(() => {
+      if (id || (id && (productNames ?? [])?.length > 0)) {
+         getInputtedPrincipal(bookLoanData.facilityDetails?.principal ?? '');
+         getProductDetail(`${API_PATH.GetAllLoanProduct}/${bookLoanData.facilityDetails?.productId}`, {
+            showSuccess: false,
+         });
+      }
+   }, [id, productNames]);
 
    return (
       <FormContainer>
@@ -72,7 +90,7 @@ export const FacilityDetails: React.FC = () => {
                      <Box sx={{ mb: 5 }}>
                         <Accordion accordionLabels={FormMeta.accordionLabels}>
                            <FacilityDetailsFields getSearchInput={(input) => setSearchInput(input)} />
-                           <ColateralAndEquityContribFields />
+                           <CollateralAndEquityContribFields />
                            <LoanManagementSettingsField />
                         </Accordion>
                      </Box>
@@ -80,7 +98,13 @@ export const FacilityDetails: React.FC = () => {
                      <Box display="flex" alignItems="center" justifyContent="space-between" mt={5} mb={2}>
                         <Button
                            color={'gray' as any}
-                           onClick={() => handleNavigation('back')}
+                           onClick={() => {
+                              updateBookLoanData('facilityDetails', {
+                                 ...formik.values,
+                                 productId: selectedProduct?.id ?? '',
+                              });
+                              handleNavigation('back');
+                           }}
                            variant="outlined"
                         >
                            Previous
@@ -90,6 +114,7 @@ export const FacilityDetails: React.FC = () => {
                               const isNext = type === 'next';
                               return (
                                  <Button
+                                    id="facility-details"
                                     key={type}
                                     color={isNext ? 'primary' : undefined}
                                     onClick={() => setIsDraft(!isNext)}

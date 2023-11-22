@@ -1,7 +1,7 @@
 import { fireEvent, render } from '@testing-library/react';
 import { InputProps } from '../../atoms';
 import { FormControlBase } from '../FormControl';
-import { TestForm } from './test.utils';
+import { TestForm } from '@app/tests/form-util';
 describe('Component <Input />', () => {
    it('should render an input when control is "input"', () => {
       const inputProps: InputProps = { name: 'inputField', placeholder: 'Input Field' };

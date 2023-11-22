@@ -8,16 +8,15 @@ export const headerData = (
    loanProducts: BookedLoanData[] | undefined,
    filterLoanProduct: (selectedOptions: string[]) => void,
    filterStatus: (selectedOptions: string[]) => void,
-   filterDate: (startDate?: Date | undefined, endDate?: Date | undefined) => void,
+   filterDate: (startDate?: Date | undefined, endDate?: Date | undefined, staticRange?: string) => void,
    tab: string
 ): TableHeaderProps => {
    const statusOptions = tabCardOptions()
       [tab]?.map((option) => option.label)
       .slice(1);
    const uniqueProductNames = new Set();
-     console.log({ loanProducts });
    loanProducts?.forEach((loan) => {
-      if (loan.product && loan.product.name) {
+      if (loan?.product && loan?.product?.name) {
          uniqueProductNames.add(loan.product.name);
       }
    });

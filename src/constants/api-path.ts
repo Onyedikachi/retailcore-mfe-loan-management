@@ -3,8 +3,9 @@ import { environmentVar } from './environment-var';
 const API_V1 = '/api/v1';
 const { RETAIL_AUTH_BASE_URL, RETAIL_CORE_BASE_URL, CUSTOMER_MANAGEMENT_BASE_URL } = environmentVar();
 export const API_PATH = {
-   IndiviualLoan: `${API_V1}/loan`,
+   IndividualLoan: `${API_V1}/loan`,
    GetAllLoanProduct: `${API_V1}/product`,
+   RepaymentSchedule: `${API_V1}/loan/loanrepaymentschedule`,
 };
 
 const RETAIL_CORE_V1 = `${RETAIL_CORE_BASE_URL ?? ''}${API_V1}`;

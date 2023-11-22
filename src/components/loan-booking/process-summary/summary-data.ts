@@ -1,6 +1,7 @@
 import { BookLoanData } from '@app/@types/book-loan';
 import { CustomerData } from '@app/@types/customer';
 import { LoanProductData } from '@app/@types/loan-product';
+import { format } from 'date-fns';
 
 export const bookingInfo = (loan?: BookLoanData, selectedProduct?: LoanProductData) => {
    return [
@@ -31,7 +32,12 @@ export const bookingInfo = (loan?: BookLoanData, selectedProduct?: LoanProductDa
          key: 'Disbursement account',
          value: loan?.transactionSettings?.disburseAcct,
       },
-      { key: 'Disbursement date', value: loan?.transactionSettings?.disburseDate },
+      {
+         key: 'Disbursement date',
+         value: loan?.transactionSettings?.disburseDate
+            ? format(new Date(loan?.transactionSettings?.disburseDate), 'd MMM yyyy, hh:mm a')
+            : '',
+      },
    ];
 };
 

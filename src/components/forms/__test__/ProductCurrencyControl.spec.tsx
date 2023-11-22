@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
-import { TestForm } from './test.utils';
 import { ProductCurrencyControl, ProductCurrencyControlProps } from '../ProductCurrencyControl';
+import { TestForm } from '@app/tests/form-util';
 
 describe('ProductCurrencyControl component', () => {
    const defaultProps: ProductCurrencyControlProps = {

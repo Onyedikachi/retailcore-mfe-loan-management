@@ -5,9 +5,10 @@ import { Typography } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import { format } from 'date-fns';
 import { statusColors } from '@app/constants/colors';
-import { loanStatus, menuFromStatus } from '@app/constants/dashboard';
+import { menuFromStatus } from '@app/constants/dashboard';
 import { BookedLoanData } from '@app/@types/loan-product';
 import { formatCurrency } from '@app/helper/currency-converter';
+import { transformText } from '@app/helper/string';
 
 export const StyledChip = styled(Chip)(() => ({
    padding: 0,
@@ -19,9 +20,18 @@ export const StyledChip = styled(Chip)(() => ({
 export const bodyData = (
    loan: BookedLoanData | undefined,
    loanActions: (selectedAction: string) => void,
-   tab: string
+   tab: string,
+   permissions?: any
 ) => {
-   const status = tab === 'records' ? '' : loanStatus(loan?.status!);
+   const getStatus = tab === 'records' ? '' : transformText(loan?.status!);
+   let status;
+   if (getStatus === 'Pending') {
+      status = 'Draft';
+   } else if (getStatus === 'Reject') {
+      status = 'In-Issue';
+   } else {
+      status = getStatus;
+   }
    return {
       customerName: (
          <>
@@ -31,13 +41,13 @@ export const bodyData = (
       ),
       loanAmount: `${loan?.product?.currency ?? ''} ${formatCurrency(loan?.principal!)}`,
       loanProduct: loan?.product?.name ?? '-',
-      status: status ? <StyledChip sx={{ ...statusColors(status!) }} label={status!} /> : '-',
+      status: status ? <StyledChip sx={{ ...statusColors(status) }} label={status} /> : '-',
       updatedOn: format(new Date(loan?.lastModifiedDate ?? loan?.dateCreated!), 'd MMM yyyy, hh:mm a'),
       filter: (
          <FilterMenu
             checkbox={false}
             filterIcon={<MenuIcon color="primary" />}
-            options={menuFromStatus(status!)}
+            options={menuFromStatus(status, permissions)}
             icon
             onFilterChange={(value) => loanActions(value as string)}
          />

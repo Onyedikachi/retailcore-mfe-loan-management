@@ -7,7 +7,7 @@ import { createPortal } from 'react-dom';
 import { Button } from '../atoms/Button';
 import { Box } from '@mui/material';
 import { StyledDateRange } from './StyledDateRange';
-import { customStaticRanges } from './calendar-data';
+import { allTimeDateRange, customStaticRanges, isSelectedRange } from './calendar-data';
 import { DateRangePickerProps } from 'react-date-range';
 import { CustomeDateRangeForm } from './CustomDateRangeForm';
 
@@ -59,7 +59,7 @@ export const DateRange: React.FC<DateRangeProps> = ({
       if (label !== staticRangeLabel) setStaticRangeLabel(label);
       setCustomSelected(false);
       onStaticRangeSelected?.(label, date);
-      if (label == 'All Time') {
+      if (label === 'All Time') {
          onDateRangeChange?.(undefined, undefined);
       }
    };
@@ -73,7 +73,10 @@ export const DateRange: React.FC<DateRangeProps> = ({
                   showMonthAndYearPickers={false}
                   onChange={(item) => {
                      setState({ ...state, ...item });
-                     onDateRangeChange?.(item.selection.startDate, item.selection.endDate);
+                     const isAllTime = isSelectedRange(item.selection, allTimeDateRange().date);
+                     isAllTime
+                        ? onDateRangeChange?.(undefined, undefined)
+                        : onDateRangeChange?.(item.selection.startDate, item.selection.endDate);
                   }}
                   months={1}
                   minDate={startOfYear(new Date(1990, 0, 1))}
