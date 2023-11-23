@@ -102,10 +102,10 @@ export const mapRepaymentScheduleToSchema = (bookLoanData: BookLoanData, product
    const data = {
       productId: product?.id,
       principal: currencyToNumber(bookLoanData?.facilityDetails?.principal ?? ''),
-      tenorPeriod: bookLoanData?.facilityDetails?.tenorPeriod,
+      tenorPeriod: bookLoanData?.facilityDetails?.tenorPeriod.replace('(s)', 's'),
       tenorValue: Number(bookLoanData?.facilityDetails?.tenorValue),
       moratoriumValue: moratoriumVal > 0 ? moratoriumVal : undefined,
-      moratoriumPeriod: bookLoanData?.facilityDetails?.moratoriumPeriod,
+      moratoriumPeriod: bookLoanData?.facilityDetails?.moratoriumPeriod.replace('(s)', 's'),
       moratoriumDuration: bookLoanData?.facilityDetails?.recognize_moratorium_period,
       isMoratoriumReq: bookLoanData?.facilityDetails?.isMoratoriumReq,
       isGraceReq: bookLoanData?.facilityDetails?.isGraceReq,
@@ -113,7 +113,7 @@ export const mapRepaymentScheduleToSchema = (bookLoanData: BookLoanData, product
       disbursementDate: bookLoanData?.transactionSettings?.disburseDate
          ? new Date(bookLoanData?.transactionSettings?.disburseDate)
          : undefined,
-      gracePeriod: bookLoanData?.facilityDetails?.gracePeriod,
+      gracePeriod: bookLoanData?.facilityDetails?.gracePeriod.replace('(s)', 's'),
    };
    type Data = typeof data;
    const filteredData = Object.fromEntries(

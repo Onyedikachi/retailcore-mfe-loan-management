@@ -1,4 +1,4 @@
-export const LoanTenurePeriod = ['Hours', 'Days', 'Weeks', 'Months', 'Years'];
+export const LoanTenurePeriod = ['Days', 'Weeks', 'Months', 'Years'];
 export const Periodicity = ['Daily', 'Weekly', 'Monthly', 'Quarterly', 'Annually'];
 export const Periodicity2 = ['Weekly', 'Monthly', 'Quarterly', 'Bi-Annually', 'Annually'];
 export const PluralizePeriodicity = ['Day(s)', 'Week(s)', 'Month(s)', 'Quarter(s)', 'Years(s)'];
@@ -30,11 +30,10 @@ export const EligibilityEarningsTypeOptions = [
    { label: '% of Loan Amount', value: 'percent' },
 ];
 export const TenureMapping = {
-   Hours: 1,
-   Days: 24,
-   Weeks: 168,
-   Months: 730,
-   Years: 8766,
+   'Day(s)': 24,
+   'Week(s)': 168,
+   'Month(s)': 730,
+   'Year(s)': 8766,
 };
 
 export const LoanTenurePeriods = Object.keys(TenureMapping);
