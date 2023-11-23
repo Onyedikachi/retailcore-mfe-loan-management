@@ -24,10 +24,15 @@ export const CustomerInfoDialog: FC<{ id?: string }> = ({ id }) => {
    );
 
    return (
-      <Box width="98%" mx="auto">
+      <Box width="98%" mx="auto" position="relative">
          {details ? (
             <>
-               <Box display="flex" alignItems="center" mb={4}>
+               <Box
+                  display="flex"
+                  alignItems="center"
+                  mb={4}
+                  sx={{ position: 'sticky', zIndex: 1000, background: 'white', width: '100%', top: 0 }}
+               >
                   {profile?.customersPhoto ? (
                      <Avatar
                         alt="customersPhoto"
@@ -62,7 +67,7 @@ export const CustomerInfoDialog: FC<{ id?: string }> = ({ id }) => {
                                  {key}
                               </Grid>
                               <Grid item xs={7} mb={2} pl={2}>
-                                 {value ?? '-'}
+                                 {value || '-'}
                               </Grid>
                            </Fragment>
                         ))}
