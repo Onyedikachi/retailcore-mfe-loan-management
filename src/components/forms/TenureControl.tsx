@@ -2,7 +2,7 @@ import { Grid, InputAdornment } from '@mui/material';
 import FormControlWrapper from './FormControlWrapper';
 import { FormControlBase } from './FormControl';
 import ValueIncrementDecrement from '../ValueIncreaseDecrease';
-import { LoanTenurePeriod } from '@app/constants';
+import { LoanTenurePeriods } from '@app/constants';
 
 export interface TenureControlProps {
    fieldLabel: string;
@@ -49,7 +49,7 @@ export const TenureControl = (props: TenureControlProps) => {
                   control="select"
                   name={props.periodName}
                   placeholder="Select period"
-                  options={props.loanTenurePeriod ?? LoanTenurePeriod}
+                  options={props.loanTenurePeriod ?? LoanTenurePeriods}
                   disabled={props?.disabled}
                />
             </Grid>
