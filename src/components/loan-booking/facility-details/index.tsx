@@ -45,6 +45,7 @@ export const FacilityDetails: React.FC = () => {
 
    const [, submitForm] = useRequest({ onSuccess: (res) => navigate(IndividualLoanPath) });
    const handleSubmit = () => {
+
       setShowAlertDialog(false);
       if (id) {
          submitForm(`${API_PATH.IndividualLoan}`, { body: { ...backendData, id: id }, method: 'PUT' });
@@ -85,8 +86,10 @@ export const FacilityDetails: React.FC = () => {
             onSubmit={onSubmit}
          >
             {(formik) => {
+
                return (
                   <Form>
+                    {console.log(formik.values)};
                      <Box sx={{ mb: 5 }}>
                         <Accordion accordionLabels={FormMeta.accordionLabels}>
                            <FacilityDetailsFields getSearchInput={(input) => setSearchInput(input)} />
