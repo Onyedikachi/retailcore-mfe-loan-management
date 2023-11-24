@@ -24,7 +24,9 @@ export const TransactionSettings: React.FC = () => {
    const id = searchParams.get('id');
 
    const onSubmit = (values: FormMeta.TransactionSettingsFormValues) => {
+
       updateBookLoanData('transactionSettings', values);
+  
       if (isDraft) {
          setShowAlertDialog(true);
       } else {
