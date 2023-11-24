@@ -56,7 +56,7 @@ export const FacilityDetails: React.FC = () => {
    useRequest(
       {
          onMount: (makeRequest) => {
-            makeRequest(`${API_PATH.GetAllLoanProduct}?SearchTerm=${searchInput}`, {
+            makeRequest(`${API_PATH.GetAllLoanProduct}?Status=Active`, {
                showSuccess: false,
                showLoader: !productNames,
             });
