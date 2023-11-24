@@ -17,26 +17,25 @@ import { API_PATH, IndividualLoanPath } from '@app/constants';
 export const TransactionSettings: React.FC = () => {
    const [isDraft, setIsDraft] = useState(false);
    const { handleNavigation } = useStepperContext();
-   const [showAlertDialog, setShowAlertDialog] = useState(false);
+   const [showDialog, setShowDialog] = useState(false);
    const { bookLoanData, updateBookLoanData, backendData } = useBookLoanContext();
    const navigate = useNavigate();
    const [searchParams] = useSearchParams();
    const id = searchParams.get('id');
 
    const onSubmit = (values: FormMeta.TransactionSettingsFormValues) => {
-
       updateBookLoanData('transactionSettings', values);
-  
+
       if (isDraft) {
-         setShowAlertDialog(true);
+         setShowDialog(true);
       } else {
          handleNavigation('next');
       }
    };
 
    const [, submitForm] = useRequest({ onSuccess: (res) => navigate(IndividualLoanPath) });
-   const handleSubmit = () => {
-      setShowAlertDialog(false);
+   const handleFormSubmit = () => {
+      setShowDialog(false);
       if (id) {
          submitForm(`${API_PATH.IndividualLoan}`, { body: { ...backendData, id: id }, method: 'PUT' });
       } else {
@@ -97,9 +96,9 @@ export const TransactionSettings: React.FC = () => {
             }}
          </Formik>
          <AlertDialog
-            open={showAlertDialog}
-            handleClose={() => setShowAlertDialog(false)}
-            handleConfirm={handleSubmit}
+            open={showDialog}
+            handleClose={() => setShowDialog(false)}
+            handleConfirm={handleFormSubmit}
             title="Do you want to save as draft?"
             subtitle="Requests in drafts would be deleted after 30 days of inactivity."
          />
