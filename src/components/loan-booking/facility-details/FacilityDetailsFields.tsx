@@ -146,7 +146,7 @@ export const FacilityDetailsFields: React.FC<{ getSearchInput?: (input: string) 
                control="select"
                name={InputFieldNames.REPAYMENT_FREQUENCY}
                placeholder="Select frequency"
-               options={PeriodWithCustom}
+               options={["Hourly", ...PeriodWithCustom]}
                onChange={() => {
                   resetFieldState(InputFieldNames.START_DATE);
                   resetFieldState(InputFieldNames.START_DATE_NUM);
