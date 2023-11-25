@@ -23,10 +23,12 @@ export const LoanManagementSettingsField = () => {
                sx={{ ml: 7 }}
                control="switch"
                name={InputFieldNames.ENABLE_MORATORIUM_PERIOD}
-               onChange={() => {
-                  resetFieldState(InputFieldNames.MORATORIUM_PERIOD);
+               onChange={(e:any) => {
+                  if (!e.target.checked) {
+                     resetFieldState(InputFieldNames.MORATORIUM_PERIOD);
                   resetFieldState(InputFieldNames.MORATORIUM_PERIOD_VALUE);
                   resetFieldState(InputFieldNames.RECOGNISE_MORATORIUM_PERIOD);
+                  }
                }}
             />
          </FormControlWrapper>
@@ -62,12 +64,15 @@ export const LoanManagementSettingsField = () => {
             label="Enable Grace Period"
             layout="horizontal"
             tooltipText={TooltipText[InputFieldNames.ENABLE_GRACE_PERIOD]}
-            onChange={() => {
+         >
+            <FormControlBase sx={{ ml: 7 }} control="switch" name={InputFieldNames.ENABLE_GRACE_PERIOD}
+           onChange={(e: any) => {
+            if (!e.target.checked) {
                resetFieldState(InputFieldNames.GRACE_PERIOD);
                resetFieldState(InputFieldNames.GRACE_PERIOD_VALUE);
-            }}
-         >
-            <FormControlBase sx={{ ml: 7 }} control="switch" name={InputFieldNames.ENABLE_GRACE_PERIOD} />
+            }
+         }}
+            />
          </FormControlWrapper>
          {getFieldProps(InputFieldNames.ENABLE_GRACE_PERIOD)?.value && (
             <Box pl={3} pr={5}>

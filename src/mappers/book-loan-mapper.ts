@@ -105,7 +105,7 @@ export const mapRepaymentScheduleToSchema = (bookLoanData: BookLoanData, product
       tenorPeriod: bookLoanData?.facilityDetails?.tenorPeriod,
       tenorValue: Number(bookLoanData?.facilityDetails?.tenorValue),
       moratoriumValue: moratoriumVal > 0 ? moratoriumVal : undefined,
-      moratoriumPeriod: bookLoanData?.facilityDetails?.moratoriumPeriod.replace('(s)', 's'),
+      moratoriumPeriod: bookLoanData?.facilityDetails?.moratoriumPeriod,
       moratoriumDuration: bookLoanData?.facilityDetails?.recognize_moratorium_period,
       isMoratoriumReq: bookLoanData?.facilityDetails?.isMoratoriumReq,
       isGraceReq: bookLoanData?.facilityDetails?.isGraceReq,
