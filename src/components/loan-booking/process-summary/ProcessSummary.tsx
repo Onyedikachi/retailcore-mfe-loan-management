@@ -16,6 +16,7 @@ import { IndividualLoanPath } from '@app/constants/routes';
 import { useBookLoanContext } from '@app/providers/book-loan';
 import { bookingInfo, customerInfo } from './summary-data';
 import { API_PATH } from '@app/constants/api-path';
+import { usePermission } from '@app/hooks/usePermission';
 
 export const ContainerWrapper = styled(Box)({
    height: 'calc(100% - 95px)',
@@ -28,6 +29,7 @@ export const ProcessSummary = () => {
    const [showCancelDialog, setShowCancelDialog] = useState(false);
    const [showResponseDialog, setShowResponseDialog] = useState(false);
    const { handleNavigation } = useStepperContext();
+   const { isSuperAdmin } = usePermission();
    const {
       bookLoanData,
       backendData,
@@ -39,16 +41,18 @@ export const ProcessSummary = () => {
    const navigate = useNavigate();
    const [searchParams] = useSearchParams();
    const id = searchParams.get('id');
-
    const [, submitForm] = useRequest({ onSuccess: () => setShowResponseDialog(true) });
    const handleSubmit = () => {
       if (id) {
          submitForm(`${API_PATH.IndividualLoan}`, {
-            body: { ...backendData, id: id, showSuccess: false },
+            body: { ...backendData, id: id, IsUserSuperAdmin: isSuperAdmin, showSuccess: false },
             method: 'PUT',
          });
       } else {
-         submitForm(API_PATH.IndividualLoan, { body: backendData, showSuccess: false });
+         submitForm(API_PATH.IndividualLoan, {
+            body: { ...backendData, IsUserSuperAdmin: isSuperAdmin },
+            showSuccess: false,
+         });
       }
    };
 
