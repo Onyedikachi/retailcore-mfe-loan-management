@@ -25,7 +25,6 @@ export const RepaymentSchedule = () => {
    const [searchParams] = useSearchParams();
    const id = searchParams.get('id');
    const [schedule, setSchedule] = useState<LoanPaymentSchedule[]>();
-
    const [, submitForm] = useRequest({
       onSuccess: (res) => {
          navigate(IndividualLoanPath);

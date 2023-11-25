@@ -11,7 +11,6 @@ export const mapBookLoanToSchema = (
 ) => {
    const { customerInformation, facilityDetails, transactionSettings } = bookLoanData;
    const profile = customers?.customer_profiles[0];
-
    const backendData = {
       productId: product?.id,
       customerName: `${profile?.firstName} ${profile?.otherNames ?? ''} ${profile?.surname}`,
@@ -51,7 +50,6 @@ export const mapBookLoanToSchema = (
    const filteredBackendData = Object.fromEntries(
       Object.entries(backendData).filter(([, value]) => value !== undefined && value !== '')
    ) as Partial<BackendData>;
-
    return filteredBackendData;
 };
 
@@ -98,14 +96,13 @@ export const mapSchemaToBookLoan = (loan: BookedLoanData): BookLoanData => {
 
 export const mapRepaymentScheduleToSchema = (bookLoanData: BookLoanData, product?: LoanProductData) => {
    const moratoriumVal = Number(bookLoanData?.facilityDetails?.moratoriumValue);
-
    const data = {
       productId: product?.id,
       principal: currencyToNumber(bookLoanData?.facilityDetails?.principal ?? ''),
       tenorPeriod: bookLoanData?.facilityDetails?.tenorPeriod,
       tenorValue: Number(bookLoanData?.facilityDetails?.tenorValue),
       moratoriumValue: moratoriumVal > 0 ? moratoriumVal : undefined,
-      moratoriumPeriod: bookLoanData?.facilityDetails?.moratoriumPeriod.replace('(s)', 's'),
+      moratoriumPeriod: bookLoanData?.facilityDetails?.moratoriumPeriod,
       moratoriumDuration: bookLoanData?.facilityDetails?.recognize_moratorium_period,
       isMoratoriumReq: bookLoanData?.facilityDetails?.isMoratoriumReq,
       isGraceReq: bookLoanData?.facilityDetails?.isGraceReq,
@@ -119,6 +116,5 @@ export const mapRepaymentScheduleToSchema = (bookLoanData: BookLoanData, product
    const filteredData = Object.fromEntries(
       Object.entries(data).filter(([, value]) => value !== undefined && value !== '')
    ) as Partial<Data>;
-
    return filteredData;
 };
