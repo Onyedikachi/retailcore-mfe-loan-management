@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { Chip } from '@app/components/atoms/Chip';
 import FilterMenu from '@app/components/atoms/FilterMenu';
 import styled from '@emotion/styled';
@@ -23,7 +24,8 @@ export const bodyData = (
    tab: string,
    permissions?: any
 ) => {
-   const getStatus = tab === 'records' ? '' : transformText(loan?.status!);
+   const getStatus = tab === 'records' ? transformText(loan?.status!) : transformText(loan?.requestStatus!);
+
    let status;
    if (getStatus === 'Pending') {
       status = 'Draft';
