@@ -23,23 +23,23 @@ export const bodyData = (
    tab: string,
    permissions?: any
 ) => {
-   const getStatus = transformText(loan?.status!);
+   const getStatus = tab === 'records' ? transformText(loan?.status!) : transformText(loan?.requestStatus!);
    let status;
-   if (tab === 'records') {
-      if (getStatus === 'Approved') {
-         status = 'Non-Performing';
-      } else {
-         status = getStatus;
-      }
+   // if (tab === 'records') {
+   // if (getStatus === 'Approved') {
+   //    status = 'Non-Performing';
+   // } else {
+   //    status = getStatus;
+   // }
+   // } else {
+   if (getStatus === 'Pending') {
+      status = 'Draft';
+   } else if (getStatus === 'Reject') {
+      status = 'In-Issue';
    } else {
-      if (getStatus === 'Pending') {
-         status = 'Draft';
-      } else if (getStatus === 'Reject') {
-         status = 'In-Issue';
-      } else {
-         status = getStatus;
-      }
+      status = getStatus;
    }
+   //}
    return {
       customerName: (
          <>
