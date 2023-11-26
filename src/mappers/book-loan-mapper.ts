@@ -2,8 +2,6 @@ import { BookLoanData } from '@app/@types/book-loan';
 import { CustomerData } from '@app/@types/customer';
 import { BookedLoanData, LoanProductData } from '@app/@types/loan-product';
 import { currencyInputFormatter, currencyToNumber } from '@app/helper/currency-helper';
-import { parseDateString } from '@app/helper/formater';
-import { format } from 'date-fns';
 
 export const mapBookLoanToSchema = (
    bookLoanData: BookLoanData,
@@ -13,8 +11,6 @@ export const mapBookLoanToSchema = (
 ) => {
    const { customerInformation, facilityDetails, transactionSettings } = bookLoanData;
    const profile = customers?.customer_profiles[0];
-   const disbursementDate = parseDateString(transactionSettings?.disburseDate ?? '');
-   const startDate = parseDateString(facilityDetails?.start_date ?? '');
    const backendData = {
       productId: product?.id,
       customerName: `${profile?.firstName} ${profile?.otherNames ?? ''} ${profile?.surname}`,
@@ -35,7 +31,7 @@ export const mapBookLoanToSchema = (
       gracePeriod: facilityDetails?.gracePeriod,
       disburseMethd: transactionSettings?.disburseMethd,
       disburseAcct: transactionSettings?.disburseAcct,
-      disburseDate: transactionSettings?.disburseDate && disbursementDate ? disbursementDate : undefined,
+      disburseDate: transactionSettings?.disburseDate,
       otherAcctNo: transactionSettings?.otherAcctNo,
       isDisburseNotReq: transactionSettings?.isDisburseNotReq,
       notificationChannel: transactionSettings?.notificationChannel.toString(),
@@ -44,7 +40,7 @@ export const mapBookLoanToSchema = (
       isDraft: isDraft ?? false,
       repaymentPattern: facilityDetails?.repayment_pattern,
       repaymentFrequency: facilityDetails?.repayment_frequency,
-      repaymentFrequencyStartDate: facilityDetails?.start_date && startDate ? startDate : undefined,
+      repaymentFrequencyStartDate: facilityDetails?.start_date,
       repaymentFrequencyValue: facilityDetails?.start_date_num,
       repaymentFrequencyPeriod: facilityDetails?.start_date_period,
       equityContribution: facilityDetails?.equity_contrib,
@@ -59,8 +55,6 @@ export const mapBookLoanToSchema = (
 
 export const mapSchemaToBookLoan = (loan: BookedLoanData): BookLoanData => {
    const { currency: formattedCurrency } = currencyInputFormatter(loan.principal.toString());
-   const repaymentDate = parseDateString(loan?.repaymentFrequencyStartDate);
-   const disbursedDate = parseDateString(loan?.disburseDate);
    return {
       customerInformation: { acctNo: loan.acctNo },
       facilityDetails: {
@@ -74,10 +68,7 @@ export const mapSchemaToBookLoan = (loan: BookedLoanData): BookLoanData => {
          tenorPeriod: loan?.tenorPeriod,
          repayment_pattern: loan?.repaymentPattern,
          repayment_frequency: loan?.repaymentFrequency,
-         start_date:
-            loan?.repaymentFrequencyStartDate && repaymentDate
-               ? format(new Date(repaymentDate), 'dd/MM/yyyy')
-               : '',
+         start_date: loan?.repaymentFrequencyStartDate,
          start_date_num: loan?.repaymentFrequencyValue,
          start_date_period: loan?.repaymentFrequencyPeriod,
          collaterals: [],
@@ -93,8 +84,7 @@ export const mapSchemaToBookLoan = (loan: BookedLoanData): BookLoanData => {
       transactionSettings: {
          disburseMethd: loan?.disburseMethd,
          disburseAcct: loan?.disburseAcct,
-         disburseDate:
-            loan?.disburseDate && disbursedDate ? format(new Date(disbursedDate), 'dd/MM/yyyy') : '',
+         disburseDate: loan?.disburseDate,
          otherAcctNo: loan?.otherAcctNo,
          isDisburseNotReq: loan?.isDisburseNotReq,
          notificationChannel: [loan?.notificationChannel],
@@ -106,8 +96,6 @@ export const mapSchemaToBookLoan = (loan: BookedLoanData): BookLoanData => {
 
 export const mapRepaymentScheduleToSchema = (bookLoanData: BookLoanData, product?: LoanProductData) => {
    const moratoriumVal = Number(bookLoanData?.facilityDetails?.moratoriumValue);
-   const graceValue = Number(bookLoanData?.facilityDetails?.graceValue);
-   const disbursementDate = parseDateString(bookLoanData?.transactionSettings?.disburseDate ?? '');
    const data = {
       productId: product?.id,
       principal: currencyToNumber(bookLoanData?.facilityDetails?.principal ?? ''),
@@ -119,9 +107,8 @@ export const mapRepaymentScheduleToSchema = (bookLoanData: BookLoanData, product
       isMoratoriumReq: bookLoanData?.facilityDetails?.isMoratoriumReq,
       isGraceReq: bookLoanData?.facilityDetails?.isGraceReq,
       interestRate: Number(bookLoanData?.facilityDetails?.interestRate),
-      disbursementDate:
-         bookLoanData?.transactionSettings?.disburseDate && disbursementDate ? disbursementDate : undefined,
-      gracePeriod: graceValue > 0 ? graceValue : undefined,
+      disbursementDate: bookLoanData?.transactionSettings?.disburseDate,
+      gracePeriod: Number(bookLoanData?.facilityDetails?.graceValue),
    };
    type Data = typeof data;
    const filteredData = Object.fromEntries(

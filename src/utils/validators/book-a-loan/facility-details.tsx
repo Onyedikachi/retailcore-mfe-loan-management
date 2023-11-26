@@ -230,11 +230,6 @@ const colateralAndEquityContrib = (selectedProduct?: LoanProductData) => {
          .test(InputFieldNames.EQUITY_CONTRIB, 'Field is required', function (value) {
             return eligibility?.requireEquityContrib ? !!Number(value) : true;
          })
-         .test(InputFieldNames.EQUITY_CONTRIB, 'Must be greater than 0', function (value) {
-            if (value) {
-               return Number(value) > 0;
-            }
-         })
          .test(
             InputFieldNames.EQUITY_CONTRIB,
             `Should be equal to ${eligibility?.contributionValueFrom}%, as configured for the selected product`,
