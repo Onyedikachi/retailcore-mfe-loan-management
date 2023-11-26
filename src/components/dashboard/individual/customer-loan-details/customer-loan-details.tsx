@@ -22,7 +22,7 @@ export const customerLoanInfo = (loan?: BookedLoanData) => [
       key: 'Date Disbursed',
       value: loan?.disburseDate ? format(new Date(loan?.disburseDate), 'MM/dd/yyyy') : '-',
    },
-   { key: 'Amount Disbursed', value: `-` },
+   { key: 'Amount Disbursed', value: '-' },
    { key: 'Interest(%)', value: loan?.interestRate },
    { key: 'Total Repayment', value: '-' },
    { key: 'Principal Balance', value: '-' },
@@ -35,7 +35,7 @@ export const customerLoanInfo = (loan?: BookedLoanData) => [
       value: (
          <Typography component="span">
             {`${loan?.moratoriumValue} ${loan?.moratoriumPeriod ?? ''}`}
-            <StyledChip sx={{ ...statusColors('Active') }} label={'Active'} />
+            {/* <StyledChip sx={{ ...statusColors('Active') }} label={'Active'} /> */}
          </Typography>
       ),
    },

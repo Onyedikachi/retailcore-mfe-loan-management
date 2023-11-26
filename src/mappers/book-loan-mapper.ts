@@ -107,9 +107,7 @@ export const mapRepaymentScheduleToSchema = (bookLoanData: BookLoanData, product
       isMoratoriumReq: bookLoanData?.facilityDetails?.isMoratoriumReq,
       isGraceReq: bookLoanData?.facilityDetails?.isGraceReq,
       interestRate: Number(bookLoanData?.facilityDetails?.interestRate),
-      disbursementDate: bookLoanData?.transactionSettings?.disburseDate
-         ? new Date(bookLoanData?.transactionSettings?.disburseDate)
-         : undefined,
+      disbursementDate: bookLoanData?.transactionSettings?.disburseDate,
       gracePeriod: Number(bookLoanData?.facilityDetails?.graceValue),
    };
    type Data = typeof data;
