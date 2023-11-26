@@ -1,19 +1,18 @@
-import { Box } from '@mui/material';
-import { useNavigate, useSearchParams } from 'react-router-dom';
-import { TableHeaderProps } from '@app/components/table/TableHeader';
 import { useEffect, useMemo, useState } from 'react';
-import { Table } from '@app/components/table';
-import { downloadAsCSVByID } from '@app/helper/csvDownloader';
+import { useNavigate, useSearchParams } from 'react-router-dom';
+import { Box } from '@mui/material';
+import { API_PATH } from '@app/constants';
+import { Table, TableHeaderProps } from '@app/components/table';
 import { TableHeading } from '@app/components/loan-management/TableHeading';
+import { LoanTableDialogs } from './LoanTableDialogs';
+import { useIndividualLoanDashboardContext } from '@app/providers/individual-loan-dashboard';
+import { usePermission } from '@app/hooks/usePermission';
+import { capitalizeString } from '@app/helper/string';
+import { downloadAsCSVByID } from '@app/helper/csvDownloader';
 import { bodyData } from './table-data/table-body-data';
 import { headerData } from './table-data/table-header-data';
-import { API_PATH } from '@app/constants';
-import { capitalizeString } from '@app/helper/string';
-import { useIndividualLoanDashboardContext } from '@app/providers/individual-loan-dashboard';
+import { handleActions, handleDateQuery, tableQuery } from './table-data/table-actions';
 import { useRequest } from 'react-http-query';
-import { LoanTableDialogs } from './LoanTableDialogs';
-import { tableQuery, handleActions, handleDateQuery } from './table-data/table-actions';
-import { usePermission } from '@app/hooks/usePermission';
 
 export const MakerLoanTable = () => {
    const [searchParams] = useSearchParams();
@@ -37,7 +36,7 @@ export const MakerLoanTable = () => {
             (loanProduct) => setQueryByProductName(loanProduct),
             (loanStatus) => setQueryByStatus(loanStatus),
             (startDate, endDate) => handleDateQuery(startDate, endDate, setQueryByDate),
-            tab!!
+            tab!
          ),
       [tab, loanProducts]
    );
@@ -51,7 +50,7 @@ export const MakerLoanTable = () => {
                setAction(selectedAction);
                handleActions(selectedAction, navigate, item, setOpenLoanAction, setOpenDeleteAction);
             },
-            tab!!,
+            tab!,
             permission
          );
       });
@@ -74,7 +73,7 @@ export const MakerLoanTable = () => {
             handleSearch={setSearchText}
             handleRefresh={() => getLoans(`${API_PATH.IndividualLoan}?All=${true}`, { showSuccess: false })}
             handleDownload={() =>
-               downloadAsCSVByID(`maker-loan-table`, `Individual Loan ${capitalizeString(tab!)}`)
+               downloadAsCSVByID('maker-loan-table', `Individual Loan ${capitalizeString(tab!)}`)
             }
             searchPlaceholder="Search by product name/code"
          />
