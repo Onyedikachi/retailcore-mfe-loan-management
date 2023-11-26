@@ -33,7 +33,7 @@ export const LoanReviewDialogs: React.FC<DialogStates> = ({
 
    const handleCancelConfirm = () => {
       setShowCancelDialog(false);
-      navigate(IndividualLoanPath);
+      navigate(`${IndividualLoanPath}?tab=requests`);
    };
 
    const [, submitForm] = useRequest({ onSuccess: (response) => setShowResponseDialog(true) });
@@ -44,7 +44,7 @@ export const LoanReviewDialogs: React.FC<DialogStates> = ({
 
    const handleResponseNext = () => {
       setShowResponseDialog(false);
-      navigate(IndividualLoanPath);
+      navigate(`${IndividualLoanPath}?tab=requests`);
    };
 
    return (
@@ -65,7 +65,7 @@ export const LoanReviewDialogs: React.FC<DialogStates> = ({
             open={showResponseDialog}
             handleClose={() => setShowResponseDialog(false)}
             handleNext={handleResponseNext}
-            handlePrevious={() => navigate(IndividualLoanPath)}
+            handlePrevious={() => navigate(`${IndividualLoanPath}?tab=requests`)}
             title="Loan Disbursement Request Submitted for Approval"
             status="success"
             nextText="Book another loan"

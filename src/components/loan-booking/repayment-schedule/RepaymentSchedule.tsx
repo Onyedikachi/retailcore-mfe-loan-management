@@ -27,7 +27,7 @@ export const RepaymentSchedule = () => {
    const [schedule, setSchedule] = useState<LoanPaymentSchedule[]>();
    const [, submitForm] = useRequest({
       onSuccess: (res) => {
-         navigate(IndividualLoanPath);
+         navigate(`${IndividualLoanPath}?tab=requests`);
          resetBookLoanData();
       },
    });
@@ -70,7 +70,7 @@ export const RepaymentSchedule = () => {
          date: formattedDate(item?.disbursementDate ?? ''),
          principal: `${currency} ${formatCurrency(item?.principalPayment)}`,
          interest: `${currency} ${formatCurrency(item?.monthlyInterest)}`,
-         amountPayable: `${currency}${formatCurrency(item?.repaymentAmount)}`,
+         amountPayable: `${currency} ${formatCurrency(item?.repaymentAmount)}`,
          outstandingBal: `${currency} ${formatCurrency(item?.outstandingBalance)}`,
          gracePeriod: item?.gracePeriod ? formattedDate(item?.gracePeriod) : '-',
       }));

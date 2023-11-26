@@ -1,3 +1,5 @@
+import { isValid, parseISO, parse } from 'date-fns';
+
 export const formattedDate = (datetime: string | Date, withoutDay?: boolean) => {
    const date = new Date(datetime);
    const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
@@ -48,4 +50,19 @@ export const bigValueFormatter = (value: string | number, suffixType: 'long' | '
       }
    }
    return `${value}`;
+};
+
+export const parseDateString = (dateString: string) => {
+   const parsedISODate = parseISO(dateString);
+   const isValidISODate = isValid(parsedISODate);
+
+   if (isValidISODate) {
+      return parsedISODate.toISOString();
+   }
+   const customFormatDate = parse(dateString, 'dd/MM/yyyy', new Date());
+   const isValidCustomFormatDate = isValid(customFormatDate);
+   if (isValidCustomFormatDate) {
+      return customFormatDate.toISOString();
+   }
+   return undefined;
 };

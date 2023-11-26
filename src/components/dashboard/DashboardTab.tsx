@@ -8,6 +8,7 @@ import { StatusCard } from './DashboardStatusCard';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { StatusCardProps } from '@app/@types/dashboard';
 import { UncontrolledSelect } from '../atoms/select';
+import { usePermission } from '@app/hooks/usePermission';
 
 const FilterWrapper = styled(Stack)(() => ({
    backgroundColor: 'white',
@@ -61,8 +62,10 @@ export const Filters = (props: FiltersProps) => {
    const [searchParams] = useSearchParams();
    const [defaultInitiator, setDefaultInitiator] = useState<string>();
    const navigate = useNavigate();
+   const { accessAllRecords, checkPermission } = usePermission();
+   const defaultKey = accessAllRecords ? props.tabOptions[0]?.key : props.tabOptions[1]?.key;
 
-   const defaultActiveTab = searchParams.get('tab') ?? props.defaultTabKey ?? props.tabOptions[0]?.key;
+   const defaultActiveTab = searchParams.get('tab') ?? props.defaultTabKey ?? defaultKey;
 
    const [activeTab, setActiveTab] = useState(defaultActiveTab);
 
@@ -93,7 +96,6 @@ export const Filters = (props: FiltersProps) => {
             >
                {props.tabOptions.map((tab) => {
                   const isActive = tab.key === activeTab;
-
                   return (
                      <StyledTab
                         onClick={() => props.onTabClick(tab.key)}
@@ -103,6 +105,7 @@ export const Filters = (props: FiltersProps) => {
                         key={tab.key}
                         label={tab.label}
                         data-testid="tab-card"
+                        disabled={!checkPermission(tab?.permissions ?? [])}
                         sx={{
                            fontSize: isActive ? '20px' : '18px',
                            fontWeight: isActive ? 600 : 400,

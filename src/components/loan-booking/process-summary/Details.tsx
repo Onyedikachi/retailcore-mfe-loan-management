@@ -47,7 +47,7 @@ export const Details: React.FC<DetailsProps> = ({ title, details, customerId }) 
                            </Grid>
                            <Grid item xs={8} mb={2}>
                               <Typography variant="body2">
-                                 {value}
+                                 {value || '-'}
                                  {view && (
                                     <ViewChip variant="body2" onClick={() => setOpenDetailsModal(true)}>
                                        View

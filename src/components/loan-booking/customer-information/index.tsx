@@ -44,7 +44,7 @@ export const CustomerInformation: React.FC = () => {
       }
    };
 
-   const [, submitForm] = useRequest({ onSuccess: (res) => navigate(IndividualLoanPath) });
+   const [, submitForm] = useRequest({ onSuccess: (res) => navigate(`${IndividualLoanPath}?tab=requests`) });
    const handleSubmit = () => {
       setShowAlertDialog(false);
       if (id) {
@@ -57,9 +57,10 @@ export const CustomerInformation: React.FC = () => {
    useRequest(
       {
          onMount: (makeRequest) => {
-            makeRequest(`${GET_INDIVIDUAL_CUSTOMERS}?search=${searchInput}`, {
+            makeRequest(GET_INDIVIDUAL_CUSTOMERS, {
                showSuccess: false,
                showLoader: !accountNumbers,
+               query: { size: 20, search: searchInput },
             });
          },
          onSuccess: (response) => getCustomersData(response.data.data.customer),

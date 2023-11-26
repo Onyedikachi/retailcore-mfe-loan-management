@@ -19,7 +19,9 @@ export const LoanRejection: React.FC<{ handleSubmit?: () => void }> = ({ handleS
    const isAvailable = false;
    const navigate = useNavigate();
 
-   const [, submitForm] = useRequest({ onSuccess: () => navigate(IndividualLoanPath) });
+   const [, submitForm] = useRequest({
+      onSuccess: () => navigate(`${IndividualLoanPath}?tab=requests`),
+   });
    const onSubmit = (values: FormMeta.FormValues) => {
       submitForm(`${API_PATH.IndividualLoan}/${loanProduct?.id}/action`, {
          body: { action: 'REJECT', comment: values.reason, ...values },

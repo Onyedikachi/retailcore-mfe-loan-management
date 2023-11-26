@@ -109,7 +109,11 @@ export const RoutePaths = {
       absolute: RouteMaps.dashboardIndividual.path,
       relative: '/individual',
       name: 'Individual',
-      permissions: [Permissions.BOOK_LOAN],
+      permissions: [
+         Permissions.BOOK_LOAN,
+         Permissions.VIEW_ALL_LOAN_RECORDS,
+         Permissions.VIEW_ALL_LOAN_REQUESTS,
+      ],
    },
    LoanPerformance: {
       absolute: RouteMaps.loanPerformance.path,

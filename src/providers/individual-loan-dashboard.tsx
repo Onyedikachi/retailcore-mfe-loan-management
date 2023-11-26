@@ -33,6 +33,7 @@ export const IndividualLoanDashboardProvider = ({ children }: IndividualLoanDash
    const getLoanProducts = (loanProducts: BookedLoanData[], stats: StatusCounts, tab?: string) => {
       setLoanProducts(loanProducts);
       const rejected = loanProducts?.filter((product) => product.status === 'REJECT').length;
+      const closed = loanProducts?.filter((product) => product.status === 'CLOSED').length;
       const count = {
          all: loanProducts.length,
          approved: stats?.approved,
@@ -42,7 +43,7 @@ export const IndividualLoanDashboardProvider = ({ children }: IndividualLoanDash
          draft: (stats?.draft ?? 0) + (stats?.pending ?? 0),
          performing: stats?.performing,
          nonPerforming: stats?.nonPerforming,
-         closed: stats?.closed,
+         closed: stats?.closed ?? closed,
          rejected: stats?.rejected ?? rejected,
       };
       setDataCount(count);

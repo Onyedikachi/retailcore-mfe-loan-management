@@ -79,8 +79,8 @@ export const DateRange: React.FC<DateRangeProps> = ({
                         : onDateRangeChange?.(item.selection.startDate, item.selection.endDate);
                   }}
                   months={1}
-                  minDate={startOfYear(new Date(1990, 0, 1))}
-                  maxDate={endOfDay(addYears(new Date(), 10))}
+                  minDate={prop.minDate ?? startOfYear(new Date(1990, 0, 1))}
+                  maxDate={prop.maxDate ?? endOfDay(addYears(new Date(), 10))}
                   direction="vertical"
                   scroll={{ enabled: false }}
                   ranges={[state.selection]}

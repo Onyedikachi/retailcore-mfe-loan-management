@@ -8,14 +8,14 @@ import { TableHeading } from '@app/components/loan-management/TableHeading';
 import { bodyData } from './table-data/table-body-data';
 import { headerData } from './table-data/table-header-data';
 import { API_PATH } from '@app/constants';
-import { capitalizeString, transformText } from '@app/helper/string';
+import { capitalizeString } from '@app/helper/string';
 import { useIndividualLoanDashboardContext } from '@app/providers/individual-loan-dashboard';
 import { useRequest } from 'react-http-query';
 import { LoanTableDialogs } from './LoanTableDialogs';
 import { tableQuery, handleActions, handleDateQuery } from './table-data/table-actions';
 import { usePermission } from '@app/hooks/usePermission';
 
-export const LoanTable = () => {
+export const MakerLoanTable = () => {
    const [searchParams] = useSearchParams();
    const tab = searchParams.get('tab');
    const [action, setAction] = useState('');
@@ -43,11 +43,7 @@ export const LoanTable = () => {
    );
 
    const loanTableBody = useMemo(() => {
-      return (
-         loanProducts?.filter(
-            (item) => transformText(item.status) === 'Approved' || transformText(item.status) === 'Closed'
-         ) ?? []
-      )?.map((item) => {
+      return (loanProducts ?? [])?.map((item) => {
          return bodyData(
             item,
             (selectedAction) => {
@@ -78,14 +74,14 @@ export const LoanTable = () => {
             handleSearch={setSearchText}
             handleRefresh={() => getLoans(`${API_PATH.IndividualLoan}?All=${true}`, { showSuccess: false })}
             handleDownload={() =>
-               downloadAsCSVByID(`loan-table`, `Individual Loan ${capitalizeString(tab!)}`)
+               downloadAsCSVByID(`maker-loan-table`, `Individual Loan ${capitalizeString(tab!)}`)
             }
             searchPlaceholder="Search by product name/code"
          />
          <Box pt={2} pb={3}>
             <Table
                sx={{ '& .MuiTableCell-root': { p: 0.8 } }}
-               id="loan-table"
+               id="maker-loan-table"
                headerProps={loanTableHeader}
                bodyProps={{ rows: loanTableBody }}
             />
