@@ -24,7 +24,7 @@ export const bodyData = (
    tab: string,
    permissions?: any
 ) => {
-   const getStatus = tab === 'records' ? transformText(loan?.status) : transformText(loan?.requestStatus);
+   const getStatus = tab === 'records' ? transformText(loan?.status!) : transformText(loan?.requestStatus!);
 
    let status;
    if (getStatus === 'Pending') {
