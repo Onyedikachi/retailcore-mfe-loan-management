@@ -33,7 +33,7 @@ export type FormControlBaseProp<Control extends ControlType = ControlType> = (Co
 export const FormControlBase: React.FC<FormControlBaseProp> = ({ control, children, ...props }) => {
    switch (control) {
       case 'select':
-         return <SelectInput children={children} {...(props as SelectProps)} />;
+         return <SelectInput {...(props as SelectProps)}>{children}</SelectInput>;
       case 'switch':
          return <Switch {...(props as SwitchProps)} />;
       case 'radio':
