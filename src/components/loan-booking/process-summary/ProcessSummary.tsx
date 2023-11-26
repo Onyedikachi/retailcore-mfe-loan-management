@@ -112,7 +112,7 @@ export const ProcessSummary = () => {
             open={showResponseDialog}
             handleClose={() => setShowResponseDialog(false)}
             handleNext={() => handleCompletedOrClosed()}
-            handlePrevious={() => handleCompletedOrClosed(IndividualLoanPath)}
+            handlePrevious={() => handleCompletedOrClosed(`${IndividualLoanPath}?tab=requests`)}
             title="Loan Disbursement Request Submitted for Approval"
             status="success"
             nextText="Book another loan"

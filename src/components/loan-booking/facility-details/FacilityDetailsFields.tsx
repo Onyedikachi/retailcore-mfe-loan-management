@@ -24,7 +24,7 @@ export const FacilityDetailsFields: React.FC<{ getSearchInput?: (input: string) 
    const [, getProductDetail] = useRequest({ onSuccess: (res) => getSelectedProduct(res.data.data) });
    useEffect(() => {
       loanProductId &&
-         getProductDetail(`${API_PATH.GetAllLoanProduct}/${loanProductId}`, { showSuccess: false });
+         getProductDetail(`${API_PATH.GetAllLoanProduct}/${loanProductId ?? ''}`, { showSuccess: false });
    }, [loanProductId]);
 
    return (

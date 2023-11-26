@@ -45,7 +45,7 @@ export const DateControl: React.FC<DateControlProps> = ({
 
    useEffect(() => {
       if (date) {
-         setFieldValue(name, format(date, 'yyyy/MM/dd'));
+         setFieldValue(name, format(date, 'dd/MM/yyyy'));
       }
    }, [date]);
 
@@ -54,7 +54,7 @@ export const DateControl: React.FC<DateControlProps> = ({
    if (props.minDate) {
       minDate = props.maxDate;
    } else if (minDateString) {
-      minDate = parse(minDateString, 'yyyy/MM/dd', new Date());
+      minDate = parse(minDateString, 'dd/MM/yyyy', new Date());
    } else {
       minDate = undefined;
    }

@@ -6,9 +6,10 @@ import { LoanTable } from './LoanTable';
 import { useRequest } from 'react-http-query';
 import { API_PATH } from '@app/constants/api-path';
 import { useIndividualLoanDashboardContext } from '@app/providers/individual-loan-dashboard';
-import { useSearchParams } from 'react-router-dom';
+import { useLocation, useSearchParams } from 'react-router-dom';
 import { CheckerLoanTable } from './CheckerLoanTable';
 import { usePermission } from '@app/hooks/usePermission';
+import { MakerLoanTable } from './MakerLoanTable';
 
 const StyledContentWrapper = styled(Stack)({
    gap: '27px',
@@ -68,7 +69,13 @@ export const IndividualLoan = () => {
                accessAllRequests
             )}
          />
-         {checkerOption && tab === 'requests' ? <CheckerLoanTable /> : <LoanTable />}
+         {tab === 'records' ? (
+            <LoanTable />
+         ) : checkerOption && tab === 'requests' ? (
+            <CheckerLoanTable />
+         ) : (
+            <MakerLoanTable />
+         )}
       </StyledContentWrapper>
    );
 };

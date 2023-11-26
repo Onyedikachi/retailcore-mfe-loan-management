@@ -230,6 +230,11 @@ const colateralAndEquityContrib = (selectedProduct?: LoanProductData) => {
          .test(InputFieldNames.EQUITY_CONTRIB, 'Field is required', function (value) {
             return eligibility?.requireEquityContrib ? !!Number(value) : true;
          })
+         .test(InputFieldNames.EQUITY_CONTRIB, 'Must be greater than 0', function (value) {
+            if (value) {
+               return Number(value) > 0;
+            }
+         })
          .test(
             InputFieldNames.EQUITY_CONTRIB,
             `Should be equal to ${eligibility?.contributionValueFrom}%, as configured for the selected product`,
@@ -277,16 +282,17 @@ export const loanManagementSettings = (selectedProduct?: LoanProductData) => {
                     .required('Field is required')
                     .test(
                        InputFieldNames.MORATORIUM_PERIOD,
-                       'Must not be greater than the max. loan tenor of the selected product',
+                       'Must not be greater than the loan tenor entered above',
                        function (value) {
                           if (value && selectedProduct) {
                              const max =
-                                selectedProduct?.maxLoanTenure *
-                                TenureMapping[selectedProduct?.maxLoanTenurePeriod as TenureMappingKey];
+                                this.parent?.[InputFieldNames.LOAN_TENURE_NUM] *
+                                TenureMapping[
+                                   this.parent?.[InputFieldNames.LOAN_TENURE_PERIOD] as TenureMappingKey
+                                ];
                              const moratorium =
-                                Number(this.parent?.[InputFieldNames.LOAN_TENURE_NUM]) *
+                                Number(this.parent?.[InputFieldNames.MORATORIUM_PERIOD_VALUE]) *
                                 TenureMapping[value as TenureMappingKey];
-
                              return moratorium <= max;
                           }
                        }

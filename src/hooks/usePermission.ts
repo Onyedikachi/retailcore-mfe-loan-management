@@ -52,13 +52,12 @@ export const usePermission = (): PermissionHelperProps => {
    const liquidate = [Permissions.LIQUIDATE_LOAN];
    const writeOff = [Permissions['WRITE-OFF_LOAN']];
 
-   const isUserAChecker = isSuperAdmin ?? checker?.some((element) => userPermissions?.includes(element));
-   const accessAllRecords = isSuperAdmin ?? allRecords?.some((element) => userPermissions?.includes(element));
+   const isUserAChecker = isSuperAdmin || checker?.some((element) => userPermissions?.includes(element));
+   const accessAllRecords = isSuperAdmin || allRecords?.some((element) => userPermissions?.includes(element));
    const accessAllRequests =
-      isSuperAdmin ?? allRequest?.some((element) => userPermissions?.includes(element));
-   const canLiquidate = isUserAChecker ?? liquidate?.some((element) => userPermissions?.includes(element));
-   const canWriteOff = isUserAChecker ?? writeOff?.some((element) => userPermissions?.includes(element));
-
+      isSuperAdmin || allRequest?.some((element) => userPermissions?.includes(element));
+   const canLiquidate = isUserAChecker || liquidate?.some((element) => userPermissions?.includes(element));
+   const canWriteOff = isUserAChecker || writeOff?.some((element) => userPermissions?.includes(element));
    return {
       ...authPayload,
       checkPermission,

@@ -4,6 +4,14 @@ export const findInterestRates = (
    selectedProduct?: LoanProductData,
    principal?: number
 ): { minInterestRate: number; maxInterestRate: number } => {
+   if (selectedProduct?.minInterestRate && selectedProduct?.maxInterestRate) {
+      if ((selectedProduct?.minInterestRate ?? 0) > 0 && (selectedProduct?.maxInterestRate ?? 0) > 0) {
+         return {
+            minInterestRate: selectedProduct?.minInterestRate,
+            maxInterestRate: selectedProduct?.maxInterestRate,
+         };
+      }
+   }
    const pricingConfig = Array.isArray(selectedProduct?.pricingConfiguration)
       ? selectedProduct?.pricingConfiguration[0]
       : selectedProduct?.pricingConfiguration;
@@ -13,8 +21,8 @@ export const findInterestRates = (
 
    if (intRateConfigBand?.length === 1 || !principal) {
       return {
-         minInterestRate: intRateConfigBand[0]?.MinInterestRate,
-         maxInterestRate: intRateConfigBand[0]?.MaxInterestRate,
+         minInterestRate: intRateConfigBand[0]?.MinInterestRate ?? 0,
+         maxInterestRate: intRateConfigBand[0]?.MaxInterestRate ?? 0,
       };
    } else {
       const matchingItems = intRateConfigBand.filter((item) => {
@@ -24,13 +32,13 @@ export const findInterestRates = (
       });
       if (matchingItems.length > 0) {
          return {
-            minInterestRate: matchingItems[0]?.MinInterestRate,
-            maxInterestRate: matchingItems[0]?.MaxInterestRate,
+            minInterestRate: matchingItems[0]?.MinInterestRate ?? 0,
+            maxInterestRate: matchingItems[0]?.MaxInterestRate ?? 0,
          };
       } else {
          return {
-            minInterestRate: intRateConfigBand[0]?.MinInterestRate,
-            maxInterestRate: intRateConfigBand[0]?.MaxInterestRate,
+            minInterestRate: intRateConfigBand[0]?.MinInterestRate ?? 0,
+            maxInterestRate: intRateConfigBand[0]?.MaxInterestRate ?? 0,
          };
       }
    }

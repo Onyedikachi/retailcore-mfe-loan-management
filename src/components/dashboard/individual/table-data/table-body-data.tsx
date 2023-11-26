@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import { Chip } from '@app/components/atoms/Chip';
 import FilterMenu from '@app/components/atoms/FilterMenu';
 import styled from '@emotion/styled';
@@ -24,15 +23,22 @@ export const bodyData = (
    tab: string,
    permissions?: any
 ) => {
-   const getStatus = tab === 'records' ? transformText(loan?.status!) : transformText(loan?.requestStatus!);
-
+   const getStatus = transformText(loan?.status!);
    let status;
-   if (getStatus === 'Pending') {
-      status = 'Draft';
-   } else if (getStatus === 'Reject') {
-      status = 'In-Issue';
+   if (tab === 'records') {
+      if (getStatus === 'Approved') {
+         status = 'Non-Performing';
+      } else {
+         status = getStatus;
+      }
    } else {
-      status = getStatus;
+      if (getStatus === 'Pending') {
+         status = 'Draft';
+      } else if (getStatus === 'Reject') {
+         status = 'In-Issue';
+      } else {
+         status = getStatus;
+      }
    }
    return {
       customerName: (
