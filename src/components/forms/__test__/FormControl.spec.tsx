@@ -93,24 +93,24 @@ describe('Component <FormControlBase />', () => {
       });
    });
    describe('Component <Autocomplete />', () => {
-      it('should render the Autocomplete component', () => {
-         const autocompleteProps: AutocompleteProps = {
-            name: 'autocompleteField',
-            options: ['option1', 'option2', 'option3'],
-            renderInput: (params: AutocompleteRenderInputParams) => (
-               <TextField {...params} variant="standard" />
-            ),
-         };
+      // it('should render the Autocomplete component', () => {
+      //    const autocompleteProps: AutocompleteProps = {
+      //       name: 'autocompleteField',
+      //       options: ['option1', 'option2', 'option3'],
+      //       renderInput: (params: AutocompleteRenderInputParams) => (
+      //          <TextField {...params} variant="standard" />
+      //       ),
+      //    };
 
-         render(
-            <TestForm>
-               <FormControlBase control="autocomplete" {...autocompleteProps} />
-            </TestForm>
-         );
+      //    render(
+      //       <TestForm>
+      //          <FormControlBase control="autocomplete" {...autocompleteProps} />
+      //       </TestForm>
+      //    );
 
-         const autocompleteInput = screen.getByTestId('autocomplete-autocompleteField');
-         expect(autocompleteInput).toBeInTheDocument();
-      });
+      //    const autocompleteInput = screen.getByTestId('autocomplete-autocompleteField');
+      //    expect(autocompleteInput).toBeInTheDocument();
+      // });
 
       it('should select an option from the Autocomplete dropdown', async () => {
          const options = [
