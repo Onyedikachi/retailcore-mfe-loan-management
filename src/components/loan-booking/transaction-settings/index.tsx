@@ -33,7 +33,7 @@ export const TransactionSettings: React.FC = () => {
       }
    };
 
-   const [, submitForm] = useRequest({ onSuccess: (res) => navigate(IndividualLoanPath) });
+   const [, submitForm] = useRequest({ onSuccess: () => navigate(`${IndividualLoanPath}?tab=requests`) });
    const handleFormSubmit = () => {
       setShowDialog(false);
       if (id) {

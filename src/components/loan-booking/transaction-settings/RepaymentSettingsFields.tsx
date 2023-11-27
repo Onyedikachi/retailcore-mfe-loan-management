@@ -8,7 +8,6 @@ import { useFormikHelper } from '@app/hooks/useFormikHelper';
 export const RepaymentSettingsFields = () => {
    const { InputFieldNames, TooltipText, repaymentAccount, repaymentChannels } = FormMeta;
    const { getFieldProps } = useFormikContext();
-   const { resetFieldState } = useFormikHelper();
    return (
       <Box width="90%" py={2}>
          <FormControlWrapper
@@ -22,7 +21,6 @@ export const RepaymentSettingsFields = () => {
                control="select"
                name={InputFieldNames.REPAYMENT_CHANNEL}
                placeholder="Select"
-               onChange={() => resetFieldState(InputFieldNames.DISBURSEMENT_DATE)}
                options={repaymentChannels}
             />
          </FormControlWrapper>

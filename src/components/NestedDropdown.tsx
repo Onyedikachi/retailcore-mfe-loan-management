@@ -31,15 +31,17 @@ export const NestedDropdown: React.FC = () => {
    return (
       <Box alignItems="center" gap={5} display="flex">
          <Typography variant="h2">Loan Management</Typography>
-         <Button
-            sx={{ paddingY: 0.7 }}
-            variant="contained"
-            startIcon={<AddIcon />}
-            disabled={!checkPermission([Permissions.BOOK_LOAN])}
-            onClick={(event) => handleMenuItemClick(1)(event as any, { label: '' })}
-         >
-            Book Loan
-         </Button>
+         {checkPermission([Permissions.BOOK_LOAN]) && (
+            <Button
+               sx={{ paddingY: 0.7 }}
+               variant="contained"
+               startIcon={<AddIcon />}
+               onClick={(event) => handleMenuItemClick(1)(event as any, { label: '' })}
+            >
+               Book Loan
+            </Button>
+         )}
+
          <Menu
             open={!!anchorEl}
             anchorEl={anchorEl}

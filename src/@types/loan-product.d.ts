@@ -126,6 +126,11 @@ export interface BookedLoanData {
    moratoriumDuration: string | null;
    isGraceReq: boolean;
    graceValue: number;
+   totalRepayment: string | number;
+   principalBalance: string | number;
+   interestBalance: string | number;
+   arrears: string | number;
+   penaltyDue: string | number;
    gracePeriod: string;
    disburseMethd: string;
    disburseAcct: string;

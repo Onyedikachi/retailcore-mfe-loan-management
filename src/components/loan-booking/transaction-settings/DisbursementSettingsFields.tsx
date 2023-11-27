@@ -4,11 +4,32 @@ import { Box } from '@mui/material';
 import { FormControlBase } from '@app/components/forms/FormControl';
 import { useFormikContext } from 'formik';
 import { useFormikHelper } from '@app/hooks/useFormikHelper';
+import { useBookLoanContext } from '@app/providers/book-loan';
+import { useRequest } from 'react-http-query';
+import { useEffect, useState } from 'react';
+import { CUSTOMER_MANAGEMENT_PATH } from '@app/constants';
+import { AutocompleteOptions } from '@app/components/atoms';
 
 export const DisbursementSettingsFields = () => {
    const { InputFieldNames, TooltipText, disbursementMethods, disbursementAccounts } = FormMeta;
    const { getFieldProps } = useFormikContext<FormMeta.TransactionSettingsFormValues>();
+   const { GET_INDIVIDUAL_CUSTOMERS } = CUSTOMER_MANAGEMENT_PATH;
+   const { accountNumbers, getCustomersData } = useBookLoanContext();
+   const [searchInput, setSearchInput] = useState('');
    const { resetFieldState } = useFormikHelper();
+
+   const [, fetchCustomers] = useRequest({
+      onSuccess: (response) => getCustomersData(response.data.data.customer),
+   });
+   useEffect(() => {
+      if (!accountNumbers || searchInput) {
+         fetchCustomers(GET_INDIVIDUAL_CUSTOMERS, {
+            showSuccess: false,
+            showLoader: !accountNumbers,
+            query: { size: 20, search: searchInput },
+         });
+      }
+   }, [accountNumbers, searchInput]);
 
    return (
       <Box width="90%" py={2}>
@@ -38,6 +59,7 @@ export const DisbursementSettingsFields = () => {
                <FormControlBase
                   control="date"
                   placeholder="Select date"
+                  minDate={new Date()}
                   name={InputFieldNames.DISBURSEMENT_DATE}
                />
             </FormControlWrapper>
@@ -69,7 +91,11 @@ export const DisbursementSettingsFields = () => {
                   placeholder="Type to search"
                   name={InputFieldNames.OTHER_ACCOUNT_NO}
                   noOptionsText="No match"
-                  options={accountNumbers}
+                  options={accountNumbers ?? []}
+                  filterOptions={(option, { inputValue }) => {
+                     setSearchInput(inputValue?.toLowerCase());
+                     return (accountNumbers as AutocompleteOptions[]) ?? [];
+                  }}
                   search
                />
             </FormControlWrapper>
@@ -104,14 +130,3 @@ export const DisbursementSettingsFields = () => {
       </Box>
    );
 };
-
-export const accountNumbers = [
-   { label: '014986724', subtitle: 'Lola' },
-   { label: '014986824', subtitle: 'Tobi' },
-   { label: '014907924', subtitle: 'Timothy' },
-   { label: '010987924', subtitle: 'Oluwaseun' },
-   { label: '016787924', subtitle: 'Lola' },
-   { label: '014987924', subtitle: 'Tobi' },
-   { label: '074987924', subtitle: 'Timothy' },
-   { label: '064987924', subtitle: 'Oluwaseun' },
-];
