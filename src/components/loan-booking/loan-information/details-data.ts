@@ -12,7 +12,6 @@ export const details = (
       currencyToNumber(inputtedPrincipal ?? '')
    );
    const eligibility = eligibilityCriteria(selectedProduct);
-
    return {
       facilityDetails: [
          { key: 'Currency', value: selectedProduct?.currency },
