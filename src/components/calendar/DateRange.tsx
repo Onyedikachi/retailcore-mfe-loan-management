@@ -27,32 +27,32 @@ export const DateRange: React.FC<DateRangeProps> = ({
    const [state, setState] = useState({ selection: defaultDate });
    const [staticRangeLabel, setStaticRangeLabel] = useState<string>('');
    const [customSelected, setCustomSelected] = useState<boolean>(false);
-   const [buttonWrapperNode, setButtonWrapperNode] = useState<HTMLDivElement>();
+   const [buttonContainerNode, setButtonContainerNode] = useState<HTMLDivElement>();
 
    useEffect(() => {
-      const weekDays = document.querySelectorAll('.rdrWeekDay');
-      weekDays.forEach((day) => {
-         day.textContent = day.textContent?.charAt(0) ?? '';
+      const daysOfWeek = document.querySelectorAll('.rdrWeekDay');
+      daysOfWeek.forEach((weekDay) => {
+         weekDay.textContent = weekDay.textContent?.charAt(0) ?? '';
       });
 
-      const prevButton = document.querySelector('.rdrPprevButton');
-      const nextButton = document.querySelector('.rdrNextButton');
-      if (prevButton) {
-         prevButton.innerHTML = '&#8592;';
+      const previousButton = document.querySelector('.rdrPprevButton');
+      const forwardButton = document.querySelector('.rdrNextButton');
+      if (previousButton) {
+         previousButton.innerHTML = '&#8592;';
       }
-      if (nextButton) {
-         nextButton.innerHTML = '&#8594;';
+      if (forwardButton) {
+         forwardButton.innerHTML = '&#8594;';
       }
    }, []);
 
    useEffect(() => {
-      const parentElement = document.querySelector('.rdrCalendarWrapper');
-      const divElement = document.createElement('div');
+      const parentContainerElement = document.querySelector('.rdrCalendarWrapper');
+      const otherDivElement = document.createElement('div');
 
-      if (parentElement) {
-         parentElement.appendChild(divElement);
+      if (parentContainerElement) {
+         parentContainerElement.appendChild(otherDivElement);
       }
-      setButtonWrapperNode(divElement);
+      setButtonContainerNode(otherDivElement);
    }, [customSelected]);
 
    const handleStaticDateRange = (label: string, date: { startDate: Date; endDate: Date }) => {
@@ -79,15 +79,15 @@ export const DateRange: React.FC<DateRangeProps> = ({
                         : onDateRangeChange?.(item.selection.startDate, item.selection.endDate);
                   }}
                   months={1}
-                  minDate={startOfYear(new Date(1990, 0, 1))}
-                  maxDate={endOfDay(addYears(new Date(), 10))}
+                  minDate={prop.minDate ?? startOfYear(new Date(1990, 0, 1))}
+                  maxDate={prop.maxDate ?? endOfDay(addYears(new Date(), 10))}
                   direction="vertical"
                   scroll={{ enabled: false }}
                   ranges={[state.selection]}
                   staticRanges={customStaticRanges(handleStaticDateRange)}
                   {...prop}
                />
-               {buttonWrapperNode &&
+               {buttonContainerNode &&
                   createPortal(
                      <Box textAlign="end" p={2} pt={0}>
                         <Button
@@ -100,7 +100,7 @@ export const DateRange: React.FC<DateRangeProps> = ({
                            Reset
                         </Button>
                      </Box>,
-                     buttonWrapperNode
+                     buttonContainerNode
                   )}
             </>
          ) : (

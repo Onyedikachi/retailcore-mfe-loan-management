@@ -62,12 +62,16 @@ export const LoanManagementSettingsField = () => {
             label="Enable Grace Period"
             layout="horizontal"
             tooltipText={TooltipText[InputFieldNames.ENABLE_GRACE_PERIOD]}
-            onChange={() => {
-               resetFieldState(InputFieldNames.GRACE_PERIOD);
-               resetFieldState(InputFieldNames.GRACE_PERIOD_VALUE);
-            }}
          >
-            <FormControlBase sx={{ ml: 7 }} control="switch" name={InputFieldNames.ENABLE_GRACE_PERIOD} />
+            <FormControlBase
+               sx={{ ml: 7 }}
+               control="switch"
+               name={InputFieldNames.ENABLE_GRACE_PERIOD}
+               onChange={() => {
+                  resetFieldState(InputFieldNames.GRACE_PERIOD);
+                  resetFieldState(InputFieldNames.GRACE_PERIOD_VALUE);
+               }}
+            />
          </FormControlWrapper>
          {getFieldProps(InputFieldNames.ENABLE_GRACE_PERIOD)?.value && (
             <Box pl={3} pr={5}>

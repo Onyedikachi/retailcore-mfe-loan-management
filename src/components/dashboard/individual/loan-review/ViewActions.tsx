@@ -27,7 +27,7 @@ export const ViewActionButtons = () => {
             sx={{ mx: 2 }}
             variant="outlined"
             startIcon={<Previous />}
-            onClick={() => navigate(IndividualLoanPath)}
+            onClick={() => navigate(`${IndividualLoanPath}?tab=requests`)}
          >
             Return to Dashboard
          </Button>

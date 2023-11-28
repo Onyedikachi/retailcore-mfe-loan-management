@@ -3,7 +3,7 @@ import { LoanPerformanceSummary } from './LoanPerformanceWrapper';
 import { useAppContext } from '@app/providers/app-provider';
 
 export const PerformingLoans = () => {
-   const { defaultCurrency } = useAppContext();
+   const { defaultCurrency: currency } = useAppContext();
 
    return (
       <LoanPerformanceSummary
@@ -12,12 +12,12 @@ export const PerformingLoans = () => {
          tabPanels={[
             <TableVariant
                key={''}
-               headerProps={loans(defaultCurrency?.abbreviation ?? 'NGN')}
+               headerProps={loans(currency?.abbreviation ?? 'NGN')}
                bodyProps={{
                   rows: [1, 2, 3, 4, 5, 6, 7, 8, 9, 12, 10].map((item, id) => ({
                      loanProduct: 'Payday Loan',
                      number: '52',
-                     value: `${defaultCurrency?.abbreviation ?? 'NGN'} 461.67`,
+                     value: `${currency?.abbreviation ?? 'NGN'} 461.67`,
                   })),
                }}
             />,

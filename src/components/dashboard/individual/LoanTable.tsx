@@ -8,7 +8,7 @@ import { TableHeading } from '@app/components/loan-management/TableHeading';
 import { bodyData } from './table-data/table-body-data';
 import { headerData } from './table-data/table-header-data';
 import { API_PATH } from '@app/constants';
-import { capitalizeString } from '@app/helper/string';
+import { capitalizeString, transformText } from '@app/helper/string';
 import { useIndividualLoanDashboardContext } from '@app/providers/individual-loan-dashboard';
 import { useRequest } from 'react-http-query';
 import { LoanTableDialogs } from './LoanTableDialogs';
@@ -43,7 +43,11 @@ export const LoanTable = () => {
    );
 
    const loanTableBody = useMemo(() => {
-      return (loanProducts ?? [])?.map((item) => {
+      return (
+         loanProducts?.filter(
+            (item) => transformText(item.status) === 'Approved' || transformText(item.status) === 'Closed'
+         ) ?? []
+      )?.map((item) => {
          return bodyData(
             item,
             (selectedAction) => {
@@ -86,7 +90,9 @@ export const LoanTable = () => {
                bodyProps={{ rows: loanTableBody }}
             />
          </Box>
-         {loanProducts && loanProducts?.length === 0 && <Box textAlign="center">No records found</Box>}
+         {loanProducts && loanProducts?.length === 0 && (
+            <Box textAlign="center">No matching record found</Box>
+         )}
          <LoanTableDialogs
             action={action}
             id={id}

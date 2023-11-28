@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import { Button, Tooltip } from '@app/components/atoms';
 import { TableHeaderProps } from '@app/components/table/TableHeader';
 import FormContainer from '@app/components/forms/FormContainer';
@@ -25,10 +26,9 @@ export const RepaymentSchedule = () => {
    const [searchParams] = useSearchParams();
    const id = searchParams.get('id');
    const [schedule, setSchedule] = useState<LoanPaymentSchedule[]>();
-
    const [, submitForm] = useRequest({
-      onSuccess: (res) => {
-         navigate(IndividualLoanPath);
+      onSuccess: () => {
+         navigate(`${IndividualLoanPath}?tab=requests`);
          resetBookLoanData();
       },
    });
@@ -67,11 +67,11 @@ export const RepaymentSchedule = () => {
    }, []);
 
    const tableBody = useMemo(() => {
-      return (schedule ?? [])?.map((item, id) => ({
+      return (schedule ?? [])?.map((item) => ({
          date: formattedDate(item?.disbursementDate ?? ''),
          principal: `${currency} ${formatCurrency(item?.principalPayment)}`,
          interest: `${currency} ${formatCurrency(item?.monthlyInterest)}`,
-         amountPayable: `${currency}${formatCurrency(item?.repaymentAmount)}`,
+         amountPayable: `${currency} ${formatCurrency(item?.repaymentAmount)}`,
          outstandingBal: `${currency} ${formatCurrency(item?.outstandingBalance)}`,
          gracePeriod: item?.gracePeriod ? formattedDate(item?.gracePeriod) : '-',
       }));

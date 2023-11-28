@@ -43,7 +43,7 @@ export const FacilityDetails: React.FC = () => {
       }
    };
 
-   const [, submitForm] = useRequest({ onSuccess: (res) => navigate(IndividualLoanPath) });
+   const [, submitForm] = useRequest({ onSuccess: (res) => navigate(`${IndividualLoanPath}?tab=requests`) });
    const handleSubmit = () => {
       setShowAlertDialog(false);
       if (id) {
@@ -56,9 +56,10 @@ export const FacilityDetails: React.FC = () => {
    useRequest(
       {
          onMount: (makeRequest) => {
-            makeRequest(`${API_PATH.GetAllLoanProduct}?SearchTerm=${searchInput}`, {
+            makeRequest(API_PATH.GetAllLoanProduct, {
                showSuccess: false,
                showLoader: !productNames,
+               query: { Status: 'Active', SearchTerm: searchInput },
             });
          },
          onSuccess: (response) => getProductData(response.data.data.items),
@@ -70,7 +71,7 @@ export const FacilityDetails: React.FC = () => {
    useEffect(() => {
       if (id || (id && (productNames ?? [])?.length > 0)) {
          getInputtedPrincipal(bookLoanData.facilityDetails?.principal ?? '');
-         getProductDetail(`${API_PATH.GetAllLoanProduct}/${bookLoanData.facilityDetails?.productId}`, {
+         getProductDetail(`${API_PATH.GetAllLoanProduct}/${bookLoanData.facilityDetails?.productId ?? ''}`, {
             showSuccess: false,
          });
       }

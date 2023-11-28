@@ -10,7 +10,7 @@ export const customerInfo = (customer: CustomerData, persona?: string) => {
    const kycStatus =
       customer.status == 'Active' && customer.approvalStatus == 'Approved' ? 'Complete' : 'Incomplete';
    return [
-      { key: 'Customer Name', value: `${firstName} ${otherNames ?? ''} ${surname}` },
+      { key: 'Customer Name', value: `${firstName ?? ''} ${otherNames ?? ''} ${surname ?? ''}` },
       { key: 'Customer ID', value: profile.customerNumber },
       { key: 'Customer Type', value: customer.customerType },
       {

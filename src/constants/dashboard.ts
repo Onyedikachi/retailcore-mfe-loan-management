@@ -1,7 +1,7 @@
 import { StatusCardProps } from '@app/@types/dashboard';
 import { StatusCounts } from '@app/@types/loan-product';
 import { PermissionHelperProps } from '@app/hooks/usePermission';
-
+import { Permissions } from './permissions';
 export const Count = 20;
 export const individualLoanFilterOptions = (
    key?: string | number,
@@ -49,8 +49,8 @@ export const tabCardOptions = (
 };
 
 export const tabOptions = [
-   { label: 'Records', key: 'records' },
-   { label: 'Requests', key: 'requests' },
+   { label: 'Records', key: 'records', permissions: [Permissions.VIEW_ALL_LOAN_RECORDS] },
+   { label: 'Requests', key: 'requests', permissions: [Permissions.VIEW_ALL_LOAN_REQUESTS] },
 ];
 
 const actionOptions = (permissions?: PermissionHelperProps) => {
