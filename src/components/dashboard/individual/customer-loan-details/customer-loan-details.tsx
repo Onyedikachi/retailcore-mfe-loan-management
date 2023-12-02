@@ -28,7 +28,7 @@ export const customerLoanInfo = (loan?: BookedLoanData) => [
    { key: 'Principal Balance', value: loan?.principalBalance ?? '-' },
    { key: 'Interest Balance', value: loan?.interestBalance ?? '-' },
    { key: 'Days in Arrears ', value: loan?.arrears ?? '-' },
-   { key: 'Penalty Due', value: loan?.penaltyDue ?? '-'  },
+   { key: 'Penalty Due', value: loan?.penaltyDue ?? '-' },
    { key: 'Grace Period ', value: `${loan?.graceValue} ${loan?.gracePeriod}` },
    {
       key: 'Moratorium Period',

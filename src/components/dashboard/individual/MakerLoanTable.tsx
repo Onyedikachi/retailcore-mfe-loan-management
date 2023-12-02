@@ -33,7 +33,7 @@ export const MakerLoanTable = () => {
       () =>
          headerData(
             loanProducts,
-            (loanProduct) =>  setMakerLoanTableQueryByProductName(loanProduct),
+            (loanProduct) => setMakerLoanTableQueryByProductName(loanProduct),
             (loanStatus) => setMakerLoanTableQueryByStatus(loanStatus),
             (startDate, endDate) => handleDateQuery(startDate, endDate, setMakerLoanTableQueryByDate),
             makerLoanTableTab!
@@ -48,8 +48,13 @@ export const MakerLoanTable = () => {
             (selectedAction) => {
                setMakerLoanTableId(item.id);
                setMakerLoanTableAction(selectedAction);
-               handleActions(selectedAction, navigate, item, 
-                  setMakerLoanTableOpenLoanAction, setMakerLoanTableOpenDeleteAction);
+               handleActions(
+                  selectedAction,
+                  navigate,
+                  item,
+                  setMakerLoanTableOpenLoanAction,
+                  setMakerLoanTableOpenDeleteAction
+               );
             },
             makerLoanTableTab!,
             permission
@@ -62,13 +67,21 @@ export const MakerLoanTable = () => {
    });
 
    useEffect(() => {
-      const queryParams = tableQuery(makerLoanTableSearchText, makerLoanTableQueryByProductName,
-         makerLoanTableQueryByStatus, makerLoanTableQueryByDate);
+      const queryParams = tableQuery(
+         makerLoanTableSearchText,
+         makerLoanTableQueryByProductName,
+         makerLoanTableQueryByStatus,
+         makerLoanTableQueryByDate
+      );
       const urlSearchParams = new URLSearchParams(queryParams).toString();
       const url = `${API_PATH.IndividualLoan}?${urlSearchParams}`;
       getLoans(url, { showSuccess: false });
-   }, [makerLoanTableSearchText, makerLoanTableQueryByProductName, makerLoanTableQueryByStatus,
-       makerLoanTableQueryByDate]);
+   }, [
+      makerLoanTableSearchText,
+      makerLoanTableQueryByProductName,
+      makerLoanTableQueryByStatus,
+      makerLoanTableQueryByDate,
+   ]);
 
    return (
       <Box sx={{ p: 2, pt: 3, bgcolor: 'white', borderRadius: 2, border: '1px solid #E5E9EB' }}>
@@ -76,7 +89,10 @@ export const MakerLoanTable = () => {
             handleSearch={setMakerLoanTableSearchText}
             handleRefresh={() => getLoans(`${API_PATH.IndividualLoan}?All=${true}`, { showSuccess: false })}
             handleDownload={() =>
-               downloadAsCSVByID('maker-loan-table', `Individual Loan ${capitalizeString(makerLoanTableTab!)}`)
+               downloadAsCSVByID(
+                  'maker-loan-table',
+                  `Individual Loan ${capitalizeString(makerLoanTableTab!)}`
+               )
             }
             searchPlaceholder="Search by product name/code"
          />

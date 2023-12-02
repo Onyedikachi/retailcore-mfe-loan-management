@@ -82,7 +82,7 @@ export const RepaymentSchedule = () => {
       <>
          <FormContainer>
             <Typography>
-               Loan Repayment Schedule 
+               Loan Repayment Schedule
                <Tooltip text="This is the simulation of the repayment schedule of the borrower based on the repayment pattern and frequency selected" />
             </Typography>
 
@@ -99,9 +99,7 @@ export const RepaymentSchedule = () => {
                   <Button
                      id="download-repayment"
                      variant="outlined"
-                     onClick={() =>
-                        downloadAsCSVByID('schedule', 'Loan Repayment Schedule')
-                     }
+                     onClick={() => downloadAsCSVByID('schedule', 'Loan Repayment Schedule')}
                   >
                      Download
                   </Button>
