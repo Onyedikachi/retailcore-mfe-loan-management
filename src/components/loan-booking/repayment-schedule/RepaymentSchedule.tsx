@@ -10,12 +10,13 @@ import { Box, Divider, Typography } from '@mui/material';
 import { useEffect, useMemo, useState } from 'react';
 import { useRequest } from 'react-http-query';
 import { Table } from '@app/components/table';
-import { downloadTableAsPDFByID } from '@app/helper/pdfDownloader';
+// import { downloadAsCSVByID } from '@app/helper/pdfDownloader';
 import { useBookLoanContext } from '@app/providers/book-loan';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { mapRepaymentScheduleToSchema } from '@app/mappers/book-loan-mapper';
 import { LoanPaymentSchedule } from '@app/@types/loan-product';
 import { formatCurrency } from '@app/helper/currency-converter';
+import { downloadAsCSVByID } from '@app/helper/csvDownloader';
 
 export const RepaymentSchedule = () => {
    const [isDraft, setIsDraft] = useState(false);
@@ -81,7 +82,7 @@ export const RepaymentSchedule = () => {
       <>
          <FormContainer>
             <Typography>
-               Loan Repayment Schedule
+               Loan Repayment Schedule 
                <Tooltip text="This is the simulation of the repayment schedule of the borrower based on the repayment pattern and frequency selected" />
             </Typography>
 
@@ -99,7 +100,7 @@ export const RepaymentSchedule = () => {
                      id="download-repayment"
                      variant="outlined"
                      onClick={() =>
-                        downloadTableAsPDFByID('schedule', 'Loan Repayment Schedule', 'repayment schedule')
+                        downloadAsCSVByID('schedule', 'Loan Repayment Schedule')
                      }
                   >
                      Download
