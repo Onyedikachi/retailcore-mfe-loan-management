@@ -43,22 +43,20 @@ export const LoanTable = () => {
    );
 
    const loanTableBody = useMemo(() => {
-      return (
-         loanProducts?.filter(
-            (item) => transformText(item.status) === 'Approved' || transformText(item.status) === 'Closed'
-         ) ?? []
-      )?.map((item) => {
-         return bodyData(
-            item,
-            (selectedAction) => {
-               setId(item.id);
-               setAction(selectedAction);
-               handleActions(selectedAction, navigate, item, setOpenLoanAction, setOpenDeleteAction);
-            },
-            tab!!,
-            permission
-         );
-      });
+      return (loanProducts?.filter((item) => transformText(item.requestStatus) === 'Approved') ?? [])?.map(
+         (item) => {
+            return bodyData(
+               item,
+               (selectedAction) => {
+                  setId(item.id);
+                  setAction(selectedAction);
+                  handleActions(selectedAction, navigate, item, setOpenLoanAction, setOpenDeleteAction);
+               },
+               tab!!,
+               permission
+            );
+         }
+      );
    }, [tab, loanProducts, permission]);
 
    const [, getLoans] = useRequest({

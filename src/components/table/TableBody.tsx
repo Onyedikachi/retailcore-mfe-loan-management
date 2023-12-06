@@ -20,7 +20,7 @@ export interface TableBodyProps extends MuiTableBodyProps {
 
 export const TableBody = ({ rows, tableHeaderData, ...otherProps }: TableBodyProps) => {
    const rowskeys = tableHeaderData?.map((data) => data.key) ?? Object.keys(rows[0]);
-
+   console.log(rows, tableHeaderData);
    return (
       <MuiTableBody {...otherProps}>
          {rows.map((row, index) => (
