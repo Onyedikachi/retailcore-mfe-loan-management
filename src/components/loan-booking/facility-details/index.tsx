@@ -59,7 +59,7 @@ export const FacilityDetails: React.FC = () => {
             makeRequest(API_PATH.GetAllLoanProduct, {
                showSuccess: false,
                showLoader: !productNames,
-               query: { Status: 'Active', SearchTerm: searchInput },
+               query: { Status: "['Active']", SearchTerm: searchInput },
             });
          },
          onSuccess: (response) => getProductData(response.data.data.items),
