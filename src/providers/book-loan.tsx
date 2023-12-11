@@ -107,8 +107,8 @@ export const BookLoanProvider = ({ children }: BookLoanProviderProps) => {
       setCustomers(customersData);
       const customerAccountInfoArray = customersData?.flatMap((customerData: CustomerData) => {
          const profile = customerData.customer_profiles[0];
-         return customerData.customer_account_balances.map((accountBalance) => ({
-            label: accountBalance.accountNumber,
+         return customerData.customer_profiles.map((accountBalance) => ({
+            label: accountBalance.customerNumber,
             subtitle: `${profile?.firstName} ${profile?.otherNames ?? ''} ${profile?.surname}`,
             customerId: customerData.customerId,
          }));
