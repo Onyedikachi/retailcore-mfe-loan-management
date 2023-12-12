@@ -36,7 +36,10 @@ export const LoanReview = () => {
       },
       onSuccess: (response) => {
          getLoanProduct(response.data);
-         fetchCustomer(`${GET_CUSTOMER}/${response.data?.customerId}`, { showSuccess: false });
+         fetchCustomer(`${GET_CUSTOMER}/${response.data?.customerId}`, {
+            showSuccess: false,
+            showLoader: true,
+         });
       },
    });
 
