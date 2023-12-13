@@ -5,7 +5,7 @@ import { BookLoanProvider } from '@app/providers/book-loan';
 
 describe('<ProcessSummary />', () => {
    it('should render properly', () => {
-      const { getByRole} = render(
+      const { getByRole } = render(
          <CreateProductSetup>
             <BookLoanProvider>
                <ProcessSummary />
@@ -20,6 +20,5 @@ describe('<ProcessSummary />', () => {
 
       const submitButton = getByRole('button', { name: 'Submit' });
       expect(submitButton).toBeInTheDocument();
-   
    });
 });
