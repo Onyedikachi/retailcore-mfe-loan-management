@@ -43,14 +43,14 @@ export const usePermission = (): PermissionHelperProps => {
       permissions?.some((role) => userPermissions?.includes(role));
 
    const checker = [
-      Permissions['AUTHORIZE_BOOKING/RESTRUCTURING_REQUESTS'],
-      Permissions['AUTHORIZE_LIQUIDATION/WRITE-OFF_REQUESTS'],
+      Permissions['AUTHORIZE_BOOKING_RESTRUCTURING_REQUESTS'],
+      Permissions['AUTHORIZE_LIQUIDATION_WRITE_OFF_REQUESTS'],
    ];
    const allRecords = [Permissions.VIEW_ALL_LOAN_RECORDS];
    const allRequest = [Permissions.VIEW_ALL_LOAN_REQUESTS];
    const isSuperAdmin = authPayload?.user?.tenant_admin;
    const liquidate = [Permissions.LIQUIDATE_LOAN];
-   const writeOff = [Permissions['WRITE-OFF_LOAN']];
+   const writeOff = [Permissions['WRITE_OFF_LOAN']];
 
    const isUserAChecker = isSuperAdmin || checker?.some((element) => userPermissions?.includes(element));
    const accessAllRecords = isSuperAdmin || allRecords?.some((element) => userPermissions?.includes(element));
