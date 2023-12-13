@@ -26,16 +26,15 @@ import { printElementContent } from '../printTable';
 //       </div>
 //     `;
 
-    // Call the function
-    //printElementContent('testElement', 'Test Content', true);
+//     // Call the function
+//     printElementContent('testElement', 'Test Content', true);
 
-    // Expect the required functions to be called
-   // expect(screen.getByTestId('Test Content')).toBeInTheDocument();
-    
-   //expect(window.print).not.toHaveBeenCalled();
-    //expect(getMock).toBeCalled();
+//     // Expect the required functions to be called
+//    // expect(screen.getByTestId('Test Content')).toBeInTheDocument();
+//     expect(printElementContent).toHaveBeenCalled();
+//     //expect(getMock).toBeCalled();
 
-    // You may want to assert further based on the actual implementation
+//     // You may want to assert further based on the actual implementation
 //   });
 
   test('should handle missing element', () => {
