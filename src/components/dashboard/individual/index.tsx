@@ -28,6 +28,10 @@ export const IndividualLoan = () => {
    const checkerOption = options.includes('Sent');
    const { getLoanProducts, dataCount } = useIndividualLoanDashboardContext();
 
+   console.log('tab', tab);
+   console.log('options', options);
+   console.log('checkerOption', checkerOption);
+
    useRequest({
       onMount: (makeRequest) => {
          makeRequest(`${API_PATH.IndividualLoan}?All=${true}`, { showSuccess: false });

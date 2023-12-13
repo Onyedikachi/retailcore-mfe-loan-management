@@ -34,7 +34,7 @@ export const CheckerLoanTable = () => {
             (loanStatus) => setQueryByStatus(loanStatus),
             (startDate, endDate) => handleDateQuery(startDate, endDate, setQueryByDate),
             isUserAChecker ?? false,
-            tab!!
+            tab!
          ),
       [tab, loanProducts, isUserAChecker]
    );
@@ -49,7 +49,7 @@ export const CheckerLoanTable = () => {
             return bodyData(
                item,
                (selectedAction) => navigate(`${ReviewLoanPath}?id=${item.id}&action=${selectedAction}`),
-               tab!!
+               tab!
             );
          });
    }, [tab, loanProducts]);
@@ -71,9 +71,9 @@ export const CheckerLoanTable = () => {
             handleSearch={setSearchText}
             handleRefresh={() => getLoans(`${API_PATH.IndividualLoan}?All=${true}`, { showSuccess: false })}
             handleDownload={() =>
-               downloadAsCSVByID(`checker-loan-table`, `Individual Loan ${capitalizeString(tab!)}`)
+               downloadAsCSVByID('checker-loan-table', `Individual Loan ${capitalizeString(tab!)}`)
             }
-            searchPlaceholder="Search by product name/code"
+            searchPlaceholder="Search by customer name/account"
          />
          <Box pt={2} pb={3}>
             <Table

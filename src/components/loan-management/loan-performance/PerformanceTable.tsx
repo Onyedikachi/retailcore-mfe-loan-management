@@ -46,7 +46,7 @@ export const PerformanceTable = () => {
             handleDownload={() => {
                downloadAsCSVByID('performance', performanceType ?? '');
             }}
-            searchPlaceholder="Search by product name/code"
+            searchPlaceholder="Search by customer name/account"
          />
          <Box pt={1} pb={5}>
             <Table

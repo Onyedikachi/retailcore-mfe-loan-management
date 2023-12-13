@@ -15,7 +15,7 @@ import { useRequest } from 'react-http-query';
 import { IndividualLoanPath } from '@app/constants/routes';
 import { useBookLoanContext } from '@app/providers/book-loan';
 import { bookingInfo, customerInfo } from './summary-data';
-import { API_PATH } from '@app/constants/api-path';
+import { API_PATH, CUSTOMER_MANAGEMENT_PATH } from '@app/constants/api-path';
 import { usePermission } from '@app/hooks/usePermission';
 
 export const ContainerWrapper = styled(Box)({
@@ -42,6 +42,19 @@ export const ProcessSummary = () => {
    const [searchParams] = useSearchParams();
    const id = searchParams.get('id');
    const [, submitForm] = useRequest({ onSuccess: () => setShowResponseDialog(true) });
+   const [, fetchLedger] = useRequest({
+      onSuccess: (response) => {
+         submitForm(API_PATH.IndividualLoan, {
+            body: {
+               ...backendData,
+               IsUserSuperAdmin: isSuperAdmin,
+               customerLedgerId: response.data.data[0].ledgerId,
+            },
+            showSuccess: false,
+         });
+      },
+   });
+
    const handleSubmit = () => {
       if (id) {
          submitForm(`${API_PATH.IndividualLoan}`, {
@@ -49,8 +62,7 @@ export const ProcessSummary = () => {
             method: 'PUT',
          });
       } else {
-         submitForm(API_PATH.IndividualLoan, {
-            body: { ...backendData, IsUserSuperAdmin: isSuperAdmin },
+         fetchLedger(`${CUSTOMER_MANAGEMENT_PATH.GET_CUSTOMER_LEDGER}/${backendData.customerId}`, {
             showSuccess: false,
          });
       }
