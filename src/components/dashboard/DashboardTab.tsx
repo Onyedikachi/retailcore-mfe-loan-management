@@ -105,7 +105,6 @@ export const Filters = (props: FiltersProps) => {
                         key={tab.key}
                         label={tab.label}
                         data-testid="tab-card"
-                        disabled={!checkPermission(tab?.permissions ?? [])}
                         sx={{
                            fontSize: isActive ? '20px' : '18px',
                            fontWeight: isActive ? 600 : 400,
