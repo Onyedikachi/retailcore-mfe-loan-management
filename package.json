@@ -52,7 +52,7 @@
       "husky": "^7.0.2",
       "identity-obj-proxy": "^3.0.0",
       "jest": "^27.0.6",
-      "jest-cli": "^27.0.6",
+      "jest-cli": "^27.5.1",
       "jest-fetch-mock": "^3.0.3",
       "lint-staged": ">=10",
       "prettier": "^2.3.2",
