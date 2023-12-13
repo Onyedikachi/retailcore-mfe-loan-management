@@ -20,6 +20,5 @@ describe('<ProcessSummary />', () => {
 
       const submitButton = getByRole('button', { name: 'Submit' });
       expect(submitButton).toBeInTheDocument();
-
    });
 });
