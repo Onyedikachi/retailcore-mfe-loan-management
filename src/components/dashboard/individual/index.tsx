@@ -6,7 +6,7 @@ import { LoanTable } from './LoanTable';
 import { useRequest } from 'react-http-query';
 import { API_PATH } from '@app/constants/api-path';
 import { useIndividualLoanDashboardContext } from '@app/providers/individual-loan-dashboard';
-import { useLocation, useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 import { CheckerLoanTable } from './CheckerLoanTable';
 import { usePermission } from '@app/hooks/usePermission';
 import { MakerLoanTable } from './MakerLoanTable';
@@ -24,13 +24,9 @@ export const IndividualLoan = () => {
    const [searchParams] = useSearchParams();
    const tab = searchParams.get('tab');
    const [options, setOption] = useState(individualLoanFilterOptions(tab!)[0]);
-   const { isUserAChecker, accessAllRecords, accessAllRequests } = usePermission();
+   const { isUserAChecker, isSuperAdmin, accessAllRecords, accessAllRequests } = usePermission();
    const checkerOption = options.includes('Sent');
    const { getLoanProducts, dataCount } = useIndividualLoanDashboardContext();
-
-   console.log('tab', tab);
-   console.log('options', options);
-   console.log('checkerOption', checkerOption);
 
    useRequest({
       onMount: (makeRequest) => {
@@ -70,7 +66,8 @@ export const IndividualLoan = () => {
                tab!,
                isUserAChecker,
                accessAllRecords,
-               accessAllRequests
+               accessAllRequests,
+               isSuperAdmin
             )}
          />
          {tab === 'records' ? (
