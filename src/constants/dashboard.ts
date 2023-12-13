@@ -10,12 +10,15 @@ export const individualLoanFilterOptions = (
    accessAllRequests?: boolean
 ) => {
    let options;
-   const checkerOptions = ['Sent to me', 'Sent system-wide'];
+   // const checkerOptions = ;
+   const filterOptions = isUserAChecker
+      ? ['Sent to me', 'Sent system-wide']
+      : ['Initiated by me', 'Initiated system-wide'];
    if (key == tabOptions[0].key) {
       options = ['Created by me', 'Created system-wide'];
       return accessAllRecords ? options : options.filter((op) => !op.includes('system-wide'));
    } else {
-      options = ['Initiated by me', 'Initiated system-wide', ...(isUserAChecker ? checkerOptions : [])];
+      options = filterOptions;
       return accessAllRequests ? options : options.filter((op) => !op.includes('system-wide'));
    }
 };

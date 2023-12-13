@@ -78,7 +78,7 @@ export const LoanTable = () => {
             handleDownload={() =>
                downloadAsCSVByID(`loan-table`, `Individual Loan ${capitalizeString(tab!)}`)
             }
-            searchPlaceholder="Search by product name/code"
+            searchPlaceholder="Search by customer name/account"
          />
          <Box pt={2} pb={3}>
             <Table

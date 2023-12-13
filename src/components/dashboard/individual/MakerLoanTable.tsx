@@ -94,7 +94,7 @@ export const MakerLoanTable = () => {
                   `Individual Loan ${capitalizeString(makerLoanTableTab!)}`
                )
             }
-            searchPlaceholder="Search by product name/code"
+            searchPlaceholder="Search by customer name/account"
          />
          <Box pt={2} pb={3}>
             <Table
