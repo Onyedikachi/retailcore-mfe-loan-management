@@ -43,7 +43,7 @@ export const bodyData = (
    //    status = getStatus;
    // }
    // }
-   console.log('getStatus', getStatus);
+
    return {
       customerName: (
          <>
