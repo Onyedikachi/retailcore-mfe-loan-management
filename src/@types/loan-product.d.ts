@@ -54,8 +54,8 @@ interface ProductEligibilityCriteriaRequirement {
    requireEarning: boolean;
    requireEquityContrib: boolean;
    equityContribType: string;
-   contributionValueFrom: number;
-   contributionValueTo: number;
+   contribValueFrom: number;
+   contribValueTo: number;
    requireSecurity: boolean;
    requireOtherEligibilityCriteria: boolean;
    hasEligibility: boolean;
