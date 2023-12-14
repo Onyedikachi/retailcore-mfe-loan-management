@@ -7,18 +7,30 @@ export const individualLoanFilterOptions = (
    key?: string | number,
    isUserAChecker?: boolean,
    accessAllRecords?: boolean,
-   accessAllRequests?: boolean
+   accessAllRequests?: boolean,
+   isSuperAdmin?: boolean
 ) => {
-   let options;
-   // const checkerOptions = ;
-   const filterOptions = isUserAChecker
+   const filterOptionsRequests = isUserAChecker
       ? ['Sent to me', 'Sent system-wide']
       : ['Initiated by me', 'Initiated system-wide'];
-   if (key == tabOptions[0].key) {
-      options = ['Created by me', 'Created system-wide'];
+
+   const filterOptionsRecords = isUserAChecker
+      ? ['Approved by me', 'Approved system-wide']
+      : ['Created by me', 'Created system-wide'];
+
+   let options;
+
+   if (key === tabOptions[0]?.key) {
+      options = isSuperAdmin
+         ? ['Created by me', 'Created system-wide', 'Approved by me', 'Approved system-wide']
+         : filterOptionsRecords;
+
       return accessAllRecords ? options : options.filter((op) => !op.includes('system-wide'));
    } else {
-      options = filterOptions;
+      options = isSuperAdmin
+         ? ['Initiated by me', 'Initiated system-wide', 'Sent to me', 'Sent system-wide']
+         : filterOptionsRequests;
+
       return accessAllRequests ? options : options.filter((op) => !op.includes('system-wide'));
    }
 };
@@ -33,7 +45,7 @@ export const tabCardOptions = (
               { label: 'All', value: dataCount?.all ?? 0, variant: 'black' },
               { label: 'Approved', value: dataCount?.approved ?? 0, variant: 'success' },
               { label: 'Pending', value: dataCount?.pending ?? 0, variant: 'info' },
-              { label: 'Rejected', value: dataCount?.rejected ?? 0, variant: 'error' },
+              { label: 'Rejected', value: dataCount?.inIssue ?? 0, variant: 'error' },
            ]
          : [
               { label: 'All', value: dataCount?.all ?? 0, variant: 'black' },
@@ -43,7 +55,7 @@ export const tabCardOptions = (
               { label: 'Draft', value: dataCount?.draft ?? 0, variant: 'gray' },
            ],
       records: [
-         { label: 'All', value: dataCount?.all ?? 0, variant: 'black' },
+         { label: 'All', value: dataCount?.loans ?? 0, variant: 'black' },
          { label: 'Performing', value: dataCount?.performing ?? 0, variant: 'success' },
          { label: 'Non-Performing', value: dataCount?.nonPerforming ?? 0, variant: 'gray' },
          { label: 'Closed', value: dataCount?.closed ?? 0, variant: 'gray' },
