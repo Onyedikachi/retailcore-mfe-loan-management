@@ -23,7 +23,7 @@ describe('<Details Component/>', () => {
    const customerId = 'customer123';
 
    it('should render Response Dialog bodyprop', () => {
-      const { getByText,  } = render(
+      const { getByText } = render(
          <GeneralAppSetup>
             <Details title={title} details={detailsData} customerId={customerId} />
          </GeneralAppSetup>
@@ -46,7 +46,5 @@ describe('<Details Component/>', () => {
 
       const responseDetailsHeading2 = getByText('Dolapo');
       expect(responseDetailsHeading2).toBeInTheDocument();
-
-    
    });
 });

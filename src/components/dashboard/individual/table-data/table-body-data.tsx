@@ -33,7 +33,7 @@ export const bodyData = (
    // }
    // } else {
    if (getStatus === 'Pending') {
-      status = 'Draft';
+      status = 'Pending';
    } else if (getStatus === 'Reject') {
       status = 'In-Issue';
    } else {
