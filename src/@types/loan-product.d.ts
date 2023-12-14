@@ -199,7 +199,6 @@ interface StatusCounts {
    draft?: number;
    all?: number;
    closed?: number;
-   loans?: number;
 }
 interface LoanPaymentSchedule {
    monthlyInterest: number;
