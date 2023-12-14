@@ -55,7 +55,7 @@ export const tabCardOptions = (
               { label: 'Draft', value: dataCount?.draft ?? 0, variant: 'gray' },
            ],
       records: [
-         { label: 'All', value: dataCount?.loans ?? 0, variant: 'black' },
+         { label: 'All', value: dataCount?.approved ?? 0, variant: 'black' },
          { label: 'Performing', value: dataCount?.performing ?? 0, variant: 'success' },
          { label: 'Non-Performing', value: dataCount?.nonPerforming ?? 0, variant: 'gray' },
          { label: 'Closed', value: dataCount?.closed ?? 0, variant: 'gray' },

@@ -42,7 +42,6 @@ export const IndividualLoanDashboardProvider = ({ children }: IndividualLoanDash
          performing: stats?.performing,
          nonPerforming: stats?.nonPerforming,
          closed: stats?.closed ?? 0,
-         loans: stats?.loans ?? 0,
       };
       setDataCount(count);
    };
