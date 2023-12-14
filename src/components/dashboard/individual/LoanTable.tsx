@@ -88,9 +88,7 @@ export const LoanTable = () => {
                bodyProps={{ rows: loanTableBody }}
             />
          </Box>
-         {loanProducts && loanProducts?.length === 0 && (
-            <Box textAlign="center">No matching record found</Box>
-         )}
+         {loanProducts && loanProducts?.length === 0 && <Box textAlign="center">No Request Found</Box>}
          <LoanTableDialogs
             action={action}
             id={id}
