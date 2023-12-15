@@ -59,6 +59,7 @@ export const usePermission = (): PermissionHelperProps => {
       isSuperAdmin || allRequest?.some((element) => userPermissions?.includes(element));
    const canLiquidate = isUserAChecker || liquidate?.some((element) => userPermissions?.includes(element));
    const canWriteOff = isUserAChecker || writeOff?.some((element) => userPermissions?.includes(element));
+   sessionStorage.setItem('superAdmin', `${isSuperAdmin}`);
    return {
       ...authPayload,
       checkPermission,

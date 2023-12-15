@@ -16,7 +16,6 @@ import { IndividualLoanPath } from '@app/constants/routes';
 import { useBookLoanContext } from '@app/providers/book-loan';
 import { bookingInfo, customerInfo } from './summary-data';
 import { API_PATH, CUSTOMER_MANAGEMENT_PATH } from '@app/constants/api-path';
-import { usePermission } from '@app/hooks/usePermission';
 
 export const ContainerWrapper = styled(Box)({
    height: 'calc(100% - 95px)',
@@ -29,7 +28,6 @@ export const ProcessSummary = () => {
    const [showCancelDialog, setShowCancelDialog] = useState(false);
    const [showResponseDialog, setShowResponseDialog] = useState(false);
    const { handleNavigation } = useStepperContext();
-   const { isSuperAdmin } = usePermission();
    const {
       bookLoanData,
       backendData,
@@ -40,14 +38,15 @@ export const ProcessSummary = () => {
    } = useBookLoanContext();
    const navigate = useNavigate();
    const [searchParams] = useSearchParams();
+
    const id = searchParams.get('id');
    const [, submitForm] = useRequest({ onSuccess: () => setShowResponseDialog(true) });
    const [, fetchLedger] = useRequest({
-      onSuccess: (response) => {
-         submitForm(API_PATH.IndividualLoan, {
+      onSuccess: async (response) => {
+         await submitForm(API_PATH.IndividualLoan, {
             body: {
                ...backendData,
-               IsUserSuperAdmin: isSuperAdmin,
+               IsUserSuperAdmin: sessionStorage.getItem('superAdmin') === 'true' ? true : false,
                customerLedgerId: response.data.data[0].ledgerId,
             },
             showSuccess: false,
@@ -58,7 +57,12 @@ export const ProcessSummary = () => {
    const handleSubmit = () => {
       if (id) {
          submitForm(`${API_PATH.IndividualLoan}`, {
-            body: { ...backendData, id: id, IsUserSuperAdmin: isSuperAdmin, showSuccess: false },
+            body: {
+               ...backendData,
+               id: id,
+               IsUserSuperAdmin: sessionStorage.getItem('superAdmin') === 'true' ? true : false,
+               showSuccess: false,
+            },
             method: 'PUT',
          });
       } else {
