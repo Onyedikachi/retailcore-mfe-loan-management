@@ -23,8 +23,11 @@ export const bodyData = (
    tab: string,
    permissions?: any
 ) => {
-   const getStatus = tab === 'records' ? transformText(loan?.status!) : transformText(loan?.requestStatus!);
-   let status;
+   const getStatus =
+      tab === 'records'
+         ? transformText(loan?.requestStatus.toLocaleLowerCase() === 'approved' ? loan?.status : '')
+         : transformText(loan!.requestStatus);
+   // let status;
    // if (tab === 'records') {
    // if (getStatus === 'Approved') {
    //    status = 'Non-Performing';
@@ -32,14 +35,15 @@ export const bodyData = (
    //    status = getStatus;
    // }
    // } else {
-   if (getStatus === 'Pending') {
-      status = 'Draft';
-   } else if (getStatus === 'Reject') {
-      status = 'In-Issue';
-   } else {
-      status = getStatus;
-   }
-   //}
+   // if (getStatus === 'Pending') {
+   //    status = 'Pending';
+   // } else if (getStatus === 'Reject') {
+   //    status = 'In-Issue';
+   // } else {
+   //    status = getStatus;
+   // }
+   // }
+
    return {
       customerName: (
          <>
@@ -47,15 +51,15 @@ export const bodyData = (
             <Typography variant="caption">{loan?.acctNo}</Typography>
          </>
       ),
-      loanAmount: `${loan?.product?.currency ?? ''} ${formatCurrency(loan?.principal!)}`,
+      loanAmount: `${loan?.product?.currency ?? ''} ${formatCurrency(loan!.principal)}`,
       loanProduct: loan?.product?.name ?? '-',
-      status: status ? <StyledChip sx={{ ...statusColors(status) }} label={status} /> : '-',
-      updatedOn: format(new Date(loan?.lastModifiedDate ?? loan?.dateCreated!), 'd MMM yyyy, hh:mm a'),
+      status: getStatus ? <StyledChip sx={{ ...statusColors(getStatus) }} label={getStatus} /> : '-',
+      updatedOn: format(new Date(loan?.lastModifiedDate ?? loan!.dateCreated), 'd MMM yyyy, hh:mm a'),
       filter: (
          <FilterMenu
             checkbox={false}
             filterIcon={<MenuIcon color="primary" />}
-            options={menuFromStatus(status, permissions)}
+            options={menuFromStatus(getStatus, permissions)}
             icon
             onFilterChange={(value) => loanActions(value as string)}
          />

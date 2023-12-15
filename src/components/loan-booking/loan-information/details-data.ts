@@ -38,12 +38,12 @@ export const details = (
                  {
                     heading: 'Equity Contribution',
                     key: 'Min. Contribution',
-                    value: `${eligibility?.contributionValueFrom}% `,
+                    value: `${eligibility?.contribValueFrom}% `,
                  },
               ]
             : []),
-         ...(eligibility?.requireEquityContrib && eligibility?.contributionValueTo
-            ? [{ key: 'Max. Contribution', value: `${eligibility?.contributionValueTo}%` }]
+         ...(eligibility?.requireEquityContrib && eligibility?.contribValueTo
+            ? [{ key: 'Max. Contribution', value: `${eligibility?.contribValueTo}%` }]
             : []),
       ],
       chargesAndTaxes: [],
