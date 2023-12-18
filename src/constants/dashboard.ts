@@ -68,7 +68,7 @@ export const tabOptions = [
    { label: 'Requests', key: 'requests', permissions: [Permissions.VIEW_ALL_LOAN_REQUESTS] },
 ];
 
-const actionOptions = (permissions?: PermissionHelperProps) => {
+export const actionOptions = (permissions?: PermissionHelperProps) => {
    const options = ['View', 'Liquidate Loan', 'Close Loan Account', 'Write-Off Loan'];
    if (!permissions?.canLiquidate) {
       return options.filter((option) => option != 'Liquidate Loan');
