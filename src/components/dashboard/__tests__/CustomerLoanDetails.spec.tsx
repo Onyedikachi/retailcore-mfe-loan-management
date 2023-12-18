@@ -78,4 +78,18 @@ describe('LoanProductDetails Component', () => {
 
       fireEvent.click(screen.getByText('View Loan Details'));
    });
+
+   it('renders the loan management title', () => {
+      renderWithThemeProvider(
+         <IndividualLoanDashboardProvider>
+            <BookLoanProvider>
+               <MemoryRouter>
+                  <CustomerLoanDetails />
+               </MemoryRouter>
+            </BookLoanProvider>
+         </IndividualLoanDashboardProvider>
+      );
+
+      expect(screen.getByText('LOAN MANAGEMENT')).toBeInTheDocument();
+   });
 });
