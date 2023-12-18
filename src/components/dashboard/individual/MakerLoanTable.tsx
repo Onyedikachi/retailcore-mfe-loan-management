@@ -42,7 +42,7 @@ export const MakerLoanTable = () => {
    );
 
    const loanTableBody = useMemo(() => {
-      return (loanProducts ?? [])?.map((item) => {
+      return (loanProducts ?? [])?.filter(item => item.requestStatus !== 'PENDING')?.map((item) => {
          return bodyData(
             item,
             (selectedAction) => {
@@ -65,6 +65,7 @@ export const MakerLoanTable = () => {
    const [, getLoans] = useRequest({
       onSuccess: (response) => getLoanProducts(response.data.data.loan, response.data.data.statistics),
    });
+
 
    useEffect(() => {
       const queryParams = tableQuery(
