@@ -96,4 +96,16 @@ describe('LoanTable Component', () => {
          fireEvent.click(screen.getByText('Download'));
       });
    });
+
+   it('handles download button', async () => {
+      renderWithThemeProvider(
+         <IndividualLoanDashboardProvider>
+            <MemoryRouter initialEntries={['/individual?tab=records']}>
+               <LoanTable />
+            </MemoryRouter>
+         </IndividualLoanDashboardProvider>
+      );
+
+      expect(screen.getByTestId('SyncIcon')).toBeInTheDocument();
+   });
 });
