@@ -80,6 +80,7 @@ const actionOptions = (permissions?: PermissionHelperProps) => {
       return options;
    }
 };
+
 export const menuFromStatus = (menu: string, permissions?: PermissionHelperProps) => {
    switch (menu) {
       case 'Approved':
