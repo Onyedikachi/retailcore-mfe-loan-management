@@ -51,12 +51,9 @@ export const CollateralAndEquityContribFields = () => {
                         render={() =>
                            eligibility?.eligibilityCriteriaSecurityDocs
                               .filter(({ id }: any) =>
-                           collateralValues?.some(
-                                    ({ id: itemId, }: { id: string }) => itemId === id
-                                 )
+                                 collateralValues?.some(({ id: itemId }: { id: string }) => itemId === id)
                               )
-                              .map(({ securityDocName, id}: any, index: any) => (
-                                 
+                              .map(({ securityDocName, id }: any, index: any) => (
                                  <CollateralSelected
                                     handleRemove={() => {
                                        arrayFieldsHelper(InputFieldNames.COLLATERALS).removeAllByValue(
@@ -68,7 +65,7 @@ export const CollateralAndEquityContribFields = () => {
                                     key={securityDocName}
                                     collateral={securityDocName}
                                  />
-                              ))                    
+                              ))
                         }
                         name={InputFieldNames.COLLATERALS}
                      />
