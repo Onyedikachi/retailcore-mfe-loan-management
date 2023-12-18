@@ -48,4 +48,22 @@ describe('Filters Component', () => {
       const tab2Button = screen.getByText('Tab2');
       fireEvent.click(tab2Button);
    });
+   it('handles tab changes', () => {
+      const onTabClick = jest.fn();
+      renderWithThemeProvider(
+         <MemoryRouter>
+            <Filters
+               statusOptions={statusOptions}
+               tabOptions={tabOptions}
+               onTabClick={onTabClick}
+               onStatusClick={() => ''}
+               onFilterOptionSelected={(e: any) => e.target.value}
+               tabKey={''}
+            />
+         </MemoryRouter>
+      );
+
+      const tab2Button = screen.getByText('Tab2');
+      fireEvent.click(tab2Button);
+   });
 });
