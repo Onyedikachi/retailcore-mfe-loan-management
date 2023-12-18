@@ -137,6 +137,6 @@ export const RoutePaths = {
       absolute: RouteMaps.loanReview.path,
       relative: '/review',
       name: 'Loan Management Review',
-      permissions: [Permissions['AUTHORIZE_BOOKING_RESTRUCTURING_REQUESTS']],
+      permissions: [Permissions['AUTHORIZE_BOOKING/RESTRUCTURING_REQUESTS']],
    },
 };

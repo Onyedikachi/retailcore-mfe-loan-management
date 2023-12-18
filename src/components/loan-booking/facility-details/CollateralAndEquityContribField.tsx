@@ -26,7 +26,6 @@ export const CollateralAndEquityContribFields = () => {
    const collateralValues = getFieldProps(InputFieldNames.COLLATERALS).value;
    const { selectedProduct } = useBookLoanContext();
    const eligibility = eligibilityCriteria(selectedProduct);
-
    return (
       <Box>
          <>
@@ -50,11 +49,11 @@ export const CollateralAndEquityContribFields = () => {
                   {collateralValues.length > 0 ? (
                      <FieldArray
                         render={() =>
-                           loanCollaterals
-                              .filter(({ id }) =>
-                                 collateralValues.some(({ id: itemId }: { id: string }) => itemId === id)
+                           eligibility?.eligibilityCriteriaSecurityDocs
+                              .filter(({ id }: any) =>
+                                 collateralValues?.some(({ id: itemId }: { id: string }) => itemId === id)
                               )
-                              .map(({ labelName, id }, index) => (
+                              .map(({ securityDocName, id }: any, index: any) => (
                                  <CollateralSelected
                                     handleRemove={() => {
                                        arrayFieldsHelper(InputFieldNames.COLLATERALS).removeAllByValue(
@@ -63,8 +62,8 @@ export const CollateralAndEquityContribFields = () => {
                                        );
                                     }}
                                     name={`${InputFieldNames.COLLATERALS}[${index}].`}
-                                    key={labelName}
-                                    collateral={labelName}
+                                    key={securityDocName}
+                                    collateral={securityDocName}
                                  />
                               ))
                         }
@@ -129,11 +128,13 @@ export const CollateralAndEquityContribFields = () => {
                      'id'
                   );
                }}
-               items={loanCollaterals.map(({ labelName, id: loanId }) => ({
-                  labelName: labelName,
-                  checked: collateralValues?.some(({ id }: { id: string }) => id === loanId),
-                  id: loanId,
-               }))}
+               items={eligibility?.eligibilityCriteriaSecurityDocs?.map(
+                  ({ securityDocName, id: loanId }: any) => ({
+                     labelName: securityDocName,
+                     checked: collateralValues?.some(({ id }: { id: string }) => id === loanId),
+                     id: loanId,
+                  })
+               )}
                height="50vh"
                showAddNewItemButton={false}
             />
@@ -141,4 +142,3 @@ export const CollateralAndEquityContribFields = () => {
       </Box>
    );
 };
-const loanCollaterals = [{ labelName: '', id: '1' }];

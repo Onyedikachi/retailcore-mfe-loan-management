@@ -43,7 +43,8 @@ export const LoanTable = () => {
    );
 
    const loanTableBody = useMemo(() => {
-      return (loanProducts?.filter((item) => transformText(item.requestStatus) === 'Approved') ?? [])?.map(
+      return (loanProducts?.filter((item) => transformText(item.requestStatus) === 'Approved' && 
+      item.status !== '' )  ?? [])?.map(
          (item) => {
             return bodyData(
                item,
@@ -88,9 +89,7 @@ export const LoanTable = () => {
                bodyProps={{ rows: loanTableBody }}
             />
          </Box>
-         {loanProducts && loanProducts?.length === 0 && (
-            <Box textAlign="center">No matching record found</Box>
-         )}
+         {loanProducts && loanTableBody?.length === 0 && <Box textAlign="center">No Request Found</Box>}
          <LoanTableDialogs
             action={action}
             id={id}

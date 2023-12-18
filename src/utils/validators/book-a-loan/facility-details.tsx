@@ -232,30 +232,30 @@ const colateralAndEquityContrib = (selectedProduct?: LoanProductData) => {
          })
          .test(
             InputFieldNames.EQUITY_CONTRIB,
-            `Should be equal to ${eligibility?.contributionValueFrom}%, as configured for the selected product`,
+            `Should be equal to ${eligibility?.contribValueFrom}%, as configured for the selected product`,
             function (value) {
                if (value && eligibility?.equityContribType.includes('ixed')) {
-                  return Number(value) === eligibility?.contributionValueFrom;
+                  return Number(value) === eligibility?.contribValueFrom;
                }
                return true;
             }
          )
          .test(
             InputFieldNames.EQUITY_CONTRIB,
-            `Should not be lesser than ${eligibility?.contributionValueFrom}%, as configured for the selected product`,
+            `Should not be lesser than ${eligibility?.contribValueFrom}%, as configured for the selected product`,
             function (value) {
                if (value && eligibility?.equityContribType.includes('ange')) {
-                  return Number(value) >= eligibility?.contributionValueFrom;
+                  return Number(value) >= eligibility?.contribValueFrom;
                }
                return true;
             }
          )
          .test(
             InputFieldNames.EQUITY_CONTRIB,
-            `Should not be greater than ${eligibility?.contributionValueTo}%, as configured for the selected product`,
+            `Should not be greater than ${eligibility?.contribValueTo}%, as configured for the selected product`,
             function (value) {
                if (value && eligibility?.equityContribType.includes('ange')) {
-                  return Number(value) <= eligibility?.contributionValueTo;
+                  return Number(value) <= eligibility?.contribValueTo;
                }
                return true;
             }

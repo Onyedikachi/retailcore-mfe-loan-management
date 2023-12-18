@@ -43,8 +43,9 @@ export const usePermission = (): PermissionHelperProps => {
       permissions?.some((role) => userPermissions?.includes(role));
 
    const checker = [
-      Permissions['AUTHORIZE_BOOKING_RESTRUCTURING_REQUESTS'],
-      Permissions['AUTHORIZE_LIQUIDATION_WRITE_OFF_REQUESTS'],
+      Permissions['AUTHORIZE_BOOKING/RESTRUCTURING_REQUESTS'],
+      Permissions['AUTHORIZE_LIQUIDATION/WRITE-OFF_REQUESTS'],
+      Permissions.VIEW_ALL_LOAN_REQUESTS,
    ];
    const allRecords = [Permissions.VIEW_ALL_LOAN_RECORDS];
    const allRequest = [Permissions.VIEW_ALL_LOAN_REQUESTS];
@@ -58,6 +59,7 @@ export const usePermission = (): PermissionHelperProps => {
       isSuperAdmin || allRequest?.some((element) => userPermissions?.includes(element));
    const canLiquidate = isUserAChecker || liquidate?.some((element) => userPermissions?.includes(element));
    const canWriteOff = isUserAChecker || writeOff?.some((element) => userPermissions?.includes(element));
+   sessionStorage.setItem('superAdmin', `${isSuperAdmin}`);
    return {
       ...authPayload,
       checkPermission,

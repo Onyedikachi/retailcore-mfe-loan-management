@@ -40,4 +40,39 @@ describe('IndividualLoan Component', () => {
       const statusCard = screen.getByText('Performing');
       fireEvent.click(statusCard);
    });
+
+   it('handles status click', () => {
+      renderWithThemeProvider(
+         <IndividualLoanDashboardProvider>
+            <MemoryRouter initialEntries={['/individual?tab=records']}>
+               <IndividualLoan />
+            </MemoryRouter>
+         </IndividualLoanDashboardProvider>
+      );
+      const statusCard = screen.getByText('Closed');
+      fireEvent.click(statusCard);
+   });
+
+   it('handles status click', () => {
+      renderWithThemeProvider(
+         <IndividualLoanDashboardProvider>
+            <MemoryRouter initialEntries={['/individual?tab=records']}>
+               <IndividualLoan />
+            </MemoryRouter>
+         </IndividualLoanDashboardProvider>
+      );
+      const statusCard = screen.getByText('Non-Performing');
+      fireEvent.click(statusCard);
+   });
+   it('handles status click', () => {
+      renderWithThemeProvider(
+         <IndividualLoanDashboardProvider>
+            <MemoryRouter initialEntries={['/individual?tab=records']}>
+               <IndividualLoan />
+            </MemoryRouter>
+         </IndividualLoanDashboardProvider>
+      );
+      const statusCard = screen.getByText('All');
+      fireEvent.click(statusCard);
+   });
 });

@@ -134,7 +134,7 @@ describe('Component <FormControlBase />', () => {
 
          const autocompleteInput = screen.getByRole('combobox');
 
-         await userEvent.type(autocompleteInput, 'Option');
+         await userEvent.type(autocompleteInput, 'Option 1');
 
          // Click the first option from the dropdown
          const option1 = screen.getByText('Option 1');
