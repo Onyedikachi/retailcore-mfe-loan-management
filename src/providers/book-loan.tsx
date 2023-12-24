@@ -1,11 +1,11 @@
 import { Currency, CurrencyListResponse } from '@app/@types';
 import { BookLoanData, BookLoanDataType } from '@app/@types/book-loan';
 import { CustomerData } from '@app/@types/customer';
-import { REQUEST_NAMES } from '@app/constants';
+import { CUSTOMER_MANAGEMENT_PATH, REQUEST_NAMES } from '@app/constants';
 import { mapBookLoanToSchema, mapSchemaToBookLoan } from '@app/mappers/book-loan-mapper';
 import { getDefaultCurrency } from '@app/helper/currency-helper';
 import { createContext, useContext, useState, ReactNode, useMemo, useEffect } from 'react';
-import { useRequestData } from 'react-http-query';
+import { useRequest, useRequestData } from 'react-http-query';
 import { BookedLoanData, LoanProductData } from '@app/@types/loan-product';
 
 type BookLoanSteps = 'customerInformation' | 'facilityDetails' | 'transactionSettings';
@@ -58,6 +58,7 @@ export const BookLoanProvider = ({ children }: BookLoanProviderProps) => {
    const [bookLoanData, setBookLoanData] = useState<BookLoanData>({});
    const currencies = useRequestData<CurrencyListResponse>(REQUEST_NAMES.CURRENCY_LIST);
    const defaultCurrency = getDefaultCurrency(currencies);
+   const { GET_CUSTOMER } = CUSTOMER_MANAGEMENT_PATH;
 
    const [customers, setCustomers] = useState<CustomerData[]>();
    const [accountNumbers, setAccountNumbers] = useState<AccountNumber[]>();
@@ -69,6 +70,14 @@ export const BookLoanProvider = ({ children }: BookLoanProviderProps) => {
    const [backendData, setBackendData] = useState<any>();
    const [isDraft, setIsDraft] = useState<boolean>();
 
+   const [, refetchAllProductInfo] = useRequest({
+      onSuccess: (response) => {
+         setSelectedCustomer(response?.data.data);
+      },
+   });
+   const fetchProductActivities = (id: any) => {
+      refetchAllProductInfo(`${GET_CUSTOMER}/${id}`, { showSuccess: false, showError: false });
+   };
    const updateBookLoanData = (step?: BookLoanSteps, data?: BookLoanDataType) => {
       const isDraft = step === 'customerInformation' || step === 'facilityDetails';
       setIsDraft(isDraft);
@@ -107,8 +116,8 @@ export const BookLoanProvider = ({ children }: BookLoanProviderProps) => {
       setCustomers(customersData);
       const customerAccountInfoArray = customersData?.flatMap((customerData: CustomerData) => {
          const profile = customerData.customer_profiles[0];
-         return customerData.customer_profiles.map((accountBalance) => ({
-            label: accountBalance.customerNumber,
+         return customerData.customer_products.map((accountBalance) => ({
+            label: accountBalance.accountNumber,
             subtitle: `${profile?.firstName} ${profile?.otherNames ?? ''} ${profile?.surname}`,
             customerId: customerData.customerId,
          }));
@@ -116,12 +125,8 @@ export const BookLoanProvider = ({ children }: BookLoanProviderProps) => {
       setAccountNumbers(customerAccountInfoArray);
    };
    const getSelectedCustomer = (id: string) => {
+      fetchProductActivities(id);
       setSelectedCustomerId(id);
-      setSelectedCustomer(
-         customers?.filter((customer) => {
-            return customer?.customerId === id;
-         })[0]
-      );
    };
    const getCustomer = (customersData: CustomerData) => setSelectedCustomer(customersData);
 
