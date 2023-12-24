@@ -27,7 +27,7 @@ export const CustomerInformation: React.FC = () => {
    const { handleNavigation } = useStepperContext();
    const navigate = useNavigate();
    const [openEligibilityModal, setOpenEligibilityModal] = useState<boolean>();
-   const { GET_INDIVIDUAL_CUSTOMERS } = CUSTOMER_MANAGEMENT_PATH;
+   const { GET_INDIVIDUAL_ACCOUNTS } = CUSTOMER_MANAGEMENT_PATH;
    const [searchParams] = useSearchParams();
    const id = searchParams.get('id');
 
@@ -57,17 +57,18 @@ export const CustomerInformation: React.FC = () => {
    useRequest(
       {
          onMount: (makeRequest) => {
-            makeRequest(GET_INDIVIDUAL_CUSTOMERS, {
+            makeRequest(GET_INDIVIDUAL_ACCOUNTS, {
                showSuccess: false,
                showLoader: !accountNumbers,
                query: { size: 20, search: searchInput },
             });
          },
-         onSuccess: (response) => getCustomersData(response.data.data.customer),
+         onSuccess: (response) => {
+            getCustomersData(response?.data?.data.accounts);
+         },
       },
       [searchInput]
    );
-
    return (
       <FormContainer>
          <Formik
