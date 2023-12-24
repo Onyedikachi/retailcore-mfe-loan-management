@@ -20,6 +20,7 @@ export const RETAIL_AUTH_API_PATH = {
 
 export const CUSTOMER_MANAGEMENT_PATH = {
    GET_INDIVIDUAL_CUSTOMERS: `${CUSTOMER_MANAGEMENT_BASE_URL}/v1/customer/profile/type/individual`,
+   GET_INDIVIDUAL_ACCOUNTS: `${CUSTOMER_MANAGEMENT_BASE_URL}/v1/customer/accounts`,
    GET_SME_CUSTOMERS: `${CUSTOMER_MANAGEMENT_BASE_URL}/v1/customer/profile/type/sme`,
    GET_CUSTOMER: `${CUSTOMER_MANAGEMENT_BASE_URL}/v1/customer/profile`,
    GET_CUSTOMER_LEDGER: `${CUSTOMER_MANAGEMENT_BASE_URL}/v1/assign-products`,
