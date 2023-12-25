@@ -25,12 +25,15 @@ export const LoanInformation = () => {
                <List>
                   <AccordionVariant accordionLabels={loanProductSections}>
                      {Object.values(details(selectedProduct, inputtedPrincipal)).map((detail, index) =>
-                        detail.map(({ key, value, heading }) => (
+                        detail?.map(({ key, value, heading, secondValue, secondkey }) => (
                            <GridComponent
                               key={key}
                               property={key}
+                              secondkey={secondkey}
+                              secondproperty={secondkey}
                               value={value?.toString()}
                               heading={heading}
+                              secondValue={secondValue}
                            />
                         ))
                      )}

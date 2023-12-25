@@ -1,7 +1,14 @@
 import { Ellipsis } from '@app/components/atoms/Ellipsis';
 import { Grid, Typography } from '@mui/material';
 
-export const GridComponent: React.FC<{ property: string; value?: string; heading?: string }> = (props) => {
+export const GridComponent: React.FC<{
+   property: string;
+   value?: string;
+   heading?: string;
+   secondValue?: string;
+   secondkey?: string;
+   secondproperty?: string;
+}> = (props) => {
    return (
       <>
          {props?.heading && (
@@ -16,6 +23,17 @@ export const GridComponent: React.FC<{ property: string; value?: string; heading
             <Grid item xs={5} fontWeight="400">
                <Ellipsis text={props?.value ?? ''} />
             </Grid>
+
+            {props?.secondValue ? (
+               <>
+                  <Grid item xs={7} pr={1}>
+                     <Ellipsis text={props?.secondproperty ?? ''} />
+                  </Grid>
+                  <Grid item xs={5} fontWeight="400">
+                     <Ellipsis text={props?.secondValue ?? ''} />
+                  </Grid>
+               </>
+            ) : null}
          </Grid>
       </>
    );
