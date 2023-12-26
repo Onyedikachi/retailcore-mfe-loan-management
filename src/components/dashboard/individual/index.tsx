@@ -40,17 +40,39 @@ export const IndividualLoan = () => {
          getLoanProducts(response.data.data.loan, response.data.data.statistics, tab as string),
    });
 
+   function convertToUppercase(sentence: string): string {
+      const result: string = sentence.replace(/[\s-]/g, '').toUpperCase();
+      return result;
+  }
+
    useEffect(() => {
-      const transformedArray = queryByStatus?.map((item) => item.toUpperCase().replace(/-/g, '_'));
-      getLoans(
-         `${API_PATH.IndividualLoan}${
-            (transformedArray ?? []).length > 0 && !transformedArray?.includes('ALL')
-               ? `?status=${JSON.stringify(transformedArray)}`
-               : `?All=${true}`
-         }`,
-         { showSuccess: false }
-      );
-   }, [queryByStatus]);
+      const transformedArray = queryByStatus?.map((item) => item.toUpperCase().replace(/-/g, '_')); 
+          if(queryByStatus?.[0] === 'All'){
+            getLoans(
+               API_PATH.IndividualLoan,{
+                  showSuccess: false,
+                  query: {
+                     initiator: convertToUppercase(options),
+                        All:true,
+                        count:1000
+                  },
+               }
+            );
+      }else{
+         getLoans(
+            API_PATH.IndividualLoan,{
+               showSuccess: false,
+               query: {
+                  initiator: convertToUppercase(options),
+               status:JSON.stringify(transformedArray),
+                     All:transformedArray ?false:true,
+                     count:1000
+               },
+            }
+         );
+      }
+   
+   }, [queryByStatus,options]);
 
    return (
       <StyledContentWrapper>
