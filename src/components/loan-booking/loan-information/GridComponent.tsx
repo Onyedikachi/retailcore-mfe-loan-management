@@ -8,6 +8,12 @@ export const GridComponent: React.FC<{
    secondValue?: string;
    secondkey?: string;
    secondproperty?: string;
+   thirdkey?: string;
+   thirdproperty?: string;
+   thirdValue?: string;
+   fourthkey?: string;
+   fourthproperty?: string;
+   fourthValue?: string;
 }> = (props) => {
    return (
       <>
@@ -21,7 +27,7 @@ export const GridComponent: React.FC<{
                <Ellipsis text={props?.property} />
             </Grid>
             <Grid item xs={5} fontWeight="400">
-               <Ellipsis text={props?.value ?? ''} />
+               <Typography sx={{ fontSize: 13, mb: 2 }}>{props?.value ?? ''}</Typography>
             </Grid>
 
             {props?.secondValue ? (
@@ -30,7 +36,29 @@ export const GridComponent: React.FC<{
                      <Ellipsis text={props?.secondproperty ?? ''} />
                   </Grid>
                   <Grid item xs={5} fontWeight="400">
-                     <Ellipsis text={props?.secondValue ?? ''} />
+                     <Typography sx={{ fontSize: 13, mb: 2 }}>{props?.secondValue ?? ''}</Typography>
+                  </Grid>
+               </>
+            ) : null}
+
+            {props?.thirdValue ? (
+               <>
+                  <Grid item xs={7} pr={1}>
+                     <Ellipsis text={props?.thirdproperty ?? ''} />
+                  </Grid>
+                  <Grid item xs={5} fontWeight="400">
+                     <Typography sx={{ fontSize: 13, mb: 2 }}>{props?.thirdValue ?? ''}</Typography>
+                  </Grid>
+               </>
+            ) : null}
+
+            {props?.fourthValue ? (
+               <>
+                  <Grid item xs={7} pr={1}>
+                     <Ellipsis text={props?.fourthproperty ?? ''} />
+                  </Grid>
+                  <Grid item xs={5} fontWeight="400">
+                     <Typography sx={{ fontSize: 13, mb: 2 }}>{props?.fourthValue ?? ''}</Typography>
                   </Grid>
                </>
             ) : null}

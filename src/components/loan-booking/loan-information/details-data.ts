@@ -7,13 +7,30 @@ export const details = (
    inputtedPrincipal?: string
 ): Record<
    string,
-   { key: string; value?: string; heading?: string; secondValue?: string; secondkey?: string }[]
+   {
+      key: string;
+      value?: string;
+      heading?: string;
+      secondValue?: string;
+      secondkey?: string;
+      thirdkey?: string;
+      thirdValue?: string;
+      fourthkey?: string;
+      fourthValue?: string;
+   }[]
 > => {
    const { maxInterestRate, minInterestRate } = findInterestRates(
       selectedProduct,
       currencyToNumber(inputtedPrincipal ?? '')
    );
    const eligibility = eligibilityCriteria(selectedProduct);
+
+   const securityDocuments = eligibility?.eligibilityCriteriaSecurityDocs?.map(
+      (documents: any, index: any) => ({
+         key: `Collateral ${index + 1}`,
+         value: documents.securityDocName,
+      })
+   );
 
    const penalty = selectedProduct?.chargesTaxesPenalty;
    const extractedInfoForAllEntries = selectedProduct?.accountingEntry?.map((entry: any) => ({
@@ -27,6 +44,47 @@ export const details = (
       value: entry.debitLedgerName,
       secondkey: 'Credit Ledger',
       secondValue: entry.creditLedgerName,
+   }));
+
+   const charges: any[] = [];
+   const taxes: any[] = [];
+
+   selectedProduct?.chargesTaxesPenalty?.chargeTaxEvent?.forEach((item: any, index: any) => {
+      item.chargeTaxList.forEach((chargeTax: any) => {
+         if (chargeTax.type === 'charge') {
+            charges.push({
+               chargeNumber: index + 1,
+               name: chargeTax.name,
+               chargeAmount: chargeTax.charge,
+               eventName: item?.event,
+               ledgers: chargeTax.ledgers[0].name,
+               type: 'charge',
+            });
+         } else if (chargeTax.type === 'tax') {
+            taxes.push({
+               taxNumber: index + 1,
+               name: chargeTax.name,
+               taxAmount: chargeTax.charge,
+               eventName: item?.event,
+               //  ledgers: chargeTax?.ledgers?.map((ledger: any) => ledger.name)
+               ledgers: chargeTax.ledgers[0].name,
+               type: 'tax',
+            });
+         }
+      });
+   });
+   const mergedArray = [...charges, ...taxes];
+
+   const chargesAndTax = mergedArray?.map((entry: any) => ({
+      heading: entry.type === 'charge' ? `Charge ${entry.chargeNumber}` : `Tax ${entry.taxNumber}`,
+      key: 'Event',
+      value: entry.eventName,
+      secondkey: entry.type === 'charge' ? 'Charge Name' : 'Tax Name',
+      secondValue: entry.name,
+      thirdkey: 'Charge Value',
+      thirdValue: entry.type === 'charge' ? `${entry.chargeAmount}` : `${entry.taxAmount}`,
+      fourthkey: 'Impacted Ledger',
+      fourthValue: entry.ledgers,
    }));
 
    return {
@@ -48,7 +106,7 @@ export const details = (
       ],
       collateral: [
          ...(eligibility?.requireSecurity
-            ? [{ heading: 'Applicable collateral assets', key: 'Collateral', value: '' }]
+            ? [{ heading: 'Applicable collateral assets' }, ...securityDocuments]
             : []),
          ...(eligibility?.requireEquityContrib
             ? [
@@ -63,11 +121,10 @@ export const details = (
             ? [{ key: 'Max. Contribution', value: `${eligibility?.contribValueTo}%` }]
             : []),
       ],
-      penaltySetup: [],
-      chargesAndTaxes: [
-         { key: 'Breach Penalty', value: penalty?.breachPenalty },
+      chargesAndTaxes: chargesAndTax,
+      penaltySetup: [
+         { heading: 'Late Payment', key: 'Breach Penalty', value: penalty?.breachPenalty },
          { key: 'Interest Rate', value: penalty?.interestRate },
-         { key: 'Penalty Required', value: penalty?.isPenaltyReq },
       ],
       // disbursementSetting: [],
       // repaymentSetting: [],
