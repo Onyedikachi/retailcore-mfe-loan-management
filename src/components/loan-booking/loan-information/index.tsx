@@ -25,17 +25,35 @@ export const LoanInformation = () => {
                <List>
                   <AccordionVariant accordionLabels={loanProductSections}>
                      {Object.values(details(selectedProduct, inputtedPrincipal)).map((detail, index) =>
-                        detail?.map(({ key, value, heading, secondValue, secondkey }) => (
-                           <GridComponent
-                              key={key}
-                              property={key}
-                              secondkey={secondkey}
-                              secondproperty={secondkey}
-                              value={value?.toString()}
-                              heading={heading}
-                              secondValue={secondValue}
-                           />
-                        ))
+                        detail?.map(
+                           ({
+                              key,
+                              value,
+                              heading,
+                              secondValue,
+                              secondkey,
+                              thirdkey,
+                              thirdValue,
+                              fourthkey,
+                              fourthValue,
+                           }) => (
+                              <GridComponent
+                                 key={key}
+                                 property={key}
+                                 secondkey={secondkey}
+                                 secondproperty={secondkey}
+                                 thirdkey={thirdkey}
+                                 thirdproperty={thirdkey}
+                                 fourthkey={fourthkey}
+                                 fourthproperty={fourthkey}
+                                 value={value?.toString()}
+                                 heading={heading}
+                                 secondValue={secondValue}
+                                 thirdValue={thirdValue}
+                                 fourthValue={fourthValue}
+                              />
+                           )
+                        )
                      )}
                   </AccordionVariant>
                </List>
