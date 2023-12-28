@@ -39,8 +39,6 @@ export const CheckerLoanTable = () => {
       [tab, loanProducts, isUserAChecker]
    );
 
-  
-
    const loanTableBody = useMemo(() => {
       return (loanProducts ?? [])
          .filter((item) => {

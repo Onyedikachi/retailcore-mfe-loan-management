@@ -11,7 +11,7 @@ export const customerInfo = (customer: CustomerData, persona?: string) => {
       customer.status == 'Active' && customer.approvalStatus == 'Approved' ? 'Complete' : 'Incomplete';
    return [
       { key: 'Customer Name', value: `${firstName ?? ''} ${otherNames ?? ''} ${surname ?? ''}` },
-      { key: 'Customer ID', value: profile.customerNumber },
+      { key: 'Customer ID', value: customer?.customer_products[0].accountNumber },
       { key: 'Customer Type', value: customer.customerType },
       {
          key: 'Status',
