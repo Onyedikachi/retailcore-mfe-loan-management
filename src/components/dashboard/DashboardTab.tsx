@@ -62,7 +62,7 @@ export const Filters = (props: FiltersProps) => {
    const [searchParams] = useSearchParams();
    const [defaultInitiator, setDefaultInitiator] = useState<string>();
    const navigate = useNavigate();
-   const { accessAllRecords, checkPermission } = usePermission();
+   const { accessAllRecords } = usePermission();
    const defaultKey = accessAllRecords ? props.tabOptions[0]?.key : props.tabOptions[1]?.key;
 
    const defaultActiveTab = searchParams.get('tab') ?? props.defaultTabKey ?? defaultKey;

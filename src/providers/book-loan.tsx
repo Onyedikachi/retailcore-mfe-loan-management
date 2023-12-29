@@ -60,7 +60,7 @@ export const BookLoanProvider = ({ children }: BookLoanProviderProps) => {
    const defaultCurrency = getDefaultCurrency(currencies);
    const { GET_CUSTOMER } = CUSTOMER_MANAGEMENT_PATH;
 
-   const [customers, setCustomers] = useState<CustomerData[]>();
+   const [, setCustomers] = useState<CustomerData[]>();
    const [accountNumbers, setAccountNumbers] = useState<AccountNumber[]>();
    const [selectedCustomerId, setSelectedCustomerId] = useState<string>();
    const [selectedCustomer, setSelectedCustomer] = useState<CustomerData>();

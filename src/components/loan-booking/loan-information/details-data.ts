@@ -2,23 +2,22 @@ import { eligibilityCriteria, findInterestRates } from '@app/constants/book-loan
 import { formatCurrency } from '@app/helper/currency-converter';
 import { currencyToNumber } from '@app/helper/currency-helper';
 
+interface ProductDetail {
+   key: string;
+   value?: string;
+   heading?: string;
+   secondValue?: string;
+   secondkey?: string;
+   thirdkey?: string;
+   thirdValue?: string;
+   fourthkey?: string;
+   fourthValue?: string;
+}
+
 export const details = (
    selectedProduct: any,
    inputtedPrincipal?: string
-): Record<
-   string,
-   {
-      key: string;
-      value?: string;
-      heading?: string;
-      secondValue?: string;
-      secondkey?: string;
-      thirdkey?: string;
-      thirdValue?: string;
-      fourthkey?: string;
-      fourthValue?: string;
-   }[]
-> => {
+): Record<string, ProductDetail[]> => {
    const { maxInterestRate, minInterestRate } = findInterestRates(
       selectedProduct,
       currencyToNumber(inputtedPrincipal ?? '')
@@ -66,7 +65,6 @@ export const details = (
                name: chargeTax.name,
                taxAmount: chargeTax.charge,
                eventName: item?.event,
-               //  ledgers: chargeTax?.ledgers?.map((ledger: any) => ledger.name)
                ledgers: chargeTax.ledgers[0].name,
                type: 'tax',
             });
