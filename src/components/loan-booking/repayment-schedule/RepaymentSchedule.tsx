@@ -10,7 +10,6 @@ import { Box, Divider, Typography } from '@mui/material';
 import { useEffect, useMemo, useState } from 'react';
 import { useRequest } from 'react-http-query';
 import { Table } from '@app/components/table';
-// import { downloadAsCSVByID } from '@app/helper/pdfDownloader';
 import { useBookLoanContext } from '@app/providers/book-loan';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { mapRepaymentScheduleToSchema } from '@app/mappers/book-loan-mapper';

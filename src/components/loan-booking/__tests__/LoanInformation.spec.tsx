@@ -22,5 +22,7 @@ describe('CustomerAccountInformation', () => {
       expect(getByText('Loan Information')).toBeInTheDocument();
       expect(getByText('Facility Details')).toBeInTheDocument();
       expect(getByText('Collateral & Equity Contribution')).toBeInTheDocument();
+      expect(getByText('Penalty Setup')).toBeInTheDocument();
+      expect(getByText('Account Entires')).toBeInTheDocument();
    });
 });

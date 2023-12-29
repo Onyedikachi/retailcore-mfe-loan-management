@@ -3,7 +3,6 @@ import FormControlWrapper from '@app/components/forms/FormControlWrapper';
 import { Box } from '@mui/material';
 import { FormControlBase } from '@app/components/forms/FormControl';
 import { useFormikContext } from 'formik';
-import { useFormikHelper } from '@app/hooks/useFormikHelper';
 
 export const RepaymentSettingsFields = () => {
    const { InputFieldNames, TooltipText, repaymentAccount, repaymentChannels } = FormMeta;
