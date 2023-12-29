@@ -27,22 +27,6 @@ export const bodyData = (
       tab === 'records'
          ? transformText(loan?.requestStatus.toLocaleLowerCase() === 'approved' ? loan?.status : '')
          : transformText(loan!.requestStatus);
-   // let status;
-   // if (tab === 'records') {
-   // if (getStatus === 'Approved') {
-   //    status = 'Non-Performing';
-   // } else {
-   //    status = getStatus;
-   // }
-   // } else {
-   // if (getStatus === 'Pending') {
-   //    status = 'Pending';
-   // } else if (getStatus === 'Reject') {
-   //    status = 'In-Issue';
-   // } else {
-   //    status = getStatus;
-   // }
-   // }
 
    return {
       customerName: (

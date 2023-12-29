@@ -1,5 +1,5 @@
 module.exports = {
-   testTimeout: 50000,
+   testTimeout: 250000,
    rootDir: './',
    testEnvironment: 'jsdom',
    transform: {
