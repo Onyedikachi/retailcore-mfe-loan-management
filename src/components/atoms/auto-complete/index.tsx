@@ -59,7 +59,7 @@ export interface AutocompleteOptions {
 export const Autocomplete: React.FC<AutocompleteProps> = ({
    name,
    search,
-   debounceTime = 1000,
+   debounceTime = 10,
    handleSearch,
    listBoxMaxHeight,
    placeholder,
