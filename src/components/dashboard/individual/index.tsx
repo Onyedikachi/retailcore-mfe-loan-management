@@ -41,6 +41,17 @@ export const IndividualLoan = () => {
    });
 
    function convertToUppercase(sentence: string): string {
+      const lowerCaseSentence = sentence.toLowerCase();
+      if (lowerCaseSentence === 'initiated system-wide') {
+          return 'INITIATEDBYSYSTEM';
+      } else if (lowerCaseSentence === 'sent system-wide') {
+          return 'SENTBYSYSTEM';
+      } else if (lowerCaseSentence === 'created system-wide') {
+          return 'CREATEDBYSYSTEM';
+      } else if (lowerCaseSentence === 'approved system-wise') {
+          return 'APPROVEDBYSYSTEM';
+      }
+  
       const result: string = sentence.replace(/[\s-]/g, '').toUpperCase();
       return result;
   }
