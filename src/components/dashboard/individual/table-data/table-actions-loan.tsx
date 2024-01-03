@@ -4,7 +4,7 @@ import { BookIndividualLoanPath, CustomerLoanDetailsPath } from '@app/constants/
 import { format } from 'date-fns';
 import { NavigateFunction } from 'react-router-dom';
 
-export const tableQuery = (
+export const loanTableQuery = (
    searchText: string,
    queryByProductName: string[] | undefined,
    queryByStatus: string[] | undefined,
@@ -13,7 +13,7 @@ export const tableQuery = (
    
 
 ) => {
-
+    
    const queryParams: { [key: string]: any } = {};
    if (searchText) {
       queryParams.Search = searchText;
@@ -34,7 +34,7 @@ export const tableQuery = (
       queryParams.EndDate = queryByDate[1];
    }
    if (Object.keys(queryParams).length === 0) {
-      queryParams.Initiator = checker ? 'SENTOME' : 'INITIATEDBYME' ;
+      queryParams.Initiator = !checker ? 'CREATEDBYME' : 'APPROVEDBYME' ;
    }
    return queryParams;
 };

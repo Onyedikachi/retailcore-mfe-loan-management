@@ -30,7 +30,7 @@ export const IndividualLoan = () => {
 
    useRequest({
       onMount: (makeRequest) => {
-         makeRequest(`${API_PATH.IndividualLoan}?All=${true}`, { showSuccess: false });
+         makeRequest(`${API_PATH.IndividualLoan}`, { showSuccess: false });
       },
       onSuccess: (response) =>
          getLoanProducts(response.data.data.loan, response.data.data.statistics, tab as string),
@@ -64,8 +64,6 @@ export const IndividualLoan = () => {
                   showSuccess: false,
                   query: {
                      initiator: convertToUppercase(options),
-                        All:true,
-                        count:1000
                   },
                }
             );
@@ -76,8 +74,6 @@ export const IndividualLoan = () => {
                query: {
                   initiator: convertToUppercase(options),
                status:JSON.stringify(transformedArray),
-                     All:transformedArray ?false:true,
-                     count:1000
                },
             }
          );
@@ -104,7 +100,7 @@ export const IndividualLoan = () => {
             )}
          />
          {tab === 'records' ? (
-            <LoanTable />
+            <LoanTable  checker={checkerOption}/>
          ) : checkerOption && tab === 'requests' ? (
             <CheckerLoanTable />
          ) : (
