@@ -13,7 +13,7 @@ export const loanTableQuery = (
    
 
 ) => {
-    console.log(checker,'c');
+    
    const queryParams: { [key: string]: any } = {};
    if (searchText) {
       queryParams.Search = searchText;

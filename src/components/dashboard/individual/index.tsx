@@ -55,7 +55,7 @@ export const IndividualLoan = () => {
       const result: string = sentence.replace(/[\s-]/g, '').toUpperCase();
       return result;
   }
-console.log(checkerOption,'checkerOption');
+
    useEffect(() => {
       const transformedArray = queryByStatus?.map((item) => item.toUpperCase().replace(/-/g, '_')); 
           if(queryByStatus?.[0] === 'All'){
