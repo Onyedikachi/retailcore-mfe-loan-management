@@ -72,9 +72,11 @@ export const MakerLoanTable = () => {
          makerLoanTableSearchText,
          makerLoanTableQueryByProductName,
          makerLoanTableQueryByStatus,
-         makerLoanTableQueryByDate
+         makerLoanTableQueryByDate,
+         false
       );
       const urlSearchParams = new URLSearchParams(queryParams).toString();
+
       const url = `${API_PATH.IndividualLoan}?${urlSearchParams}`;
       getLoans(url, { showSuccess: false });
    }, [
@@ -88,7 +90,7 @@ export const MakerLoanTable = () => {
       <Box sx={{ p: 2, pt: 3, bgcolor: 'white', borderRadius: 2, border: '1px solid #E5E9EB' }}>
          <TableHeading
             handleSearch={setMakerLoanTableSearchText}
-            handleRefresh={() => getLoans(`${API_PATH.IndividualLoan}?All=${true}`, { showSuccess: false })}
+            handleRefresh={() => getLoans(`${API_PATH.IndividualLoan}`, { showSuccess: false })}
             handleDownload={() =>
                downloadAsCSVByID(
                   'maker-loan-table',
