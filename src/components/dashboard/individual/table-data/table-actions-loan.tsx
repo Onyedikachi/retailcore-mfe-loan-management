@@ -5,36 +5,33 @@ import { format } from 'date-fns';
 import { NavigateFunction } from 'react-router-dom';
 
 export const loanTableQuery = (
-   searchText: string,
-   queryByProductName: string[] | undefined,
-   queryByStatus: string[] | undefined,
-   queryByDate: string[] | undefined,
-   checker?: boolean,
-   
-
+   searchTextLoan: string,
+   queryByProductNameLoan: string[] | undefined,
+   queryByStatusLoan: string[] | undefined,
+   queryByDateLoan: string[] | undefined,
+   checkerLoan?: boolean
 ) => {
-    
    const queryParams: { [key: string]: any } = {};
-   if (searchText) {
-      queryParams.Search = searchText;
+   if (searchTextLoan) {
+      queryParams.Search = searchTextLoan;
    }
-   if (queryByProductName && queryByProductName.length > 0) {
-      queryParams.LoanProduct = JSON.stringify(queryByProductName);
+   if (queryByProductNameLoan && queryByProductNameLoan.length > 0) {
+      queryParams.LoanProduct = JSON.stringify(queryByProductNameLoan);
    }
-   if (queryByStatus && queryByStatus.length > 0) {
+   if (queryByStatusLoan && queryByStatusLoan.length > 0) {
       queryParams.status = JSON.stringify(
-         queryByStatus.map((status) => {
-            let stat = checker && status == 'Pending' ? 'In-Review' : status;
+         queryByStatusLoan.map((status) => {
+            const stat = checkerLoan && status == 'Pending' ? 'In-Review' : status;
             return stat.toUpperCase().replace(/-/g, '_');
          })
       );
    }
-   if (queryByDate && queryByDate.length === 2) {
-      queryParams.StartDate = queryByDate[0];
-      queryParams.EndDate = queryByDate[1];
+   if (queryByDateLoan && queryByDateLoan.length === 2) {
+      queryParams.StartDate = queryByDateLoan[0];
+      queryParams.EndDate = queryByDateLoan[1];
    }
    if (Object.keys(queryParams).length === 0) {
-      queryParams.Initiator = !checker ? 'CREATEDBYME' : 'APPROVEDBYME' ;
+      queryParams.Initiator = !checkerLoan ? 'CREATEDBYME' : 'APPROVEDBYME';
    }
    return queryParams;
 };
@@ -60,13 +57,13 @@ export const handleActions = (
 export const handleDateQuery = (
    startDate: Date | undefined,
    endDate: Date | undefined,
-   setQueryByDate: React.Dispatch<React.SetStateAction<string[] | undefined>>
+   setQueryByDateLoan: React.Dispatch<React.SetStateAction<string[] | undefined>>
 ) => {
    if (startDate || endDate) {
       const start = format(new Date(startDate!), 'yyyy-MM-dd');
       const end = format(new Date(endDate!), 'yyyy-MM-dd');
-      setQueryByDate([start, end]);
+      setQueryByDateLoan([start, end]);
    } else {
-      setQueryByDate(undefined);
+      setQueryByDateLoan(undefined);
    }
 };
