@@ -12,20 +12,15 @@ import { capitalizeString, transformText } from '@app/helper/string';
 import { useIndividualLoanDashboardContext } from '@app/providers/individual-loan-dashboard';
 import { useRequest } from 'react-http-query';
 import { LoanTableDialogs } from './LoanTableDialogs';
-import { tableQuery, handleActions, handleDateQuery } from './table-data/table-actions';
+import { handleActions, handleDateQuery } from './table-data/table-actions';
 import { usePermission } from '@app/hooks/usePermission';
 import { loanTableQuery } from './table-data/table-actions-loan';
 
 interface MyComponentProps {
    checker?: boolean;
-   // other props...
- }
+}
 
-export const LoanTable = (
-   {
-      checker
-   }: MyComponentProps
-) => {
+export const LoanTable = ({ checker }: MyComponentProps) => {
    const [searchParams] = useSearchParams();
    const tab = searchParams.get('tab');
    const [action, setAction] = useState('');
@@ -47,27 +42,28 @@ export const LoanTable = (
             (loanProduct) => setQueryByProductName(loanProduct),
             (loanStatus) => setQueryByStatus(loanStatus),
             (startDate, endDate) => handleDateQuery(startDate, endDate, setQueryByDate),
-            tab!!
+            tab!
          ),
       [tab, loanProducts]
    );
 
    const loanTableBody = useMemo(() => {
-      return (loanProducts?.filter((item) => transformText(item.requestStatus) === 'Approved' && 
-      item.status !== '' )  ?? [])?.map(
-         (item) => {
-            return bodyData(
-               item,
-               (selectedAction) => {
-                  setId(item.id);
-                  setAction(selectedAction);
-                  handleActions(selectedAction, navigate, item, setOpenLoanAction, setOpenDeleteAction);
-               },
-               tab!!,
-               permission
-            );
-         }
-      );
+      return (
+         loanProducts?.filter(
+            (item) => transformText(item.requestStatus) === 'Approved' && item.status !== ''
+         ) ?? []
+      )?.map((item) => {
+         return bodyData(
+            item,
+            (selectedAction) => {
+               setId(item.id);
+               setAction(selectedAction);
+               handleActions(selectedAction, navigate, item, setOpenLoanAction, setOpenDeleteAction);
+            },
+            tab!,
+            permission
+         );
+      });
    }, [tab, loanProducts, permission]);
 
    const [, getLoans] = useRequest({
@@ -75,7 +71,7 @@ export const LoanTable = (
    });
 
    useEffect(() => {
-      const queryParams = loanTableQuery(searchText, queryByProductName, queryByStatus, queryByDate,checker);
+      const queryParams = loanTableQuery(searchText, queryByProductName, queryByStatus, queryByDate, checker);
       const urlSearchParams = new URLSearchParams(queryParams).toString();
       const url = `${API_PATH.IndividualLoan}?${urlSearchParams}`;
       getLoans(url, { showSuccess: false });
@@ -87,7 +83,7 @@ export const LoanTable = (
             handleSearch={setSearchText}
             handleRefresh={() => getLoans(`${API_PATH.IndividualLoan}`, { showSuccess: false })}
             handleDownload={() =>
-               downloadAsCSVByID(`loan-table`, `Individual Loan ${capitalizeString(tab!)}`)
+               downloadAsCSVByID('loan-table', `Individual Loan ${capitalizeString(tab!)}`)
             }
             searchPlaceholder="Search by customer name/account"
          />
