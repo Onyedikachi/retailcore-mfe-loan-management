@@ -46,6 +46,7 @@ export const ProcessSummary = () => {
          await submitForm(API_PATH.IndividualLoan, {
             body: {
                ...backendData,
+               isDraft: false,
                IsUserSuperAdmin: sessionStorage.getItem('superAdmin') === 'true' ? true : false,
                customerLedgerId: response.data.data[0].ledgerId,
             },
@@ -60,6 +61,7 @@ export const ProcessSummary = () => {
             body: {
                ...backendData,
                id: id,
+               isDraft: false,
                IsUserSuperAdmin: sessionStorage.getItem('superAdmin') === 'true' ? true : false,
                showSuccess: false,
             },

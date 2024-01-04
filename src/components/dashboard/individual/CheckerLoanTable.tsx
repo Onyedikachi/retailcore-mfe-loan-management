@@ -39,8 +39,6 @@ export const CheckerLoanTable = () => {
       [tab, loanProducts, isUserAChecker]
    );
 
-  
-
    const loanTableBody = useMemo(() => {
       return (loanProducts ?? [])
          .filter((item) => {
@@ -71,7 +69,7 @@ export const CheckerLoanTable = () => {
       <Box sx={{ p: 2, pt: 3, bgcolor: 'white', borderRadius: 2, border: '1px solid #E5E9EB' }}>
          <TableHeading
             handleSearch={setSearchText}
-            handleRefresh={() => getLoans(`${API_PATH.IndividualLoan}?All=${true}`, { showSuccess: false })}
+            handleRefresh={() => getLoans(`${API_PATH.IndividualLoan}`, { showSuccess: false })}
             handleDownload={() =>
                downloadAsCSVByID('checker-loan-table', `Individual Loan ${capitalizeString(tab!)}`)
             }

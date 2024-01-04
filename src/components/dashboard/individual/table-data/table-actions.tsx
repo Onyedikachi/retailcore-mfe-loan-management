@@ -9,8 +9,11 @@ export const tableQuery = (
    queryByProductName: string[] | undefined,
    queryByStatus: string[] | undefined,
    queryByDate: string[] | undefined,
-   checker?: boolean
+   checker?: boolean,
+   
+
 ) => {
+
    const queryParams: { [key: string]: any } = {};
    if (searchText) {
       queryParams.Search = searchText;
@@ -31,7 +34,7 @@ export const tableQuery = (
       queryParams.EndDate = queryByDate[1];
    }
    if (Object.keys(queryParams).length === 0) {
-      queryParams.All = true;
+      queryParams.Initiator = checker ? 'SENTOME' : 'INITIATEDBYME' ;
    }
    return queryParams;
 };

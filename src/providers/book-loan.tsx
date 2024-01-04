@@ -60,7 +60,7 @@ export const BookLoanProvider = ({ children }: BookLoanProviderProps) => {
    const defaultCurrency = getDefaultCurrency(currencies);
    const { GET_CUSTOMER } = CUSTOMER_MANAGEMENT_PATH;
 
-   const [customers, setCustomers] = useState<CustomerData[]>();
+   const [, setCustomers] = useState<CustomerData[]>();
    const [accountNumbers, setAccountNumbers] = useState<AccountNumber[]>();
    const [selectedCustomerId, setSelectedCustomerId] = useState<string>();
    const [selectedCustomer, setSelectedCustomer] = useState<CustomerData>();
@@ -79,7 +79,8 @@ export const BookLoanProvider = ({ children }: BookLoanProviderProps) => {
       refetchAllProductInfo(`${GET_CUSTOMER}/${id}`, { showSuccess: false, showError: false });
    };
    const updateBookLoanData = (step?: BookLoanSteps, data?: BookLoanDataType) => {
-      const isDraft = step === 'customerInformation' || step === 'facilityDetails';
+      const isDraft =
+         step === 'customerInformation' || step === 'facilityDetails' || step === 'transactionSettings';
       setIsDraft(isDraft);
       if (data && step) {
          setBookLoanData((prevData) => {
