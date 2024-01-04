@@ -14,8 +14,18 @@ import { useRequest } from 'react-http-query';
 import { LoanTableDialogs } from './LoanTableDialogs';
 import { tableQuery, handleActions, handleDateQuery } from './table-data/table-actions';
 import { usePermission } from '@app/hooks/usePermission';
+import { loanTableQuery } from './table-data/table-actions-loan';
 
-export const LoanTable = () => {
+interface MyComponentProps {
+   checker?: boolean;
+   // other props...
+ }
+
+export const LoanTable = (
+   {
+      checker
+   }: MyComponentProps
+) => {
    const [searchParams] = useSearchParams();
    const tab = searchParams.get('tab');
    const [action, setAction] = useState('');
@@ -65,7 +75,7 @@ export const LoanTable = () => {
    });
 
    useEffect(() => {
-      const queryParams = tableQuery(searchText, queryByProductName, queryByStatus, queryByDate);
+      const queryParams = loanTableQuery(searchText, queryByProductName, queryByStatus, queryByDate,checker);
       const urlSearchParams = new URLSearchParams(queryParams).toString();
       const url = `${API_PATH.IndividualLoan}?${urlSearchParams}`;
       getLoans(url, { showSuccess: false });
@@ -75,7 +85,7 @@ export const LoanTable = () => {
       <Box sx={{ p: 2, pt: 3, bgcolor: 'white', borderRadius: 2, border: '1px solid #E5E9EB' }}>
          <TableHeading
             handleSearch={setSearchText}
-            handleRefresh={() => getLoans(`${API_PATH.IndividualLoan}?All=${true}`, { showSuccess: false })}
+            handleRefresh={() => getLoans(`${API_PATH.IndividualLoan}`, { showSuccess: false })}
             handleDownload={() =>
                downloadAsCSVByID(`loan-table`, `Individual Loan ${capitalizeString(tab!)}`)
             }

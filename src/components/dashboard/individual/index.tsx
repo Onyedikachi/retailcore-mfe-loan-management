@@ -30,7 +30,7 @@ export const IndividualLoan = () => {
 
    useRequest({
       onMount: (makeRequest) => {
-         makeRequest(`${API_PATH.IndividualLoan}?All=${true}`, { showSuccess: false });
+         makeRequest(`${API_PATH.IndividualLoan}`, { showSuccess: false });
       },
       onSuccess: (response) =>
          getLoanProducts(response.data.data.loan, response.data.data.statistics, tab as string),
@@ -41,6 +41,17 @@ export const IndividualLoan = () => {
    });
 
    function convertToUppercase(sentence: string): string {
+      const lowerCaseSentence = sentence.toLowerCase();
+      if (lowerCaseSentence === 'initiated system-wide') {
+          return 'INITIATEDBYSYSTEM';
+      } else if (lowerCaseSentence === 'sent system-wide') {
+          return 'SENTBYSYSTEM';
+      } else if (lowerCaseSentence === 'created system-wide') {
+          return 'CREATEDBYSYSTEM';
+      } else if (lowerCaseSentence === 'approved system-wise') {
+          return 'APPROVEDBYSYSTEM';
+      }
+  
       const result: string = sentence.replace(/[\s-]/g, '').toUpperCase();
       return result;
   }
@@ -53,8 +64,6 @@ export const IndividualLoan = () => {
                   showSuccess: false,
                   query: {
                      initiator: convertToUppercase(options),
-                        All:true,
-                        count:1000
                   },
                }
             );
@@ -65,8 +74,6 @@ export const IndividualLoan = () => {
                query: {
                   initiator: convertToUppercase(options),
                status:JSON.stringify(transformedArray),
-                     All:transformedArray ?false:true,
-                     count:1000
                },
             }
          );
@@ -93,7 +100,7 @@ export const IndividualLoan = () => {
             )}
          />
          {tab === 'records' ? (
-            <LoanTable />
+            <LoanTable  checker={checkerOption}/>
          ) : checkerOption && tab === 'requests' ? (
             <CheckerLoanTable />
          ) : (
