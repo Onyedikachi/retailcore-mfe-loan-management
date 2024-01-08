@@ -188,6 +188,8 @@ interface LoanActivity {
 }
 
 interface StatusCounts {
+   allRecords?: number;
+   allRequest?: number;
    pending?: number;
    approved?: number;
    inReview?: number;
