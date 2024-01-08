@@ -48,10 +48,18 @@ export const LoanTable = ({ checker }: MyComponentProps) => {
    );
 
    const loanTableBody = useMemo(() => {
+
+      const allowedStatus = ['Nonperforming', 'Performing', 'Closed'];
+
       return (
-         loanProducts?.filter(
-            (item) => transformText(item.requestStatus) === 'Approved' && item.status !== ''
-         ) ?? []
+         loanProducts?.filter((item) => {
+            const transformedStatus = transformText(item.status);
+            return (
+              transformText(item.requestStatus) === 'Approved' &&
+              transformedStatus !== '' &&
+              allowedStatus.includes(transformedStatus)
+            );
+          }) ?? []
       )?.map((item) => {
          return bodyData(
             item,
