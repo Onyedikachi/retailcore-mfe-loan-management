@@ -89,7 +89,7 @@ export const IndividualLoan = () => {
             tabKey={tab!}
             onTabClick={(tab) => {}}
             onStatusClick={(label) => setQueryByStatus([label])}
-            statusOptions={tabCardOptions(dataCount, checkerOption)[tab!]}
+            statusOptions={tabCardOptions(dataCount, isUserAChecker&&!isSuperAdmin)[tab!]}
             tabOptions={tabOptions}
             onFilterOptionSelected={(event: SelectChangeEvent<any>) => setOption(event.target.value)}
             filterOptions={individualLoanFilterOptions(
@@ -102,11 +102,11 @@ export const IndividualLoan = () => {
          />
          {tab === 'records' ? (
             <LoanTable  checker={checkerOption}/>
-         ) : checkerOption && tab === 'requests' ? (
+         ) : isUserAChecker && !isSuperAdmin && tab === 'requests' ? (
             <CheckerLoanTable />
-         ) : (
+         ) : isUserAChecker && isSuperAdmin && tab === 'requests' ? (
             <MakerLoanTable />
-         )}
+         ) : (<MakerLoanTable />)}
       </StyledContentWrapper>
    );
 };
