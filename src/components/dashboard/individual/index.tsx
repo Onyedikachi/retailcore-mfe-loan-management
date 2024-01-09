@@ -56,6 +56,7 @@ export const IndividualLoan = () => {
       return result;
   }
 
+
    useEffect(() => {
       const transformedArray = queryByStatus?.map((item) => item.toUpperCase().replace(/-/g, '_')); 
           if(queryByStatus?.[0] === 'All'){
