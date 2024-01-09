@@ -100,12 +100,10 @@ export const IndividualLoan = () => {
                isSuperAdmin
             )}
          />
-         {tab === 'records' ? (
+       {tab === 'records' ? (
             <LoanTable  checker={checkerOption}/>
          ) : isUserAChecker && !isSuperAdmin && tab === 'requests' ? (
             <CheckerLoanTable />
-         ) : isUserAChecker && isSuperAdmin && tab === 'requests' ? (
-            <MakerLoanTable />
          ) : (<MakerLoanTable />)}
       </StyledContentWrapper>
    );
