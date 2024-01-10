@@ -42,20 +42,20 @@ export const tabCardOptions = (
    return {
       requests: checkerOption
          ? [
-              { label: 'All', value: dataCount?.all ?? 0, variant: 'black' },
+              { label: 'All', value: dataCount?.allRequest ?? 0, variant: 'black' },
               { label: 'Approved', value: dataCount?.approved ?? 0, variant: 'success' },
               { label: 'Pending', value: dataCount?.pending ?? 0, variant: 'info' },
               { label: 'Rejected', value: dataCount?.inIssue ?? 0, variant: 'error' },
            ]
          : [
-              { label: 'All', value: dataCount?.all ?? 0, variant: 'black' },
+              { label: 'All', value: dataCount?.allRequest ?? 0, variant: 'black' },
               { label: 'Approved', value: dataCount?.approved ?? 0, variant: 'success' },
               { label: 'In-Review', value: dataCount?.inReview ?? 0, variant: 'info' },
               { label: 'In-Issue', value: dataCount?.inIssue ?? 0, variant: 'error' },
               { label: 'Draft', value: dataCount?.draft ?? 0, variant: 'gray' },
            ],
       records: [
-         { label: 'All', value: dataCount?.approved ?? 0, variant: 'black' },
+         { label: 'All', value: dataCount?.allRecords ?? 0, variant: 'black' },
          { label: 'Performing', value: dataCount?.performing ?? 0, variant: 'success' },
          { label: 'Non-Performing', value: dataCount?.nonPerforming ?? 0, variant: 'gray' },
          { label: 'Closed', value: dataCount?.closed ?? 0, variant: 'gray' },
