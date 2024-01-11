@@ -113,6 +113,8 @@ export const RoutePaths = {
          Permissions.BOOK_LOAN,
          Permissions.VIEW_ALL_LOAN_RECORDS,
          Permissions.VIEW_ALL_LOAN_REQUESTS,
+         Permissions.AUTHORIZE_BOOKING_RESTRUCTURING_REQUESTS,
+         Permissions.AUTHORIZE_LIQUIDATION_WRITE_OFF_REQUESTS,
       ],
    },
    LoanPerformance: {
@@ -137,6 +139,6 @@ export const RoutePaths = {
       absolute: RouteMaps.loanReview.path,
       relative: '/review',
       name: 'Loan Management Review',
-      permissions: [Permissions['AUTHORIZE_BOOKING/RESTRUCTURING_REQUESTS']],
+      permissions: [Permissions.AUTHORIZE_BOOKING_RESTRUCTURING_REQUESTS],
    },
 };
