@@ -80,8 +80,17 @@ export const Filters = (props: FiltersProps) => {
    }, [defaultActiveTab]);
 
    const handleStatusCardClick = (key: string) => {
-      setActiveStatus(key);
-      props?.onStatusClick(key);
+      if (key === 'Pending'){
+         setActiveStatus('In-Review');
+         props?.onStatusClick('In-Review');
+      }else if (key === 'Rejected') {
+         setActiveStatus('In-Issue');
+         props?.onStatusClick('In-Issue');
+      }
+      else{
+         setActiveStatus(key);
+         props?.onStatusClick(key);
+      }     
    };
    return (
       <FilterWrapper direction="row">
