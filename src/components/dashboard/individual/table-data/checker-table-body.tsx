@@ -22,13 +22,15 @@ export const bodyData = (
    loanActions: (selectedAction: string) => void,
    tab: string
 ) => {
-   const getStatus = transformText(loan?.status ?? '');
+   const getStatus = transformText(loan?.requestStatus ?? '');
    let status;
    if (getStatus === 'In-Review') {
       status = 'Pending';
    } else if (getStatus === 'Pending') {
       status = 'Draft';
    } else if (getStatus === 'Reject') {
+      status = 'Rejected';
+   }else if (getStatus === 'In-Issue') {
       status = 'Rejected';
    } else {
       status = getStatus;
@@ -38,7 +40,8 @@ export const bodyData = (
    return {
       request: 'Individual Loan Booking',
       type: 'Booking',
-      reviewer: transformText(loan?.status!) === 'In-Review' ? '-' : loan?.loanActivities[0]?.createdBy,
+      // eslint-disable-next-line max-len
+      reviewer: transformText(loan?.requestStatus ?? '') === 'In-Review' ? '-' : loan?.loanActivities[0]?.createdBy,
       status: (
          <StyledChip sx={{ ...statusColors(status) }}>
             {status} <VisibilityIcon sx={{ fontSize: 16, ml: 1 }} />
