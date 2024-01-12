@@ -44,7 +44,7 @@ export const tabCardOptions = (
          ? [
               { label: 'All', value: dataCount?.allRequest ?? 0, variant: 'black' },
               { label: 'Approved', value: dataCount?.approved ?? 0, variant: 'success' },
-              { label: 'Pending', value: dataCount?.pending ?? 0, variant: 'info' },
+              { label: 'Pending', value: dataCount?.inReview ?? 0, variant: 'info' },
               { label: 'Rejected', value: dataCount?.inIssue ?? 0, variant: 'error' },
            ]
          : [
