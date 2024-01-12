@@ -12,7 +12,6 @@ export interface TableProps extends MuiTableProps {
 export const Table = ({ minWidth, headerProps, bodyProps, tableName, ...restProp }: TableProps) => {
    const { data, onIconClick, ...restHeaderProps } = headerProps ?? {};
    const { rows, ...restBodyProps } = bodyProps;
-
    return (
       <TableContainer>
          <MuiTable sx={{ minWidth: minWidth ?? 650 }} aria-label={tableName} {...restProp}>
