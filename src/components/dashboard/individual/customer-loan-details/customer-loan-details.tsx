@@ -25,7 +25,7 @@ export const customerLoanInfo = (loan?: BookedLoanData) => [
    { key: 'Amount Disbursed', value: '-' },
    { key: 'Interest(%)', value: loan?.interestRate },
    { key: 'Total Repayment', value: loan?.totalRepayment ?? '-' },
-   { key: 'Principal Balance', value: loan?.principalBalance ?? '-' },
+   { key: 'Principal Balance', value: loan?.principal ?? '-' },
    { key: 'Interest Balance', value: loan?.interestBalance ?? '-' },
    { key: 'Days in Arrears ', value: loan?.arrears ?? '-' },
    { key: 'Penalty Due', value: loan?.penaltyDue ?? '-' },
