@@ -60,7 +60,6 @@ export const BookLoanProvider = ({ children }: BookLoanProviderProps) => {
    const defaultCurrency = getDefaultCurrency(currencies);
    const { GET_CUSTOMER } = CUSTOMER_MANAGEMENT_PATH;
 
-   const [, setCustomers] = useState<CustomerData[]>();
    const [accountNumbers, setAccountNumbers] = useState<AccountNumber[]>();
    const [selectedCustomerId, setSelectedCustomerId] = useState<string>();
    const [selectedCustomer, setSelectedCustomer] = useState<CustomerData>();
@@ -114,15 +113,17 @@ export const BookLoanProvider = ({ children }: BookLoanProviderProps) => {
    };
 
    const getCustomersData = (customersData: CustomerData[]) => {
-      setCustomers(customersData);
-      const customerAccountInfoArray = customersData?.flatMap((customerData: CustomerData) => {
-         const profile = customerData.customer_profiles[0];
-         return customerData.customer_products.map((accountBalance) => ({
-            label: accountBalance.accountNumber,
-            subtitle: `${profile?.firstName} ${profile?.otherNames ?? ''} ${profile?.surname}`,
-            customerId: customerData.customerId,
-         }));
-      });
+
+      const customerAccountInfoArray = customersData
+         ?.filter((customer) => customer?.customerType === 'Individual')
+         .flatMap((customerData: CustomerData) => {
+            const profile = customerData.customer_profiles[0];
+            return customerData.customer_products.map((accountBalance) => ({
+               label: accountBalance.accountNumber,
+               subtitle: `${profile?.firstName} ${profile?.otherNames ?? ''} ${profile?.surname}`,
+               customerId: customerData.customerId,
+            }));
+         });
       setAccountNumbers(customerAccountInfoArray);
    };
    const getSelectedCustomer = (id: string) => {

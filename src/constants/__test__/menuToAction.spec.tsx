@@ -7,8 +7,8 @@ describe('menuToAction', () => {
       expect(menuToAction('Liquidate Loan')).toEqual(loanActions[0]);
    });
 
-   it('should return correct loan action for "Close Loan Account"', () => {
-      expect(menuToAction('Close Loan Account')).toEqual(loanActions[1]);
+   it('should return correct loan action for "Close Loan"', () => {
+      expect(menuToAction('Close Loan')).toEqual(loanActions[1]);
    });
 
    it('should return correct loan action for "Write-Off Loan"', () => {

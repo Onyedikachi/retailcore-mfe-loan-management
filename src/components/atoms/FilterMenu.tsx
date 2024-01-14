@@ -106,7 +106,7 @@ const menuIcons = (option: string) => {
          return <VisibilityIcon sx={{ color: 'info.main', fontSize: '20px' }} />;
       case 'Liquidate Loan':
          return <BlockIcon sx={{ color: 'primary.main', fontSize: '18px' }} />;
-      case 'Close Loan Account':
+      case 'Close Loan':
          return <HighlightOffIcon sx={{ fontSize: '18px' }} />;
       case 'Write-Off Loan':
          return <WriteOff sx={{ fontSize: '18px' }} />;
