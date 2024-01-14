@@ -69,13 +69,13 @@ export const tabOptions = [
 ];
 
 export const actionOptions = (permissions?: PermissionHelperProps) => {
-   const options = ['View', 'Liquidate Loan', 'Close Loan Account', 'Write-Off Loan'];
+   const options = ['View', 'Close Loan', 'Liquidate Loan', 'Write-Off Loan'];
    if (!permissions?.canLiquidate) {
       return options.filter((option) => option != 'Liquidate Loan');
    } else if (!permissions?.canWriteOff) {
       return options.filter((option) => option != 'Write-Off Loan');
    } else if (!permissions?.isUserAChecker) {
-      return options.filter((option) => option != 'Close Loan Account');
+      return options.filter((option) => option != 'Close Loan');
    } else {
       return options;
    }
@@ -111,7 +111,7 @@ export const menuToAction = (menu: string) => {
    switch (menu) {
       case 'Liquidate Loan':
          return loanActions[0];
-      case 'Close Loan Account':
+      case 'Close Loan':
          return loanActions[1];
       case 'Write-Off Loan':
          return loanActions[2];
