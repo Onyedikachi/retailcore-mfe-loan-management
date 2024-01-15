@@ -42,8 +42,8 @@ export const CheckerLoanTable = () => {
    const loanTableBody = useMemo(() => {
       return (loanProducts ?? [])
          .filter((item) => {
-            const allowedStatuses = ['APPROVED', 'IN_REVIEW', 'REJECT'];
-            return allowedStatuses.includes(item.status);
+            const allowedStatuses = ['APPROVED', 'IN_REVIEW', 'IN_ISSUE'];
+            return allowedStatuses.includes(item.requestStatus);
          })
          ?.map((item, id) => {
             return bodyData(
@@ -53,7 +53,6 @@ export const CheckerLoanTable = () => {
             );
          });
    }, [tab, loanProducts]);
-
    const [, getLoans] = useRequest({
       onSuccess: (response) => getLoanProducts(response.data.data.loan, response.data.data.statistics),
    });
