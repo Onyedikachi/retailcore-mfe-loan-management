@@ -129,7 +129,11 @@ export const RoutePaths = {
       absolute: RouteMaps.customerLoanDetails.path,
       relative: '/customer-loan-details',
       name: 'Customer Loan Details',
-      permissions: [Permissions.BOOK_LOAN],
+      permissions: [
+         Permissions.BOOK_LOAN,
+         Permissions.AUTHORIZE_LIQUIDATION_WRITE_OFF_REQUESTS,
+         Permissions.AUTHORIZE_BOOKING_RESTRUCTURING_REQUESTS,
+      ],
    },
    LoanProductDetails: {
       absolute: RouteMaps.loanProductDetails.path,
@@ -141,6 +145,9 @@ export const RoutePaths = {
       absolute: RouteMaps.loanReview.path,
       relative: '/review',
       name: 'Loan Management Review',
-      permissions: [Permissions.AUTHORIZE_BOOKING_RESTRUCTURING_REQUESTS],
+      permissions: [
+         Permissions.AUTHORIZE_BOOKING_RESTRUCTURING_REQUESTS,
+         Permissions.AUTHORIZE_LIQUIDATION_WRITE_OFF_REQUESTS,
+      ],
    },
 };
