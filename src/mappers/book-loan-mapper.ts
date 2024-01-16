@@ -108,9 +108,11 @@ export const mapRepaymentScheduleToSchema = (bookLoanData: BookLoanData, product
       isGraceReq: bookLoanData?.facilityDetails?.isGraceReq,
       interestRate: Number(bookLoanData?.facilityDetails?.interestRate),
       disbursementDate: bookLoanData?.transactionSettings?.disburseDate,
-      gracePeriod: Number(bookLoanData?.facilityDetails?.graceValue),
+      gracePeriod: bookLoanData?.facilityDetails?.gracePeriod,
       repaymentFrequency: bookLoanData?.facilityDetails?.repayment_frequency,
       repaymentPattern: bookLoanData?.facilityDetails?.repayment_pattern,
+      graceValue: Number(bookLoanData?.facilityDetails?.graceValue),
+      equityContributionValue: Number(bookLoanData?.facilityDetails?.equity_contrib),
    };
    type Data = typeof data;
    const filteredData = Object.fromEntries(
