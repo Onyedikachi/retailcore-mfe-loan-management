@@ -4,6 +4,7 @@ import { DateFilter } from '@app/components/calendar/DateFilter';
 import { TableHeaderProps } from '@app/components/table';
 import { tabCardOptions } from '@app/constants/dashboard';
 
+
 export const headerData = (
    loanProducts: BookedLoanData[] | undefined,
    filterLoanProduct: (selectedOptions: string[]) => void,
@@ -11,16 +12,18 @@ export const headerData = (
    filterDate: (startDate?: Date | undefined, endDate?: Date | undefined, staticRange?: string) => void,
    tab: string
 ): TableHeaderProps => {
-   const statusOptions = tabCardOptions()
-      [tab]?.map((option) => option.label)
-      .slice(1);
+   
+   const statusOptions = tabCardOptions()[tab]?.map((option) => option?.label);
    const uniqueProductNames = new Set();
    loanProducts?.forEach((loan) => {
       if (loan?.product && loan?.product?.name) {
-         uniqueProductNames.add(loan.product.name);
+ uniqueProductNames.add(loan.product.name);
+
       }
    });
    const productName = Array.from(uniqueProductNames);
+   const tabProductName = ['All',...productName];
+   
    return {
       data: [
          { key: 'customerName', element: 'CUSTOMER NAME/ID' },
@@ -30,7 +33,7 @@ export const headerData = (
             element: 'LOAN PRODUCT',
             rightIcon: (
                <FilterMenu
-                  options={(productName as string[]) ?? []}
+                  options={(tabProductName as string[]) ?? []}
                   onFilterChange={(value) => filterLoanProduct(value as string[])}
                />
             ),
