@@ -4,6 +4,7 @@ import { mapSchemaToBookLoan } from '@app/mappers/book-loan-mapper';
 
 export const detailsList = (loanProduct?: BookedLoanData, selectedCustomer?: CustomerData) => {
    const loanData = loanProduct ? mapSchemaToBookLoan(loanProduct) : {};
+
    return [
       {
          title: 'Customer Information',

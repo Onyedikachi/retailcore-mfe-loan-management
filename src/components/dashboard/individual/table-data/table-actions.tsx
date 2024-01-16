@@ -13,7 +13,6 @@ export const tableQuery = (
    
 
 ) => {
-
    const queryParams: { [key: string]: any } = {};
    if (searchText) {
       queryParams.Search = searchText;
