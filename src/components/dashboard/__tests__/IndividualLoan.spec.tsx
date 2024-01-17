@@ -8,7 +8,7 @@ jest.mock('../../../providers/individual-loan-dashboard', () => ({
    IndividualLoanDashboardProvider: jest.fn(({ children }) => children),
    useIndividualLoanDashboardContext: jest.fn(),
 }));
-describe('IndividualLoan Component', () => {
+describe('IndividualLoan Component Test', () => {
    const mockContextValue = {
       getLoanProducts: jest.fn(),
       dataCount: 0,
@@ -29,15 +29,71 @@ describe('IndividualLoan Component', () => {
       expect(screen.getByText('Records')).toBeInTheDocument();
    });
 
+
    it('handles status click', () => {
-      renderWithThemeProvider(
+      const {getByText, } = renderWithThemeProvider(
+          <IndividualLoanDashboardProvider>
+             <MemoryRouter initialEntries={['/individual?tab=requests']}>
+                <IndividualLoan />
+             </MemoryRouter>
+          </IndividualLoanDashboardProvider>
+       );
+       expect(getByText('Approved')).toBeInTheDocument();
+    });
+
+    it('handles status click', () => {
+      const {getByText, } = renderWithThemeProvider(
+          <IndividualLoanDashboardProvider>
+             <MemoryRouter initialEntries={['/individual?tab=requests']}>
+                <IndividualLoan />
+             </MemoryRouter>
+          </IndividualLoanDashboardProvider>
+       );
+       expect(getByText('Draft')).toBeInTheDocument();
+    });
+
+    it('handles status click', () => {
+      const {getByText, } = renderWithThemeProvider(
+          <IndividualLoanDashboardProvider>
+             <MemoryRouter initialEntries={['/individual?tab=requests']}>
+                <IndividualLoan />
+             </MemoryRouter>
+          </IndividualLoanDashboardProvider>
+       );
+       expect(getByText('In-Review')).toBeInTheDocument();
+    });
+
+    it('handles status click', () => {
+      const {getByText, } = renderWithThemeProvider(
+          <IndividualLoanDashboardProvider>
+             <MemoryRouter initialEntries={['/individual?tab=requests']}>
+                <IndividualLoan />
+             </MemoryRouter>
+          </IndividualLoanDashboardProvider>
+       );
+       expect(getByText('In-Issue')).toBeInTheDocument();
+    });
+
+    it('handles status click', () => {
+      const {getByText, } = renderWithThemeProvider(
+          <IndividualLoanDashboardProvider>
+             <MemoryRouter initialEntries={['/individual?tab=requests']}>
+                <IndividualLoan />
+             </MemoryRouter>
+          </IndividualLoanDashboardProvider>
+       );
+       expect(getByText('Initiated by me')).toBeInTheDocument();
+    });
+
+   it('handles status click', () => {
+     const {getByText} = renderWithThemeProvider(
          <IndividualLoanDashboardProvider>
             <MemoryRouter initialEntries={['/individual?tab=records']}>
                <IndividualLoan />
             </MemoryRouter>
          </IndividualLoanDashboardProvider>
       );
-      const statusCard = screen.getByText('Performing');
+      const statusCard = getByText('Performing');
       fireEvent.click(statusCard);
    });
 
