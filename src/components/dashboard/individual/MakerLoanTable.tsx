@@ -43,8 +43,8 @@ export const MakerLoanTable = () => {
 
    const loanTableBody = useMemo(() => {
       return (loanProducts ?? [])?.filter(
-         // eslint-disable-next-line max-len
-         item => item.requestStatus !== 'PENDING' && ['APPROVED', 'IN_REVIEW', 'REJECT', 'DRAFT'].includes(item.requestStatus))
+         // eslint-disable-next-line max-len 
+         item => item.requestStatus !== 'PENDING' && ['APPROVED', 'IN_REVIEW', 'DRAFT','IN_ISSUE'].includes(item.requestStatus))
          ?.map((item) => {
          return bodyData(
             item,
