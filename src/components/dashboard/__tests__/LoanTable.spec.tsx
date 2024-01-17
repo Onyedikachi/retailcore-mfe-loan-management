@@ -13,7 +13,7 @@ jest.mock('../../../providers/individual-loan-dashboard', () => ({
 }));
 
 fetchMock.enableMocks();
-describe('LoanTable Component', () => {
+describe('LoanTable Component Test', () => {
    let errorConsole: any | null = null;
    let warnConsole: any | null = null;
    beforeAll(() => {
@@ -68,7 +68,7 @@ describe('LoanTable Component', () => {
       );
       const searchInput = container.querySelector('input[name="searchBy"]') as HTMLInputElement;
       fireEvent.change(searchInput, { target: { value: 'TestProduct' } });
-
+      screen.debug(undefined,Infinity);
       expect(searchInput).toHaveValue('TestProduct');
    });
 
