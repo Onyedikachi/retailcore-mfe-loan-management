@@ -1,6 +1,6 @@
 import { screen, fireEvent } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
-import { IndividualLoan } from '../individual';
+import { IndividualLoan, convertToUppercase } from '../individual';
 import { renderWithThemeProvider } from '@app/tests/theme.utils';
 import { IndividualLoanDashboardProvider } from '@app/providers/individual-loan-dashboard';
 
@@ -132,3 +132,49 @@ describe('IndividualLoan Component Test', () => {
       fireEvent.click(statusCard);
    });
 });
+
+describe('convertToUppercase function', () => {
+   test('converts sentence to uppercase without spaces or hyphens', () => {
+     const sentence = 'This is a Test-Sentence';
+     const result = convertToUppercase(sentence);
+     expect(result).toBe('THISISATESTSENTENCE');
+   });
+ 
+   test('converts "initiated system-wide" correctly', () => {
+     const sentence = 'initiated system-wide';
+     const result = convertToUppercase(sentence);
+     expect(result).toBe('INITIATEDBYSYSTEM');
+   });
+ 
+   test('converts "sent system-wide" correctly', () => {
+     const sentence = 'sent system-wide';
+     const result = convertToUppercase(sentence);
+     expect(result).toBe('SENTBYSYSTEM');
+   });
+ 
+   test('converts "created system-wide" correctly', () => {
+     const sentence = 'created system-wide';
+     const result = convertToUppercase(sentence);
+     expect(result).toBe('CREATEDBYSYSTEM');
+   });
+ 
+   test('converts "approved system-wise" correctly', () => {
+     const sentence = 'approved system-wise';
+     const result = convertToUppercase(sentence);
+     expect(result).toBe('APPROVEDBYSYSTEM');
+   });
+ 
+   test('handles empty string', () => {
+     const sentence = '';
+     const result = convertToUppercase(sentence);
+     expect(result).toBe('');
+   });
+ 
+   test('handles sentence with spaces and hyphens', () => {
+     const sentence = '   test with spaces - and hyphens   ';
+     const result = convertToUppercase(sentence);
+     expect(result).toBe('TESTWITHSPACESANDHYPHENS');
+   });
+ 
+   // Add more test cases as needed
+ });
