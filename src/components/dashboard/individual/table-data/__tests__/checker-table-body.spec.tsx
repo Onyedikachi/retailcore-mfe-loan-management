@@ -17,7 +17,7 @@ describe('bodyData function', () => {
    test('handles "In-Review" status case', () => {
       const inReviewLoan = { ...mockLoan, status: 'In_Review' };
       const result = bodyData(inReviewLoan, mockLoanActions, 'someTab');
-      expect(result.reviewer).toBe('-');
+      expect(result.reviewer).toBe('John Doe');
    });
 
    test('correctly formats date', () => {
@@ -51,7 +51,7 @@ describe('bodyData function', () => {
          loanActivities: [{ createdBy: 'Jane Doe' }],
       };
       const result = bodyData(nonReviewLoan, mockLoanActions, 'someTab');
-      expect(result.reviewer).toBe('-');
+      expect(result.reviewer).toBe('Jane Doe');
    });
 
    test('handles special characters in reviewer name', () => {
