@@ -23,8 +23,8 @@ export const IndividualLoan = () => {
    const [queryByStatus, setQueryByStatus] = useState<string[]>();
    const [searchParams] = useSearchParams();
    const tab = searchParams.get('tab');
-   const [options, setOption] = useState(individualLoanFilterOptions(tab!)[0]);
    const { isUserAChecker, isSuperAdmin, accessAllRecords, accessAllRequests } = usePermission();
+   const [options, setOption] = useState(individualLoanFilterOptions(tab!,isUserAChecker)[0]);
    const checkerOption = options.includes('Sent');
    const { getLoanProducts, dataCount } = useIndividualLoanDashboardContext();
 
