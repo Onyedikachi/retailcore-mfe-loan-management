@@ -10,7 +10,7 @@ import { Modify } from '@app/components/icons/Modify';
 import { Delete } from '@app/components/icons/Delete';
 
 interface FilterMenuProps {
-   options: string[];
+   options: any[];
    icon?: boolean;
    onFilterChange: (selectedOptions?: string[] | string) => void;
    checkbox?: boolean;
@@ -18,30 +18,44 @@ interface FilterMenuProps {
 }
 
 function FilterMenu({ options, onFilterChange, checkbox = true, filterIcon, icon }: FilterMenuProps) {
-   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-   const [selectedOption, setSelectedOption] = useState<string[] | string>();
 
+  const  defaultOptions: any[] = [] ;
+   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+   const [selectedOptions, setSelectedOptions] = useState<string[]>(defaultOptions ?? []);
+
+
+   useEffect(() => {
+      !checkbox && onFilterChange(selectedOptions);
+   }, [selectedOptions]);
    const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
       setAnchorEl(event.currentTarget);
    };
 
-   useEffect(() => {
-      !checkbox && onFilterChange(selectedOption);
-   }, [selectedOption]);
-
    const handleMenuClose = () => {
       setAnchorEl(null);
-      checkbox && onFilterChange(selectedOption);
+      if (JSON.stringify(defaultOptions) !== JSON.stringify(selectedOptions)) {
+         onFilterChange(selectedOptions);
+      }
    };
 
    const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-      const option = event.target.value;
-      if (event.target.checked) {
-         setSelectedOption((prevSelected) => [...(prevSelected ? (prevSelected as string[]) : []), option]);
+      const { value: option, checked } = event.target;
+      if (checked) {
+         if (option.toLowerCase().includes('all')) setSelectedOptions([]);
+         else setSelectedOptions((prevSelected) => [...prevSelected, option]);
       } else {
-         setSelectedOption((prevSelected) =>
-            (prevSelected as string[])?.filter((selected) => selected !== option)
-         );
+         const keys = options.map((option) => (typeof option === 'string' ? option : option.key));
+         if (!selectedOptions.length) {
+            setSelectedOptions(keys.filter((key) => key !== option && !key.toLowerCase().includes('all')));
+         } else {
+            setSelectedOptions((prevSelected) => {
+               if (Array.isArray(prevSelected)) {
+                  return prevSelected.filter((selected) => selected !== option);
+               } else {
+                  return [];
+               }
+            });
+         }
       }
    };
 
@@ -69,7 +83,7 @@ function FilterMenu({ options, onFilterChange, checkbox = true, filterIcon, icon
                      <>
                         <Checkbox
                            value={option}
-                           checked={selectedOption?.includes(option)}
+                           checked={selectedOptions?.includes(option) || !selectedOptions.length}
                            onChange={handleCheckboxChange}
                         />
                         {option}
@@ -80,7 +94,7 @@ function FilterMenu({ options, onFilterChange, checkbox = true, filterIcon, icon
                      key={`${option}+${index * 2}`}
                      sx={{ py: 0, height: '30px', fontSize: 14 }}
                      onClick={() => {
-                        setSelectedOption(option);
+                        setSelectedOptions(option);
                         handleMenuClose();
                      }}
                   >

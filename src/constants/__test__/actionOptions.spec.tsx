@@ -11,7 +11,7 @@ describe('actionOptions', () => {
       };
 
       const result = actionOptions(permissions);
-      expect(result).toEqual(['View', 'Liquidate Loan', 'Close Loan']);
+      expect(result).toEqual(['View', 'Close Loan', 'Liquidate Loan']);
    });
 
    it('should return all options if permissions allow all actions', () => {
@@ -23,7 +23,7 @@ describe('actionOptions', () => {
       };
 
       const result = actionOptions(permissions);
-      expect(result).toEqual(['View', 'Liquidate Loan', 'Close Loan']);
+      expect(result).toEqual(['View', 'Close Loan', 'Liquidate Loan']);
    });
 
    it('should handle undefined permissions', () => {

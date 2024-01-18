@@ -23,8 +23,8 @@ export const IndividualLoan = () => {
    const [queryByStatus, setQueryByStatus] = useState<string[]>();
    const [searchParams] = useSearchParams();
    const tab = searchParams.get('tab');
-   const [options, setOption] = useState(individualLoanFilterOptions(tab!)[0]);
    const { isUserAChecker, isSuperAdmin, accessAllRecords, accessAllRequests } = usePermission();
+   const [options, setOption] = useState(individualLoanFilterOptions(tab!, isUserAChecker)[0]);
    const checkerOption = options.includes('Sent');
    const { getLoanProducts, dataCount } = useIndividualLoanDashboardContext();
 
@@ -40,47 +40,25 @@ export const IndividualLoan = () => {
          getLoanProducts(response.data.data.loan, response.data.data.statistics, tab as string),
    });
 
-   function convertToUppercase(sentence: string): string {
-      const lowerCaseSentence = sentence.toLowerCase();
-      if (lowerCaseSentence === 'initiated system-wide') {
-          return 'INITIATEDBYSYSTEM';
-      } else if (lowerCaseSentence === 'sent system-wide') {
-          return 'SENTBYSYSTEM';
-      } else if (lowerCaseSentence === 'created system-wide') {
-          return 'CREATEDBYSYSTEM';
-      } else if (lowerCaseSentence === 'approved system-wise') {
-          return 'APPROVEDBYSYSTEM';
-      }
-  
-      const result: string = sentence.replace(/[\s-]/g, '').toUpperCase();
-      return result;
-  }
-
-
    useEffect(() => {
-      const transformedArray = queryByStatus?.map((item) => item.toUpperCase().replace(/-/g, '_')); 
-          if(queryByStatus?.[0] === 'All'){
-            getLoans(
-               API_PATH.IndividualLoan,{
-                  showSuccess: false,
-                  query: {
-                     initiator: convertToUppercase(options),
-                  },
-               }
-            );
-      }else{
-         getLoans(
-            API_PATH.IndividualLoan,{
-               showSuccess: false,
-               query: {
-                  initiator: convertToUppercase(options),
-               status:JSON.stringify(transformedArray),
-               },
-            }
-         );
+      const transformedArray = queryByStatus?.map((item) => item.toUpperCase().replace(/-/g, '_'));
+      if (queryByStatus?.[0] === 'All') {
+         getLoans(API_PATH.IndividualLoan, {
+            showSuccess: false,
+            query: {
+               initiator: convertToUppercase(options),
+            },
+         });
+      } else {
+         getLoans(API_PATH.IndividualLoan, {
+            showSuccess: false,
+            query: {
+               initiator: convertToUppercase(options),
+               status: JSON.stringify(transformedArray),
+            },
+         });
       }
-   
-   }, [queryByStatus,options]);
+   }, [queryByStatus, options]);
 
    return (
       <StyledContentWrapper>
@@ -89,7 +67,7 @@ export const IndividualLoan = () => {
             tabKey={tab!}
             onTabClick={(tab) => {}}
             onStatusClick={(label) => setQueryByStatus([label])}
-            statusOptions={tabCardOptions(dataCount, isUserAChecker&&!isSuperAdmin)[tab!]}
+            statusOptions={tabCardOptions(dataCount, isUserAChecker && !isSuperAdmin)[tab!]}
             tabOptions={tabOptions}
             onFilterOptionSelected={(event: SelectChangeEvent<any>) => setOption(event.target.value)}
             filterOptions={individualLoanFilterOptions(
@@ -100,11 +78,28 @@ export const IndividualLoan = () => {
                isSuperAdmin
             )}
          />
-       {tab === 'records' ? (
-            <LoanTable  checker={checkerOption}/>
+         {tab === 'records' ? (
+            <LoanTable checker={checkerOption} />
          ) : isUserAChecker && !isSuperAdmin && tab === 'requests' ? (
             <CheckerLoanTable />
-         ) : (<MakerLoanTable />)}
+         ) : (
+            <MakerLoanTable />
+         )}
       </StyledContentWrapper>
    );
+};
+export const convertToUppercase = (sentence: string): string => {
+   const lowerCaseSentence = sentence.toLowerCase();
+   if (lowerCaseSentence === 'initiated system-wide') {
+      return 'INITIATEDBYSYSTEM';
+   } else if (lowerCaseSentence === 'sent system-wide') {
+      return 'SENTBYSYSTEM';
+   } else if (lowerCaseSentence === 'created system-wide') {
+      return 'CREATEDBYSYSTEM';
+   } else if (lowerCaseSentence === 'approved system-wise') {
+      return 'APPROVEDBYSYSTEM';
+   }
+
+   const result: string = sentence.replace(/[\s-]/g, '').toUpperCase();
+   return result;
 };
