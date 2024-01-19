@@ -52,7 +52,7 @@ interface FiltersProps {
    onTabClick: (tabKey: number | string) => void;
    defaultTabKey?: number | string;
    tabKey: number | string;
-   filterOptions?: Array<string>;
+   filterOptions?: any;
    filterPlaceholder?: string;
    onFilterOptionSelected: (event: SelectChangeEvent<any>) => void;
 }
@@ -60,9 +60,9 @@ interface FiltersProps {
 export const Filters = (props: FiltersProps) => {
    const [activeStatus, setActiveStatus] = useState('All');
    const [searchParams] = useSearchParams();
-   const [defaultInitiator, setDefaultInitiator] = useState<string>();
+   const [defaultInitiator, setDefaultInitiator] = useState<any>('Joshua');
    const navigate = useNavigate();
-   const { accessAllRecords } = usePermission();
+   const { accessAllRecords, isSuperAdmin, isUserAChecker } = usePermission();
    const defaultKey = accessAllRecords ? props.tabOptions[0]?.key : props.tabOptions[1]?.key;
 
    const defaultActiveTab = searchParams.get('tab') ?? props.defaultTabKey ?? defaultKey;
@@ -80,17 +80,16 @@ export const Filters = (props: FiltersProps) => {
    }, [defaultActiveTab]);
 
    const handleStatusCardClick = (key: string) => {
-      if (key === 'Pending'){
+      if (key === 'Pending') {
          setActiveStatus('In-Review');
          props?.onStatusClick('In-Review');
-      }else if (key === 'Rejected') {
+      } else if (key === 'Rejected') {
          setActiveStatus('In-Issue');
          props?.onStatusClick('In-Issue');
-      }
-      else{
+      } else {
          setActiveStatus(key);
          props?.onStatusClick(key);
-      }     
+      }
    };
    return (
       <FilterWrapper direction="row">
@@ -149,7 +148,7 @@ export const Filters = (props: FiltersProps) => {
                <UncontrolledSelect
                   size="small"
                   name="filter"
-                  value={defaultInitiator ?? props?.filterOptions?.[0]}
+                  value={defaultInitiator}
                   options={props?.filterOptions}
                   onChange={(event: SelectChangeEvent<any>) => {
                      setDefaultInitiator(event.target.value);

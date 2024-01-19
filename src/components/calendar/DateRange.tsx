@@ -106,8 +106,8 @@ export const DateRange: React.FC<DateRangeProps> = ({
          ) : (
             <CustomeDateRangeForm
                onSubmit={(values) => {
-                  const startDate = parse(values.startDate, 'dd/MM/yyyy', new Date());
-                  const endDate = parse(values.endDate, 'dd/MM/yyyy', new Date());
+                  const startDate = new Date(values.startDate);
+                  const endDate = new Date(values.endDate);
                   onDateRangeChange?.(startDate, endDate);
                   setState({ selection: { ...state.selection, startDate: startDate, endDate: endDate } });
                   setCustomSelected(true);
