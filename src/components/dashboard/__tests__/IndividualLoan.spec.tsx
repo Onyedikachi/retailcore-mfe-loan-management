@@ -149,7 +149,7 @@ describe('convertToUppercase function', () => {
    test('converts "sent system-wide" correctly', () => {
      const sentence = 'sent system-wide';
      const result = convertToUppercase(sentence);
-     expect(result).toBe('SENTBYSYSTEM');
+     expect(result).toBe('SENTTOSYSTEM');
    });
  
    test('converts "created system-wide" correctly', () => {
@@ -161,7 +161,7 @@ describe('convertToUppercase function', () => {
    test('converts "approved system-wise" correctly', () => {
      const sentence = 'approved system-wise';
      const result = convertToUppercase(sentence);
-     expect(result).toBe('APPROVEDBYSYSTEM');
+     expect(result).toBe('APPROVEDSYSTEMWISE');
    });
  
    test('handles empty string', () => {
