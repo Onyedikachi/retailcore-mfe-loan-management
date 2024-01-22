@@ -48,7 +48,9 @@ export const ProcessSummary = () => {
                ...backendData,
                isDraft: false,
                IsUserSuperAdmin: sessionStorage.getItem('superAdmin') === 'true' ? true : false,
-               customerLedgerId: response.data.data[0].ledgerId,
+               Disbursementaccountledgerid: response.data.data[0].ledgerId,
+               customerCategory: 'individual',
+
             },
             showSuccess: false,
          });
@@ -63,6 +65,7 @@ export const ProcessSummary = () => {
                id: id,
                isDraft: false,
                IsUserSuperAdmin: sessionStorage.getItem('superAdmin') === 'true' ? true : false,
+               customerCategory: 'individual',
                showSuccess: false,
             },
             method: 'PUT',

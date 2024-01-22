@@ -163,6 +163,8 @@ export interface BookedLoanData {
    repaymentFrequencyPeriod: string;
    equityContribution: number | null;
    product: LoanProductData;
+   loanAccount?: string;
+
    loanAssets: any[];
    loanActivities: LoanActivity[];
 }
