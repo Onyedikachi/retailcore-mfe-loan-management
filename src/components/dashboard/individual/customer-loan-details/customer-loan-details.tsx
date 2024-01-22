@@ -16,7 +16,7 @@ export const customerLoanInfo = (loan?: BookedLoanData) => [
          />
       ),
    },
-   { key: 'Loan Account Num', value: loan?.acctNo },
+   { key: 'Loan Account Num', value: loan?.loanAccount},
    { key: 'Tenor', value: `${loan?.tenorValue} ${loan?.tenorPeriod}` },
    {
       key: 'Date Disbursed',

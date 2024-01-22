@@ -6,7 +6,7 @@ export const initialValues = { [Fields.ROUTE_TO]: '', [Fields.REASON]: '' };
 
 export const validationSchema = Yup.object().shape({
    [Fields.REASON]: Yup.string().required('Provide a reason for rejection'),
-   [Fields.ROUTE_TO]: Yup.string().required('Select who to route request to'),
+   [Fields.ROUTE_TO]: Yup.string(),
 });
 
 export type FormValues = typeof initialValues;
