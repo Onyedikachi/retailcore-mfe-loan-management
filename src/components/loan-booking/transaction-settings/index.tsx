@@ -37,9 +37,9 @@ export const TransactionSettings: React.FC = () => {
    const handleFormSubmit = () => {
       setShowDialog(false);
       if (id) {
-         submitForm(`${API_PATH.IndividualLoan}`, { body: { ...backendData, id: id }, method: 'PUT' });
+         submitForm(`${API_PATH.IndividualLoan}`, { body: { ...backendData, id: id,customerCategory: 'individual', }, method: 'PUT' });
       } else {
-         submitForm(API_PATH.IndividualLoan, { body: backendData });
+         submitForm(API_PATH.IndividualLoan, { body: {...backendData, customerCategory: 'individual', }});
       }
    };
 
