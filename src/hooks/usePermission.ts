@@ -21,13 +21,16 @@ export const usePermission = (): PermissionHelperProps => {
 
    React.useEffect(() => {
       let sub: any;
-      if (auth$) {
-         sub = auth$.subscribe((value: AuthenticatedUserPayload) => {
-            setAuthLoaded(true);
-            setAuthPayload(value);
-         });
-      }
+      const fetchData = async () => {
+         if (auth$) {
+            sub = await auth$.subscribe((value: AuthenticatedUserPayload) => {
+               setAuthLoaded(true);
+               setAuthPayload(value);
+            });
+         }
+      };
 
+      fetchData();
       return () => {
          if (sub) {
             sub.unsubscribe();

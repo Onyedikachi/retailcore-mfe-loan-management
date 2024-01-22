@@ -42,33 +42,36 @@ export const MakerLoanTable = () => {
    );
 
    const loanTableBody = useMemo(() => {
-      return (loanProducts ?? [])?.filter(
-         // eslint-disable-next-line max-len 
-         item => item.requestStatus !== 'PENDING' && ['APPROVED', 'IN_REVIEW', 'DRAFT','IN_ISSUE'].includes(item.requestStatus))
+      return (loanProducts ?? [])
+         ?.filter(
+            // eslint-disable-next-line max-len
+            (item) =>
+               item.requestStatus !== 'PENDING' &&
+               ['APPROVED', 'IN_REVIEW', 'DRAFT', 'IN_ISSUE'].includes(item.requestStatus)
+         )
          ?.map((item) => {
-         return bodyData(
-            item,
-            (selectedAction) => {
-               setMakerLoanTableId(item.id);
-               setMakerLoanTableAction(selectedAction);
-               handleActions(
-                  selectedAction,
-                  navigate,
-                  item,
-                  setMakerLoanTableOpenLoanAction,
-                  setMakerLoanTableOpenDeleteAction
-               );
-            },
-            makerLoanTableTab!,
-            permission
-         );
-      });
+            return bodyData(
+               item,
+               (selectedAction) => {
+                  setMakerLoanTableId(item.id);
+                  setMakerLoanTableAction(selectedAction);
+                  handleActions(
+                     selectedAction,
+                     navigate,
+                     item,
+                     setMakerLoanTableOpenLoanAction,
+                     setMakerLoanTableOpenDeleteAction
+                  );
+               },
+               makerLoanTableTab!,
+               permission
+            );
+         });
    }, [makerLoanTableTab, loanProducts, permission]);
 
    const [, getLoans] = useRequest({
       onSuccess: (response) => getLoanProducts(response.data.data.loan, response.data.data.statistics),
    });
-
 
    useEffect(() => {
       const queryParams = tableQuery(
@@ -81,7 +84,7 @@ export const MakerLoanTable = () => {
       const urlSearchParams = new URLSearchParams(queryParams).toString();
 
       const url = `${API_PATH.IndividualLoan}?${urlSearchParams}`;
-      getLoans(url, { showSuccess: false });
+      getLoans(url, { showSuccess: false, showLoader: true });
    }, [
       makerLoanTableSearchText,
       makerLoanTableQueryByProductName,

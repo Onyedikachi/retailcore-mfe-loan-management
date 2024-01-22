@@ -9,16 +9,18 @@ export const tableQuery = (
    queryByProductName: string[] | undefined,
    queryByStatus: string[] | undefined,
    queryByDate: string[] | undefined,
-   checker?: boolean,
-   
-
+   checker?: boolean
 ) => {
    const queryParams: { [key: string]: any } = {};
    if (searchText) {
       queryParams.Search = searchText;
+      queryParams.Count = 650;
+      queryParams.Initiator = checker ? 'SENTTOME' : 'INITIATEDBYME';
    }
    if (queryByProductName && queryByProductName.length > 0) {
       queryParams.LoanProduct = JSON.stringify(queryByProductName);
+      queryParams.Count = 650;
+      queryParams.Initiator = checker ? 'SENTTOME' : 'INITIATEDBYME';
    }
    if (queryByStatus && queryByStatus.length > 0) {
       queryParams.status = JSON.stringify(
@@ -27,13 +29,17 @@ export const tableQuery = (
             return stat.toUpperCase().replace(/-/g, '_');
          })
       );
+      queryParams.Initiator = checker ? 'SENTTOME' : 'INITIATEDBYME';
    }
    if (queryByDate && queryByDate.length === 2) {
       queryParams.StartDate = queryByDate[0];
       queryParams.EndDate = queryByDate[1];
+      queryParams.Count = 650;
+      queryParams.Initiator = checker ? 'SENTTOME' : 'INITIATEDBYME';
    }
    if (Object.keys(queryParams).length === 0) {
-      queryParams.Initiator = checker ? 'SENTOME' : 'INITIATEDBYME' ;
+      queryParams.Initiator = checker ? 'SENTTOME' : 'INITIATEDBYME';
+      queryParams.Count = 650;
    }
    return queryParams;
 };
