@@ -49,23 +49,23 @@ export const details = (
    const taxes: any[] = [];
 
    selectedProduct?.chargesTaxesPenalty?.chargeTaxEvent?.forEach((item: any, index: any) => {
-      item.chargeTaxList.forEach((chargeTax: any) => {
-         if (chargeTax.type === 'charge') {
-            charges.push({
+      item?.chargeTaxList?.forEach((chargeTax: any) => {
+         if (chargeTax?.type === 'charge') {
+            charges?.push({
                chargeNumber: index + 1,
-               name: chargeTax.name,
-               chargeAmount: chargeTax.charge,
+               name: chargeTax?.name,
+               chargeAmount: chargeTax?.charge,
                eventName: item?.event,
-               ledgers: chargeTax.ledgers[0].name,
+               ledgers: chargeTax?.ledgers[0].name,
                type: 'charge',
             });
-         } else if (chargeTax.type === 'tax') {
+         } else if (chargeTax?.type === 'tax') {
             taxes.push({
                taxNumber: index + 1,
-               name: chargeTax.name,
-               taxAmount: chargeTax.charge,
+               name: chargeTax?.name,
+               taxAmount: chargeTax?.charge,
                eventName: item?.event,
-               ledgers: chargeTax.ledgers[0].name,
+               ledgers: chargeTax?.ledgers[0].name,
                type: 'tax',
             });
          }
@@ -74,15 +74,15 @@ export const details = (
    const mergedArray = [...charges, ...taxes];
 
    const chargesAndTax = mergedArray?.map((entry: any) => ({
-      heading: entry.type === 'charge' ? `Charge ${entry.chargeNumber}` : `Tax ${entry.taxNumber}`,
+      heading: entry?.type === 'charge' ? `Charge ${entry?.chargeNumber}` : `Tax ${entry?.taxNumber}`,
       key: 'Event',
-      value: entry.eventName,
-      secondkey: entry.type === 'charge' ? 'Charge Name' : 'Tax Name',
-      secondValue: entry.name,
+      value: entry?.eventName,
+      secondkey: entry?.type === 'charge' ? 'Charge Name' : 'Tax Name',
+      secondValue: entry?.name,
       thirdkey: 'Charge Value',
-      thirdValue: entry.type === 'charge' ? `${entry.chargeAmount}` : `${entry.taxAmount}`,
+      thirdValue: entry?.type === 'charge' ? `${entry?.chargeAmount}` : `${entry?.taxAmount}`,
       fourthkey: 'Impacted Ledger',
-      fourthValue: entry.ledgers,
+      fourthValue: entry?.ledgers,
    }));
 
    return {
