@@ -42,6 +42,15 @@ export const LoanReview = () => {
          });
       },
    });
+   const RejectedOrInIssue = 'IN_ISSUE';
+   const PendingOrInreview = 'IN_REVIEW';
+   let percentageValue;
+
+   if (loanProduct?.requestStatus === PendingOrInreview) {
+      percentageValue = 50;
+   } else {
+      percentageValue = 100;
+   }
 
    return (
       <Grid container height="100%">
@@ -50,9 +59,13 @@ export const LoanReview = () => {
                <ContainerWrapper id="loan-details" className="fancy-scrollbar" sx={{ pl: 3 }}>
                   <Box mb={2}>
                      <ProcessProgress
-                        percentage={0}
-                        currentLabel={'Pending submission'}
-                        endLabel={'Approval'}
+                        percentage={percentageValue}
+                        currentLabel={
+                           loanProduct?.requestStatus === PendingOrInreview
+                              ? 'Pending Approval'
+                              : 'Submission'
+                        }
+                        endLabel={loanProduct?.requestStatus === RejectedOrInIssue ? 'Rejection' : 'Approval'}
                      />
                   </Box>
                   {isReview && (
