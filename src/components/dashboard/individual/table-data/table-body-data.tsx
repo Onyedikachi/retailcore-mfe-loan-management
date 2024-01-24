@@ -31,8 +31,9 @@ export const bodyData = (
    return {
       customerName: (
          <>
+         
             <Typography fontSize="14px">{loan?.customerName}</Typography>
-            <Typography variant="caption">{loan?.acctNo}</Typography>
+            <Typography variant="caption">{loan?.loanAccount}</Typography>
          </>
       ),
       loanAmount: `${loan?.product?.currency ?? ''} ${formatCurrency(loan!.principal)}`,

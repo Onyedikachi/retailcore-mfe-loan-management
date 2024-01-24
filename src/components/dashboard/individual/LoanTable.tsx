@@ -34,7 +34,6 @@ export const LoanTable = ({ checker }: MyComponentProps) => {
    const navigate = useNavigate();
    const { loanProducts, getLoanProducts } = useIndividualLoanDashboardContext();
    const permission = usePermission();
-
    const loanTableHeader: TableHeaderProps = useMemo(
       () =>
          headerData(
@@ -46,6 +45,10 @@ export const LoanTable = ({ checker }: MyComponentProps) => {
          ),
       [tab, loanProducts]
    );
+
+   setTimeout(() => {
+     
+    }, 2000);
 
    const loanTableBody = useMemo(() => {
 
@@ -83,7 +86,7 @@ export const LoanTable = ({ checker }: MyComponentProps) => {
       const urlSearchParams = new URLSearchParams(queryParams).toString();
       const url = `${API_PATH.IndividualLoan}?${urlSearchParams}`;
       getLoans(url, { showSuccess: false });
-   }, [searchText, queryByProductName, queryByStatus, queryByDate]);
+   }, [searchText, queryByProductName, queryByStatus, queryByDate,checker]);
 
    return (
       <Box sx={{ p: 2, pt: 3, bgcolor: 'white', borderRadius: 2, border: '1px solid #E5E9EB' }}>
