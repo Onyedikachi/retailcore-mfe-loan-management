@@ -1,18 +1,21 @@
+import { ContactlessOutlined } from "@mui/icons-material";
+
 export const loanTableQuery = (
-   searchTextLoan: string,
-   queryByProductNameLoan: string[] | undefined,
-   queryByStatusLoan: string[] | undefined,
-   queryByDateLoan: string[] | undefined,
+   searchTextLoan?: string,
+   queryByProductNameLoan?: string[] | undefined,
+   queryByStatusLoan?: string[] | undefined,
+   queryByDateLoan?: string[] | undefined,
    checkerLoan?: boolean
 ) => {
+
    const queryParams: { [key: string]: any } = {};
    if (searchTextLoan) {
       queryParams.Search = searchTextLoan;
-      queryParams.Count = 650;
+      queryParams.Count = 640;
    }
    if (queryByProductNameLoan && queryByProductNameLoan.length > 0) {
       queryParams.LoanProduct = JSON.stringify(queryByProductNameLoan);
-      queryParams.Count = 650;
+      queryParams.Count = 630;
    }
    if (queryByStatusLoan && queryByStatusLoan.length > 0) {
       queryParams.status = JSON.stringify(
@@ -24,12 +27,13 @@ export const loanTableQuery = (
    }
    if (queryByDateLoan && queryByDateLoan.length === 2) {
       queryParams.StartDate = queryByDateLoan[0];
-      queryParams.Count = 650;
+      queryParams.Count = 620;
       queryParams.EndDate = queryByDateLoan[1];
    }
    if (Object.keys(queryParams).length === 0) {
-      queryParams.Count = 650;
+      queryParams.Count = 610;
       queryParams.Initiator = !checkerLoan ? 'CREATEDBYME' : 'APPROVEDBYME';
    }
    return queryParams;
+   
 };
