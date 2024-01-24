@@ -12,8 +12,8 @@ describe('menuFromStatus', () => {
          LoanProduct: '["product name"]',
          Search: 'search',
          status: '["STATUS"]',
-         Count: 650,
-         Initiator: 'INITIATEDBYME',
+         Count: 540,
+         // Initiator: 'INITIATEDBYME',
       });
    });
 
@@ -27,8 +27,8 @@ describe('menuFromStatus', () => {
          LoanProduct: '["General Loan"]',
          Search: 'find',
          status: '["ACTIVE"]',
-         Count: 650,
-         Initiator: 'INITIATEDBYME',
+         Count: 540,
+         //Initiator: 'INITIATEDBYME',
       });
    });
 });

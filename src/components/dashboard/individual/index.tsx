@@ -23,9 +23,12 @@ export const IndividualLoan = () => {
    const [queryByStatus, setQueryByStatus] = useState<string[]>();
    const [searchParams] = useSearchParams();
    const tab = searchParams.get('tab');
+   const [activeChecker,setActiveChecker] = useState<any>()
    const { isUserAChecker, isSuperAdmin, accessAllRecords, accessAllRequests } = usePermission();
-   const [options, setOption] = useState(individualLoanFilterOptions(tab!, isUserAChecker, isSuperAdmin)[0]);
-   const checkerOption = options.includes('Sent');
+   const [options, setOption] = useState<any>('');
+   const [selectedOptions, setSelectedOption] = useState<any>('');
+   
+   // const checkerOption = options?.includes('Sent');
    const { getLoanProducts, dataCount } = useIndividualLoanDashboardContext();
 
    // useRequest({
@@ -65,33 +68,52 @@ export const IndividualLoan = () => {
 
    // , [queryByStatus, options]);
 
+   useEffect(()=>{
+      setTimeout(() => {
+         let setSTRING = individualLoanFilterOptions(tab!, isUserAChecker, isSuperAdmin)[0]
+         setOption(setSTRING)
+            }, 1400)
+   },[options])
+
    useEffect(() => {
-      const fetchData = async () => {
+      
+      setTimeout(() => {
+         setActiveChecker(isUserAChecker);
+         
+       }, 1000);
+
+      const fetchData =  () => {
          const transformedArray = queryByStatus?.map((item) => item.toUpperCase().replace(/-/g, '_'));
 
-         if (queryByStatus?.[0] === 'All') {
-            await getLoans(API_PATH.IndividualLoan, {
+         if (transformedArray?.[0] === 'ALL') {
+         getLoans(API_PATH.IndividualLoan, {
                showSuccess: false,
                query: {
                   initiator: convertToUppercase(options),
                   Count: 600,
                },
             });
+         }else{
+            getLoans(API_PATH.IndividualLoan, {
+               showSuccess: false,
+               query: {
+                  Count: 709,
+                  initiator: selectedOptions ? convertToUppercase(selectedOptions) : convertToUppercase(options),
+                  status: JSON.stringify(transformedArray),
+               },
+            });
          }
 
-         await getLoans(API_PATH.IndividualLoan, {
-            showSuccess: false,
-            query: {
-               Count: 700,
-               initiator: convertToUppercase(options),
-               status: JSON.stringify(transformedArray),
-            },
-         });
+        
       };
-
       fetchData();
-   }, [queryByStatus, options]);
+     
 
+
+
+   
+   }, [queryByStatus, options, activeChecker,selectedOptions]);
+ 
    return (
       <StyledContentWrapper>
          <Filters
@@ -101,7 +123,7 @@ export const IndividualLoan = () => {
             onStatusClick={(label) => setQueryByStatus([label])}
             statusOptions={tabCardOptions(dataCount, isUserAChecker && !isSuperAdmin)[tab!]}
             tabOptions={tabOptions}
-            onFilterOptionSelected={(event: SelectChangeEvent<any>) => setOption(event.target.value)}
+            onFilterOptionSelected={(event: SelectChangeEvent<any>) => setSelectedOption(event.target.value)}
             // eslint-disable-next-line max-len
             filterOptions={
                tab === 'records'
@@ -110,7 +132,7 @@ export const IndividualLoan = () => {
             }
          />
          {tab === 'records' ? (
-            <LoanTable checker={checkerOption} />
+            <LoanTable checker={activeChecker} />
          ) : isUserAChecker && !isSuperAdmin && tab === 'requests' ? (
             <CheckerLoanTable />
          ) : (
@@ -119,8 +141,8 @@ export const IndividualLoan = () => {
       </StyledContentWrapper>
    );
 };
-export const convertToUppercase = (sentence: string): string => {
-   const lowerCaseSentence = sentence.toLowerCase();
+export const convertToUppercase = (sentence?: string): string => {
+   const lowerCaseSentence = sentence?.toLowerCase();
    if (lowerCaseSentence === 'initiated system-wide') {
       return 'INITIATEDBYSYSTEM';
    } else if (lowerCaseSentence === 'sent system-wide') {
@@ -131,7 +153,7 @@ export const convertToUppercase = (sentence: string): string => {
       return 'APPROVEDBYSYSTEM';
    }
 
-   const result: string = sentence.replace(/[\s-]/g, '').toUpperCase();
+   const result: any = sentence?.replace(/[\s-]/g, '').toUpperCase();
    return result;
 };
 
@@ -154,3 +176,19 @@ export const filterOptionsRecords = (isChecker: any, isSuperAdmin: any) => {
       return ['Created by me', 'Created system-wide'];
    }
 };
+
+
+
+// export const filterOptionsRequest = (isChecker: any, isSuperAdmin: any, callback: any) => {
+//    setTimeout(() => {
+//      let result;
+//      if (isChecker && !isSuperAdmin) {
+//        result = ['Sent to me', 'Sent system-wide'];
+//      } else if (isChecker && isSuperAdmin) {
+//        result = ['Initiated by me', 'Initiated system-wide', 'Sent to me', 'Sent system-wide'];
+//      } else {
+//        result = ['Initiated by me', 'Initiated system-wide'];
+//      }
+//      callback(result); // Invoke the callback with the result
+//    }, 500);
+//  };

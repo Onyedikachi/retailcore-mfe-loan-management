@@ -14,13 +14,13 @@ export const tableQuery = (
    const queryParams: { [key: string]: any } = {};
    if (searchText) {
       queryParams.Search = searchText;
-      queryParams.Count = 650;
-      queryParams.Initiator = checker ? 'SENTTOME' : 'INITIATEDBYME';
+      queryParams.Count = 560;
+      
    }
    if (queryByProductName && queryByProductName.length > 0) {
       queryParams.LoanProduct = JSON.stringify(queryByProductName);
-      queryParams.Count = 650;
-      queryParams.Initiator = checker ? 'SENTTOME' : 'INITIATEDBYME';
+      queryParams.Count = 540;
+      
    }
    if (queryByStatus && queryByStatus.length > 0) {
       queryParams.status = JSON.stringify(
@@ -29,17 +29,17 @@ export const tableQuery = (
             return stat.toUpperCase().replace(/-/g, '_');
          })
       );
-      queryParams.Initiator = checker ? 'SENTTOME' : 'INITIATEDBYME';
+      
    }
    if (queryByDate && queryByDate.length === 2) {
       queryParams.StartDate = queryByDate[0];
       queryParams.EndDate = queryByDate[1];
-      queryParams.Count = 650;
-      queryParams.Initiator = checker ? 'SENTTOME' : 'INITIATEDBYME';
+      queryParams.Count = 510;
+     
    }
    if (Object.keys(queryParams).length === 0) {
       queryParams.Initiator = checker ? 'SENTTOME' : 'INITIATEDBYME';
-      queryParams.Count = 650;
+      queryParams.Count = 555;
    }
    return queryParams;
 };
