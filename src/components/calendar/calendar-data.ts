@@ -5,7 +5,7 @@ export const allTimeDateRange = (
    onStaticRangeSelected?: (label: string, date: { startDate: Date; endDate: Date }) => void
 ) => {
    return {
-      label: 'All Time',
+      label: 'All Time ',
       date: { startDate: new Date(), endDate: new Date(new Date().setFullYear(1925)) },
       range() {
          return this.date;
