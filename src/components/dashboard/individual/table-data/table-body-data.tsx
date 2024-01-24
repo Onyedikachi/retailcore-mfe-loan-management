@@ -31,6 +31,7 @@ export const bodyData = (
    return {
       customerName: (
          <>
+         
             <Typography fontSize="14px">{loan?.customerName}</Typography>
             <Typography variant="caption">{loan?.loanAccount}</Typography>
          </>
