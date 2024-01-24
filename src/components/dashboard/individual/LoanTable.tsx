@@ -34,9 +34,6 @@ export const LoanTable = ({ checker }: MyComponentProps) => {
    const navigate = useNavigate();
    const { loanProducts, getLoanProducts } = useIndividualLoanDashboardContext();
    const permission = usePermission();
-   const [activeChecker,setActiveChecker] = useState<any>()
-   const { isUserAChecker, isSuperAdmin, accessAllRecords, accessAllRequests } = usePermission();
-
    const loanTableHeader: TableHeaderProps = useMemo(
       () =>
          headerData(
