@@ -1,6 +1,6 @@
 /* eslint-disable max-len */
 import { LoanProductData } from '@app/@types/loan-product';
-import { eligibilityCriteria, findInterestRates } from '@app/constants/book-loan';
+import { eligibilityCriteria, findInterestRates, interestRateFinder } from '@app/constants/book-loan';
 import { TenureMapping, TenureMappingKey } from '@app/constants/forms';
 import { currencyToNumber } from '@app/helper/currency-helper';
 import * as Yup from 'yup';
@@ -118,25 +118,40 @@ const facilityDetails = (selectedProduct?: LoanProductData) => {
             'Must not be lesser than the min. interest rate of the selected product',
             function (value) {
                if (value && selectedProduct) {
-                  const { minInterestRate } = findInterestRates(
+                  const interestRates = interestRateFinder(
                      selectedProduct,
                      currencyToNumber(this.parent?.[InputFieldNames.PRINCIPAL] ?? '')
                   );
 
-                  return Number(value) >= minInterestRate;
+                  if (interestRates) {
+                     const { minInterestRate } = interestRates;
+
+                     return minInterestRate === undefined || Number(value) >= minInterestRate;
+                  } else {
+                     return true;
+                  }
+               } else {
+                  return true;
                }
             }
          )
+
          .test(
             InputFieldNames.INTEREST_RATE,
             'Must not be greater than the max. interest rate of the selected product',
             function (value) {
                if (value && selectedProduct) {
-                  const { maxInterestRate } = findInterestRates(
+                  const interestRates = interestRateFinder(
                      selectedProduct,
                      currencyToNumber(this.parent?.[InputFieldNames.PRINCIPAL] ?? '')
                   );
-                  return Number(value) <= maxInterestRate;
+                  if (interestRates) {
+                     const { maxInterestRate } = interestRates;
+
+                     return maxInterestRate === undefined || Number(value) <= maxInterestRate;
+                  } else {
+                     return true;
+                  }
                }
             }
          ),
@@ -224,13 +239,12 @@ const colateralAndEquityContrib = (selectedProduct?: LoanProductData) => {
                   const collateralValue = Number(value?.replace(/,/g, ''));
                   if (collateralValue > LoanPrincipal / 10) {
                      return this.createError({
-                        message: 'Can\'t input value greater than 10% of the configured principal',
+                        message: "Can't input value greater than 10% of the configured principal",
                      });
                   }
                   return LoanPrincipal >= collateralValue;
                }),
-            [CollateralFieldNames.COLLATERAL_FILE_UPLOADED]: Yup.mixed()
-               .required(
+            [CollateralFieldNames.COLLATERAL_FILE_UPLOADED]: Yup.mixed().required(
                'Attach supporting document(s)'
             ),
          })
