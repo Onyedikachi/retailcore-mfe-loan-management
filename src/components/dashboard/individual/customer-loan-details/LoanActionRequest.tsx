@@ -34,7 +34,7 @@ export const LoanActionRequest: React.FC<{ action: string; id: string; handleSub
          body: {
             // action: menuToAPIAction(action),
             loanId: id,
-            supportingDocument: values.doc ? values.doc : undefined,
+            // supportingDocument: values.doc ? values.doc : undefined,
             reason: values.reason,
             isNotificationEnabled: values.notify ?? undefined,
          },
