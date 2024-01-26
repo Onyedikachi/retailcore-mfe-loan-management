@@ -47,3 +47,28 @@ export const eligibilityCriteria = (selectedProduct?: LoanProductData) =>
    Array.isArray(selectedProduct?.productEligibilityCriteriaRequirement)
       ? selectedProduct?.productEligibilityCriteriaRequirement[0]
       : selectedProduct?.productEligibilityCriteriaRequirement;
+
+export const interestRateFinder = (
+   selectedProduct?: LoanProductData,
+   principal?: number
+): { minInterestRate: number; maxInterestRate: number } | null => {
+   if (!selectedProduct || !principal) {
+      return null;
+   }
+
+   const pricingConfig: any = selectedProduct.pricingConfiguration;
+
+   if (!pricingConfig || !pricingConfig.intRateConfigBand) {
+      return null;
+   }
+
+   for (const rateConfig of pricingConfig.intRateConfigBand) {
+      const { minPrincipalValue, maxPrincipalValue, minInterestRate, maxInterestRate } = rateConfig;
+
+      if (principal >= minPrincipalValue && principal <= maxPrincipalValue) {
+         return { minInterestRate, maxInterestRate };
+      }
+   }
+
+   return null;
+};
