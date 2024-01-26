@@ -88,7 +88,6 @@ export const ProcessSummary = () => {
       resetBookLoanData();
       path ? navigate(path) : window.location.reload();
    };
-   const StatusCodes = 200 || 201;
 
    return (
       <>
@@ -150,3 +149,4 @@ export const ProcessSummary = () => {
       </>
    );
 };
+export const StatusCodes = 200 || 201;
