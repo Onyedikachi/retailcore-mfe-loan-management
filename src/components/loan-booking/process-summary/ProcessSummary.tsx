@@ -27,6 +27,8 @@ export const ContainerWrapper = styled(Box)({
 export const ProcessSummary = () => {
    const [showCancelDialog, setShowCancelDialog] = useState(false);
    const [showResponseDialog, setShowResponseDialog] = useState(false);
+   const [statusValue, setStatusValue] = useState<number>();
+   const [titleValue, setTitleValue] = useState('');
    const { handleNavigation } = useStepperContext();
    const {
       bookLoanData,
@@ -40,7 +42,13 @@ export const ProcessSummary = () => {
    const [searchParams] = useSearchParams();
 
    const id = searchParams.get('id');
-   const [, submitForm] = useRequest({ onSuccess: () => setShowResponseDialog(true) });
+   const [, submitForm] = useRequest({
+      onSuccess: (response) => {
+         setStatusValue(response?.data?.loanDisbursementResponse.responseStatusCode);
+         setTitleValue(response?.data?.loanDisbursementResponse.responseMessage);
+         setShowResponseDialog(true);
+      },
+   });
    const [, fetchLedger] = useRequest({
       onSuccess: async (response) => {
          await submitForm(API_PATH.IndividualLoan, {
@@ -50,7 +58,6 @@ export const ProcessSummary = () => {
                IsUserSuperAdmin: sessionStorage.getItem('superAdmin') === 'true' ? true : false,
                Disbursementaccountledgerid: response.data.data[0].ledgerId,
                customerCategory: 'individual',
-
             },
             showSuccess: false,
          });
@@ -81,6 +88,7 @@ export const ProcessSummary = () => {
       resetBookLoanData();
       path ? navigate(path) : window.location.reload();
    };
+   const StatusCodes = 200 || 201;
 
    return (
       <>
@@ -129,13 +137,14 @@ export const ProcessSummary = () => {
             handleConfirm={() => handleCompletedOrClosed(IndividualLoanPath)}
             title="Do you want to cancel loan booking process?"
          />
+         
          <ResponseDialog
             open={showResponseDialog}
             handleClose={() => setShowResponseDialog(false)}
             handleNext={() => handleCompletedOrClosed()}
             handlePrevious={() => handleCompletedOrClosed(`${IndividualLoanPath}?tab=requests`)}
-            title="Loan Disbursement Request Submitted for Approval"
-            status="success"
+            title={titleValue}
+            status={statusValue === StatusCodes ? 'success' : 'error'}
             nextText="Book another loan"
          />
       </>
