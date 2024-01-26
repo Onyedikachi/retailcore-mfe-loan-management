@@ -137,6 +137,7 @@ export const ProcessSummary = () => {
             handleConfirm={() => handleCompletedOrClosed(IndividualLoanPath)}
             title="Do you want to cancel loan booking process?"
          />
+         
          <ResponseDialog
             open={showResponseDialog}
             handleClose={() => setShowResponseDialog(false)}
