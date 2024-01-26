@@ -58,7 +58,6 @@ export const ProcessSummary = () => {
                IsUserSuperAdmin: sessionStorage.getItem('superAdmin') === 'true' ? true : false,
                Disbursementaccountledgerid: response.data.data[0].ledgerId,
                customerCategory: 'individual',
-               
             },
             showSuccess: false,
          });
@@ -89,6 +88,7 @@ export const ProcessSummary = () => {
       resetBookLoanData();
       path ? navigate(path) : window.location.reload();
    };
+   const StatusCodes = 200 || 201;
 
    return (
       <>
@@ -143,7 +143,7 @@ export const ProcessSummary = () => {
             handleNext={() => handleCompletedOrClosed()}
             handlePrevious={() => handleCompletedOrClosed(`${IndividualLoanPath}?tab=requests`)}
             title={titleValue}
-            status={statusValue === 400 ? 'success' : 'error'}
+            status={statusValue === StatusCodes ? 'success' : 'error'}
             nextText="Book another loan"
          />
       </>
