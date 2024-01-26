@@ -9,7 +9,7 @@ import { Button } from '@app/components/atoms/Button';
 import { InputErrorText } from '@app/components/forms/InputFieldError';
 import { useRequest } from 'react-http-query';
 import { API_PATH } from '@app/constants/api-path';
-import { menuToAPIAction } from '@app/constants/dashboard';
+// import { menuToAPIAction } from '@app/constants/dashboard';
 import { useIndividualLoanDashboardContext } from '@app/providers/individual-loan-dashboard';
 
 export const LoanActionRequest: React.FC<{ action: string; id: string; handleSubmit?: () => void }> = ({
@@ -30,14 +30,15 @@ export const LoanActionRequest: React.FC<{ action: string; id: string; handleSub
       },
    });
    const onSubmit = (values: FormMeta.FormValues) => {
-      submitForm(`${API_PATH.IndividualLoan}/${id}/action`, {
+      submitForm(`${API_PATH.IndividualLoan}/closeloan`, {
          body: {
-            action: menuToAPIAction(action),
-            comment: values.reason,
-            fileUrl: values.doc ? values.doc : undefined,
-            notify: values.notify ?? undefined,
+            // action: menuToAPIAction(action),
+            loanId: id,
+            // supportingDocument: values.doc ? values.doc : undefined,
+            reason: values.reason,
+            isNotificationEnabled: values.notify ?? undefined,
          },
-         method: 'PUT',
+         method: 'POST',
       });
       handleSubmit?.();
    };
