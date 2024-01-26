@@ -239,7 +239,7 @@ const colateralAndEquityContrib = (selectedProduct?: LoanProductData) => {
                   const collateralValue = Number(value?.replace(/,/g, ''));
                   if (collateralValue > LoanPrincipal / 10) {
                      return this.createError({
-                        message: "Can't input value greater than 10% of the configured principal",
+                       message: 'Can\'t input value greater than 10% of the configured principal',
                      });
                   }
                   return LoanPrincipal >= collateralValue;
