@@ -1,4 +1,5 @@
-import { bigValueFormatter, formattedDate } from '../formater';
+import { parseISO } from 'date-fns';
+import { bigValueFormatter, formattedDate, parseDateString } from '../formater';
 
 describe('formattedDate', () => {
    it('should format date with day', () => {
@@ -38,5 +39,40 @@ describe('bigValueFormatter', () => {
       expect(() => {
          bigValueFormatter(value, 'long');
       }).toThrow('pass a number argument to formatter');
+   });
+});
+describe('parseDateString', () => {
+   test('returns undefined for invalid date strings', () => {
+      expect(parseDateString('invalidDateString')).toBeUndefined();
+      expect(parseDateString('2022-99-99')).toBeUndefined();
+   });
+
+   test('returns ISO date string for valid ISO date strings', () => {
+      const validISODate = '2022-01-26T12:34:56.789Z';
+      expect(parseDateString(validISODate)).toBe(validISODate);
+   });
+
+   test('returns ISO date string for valid custom format date strings', () => {
+      const validCustomFormatDate = '26/01/2022';
+      const expectedISOString = parseISO('2022-01-25T23:00:00.000Z').toISOString();
+      expect(parseDateString(validCustomFormatDate)).toBe(expectedISOString);
+   });
+
+   test('returns undefined for invalid custom format date strings', () => {
+      const invalidCustomFormatDate = '99/99/2022';
+      expect(parseDateString(invalidCustomFormatDate)).toBeUndefined();
+   });
+
+   test('handles various valid date formats', () => {
+      const validISODate = '2022-01-26T12:34:56.789Z';
+      const validCustomFormatDate = '26/01/2022';
+
+      expect(parseDateString(validISODate)).toBe(validISODate);
+      expect(parseDateString(validCustomFormatDate)).toBe(parseISO('2022-01-25T23:00:00.000Z').toISOString());
+   });
+
+   test('handles both valid ISO and custom format date strings', () => {
+      const validMixedDate = '2022-01-26T12:34:56.789Z';
+      expect(parseDateString(validMixedDate)).toBe(validMixedDate);
    });
 });

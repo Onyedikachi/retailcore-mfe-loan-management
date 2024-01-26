@@ -81,7 +81,7 @@ interface ProductEligibilityCriteriaRequirement {
 interface PricingConfiguration {
    intCalcMethod: string;
    intComputeDays: string;
-   intRateConfigBand: string;
+   intRateConfigBand: any;
    productId: string;
    id: string;
    deletedDate?: string;
