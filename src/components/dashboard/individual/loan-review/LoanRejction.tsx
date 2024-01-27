@@ -46,6 +46,7 @@ export const LoanRejection: React.FC<{ handleSubmit?: () => void }> = ({ handleS
                                  placeholder="Type to search"
                                  noOptionsText="No match"
                                  search
+                                 value={loanProduct?.createdBy}
                               />
                            </FormControlWrapper>
                         </Grid>

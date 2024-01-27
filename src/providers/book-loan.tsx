@@ -38,6 +38,7 @@ interface BookLoanContextType {
    getCustomer: (customersData: CustomerData) => void;
    getInputtedPrincipal: (principal: string) => void;
    inputtedPrincipal?: string;
+   LoanProduct?:  BookedLoanData;
 }
 
 const BookLoanContext = createContext<BookLoanContextType | null>(null);
@@ -68,6 +69,7 @@ export const BookLoanProvider = ({ children }: BookLoanProviderProps) => {
    const [inputtedPrincipal, setInputtedPrincipal] = useState<string>();
    const [backendData, setBackendData] = useState<any>();
    const [isDraft, setIsDraft] = useState<boolean>();
+   const [LoanProduct, setLoanProduct] = useState<BookedLoanData>();
 
    const [, refetchAllProductInfo] = useRequest({
       onSuccess: (response) => {
@@ -88,6 +90,7 @@ export const BookLoanProvider = ({ children }: BookLoanProviderProps) => {
       }
    };
    const getLoanDataToModify = (loan: BookedLoanData) => {
+      setLoanProduct(loan);
       const loanContextData = mapSchemaToBookLoan(loan);
       setBookLoanData(loanContextData);
       setSelectedCustomerId(loan.customerId);
@@ -177,6 +180,7 @@ export const BookLoanProvider = ({ children }: BookLoanProviderProps) => {
          getLoanDataToModify,
          getCustomer,
          getInputtedPrincipal,
+         LoanProduct
       }),
       [
          bookLoanData,
@@ -190,6 +194,7 @@ export const BookLoanProvider = ({ children }: BookLoanProviderProps) => {
          backendData,
          productNames,
          inputtedPrincipal,
+         LoanProduct
       ]
    );
 
