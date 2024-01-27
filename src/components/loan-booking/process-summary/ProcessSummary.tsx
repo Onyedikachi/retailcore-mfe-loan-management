@@ -37,51 +37,47 @@ export const ProcessSummary = () => {
       selectedProduct,
       resetBookLoanData,
       selectedCustomerId,
+      LoanProduct,
    } = useBookLoanContext();
    const navigate = useNavigate();
    const [searchParams] = useSearchParams();
 
    const id = searchParams.get('id');
-   const [, submitForm] = useRequest({
-      onSuccess: (response) => {
-         setStatusValue(response?.data?.loanDisbursementResponse.responseStatusCode);
-         setTitleValue(response?.data?.loanDisbursementResponse.responseMessage);
-         setShowResponseDialog(true);
+   const StatusCodes = 201 || 200;
+   const [, submitForm] = useRequest(
+      {
+         onSuccess: (response) => {
+            setStatusValue(response?.data?.loanDisbursementResponse?.responseStatusCode);
+            setTitleValue(response?.data?.loanDisbursementResponse?.responseMessage);
+            setShowResponseDialog(true);
+         },
       },
-   });
-   const [, fetchLedger] = useRequest({
-      onSuccess: async (response) => {
-         await submitForm(API_PATH.IndividualLoan, {
-            body: {
-               ...backendData,
-               isDraft: false,
-               IsUserSuperAdmin: sessionStorage.getItem('superAdmin') === 'true' ? true : false,
-               Disbursementaccountledgerid: response.data.data[0].ledgerId,
-               customerCategory: 'individual',
-            },
-            showSuccess: false,
-         });
+      [LoanProduct]
+   );
+   const [, fetchLedger] = useRequest(
+      {
+         onSuccess: async (response) => {
+            await submitForm(API_PATH.IndividualLoan, {
+               body: {
+                  ...backendData,
+                  isDraft: false,
+                  IsUserSuperAdmin: sessionStorage.getItem('superAdmin') === 'true' ? true : false,
+                  Disbursementaccountledgerid: response.data.data[0].ledgerId,
+                  ...(id && { id: id, oldLoanRecords: LoanProduct }),
+                  customerCategory: 'individual',
+               },
+               showSuccess: false,
+               method: id ? 'PUT' : 'POST',
+            });
+         },
       },
-   });
+      [LoanProduct]
+   );
 
    const handleSubmit = () => {
-      if (id) {
-         submitForm(`${API_PATH.IndividualLoan}`, {
-            body: {
-               ...backendData,
-               id: id,
-               isDraft: false,
-               IsUserSuperAdmin: sessionStorage.getItem('superAdmin') === 'true' ? true : false,
-               customerCategory: 'individual',
-               showSuccess: false,
-            },
-            method: 'PUT',
-         });
-      } else {
-         fetchLedger(`${CUSTOMER_MANAGEMENT_PATH.GET_CUSTOMER_LEDGER}/${backendData.customerId}`, {
-            showSuccess: false,
-         });
-      }
+      fetchLedger(`${CUSTOMER_MANAGEMENT_PATH.GET_CUSTOMER_LEDGER}/${backendData.customerId}`, {
+         showSuccess: false,
+      });
    };
 
    const handleCompletedOrClosed = (path?: string) => {
@@ -136,17 +132,16 @@ export const ProcessSummary = () => {
             handleConfirm={() => handleCompletedOrClosed(IndividualLoanPath)}
             title="Do you want to cancel loan booking process?"
          />
-         
+
          <ResponseDialog
             open={showResponseDialog}
             handleClose={() => setShowResponseDialog(false)}
             handleNext={() => handleCompletedOrClosed()}
             handlePrevious={() => handleCompletedOrClosed(`${IndividualLoanPath}?tab=requests`)}
             title={titleValue}
-            status={statusValue === StatusCodes ? 'success' : 'error'}
+            status={statusValue == StatusCodes ? 'success' : 'error'}
             nextText="Book another loan"
          />
       </>
    );
 };
-export const StatusCodes = 200 || 201;
