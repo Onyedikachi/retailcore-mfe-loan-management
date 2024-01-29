@@ -4,7 +4,7 @@ import { Box } from '@mui/material';
 import { FormControlBase } from '@app/components/forms/FormControl';
 import { useFormikContext } from 'formik';
 import { useFormikHelper } from '@app/hooks/useFormikHelper';
-import { useBookLoanContext } from '@app/providers/book-loan';
+import { useBookLoanContext, AccountNumber } from '@app/providers/book-loan';
 import { useRequest } from 'react-http-query';
 import { useEffect, useState } from 'react';
 import { CUSTOMER_MANAGEMENT_PATH } from '@app/constants';
@@ -13,23 +13,21 @@ import { AutocompleteOptions } from '@app/components/atoms';
 export const DisbursementSettingsFields = () => {
    const { InputFieldNames, TooltipText, disbursementMethods, disbursementAccounts } = FormMeta;
    const { getFieldProps } = useFormikContext<FormMeta.TransactionSettingsFormValues>();
-   const { GET_INDIVIDUAL_CUSTOMERS } = CUSTOMER_MANAGEMENT_PATH;
-   const { accountNumbers, getCustomersData } = useBookLoanContext();
+   const { GET_INDIVIDUAL_ACCOUNTS } = CUSTOMER_MANAGEMENT_PATH;
+   const { accountNumbers, getCustomersData , getSelectedCustomer} = useBookLoanContext();
    const [searchInput, setSearchInput] = useState('');
    const { resetFieldState } = useFormikHelper();
 
    const [, fetchCustomers] = useRequest({
-      onSuccess: (response) => getCustomersData(response.data.data.customer),
+      onSuccess: (response) => getCustomersData(response?.data?.data?.accounts),
    });
    useEffect(() => {
-      if (!accountNumbers || searchInput) {
-         fetchCustomers(GET_INDIVIDUAL_CUSTOMERS, {
+         fetchCustomers(GET_INDIVIDUAL_ACCOUNTS, {
             showSuccess: false,
             showLoader: !accountNumbers,
             query: { size: 20, search: searchInput },
          });
-      }
-   }, [accountNumbers, searchInput]);
+   }, [searchInput]);
 
    return (
       <Box width="90%" py={2}>
@@ -92,6 +90,7 @@ export const DisbursementSettingsFields = () => {
                   name={InputFieldNames.OTHER_ACCOUNT_NO}
                   noOptionsText="No match"
                   options={accountNumbers ?? []}
+                  onInputChange={(value) => getSelectedCustomer((value as AccountNumber)?.customerId)}
                   filterOptions={(option, { inputValue }) => {
                      setSearchInput(inputValue?.toLowerCase());
                      return (accountNumbers as AutocompleteOptions[]) ?? [];
