@@ -43,19 +43,13 @@ export const ProcessSummary = () => {
    const [searchParams] = useSearchParams();
 
    const id = searchParams.get('id');
-   const StatusCodes = 201 || 200;
-   const [, submitForm] = useRequest(
-      {
-         onSuccess: (response) => {
+   const [, submitForm] = useRequest({
+      onSuccess: (response) => {
             setStatusValue(response?.data?.loanDisbursementResponse?.responseStatusCode);
             setTitleValue(response?.data?.loanDisbursementResponse?.responseMessage);
             setShowResponseDialog(true);
-         },
-      },
-      [LoanProduct]
-   );
-   const [, fetchLedger] = useRequest(
-      {
+         }},[LoanProduct]);
+   const [, fetchLedger] = useRequest({
          onSuccess: async (response) => {
             await submitForm(API_PATH.IndividualLoan, {
                body: {
@@ -69,10 +63,7 @@ export const ProcessSummary = () => {
                showSuccess: false,
                method: id ? 'PUT' : 'POST',
             });
-         },
-      },
-      [LoanProduct]
-   );
+         }},[LoanProduct]);
 
    const handleSubmit = () => {
       fetchLedger(`${CUSTOMER_MANAGEMENT_PATH.GET_CUSTOMER_LEDGER}/${backendData.customerId}`, {
@@ -145,3 +136,5 @@ export const ProcessSummary = () => {
       </>
    );
 };
+
+export const StatusCodes = 201 || 200;
