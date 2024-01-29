@@ -40,9 +40,9 @@ export const details = (
    const accountEntry = extractedInfoForAllEntries?.map((entry: any) => ({
       heading: entry.accountEvent,
       key: 'Debit Ledger',
-      value: entry.debitLedgerName,
+      value: entry?.debitLedgerName,
       secondkey: 'Credit Ledger',
-      secondValue: entry.creditLedgerName,
+      secondValue: entry?.creditLedgerName,
    }));
 
    const charges: any[] = [];
@@ -56,7 +56,7 @@ export const details = (
                name: chargeTax?.name,
                chargeAmount: chargeTax?.charge,
                eventName: item?.event,
-               ledgers: chargeTax?.ledgers[0].name,
+               ledgers: chargeTax?.ledgers[0]?.name,
                type: 'charge',
             });
          } else if (chargeTax?.type === 'tax') {
@@ -65,7 +65,7 @@ export const details = (
                name: chargeTax?.name,
                taxAmount: chargeTax?.charge,
                eventName: item?.event,
-               ledgers: chargeTax?.ledgers[0].name,
+               ledgers: chargeTax?.ledgers[0]?.name,
                type: 'tax',
             });
          }
