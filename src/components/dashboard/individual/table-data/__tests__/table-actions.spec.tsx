@@ -28,7 +28,7 @@ describe('menuFromStatus', () => {
          Search: 'find',
          status: '["ACTIVE"]',
          Count: 540,
-         //Initiator: 'INITIATEDBYME',
+         // Initiator: 'INITIATEDBYME',
       });
    });
 });
@@ -43,7 +43,7 @@ describe('tableQuery function', () => {
       const result = tableQuery(searchText, queryByProductName, queryByStatus, queryByDate, checker);
 
       // expect(result).toHaveValue({
-      //    
+      //
       //    LoanProduct: '["Product A","Product B"]',
       //    status: '["IN_REVIEW","APPROVED"]',
       //    StartDate: '2022-01-01',
@@ -51,8 +51,7 @@ describe('tableQuery function', () => {
       //    Count: 650,
       //    // Initiator: 'SENTOME',
       // });
-      //    
-    
+      //
    });
 
    // Add more test cases for different scenarios
@@ -145,6 +144,23 @@ describe('handleActions function', () => {
 
       expect(setOpenLoanActionMock).toHaveBeenCalledTimes(1);
    });
+   it('navigates to CustomerLoanDetailsPath when selected action is "Delete Request"', () => {
+      const selectedAction = 'Delete Request';
+      const navigateMock = jest.fn();
+      const item = { id: '123' };
+      const setOpenLoanActionMock = jest.fn();
+      const setOpenDeleteActionMock = jest.fn();
+
+      handleActions(
+         selectedAction,
+         navigateMock,
+         item as BookedLoanData,
+         setOpenLoanActionMock,
+         setOpenDeleteActionMock
+      );
+
+      expect(setOpenDeleteActionMock).toHaveBeenCalledTimes(1);
+   });
 });
 
 describe('handleDateQuery function', () => {
@@ -156,5 +172,22 @@ describe('handleDateQuery function', () => {
       handleDateQuery(startDate, endDate, setQueryByDateMock);
 
       expect(setQueryByDateMock).toHaveBeenCalledWith(['2022-01-01', '2022-12-31']);
+   });
+   it('should set date query when either startDate or endDate is provided', () => {
+      const startDate = new Date('2022-01-01');
+      const endDate = new Date('2022-01-10');
+      const setQueryByDateMock = jest.fn();
+
+      handleDateQuery(startDate, endDate, setQueryByDateMock);
+
+      expect(setQueryByDateMock).toHaveBeenCalledWith(['2022-01-01', '2022-01-10']);
+   });
+
+   it('should set date query to undefined when both startDate and endDate are undefined', () => {
+      const setQueryByDateMock = jest.fn();
+
+      handleDateQuery(undefined, undefined, setQueryByDateMock);
+
+      expect(setQueryByDateMock).toHaveBeenCalledWith(undefined);
    });
 });

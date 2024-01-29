@@ -175,6 +175,10 @@ describe('convertToUppercase function', () => {
      const result = convertToUppercase(sentence);
      expect(result).toBe('TESTWITHSPACESANDHYPHENS');
    });
- 
-   // Add more test cases as needed
+
+   test('converts "approved system-wise" correctly', () => {
+      const sentence = 'approved system-wide';
+      const result = convertToUppercase(sentence);
+      expect(result).toBe('APPROVEDBYSYSTEM');
+    });
  });
