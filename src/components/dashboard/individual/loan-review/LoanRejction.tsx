@@ -21,6 +21,11 @@ export const LoanRejection: React.FC<{ handleSubmit?: () => void }> = ({ handleS
 
    const [, submitForm] = useRequest({
       onSuccess: () => navigate(`${IndividualLoanPath}?tab=requests`),
+      onError: (response) => {
+         if (response?.data?.message == 'Loan already rejected') {
+            navigate(`${IndividualLoanPath}?tab=requests`);
+         }
+      },
    });
    const onSubmit = (values: FormMeta.FormValues) => {
       submitForm(`${API_PATH.IndividualLoan}/${loanProduct?.id}/action`, {
