@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import AlertDialog from '@app/components/modal/AlertDialog';
 import Dialog from '@app/components/atoms/Dialog';
 import { useNavigate } from 'react-router-dom';
@@ -7,6 +7,7 @@ import { ResponseDialog } from '@app/components/modal/ResponseDialog';
 import { LoanRejection } from './LoanRejction';
 import { API_PATH } from '@app/constants';
 import { useRequest } from 'react-http-query';
+import { StatusCodes } from '@app/components/loan-booking/process-summary/ProcessSummary';
 interface DialogStates {
    showCancelDialog: boolean;
    setShowCancelDialog: React.Dispatch<React.SetStateAction<boolean>>;
@@ -29,6 +30,8 @@ export const LoanReviewDialogs: React.FC<DialogStates> = ({
    setShowRejectDialog,
    id,
 }) => {
+   const [statusValue, setStatusValue] = useState<number>();
+   const [titleValue, setTitleValue] = useState('');
    const navigate = useNavigate();
 
    const handleCancelConfirm = () => {
@@ -36,10 +39,17 @@ export const LoanReviewDialogs: React.FC<DialogStates> = ({
       navigate(`${IndividualLoanPath}?tab=requests`);
    };
 
-   const [, submitForm] = useRequest({ onSuccess: (response) => setShowResponseDialog(true) });
+   const [, submitForm] = useRequest({ onSuccess: () => setShowResponseDialog(true),
+      onError: (response) => {
+         const jsonObject = JSON.parse(response?.data?.message);
+         setShowResponseDialog(true);
+         setStatusValue(jsonObject?.ResponseStatusCode);
+         setTitleValue(jsonObject?.ResponseMessage);
+      },
+   });
    const handleApprovalConfirm = () => {
       setShowApprovalDialog(false);
-      submitForm(`${API_PATH.IndividualLoan}/${id}/action`, { body: { action: 'APPROVED' }, method: 'PUT' });
+      submitForm(`${API_PATH.IndividualLoan}/${id}/action`, { body: { action: 'APPROVED' }, method: 'PUT', showError: false, showSuccess: true });
    };
 
    const handleResponseNext = () => {
@@ -66,8 +76,8 @@ export const LoanReviewDialogs: React.FC<DialogStates> = ({
             handleClose={() => setShowResponseDialog(false)}
             handleNext={handleResponseNext}
             handlePrevious={() => navigate(`${IndividualLoanPath}?tab=requests`)}
-            title="Loan Disbursement Request Submitted for Approval"
-            status="success"
+            title={titleValue}
+            status={statusValue == StatusCodes ? 'success' : 'error'}
             nextText="Book another loan"
          />
          <Dialog
