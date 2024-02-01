@@ -57,7 +57,7 @@ export const LoanProductDetail = () => {
                      CURRENCY: {loanProduct?.product?.currency}
                   </Grid>
                   <Grid item xs>
-                     ACCOUNT NO: {loanProduct?.acctNo}
+                  CUSTOMER'S LOAN ID: {loanProduct?.loanAccount}
                   </Grid>
                </Grid>
                <PaddedContainer sx={{ mx: 5, mt: 3 }}>
