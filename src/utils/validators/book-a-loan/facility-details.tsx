@@ -1,6 +1,6 @@
 /* eslint-disable max-len */
 import { LoanProductData } from '@app/@types/loan-product';
-import { eligibilityCriteria, interestRateFinder } from '@app/constants/book-loan';
+import { eligibilityCriteria, findInterestRates, interestRateFinder } from '@app/constants/book-loan';
 import { TenureMapping, TenureMappingKey } from '@app/constants/forms';
 import { currencyToNumber } from '@app/helper/currency-helper';
 import * as Yup from 'yup';
@@ -191,7 +191,91 @@ const facilityDetails = (selectedProduct?: LoanProductData) => {
             }
          ),
       [InputFieldNames.REPAYMENT_PATTERN]: Yup.string().required('Select repayment pattern'),
-      [InputFieldNames.REPAYMENT_FREQUENCY]: Yup.string().required('Select repayment frequency'),
+      [InputFieldNames.REPAYMENT_FREQUENCY]: Yup.string()
+         .required('Select repayment frequency')
+         .test(InputFieldNames.REPAYMENT_FREQUENCY, 'Cannot select this frequency', function (value, parent) {
+            if (value && parent) {
+               const { context } = parent.options;
+
+               if (context) {
+                  const { tenorValue, tenorPeriod } = context;
+
+                  const tenorInDays: () => boolean = () => {
+                     if (tenorValue && tenorPeriod) {
+                        if (value === 'Weekly') {
+                           if (tenorPeriod === 'Week(s)') {
+                              const val = Number(tenorValue) * 7;
+                              const outcome = val >= 7;
+                              return outcome;
+                           } else if (tenorPeriod === 'Month(s)') {
+                              const val = Number(tenorValue) * 30;
+                              const outcome = val <= 7;
+                              return outcome;
+                           } else if (tenorPeriod === 'Year(s)') {
+                              const val = Number(tenorValue) * 365;
+                              const outcome = val <= 7;
+                              return outcome;
+                           } else return false;
+                        } else if (value === 'Monthly') {
+                           if (tenorPeriod === 'Week(s)') {
+                              const val = Number(tenorValue) * 7;
+                              const outcome = val >= 30;
+                              return outcome;
+                           } else if (tenorPeriod === 'Month(s)') {
+                              const val = Number(tenorValue) * 30;
+                              const outcome = val >= 30;
+                              return outcome;
+                           } else return false;
+                        } else if (value === 'Quarterly') {
+                           if (tenorPeriod === 'Week(s)') {
+                              const val = Number(tenorValue) * 7;
+                              const outcome = val >= 120;
+                              return outcome;
+                           } else if (tenorPeriod === 'Month(s)') {
+                              const val = Number(tenorValue) * 30;
+                              const outcome = val >= 120;
+                              return outcome;
+                           } else return false;
+                        } else if (value === 'Bi-Annually') {
+                           if (tenorPeriod === 'Week(s)') {
+                              const val = Number(tenorValue) * 7;
+                              const outcome = val >= 180;
+                              return outcome;
+                           } else if (tenorPeriod === 'Month(s)') {
+                              const val = Number(tenorValue) * 30;
+                              const outcome = val >= 180;
+                              return outcome;
+                           } else if (tenorPeriod === 'Year(s)') {
+                              const val = Number(tenorValue) * 365;
+                              const outcome = val >= 180;
+                              return outcome;
+                           } else return false;
+                        } else if (value === 'Annually') {
+                           if (tenorPeriod === 'Week(s)') {
+                              const val = Number(tenorValue) * 7;
+                              const outcome = val >= 365;
+                              return outcome;
+                           } else if (tenorPeriod === 'Month(s)') {
+                              const val = Number(tenorValue) * 30;
+                              const outcome = val >= 365;
+                              return outcome;
+                           } else if (tenorPeriod === 'Year(s)') {
+                              const val = Number(tenorValue) * 365;
+                              const outcome = val >= 365;
+                              return outcome;
+                           } else return false;
+                        } else {
+                           return true;
+                        }
+                     }
+                     return true;
+                  };
+
+                  console.log(tenorInDays());
+                  return tenorInDays();
+               }
+            }
+         }),
       [InputFieldNames.START_DATE]: Yup.string().when(
          InputFieldNames.REPAYMENT_FREQUENCY,
          (repaymentFrequency, field) =>
@@ -239,7 +323,7 @@ const colateralAndEquityContrib = (selectedProduct?: LoanProductData) => {
                   const collateralValue = Number(value?.replace(/,/g, ''));
                   if (collateralValue > LoanPrincipal / 10) {
                      return this.createError({
-                       message: 'Can\'t input value greater than 10% of the configured principal',
+                        message: "Can't input value greater than 10% of the configured principal",
                      });
                   }
                   return LoanPrincipal >= collateralValue;
