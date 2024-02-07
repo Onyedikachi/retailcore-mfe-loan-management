@@ -27,7 +27,29 @@ export const IndividualLoan = () => {
    const { isUserAChecker, isSuperAdmin, accessAllRecords, accessAllRequests } = usePermission();
    const [options, setOption] = useState<any>('');
    const [selectedOptions, setSelectedOption] = useState<any>('');
+   const [stat, setStat] = useState<any>();
+   const [allValue, setAllValue] = useState(false);
+
+   const [, fetchAllProductStat] = useRequest({
+      onSuccess: (response) => {
+          setStat(response.data?.data?.statistics);
+      },
+   });
+ 
+   const fetchProductActivities = () => {
+     fetchAllProductStat(API_PATH.LoanStat, {
+         showSuccess: false,
+         query: {
+            all: allValue,
+         },
+      });   
+   };
    
+   useEffect(() => {
+      fetchProductActivities();
+    }, [allValue]);
+
+
    // const checkerOption = options?.includes('Sent');
    const { getLoanProducts, dataCount } = useIndividualLoanDashboardContext();
 
@@ -120,10 +142,19 @@ export const IndividualLoan = () => {
             defaultTabKey={tab!}
             tabKey={tab!}
             onTabClick={(tab) => {}}
-            onStatusClick={(label) => setQueryByStatus([label])}
-            statusOptions={tabCardOptions(dataCount, isUserAChecker && !isSuperAdmin)[tab!]}
+            onStatusClick={(label) => 
+               setQueryByStatus([label])
+              }
+            statusOptions={tabCardOptions(stat, isUserAChecker && !isSuperAdmin)[tab!]}
+            // statusOptions={tabCardOptions(dataCount, isUserAChecker && !isSuperAdmin)[tab!]}
             tabOptions={tabOptions}
-            onFilterOptionSelected={(event: SelectChangeEvent<any>) => setSelectedOption(event.target.value)}
+            onFilterOptionSelected={(event: SelectChangeEvent<any>) => 
+               {
+                  console.log(event.target.value,"label")
+                  setSelectedOption(event.target.value)}
+
+               }
+              
             // eslint-disable-next-line max-len
             filterOptions={
                tab === 'records'

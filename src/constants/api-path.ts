@@ -6,6 +6,7 @@ export const API_PATH = {
    IndividualLoan: `${API_V1}/loan`,
    GetAllLoanProduct: `${API_V1}/product`,
    RepaymentSchedule: `${API_V1}/loan/loanrepaymentschedule`,
+   LoanStat: `${API_V1}/loan/stats`,
 };
 
 const RETAIL_CORE_V1 = `${RETAIL_CORE_BASE_URL ?? ''}${API_V1}`;
