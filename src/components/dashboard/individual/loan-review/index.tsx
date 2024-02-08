@@ -54,7 +54,7 @@ export const LoanReview = () => {
 
    return (
       <Grid container height="100%">
-         <Grid item xs height="100%" mx="auto">
+         <Grid item xs height="auto" mx="auto">
             <StyledContentWrapper>
                <ContainerWrapper id="loan-details" className="fancy-scrollbar" sx={{ pl: 3 }}>
                   <Box mb={2}>
@@ -94,13 +94,16 @@ export const LoanReview = () => {
                         onApprove={() => setShowApprovalDialog(true)}
                      />
                   ) : (
-                     <ViewActionButtons />
+                     <ViewActionButtons
+                     fileName="Loan Details"
+                     htmlElement={document.getElementById('loan-details')}
+                     />
                   )}
                </PaddedContainer>
             </StyledContentWrapper>
          </Grid>
 
-         <Grid item xs={3} height="100%">
+         <Grid item xs={3} height="auto">
             <ActivitySummary />
          </Grid>
          <LoanReviewDialogs
