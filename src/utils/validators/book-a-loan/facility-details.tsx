@@ -200,79 +200,45 @@ const facilityDetails = (selectedProduct?: LoanProductData) => {
                if (context) {
                   const { tenorValue, tenorPeriod } = context;
 
-                  const tenorInDays: () => boolean = () => {
+                  const calculateDays = (): number => {
+                     switch (tenorPeriod) {
+                        case 'Day(s)':
+                           return Number(tenorValue) * 1;
+                        case 'Week(s)':
+                           return Number(tenorValue) * 7;
+                        case 'Month(s)':
+                           return Number(tenorValue) * 30;
+                        case 'Year(s)':
+                           return Number(tenorValue) * 365;
+                        default:
+                           return 0;
+                     }
+                  };
+
+                  const tenorInDays = (): boolean => {
                      if (tenorValue && tenorPeriod) {
-                        if (value === 'Weekly') {
-                           if (tenorPeriod === 'Week(s)') {
-                              const val = Number(tenorValue) * 7;
-                              const outcome = val >= 7;
-                              return outcome;
-                           } else if (tenorPeriod === 'Month(s)') {
-                              const val = Number(tenorValue) * 30;
-                              const outcome = val <= 7;
-                              return outcome;
-                           } else if (tenorPeriod === 'Year(s)') {
-                              const val = Number(tenorValue) * 365;
-                              const outcome = val <= 7;
-                              return outcome;
-                           } else return false;
-                        } else if (value === 'Monthly') {
-                           if (tenorPeriod === 'Week(s)') {
-                              const val = Number(tenorValue) * 7;
-                              const outcome = val >= 30;
-                              return outcome;
-                           } else if (tenorPeriod === 'Month(s)') {
-                              const val = Number(tenorValue) * 30;
-                              const outcome = val >= 30;
-                              return outcome;
-                           } else return false;
-                        } else if (value === 'Quarterly') {
-                           if (tenorPeriod === 'Week(s)') {
-                              const val = Number(tenorValue) * 7;
-                              const outcome = val >= 120;
-                              return outcome;
-                           } else if (tenorPeriod === 'Month(s)') {
-                              const val = Number(tenorValue) * 30;
-                              const outcome = val >= 120;
-                              return outcome;
-                           } else return false;
-                        } else if (value === 'Bi-Annually') {
-                           if (tenorPeriod === 'Week(s)') {
-                              const val = Number(tenorValue) * 7;
-                              const outcome = val >= 180;
-                              return outcome;
-                           } else if (tenorPeriod === 'Month(s)') {
-                              const val = Number(tenorValue) * 30;
-                              const outcome = val >= 180;
-                              return outcome;
-                           } else if (tenorPeriod === 'Year(s)') {
-                              const val = Number(tenorValue) * 365;
-                              const outcome = val >= 180;
-                              return outcome;
-                           } else return false;
-                        } else if (value === 'Annually') {
-                           if (tenorPeriod === 'Week(s)') {
-                              const val = Number(tenorValue) * 7;
-                              const outcome = val >= 365;
-                              return outcome;
-                           } else if (tenorPeriod === 'Month(s)') {
-                              const val = Number(tenorValue) * 30;
-                              const outcome = val >= 365;
-                              return outcome;
-                           } else if (tenorPeriod === 'Year(s)') {
-                              const val = Number(tenorValue) * 365;
-                              const outcome = val >= 365;
-                              return outcome;
-                           } else return false;
-                        } else {
-                           return true;
+                        const days = calculateDays();
+                        switch (value) {
+                           case 'Weekly':
+                              return days >= 7;
+                           case 'Monthly':
+                              return days >= 30;
+                           case 'Quarterly':
+                              return days >= 120;
+                           case 'Bi-Annually':
+                              return days >= 180;
+                           case 'Annually':
+                              return days >= 365;
+                           default:
+                              return true;
                         }
                      }
                      return true;
                   };
 
-                  console.log(tenorInDays());
-                  return tenorInDays();
+                  const result = tenorInDays();
+
+                  return result;
                }
             }
          }),
