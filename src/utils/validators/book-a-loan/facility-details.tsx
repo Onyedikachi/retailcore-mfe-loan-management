@@ -1,6 +1,6 @@
 /* eslint-disable max-len */
 import { LoanProductData } from '@app/@types/loan-product';
-import { eligibilityCriteria, interestRateFinder } from '@app/constants/book-loan';
+import { eligibilityCriteria, findInterestRates, interestRateFinder } from '@app/constants/book-loan';
 import { TenureMapping, TenureMappingKey } from '@app/constants/forms';
 import { currencyToNumber } from '@app/helper/currency-helper';
 import * as Yup from 'yup';
@@ -191,7 +191,57 @@ const facilityDetails = (selectedProduct?: LoanProductData) => {
             }
          ),
       [InputFieldNames.REPAYMENT_PATTERN]: Yup.string().required('Select repayment pattern'),
-      [InputFieldNames.REPAYMENT_FREQUENCY]: Yup.string().required('Select repayment frequency'),
+      [InputFieldNames.REPAYMENT_FREQUENCY]: Yup.string()
+         .required('Select repayment frequency')
+         .test(InputFieldNames.REPAYMENT_FREQUENCY, 'Cannot select this frequency', function (value, parent) {
+            if (value && parent) {
+               const { context } = parent.options;
+
+               if (context) {
+                  const { tenorValue, tenorPeriod } = context;
+
+                  const calculateDays = (): number => {
+                     switch (tenorPeriod) {
+                        case 'Day(s)':
+                           return Number(tenorValue) * 1;
+                        case 'Week(s)':
+                           return Number(tenorValue) * 7;
+                        case 'Month(s)':
+                           return Number(tenorValue) * 30;
+                        case 'Year(s)':
+                           return Number(tenorValue) * 365;
+                        default:
+                           return 0;
+                     }
+                  };
+
+                  const tenorInDays = (): boolean => {
+                     if (tenorValue && tenorPeriod) {
+                        const days = calculateDays();
+                        switch (value) {
+                           case 'Weekly':
+                              return days >= 7;
+                           case 'Monthly':
+                              return days >= 30;
+                           case 'Quarterly':
+                              return days >= 120;
+                           case 'Bi-Annually':
+                              return days >= 180;
+                           case 'Annually':
+                              return days >= 365;
+                           default:
+                              return true;
+                        }
+                     }
+                     return true;
+                  };
+
+                  const result = tenorInDays();
+
+                  return result;
+               }
+            }
+         }),
       [InputFieldNames.START_DATE]: Yup.string().when(
          InputFieldNames.REPAYMENT_FREQUENCY,
          (repaymentFrequency, field) =>
@@ -239,7 +289,7 @@ const colateralAndEquityContrib = (selectedProduct?: LoanProductData) => {
                   const collateralValue = Number(value?.replace(/,/g, ''));
                   if (collateralValue > LoanPrincipal / 10) {
                      return this.createError({
-                       message: 'Can\'t input value greater than 10% of the configured principal',
+                        message: "Can't input value greater than 10% of the configured principal",
                      });
                   }
                   return LoanPrincipal >= collateralValue;
