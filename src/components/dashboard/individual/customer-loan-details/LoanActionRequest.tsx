@@ -9,8 +9,9 @@ import { Button } from '@app/components/atoms/Button';
 import { InputErrorText } from '@app/components/forms/InputFieldError';
 import { useRequest } from 'react-http-query';
 import { API_PATH } from '@app/constants/api-path';
-// import { menuToAPIAction } from '@app/constants/dashboard';
+import { menuToAPIAction } from '@app/constants/dashboard';
 import { useIndividualLoanDashboardContext } from '@app/providers/individual-loan-dashboard';
+import { usePermission } from '@app/hooks/usePermission';
 
 export const LoanActionRequest: React.FC<{ action: string; id: string; handleSubmit?: () => void }> = ({
    id,
@@ -19,6 +20,7 @@ export const LoanActionRequest: React.FC<{ action: string; id: string; handleSub
 }) => {
    const { initialValues, validationSchema, Fields } = FormMeta;
    const { getLoanProducts } = useIndividualLoanDashboardContext();
+   const { isSuperAdmin  } = usePermission();
 
    const [, getLoans] = useRequest({
       onSuccess: (response) => getLoanProducts(response.data.data.loan, response.data.data.statistics),
@@ -28,14 +30,15 @@ export const LoanActionRequest: React.FC<{ action: string; id: string; handleSub
       onSuccess: () => {
          getLoans(`${API_PATH.IndividualLoan}?All=${true}`, { showSuccess: false });
       },
-   });
+   },[isSuperAdmin]);
    const onSubmit = (values: FormMeta.FormValues) => {
-      submitForm(`${API_PATH.IndividualLoan}/closeloan`, {
+      submitForm(`${API_PATH.IndividualLoan}/loan-restructure-action`, {
          body: {
-            // action: menuToAPIAction(action),
+            status: menuToAPIAction(action),
             loanId: id,
-            // supportingDocument: values.doc ? values.doc : undefined,
+            supportingDocument: values.doc ? values.doc : undefined,
             reason: values.reason,
+            isUserSuperAdmin: isSuperAdmin,
             isNotificationEnabled: values.notify ?? undefined,
          },
          method: 'POST',

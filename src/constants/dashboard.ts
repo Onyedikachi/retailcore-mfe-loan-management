@@ -126,7 +126,7 @@ export const menuToAPIAction = (menu: string) => {
       case loanActions[1]:
          return 'CLOSED';
       case loanActions[2]:
-         return 'WRITEOFFLOAN';
+         return 'WRITE_OFF_LOAN';
       default:
          return;
    }

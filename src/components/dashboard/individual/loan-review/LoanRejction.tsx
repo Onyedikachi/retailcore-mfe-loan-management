@@ -28,9 +28,16 @@ export const LoanRejection: React.FC<{ handleSubmit?: () => void }> = ({ handleS
       },
    });
    const onSubmit = (values: FormMeta.FormValues) => {
-      submitForm(`${API_PATH.IndividualLoan}/${loanProduct?.id}/action`, {
-         body: { action: 'REJECT', comment: values.reason, ...values },
-         method: 'PUT',
+      // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
+      const { routeTo, ...filteredValues } = {
+         action: 'Rejected',
+         reRouteTo: loanProduct?.createdById,
+         ...values,
+      };
+
+      submitForm(`${API_PATH.IndividualLoan}/${loanProduct?.id}/restructure/action`, {
+         body: { ...filteredValues },
+         method: 'POST',
       });
       handleSubmit?.();
    };
@@ -67,7 +74,7 @@ export const LoanRejection: React.FC<{ handleSubmit?: () => void }> = ({ handleS
                         name={Fields.REASON}
                         rows={6}
                         required
-                        label={`Provide reason for rejection`}
+                        label={'Provide reason for rejection'}
                         placeholder="Reason"
                      />
 
