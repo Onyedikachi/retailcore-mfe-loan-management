@@ -70,6 +70,7 @@ export const initialValues = (data?: FacilityDetailsFormValues) => ({
    [InputFieldNames.EQUITY_CONTRIB]: data?.[InputFieldNames.EQUITY_CONTRIB] ?? '',
    ...otherInitialValues(data),
 });
+
 const otherInitialValues = (data?: FacilityDetailsFormValues) => ({
    [InputFieldNames.ENABLE_MORATORIUM_PERIOD]: data?.[InputFieldNames.ENABLE_MORATORIUM_PERIOD] ?? false,
    [InputFieldNames.MORATORIUM_PERIOD]: data?.[InputFieldNames.MORATORIUM_PERIOD] ?? '',

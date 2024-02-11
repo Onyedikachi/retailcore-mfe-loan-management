@@ -48,6 +48,17 @@ export const eligibilityCriteria = (selectedProduct?: LoanProductData) =>
       ? selectedProduct?.productEligibilityCriteriaRequirement[0]
       : selectedProduct?.productEligibilityCriteriaRequirement;
 
+export const getChargeTaxPenalty = (selectedProduct?: LoanProductData): any | undefined => {
+   if (
+      selectedProduct &&
+      selectedProduct.chargesTaxesPenalty &&
+      'isPenaltyReq' in selectedProduct.chargesTaxesPenalty
+   ) {
+      return selectedProduct.chargesTaxesPenalty.isPenaltyReq;
+   }
+   return undefined;
+};
+
 export const interestRateFinder = (
    selectedProduct?: LoanProductData,
    principal?: number

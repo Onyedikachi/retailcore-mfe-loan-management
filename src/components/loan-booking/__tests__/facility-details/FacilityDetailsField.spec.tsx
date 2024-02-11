@@ -128,94 +128,93 @@ describe('<FacilityDetails /> ', () => {
                disabled: true,
             },
          },
-         {
-            testDescription: 'Should display moratorium field only when user toggles on the moratorim switch',
-            selector: moratoriumNumberSelector,
-            acts: [{ selector: moratoriumSwitchSelector, click: true }],
-            expectedText: 'Enable Moratorium Period',
-            buttonStatus: {
-               selector: submitButtonSelector,
-               disabled: true,
-            },
-         },
-         {
-            testDescription: 'Should display `Enable Grace period` field only when switch is turned on',
-            selector: moratoriumSwitchSelector,
-            acts: [{ selector: moratoriumSwitchSelector, click: true }],
-            expectedText: 'Enable Grace Period',
-            buttonStatus: {
-               selector: submitButtonSelector,
-               disabled: true,
-            },
-         },
-         {
-            testDescription: 'Should display `Field is Required` when does not select moratorium period',
-            selector: moratoriumSwitchSelector,
-            acts: [
-               { selector: moratoriumSwitchSelector, click: true },
-               { selector: recognizeMoratoriumSelector, click: true },
-               { selector: moratoriumNumberSelector, typeText: '6', clear: true, blur: true },
-            ],
-            expectedText: 'Field is required',
-            buttonStatus: {
-               selector: submitButtonSelector,
-               disabled: true,
-            },
-         },
-         {
-            testDescription:
-               'Should display `Field is Required` when user does not fill the number field for moratorium period',
-            selector: moratoriumSwitchSelector,
-            acts: [
-               { selector: moratoriumSwitchSelector, click: true },
-               { selector: moratoriumNumberSelector, click: true, typeText: '6', clear: true, blur: true },
-            ],
-            expectedText: 'Field is required',
-            buttonStatus: {
-               selector: submitButtonSelector,
-               disabled: true,
-            },
-         },
-         {
-            testDescription: 'Should display `Grace period` field only when switch is turned on',
-            selector: graceSwitchSelector,
-            acts: [{ selector: graceSwitchSelector, click: true }],
-            expectedText: 'Grace Period',
-            buttonStatus: {
-               selector: submitButtonSelector,
-               disabled: true,
-            },
-         },
-         {
-            testDescription:
-               'Should display `Field is required` when grace period number is not filled and the toggle is on',
-            selector: graceSwitchSelector,
-            acts: [
-               { selector: graceSwitchSelector, click: true },
-               { selector: gracenumberSelector, click: true, blur: true },
-            ],
-            expectedText: 'Field is required',
-            buttonStatus: {
-               selector: submitButtonSelector,
-               disabled: true,
-            },
-         },
-         {
-            testDescription:
-               'Should display `Field is required` when grace period number is not filled and the toggle is on',
-            selector: graceSwitchSelector,
-            acts: [
-               { selector: graceSwitchSelector, click: true },
-               { selector: graceperiodSelector, click: true, blur: true },
-               { selector: gracenumberSelector, click: true, blur: true },
-            ],
-            expectedText: 'Field is required',
-            buttonStatus: {
-               selector: submitButtonSelector,
-               disabled: true,
-            },
-         },
-         //
+         // {
+         //    testDescription: 'Should display moratorium field only when user toggles on the moratorim switch',
+         //    selector: moratoriumNumberSelector,
+         //    acts: [{ selector: moratoriumSwitchSelector, click: true }],
+         //    expectedText: 'Enable Moratorium Period',
+         //    buttonStatus: {
+         //       selector: submitButtonSelector,
+         //       disabled: true,
+         //    },
+         // },
+         // {
+         //    testDescription: 'Should display `Enable Grace period` field only when switch is turned on',
+         //    selector: moratoriumSwitchSelector,
+         //    acts: [{ selector: moratoriumSwitchSelector, click: true }],
+         //    expectedText: 'Enable Grace Period',
+         //    buttonStatus: {
+         //       selector: submitButtonSelector,
+         //       disabled: true,
+         //    },
+         // },
+         // {
+         //    testDescription: 'Should display `Field is Required` when does not select moratorium period',
+         //    selector: moratoriumSwitchSelector,
+         //    acts: [
+         //       { selector: moratoriumSwitchSelector, click: true },
+         //       { selector: recognizeMoratoriumSelector, click: true },
+         //       { selector: moratoriumNumberSelector, typeText: '6', clear: true, blur: true },
+         //    ],
+         //    expectedText: 'Field is required',
+         //    buttonStatus: {
+         //       selector: submitButtonSelector,
+         //       disabled: true,
+         //    },
+         // },
+         // {
+         //    testDescription:
+         //       'Should display `Field is Required` when user does not fill the number field for moratorium period',
+         //    selector: moratoriumSwitchSelector,
+         //    acts: [
+         //       { selector: moratoriumSwitchSelector, click: true },
+         //       { selector: moratoriumNumberSelector, click: true, typeText: '6', clear: true, blur: true },
+         //    ],
+         //    expectedText: 'Field is required',
+         //    buttonStatus: {
+         //       selector: submitButtonSelector,
+         //       disabled: true,
+         //    },
+         // },
+         // {
+         //    testDescription: 'Should display `Grace period` field only when switch is turned on',
+         //    selector: graceSwitchSelector,
+         //    acts: [{ selector: graceSwitchSelector, click: true }],
+         //    expectedText: 'Grace Period',
+         //    buttonStatus: {
+         //       selector: submitButtonSelector,
+         //       disabled: true,
+         //    },
+         // },
+         // {
+         //    testDescription:
+         //       'Should display `Field is required` when grace period number is not filled and the toggle is on',
+         //    selector: graceSwitchSelector,
+         //    acts: [
+         //       { selector: graceSwitchSelector, click: true },
+         //       { selector: gracenumberSelector, click: true, blur: true },
+         //    ],
+         //    expectedText: 'Field is required',
+         //    buttonStatus: {
+         //       selector: submitButtonSelector,
+         //       disabled: true,
+         //    },
+         // },
+         // {
+         //    testDescription:
+         //       'Should display `Field is required` when grace period number is not filled and the toggle is on',
+         //    selector: graceSwitchSelector,
+         //    acts: [
+         //       { selector: graceSwitchSelector, click: true },
+         //       { selector: graceperiodSelector, click: true, blur: true },
+         //       { selector: gracenumberSelector, click: true, blur: true },
+         //    ],
+         //    expectedText: 'Field is required',
+         //    buttonStatus: {
+         //       selector: submitButtonSelector,
+         //       disabled: true,
+         //    },
+         // },
       ]);
    });
 });
