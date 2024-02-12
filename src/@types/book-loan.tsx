@@ -2,7 +2,7 @@ import { CustomerInfoFormValues } from '@app/utils/validators/book-a-loan/custom
 import { FacilityDetailsFormValues } from '@app/utils/validators/book-a-loan/facility-details';
 import { TransactionSettingsFormValues } from '@app/utils/validators/book-a-loan/transaction-settings';
 
-type ExtendedFacilityDetails = FacilityDetailsFormValues & {
+export type ExtendedFacilityDetails = FacilityDetailsFormValues & {
    productId?: string;
 };
 export interface BookLoanData {

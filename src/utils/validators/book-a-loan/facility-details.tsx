@@ -300,7 +300,7 @@ const colateralAndEquityContrib = (selectedProduct?: LoanProductData) => {
             ),
          })
       ),
-      // .required('Add at least one collateral asset.'),
+
       [InputFieldNames.EQUITY_CONTRIB]: Yup.string()
          .test(InputFieldNames.EQUITY_CONTRIB, 'Field is required', function (value) {
             return eligibility?.requireEquityContrib ? !!Number(value) : true;
