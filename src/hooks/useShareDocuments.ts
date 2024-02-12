@@ -17,14 +17,9 @@ export const useShareDocument = (fileName: string, shareableAreaRef: any, htmlEl
 
    const handleShare = async () => {
       try {
-         //  if (navigator.share) {
          const canvas = await html2canvas(shareableAreaRef?.current || htmlElement);
 
-         // Convert canvas to a blob
          canvas.toBlob(shareCallback, 'image/png');
-         //  } else {
-         //     console.log('Web Share API is not supported in this browser.');
-         //  }
       } catch (error) {
          console.log(error, 'err');
       }

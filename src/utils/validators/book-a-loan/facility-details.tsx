@@ -1,6 +1,6 @@
 /* eslint-disable max-len */
 import { LoanProductData } from '@app/@types/loan-product';
-import { eligibilityCriteria, findInterestRates, interestRateFinder } from '@app/constants/book-loan';
+import { eligibilityCriteria, interestRateFinder } from '@app/constants/book-loan';
 import { TenureMapping, TenureMappingKey } from '@app/constants/forms';
 import { currencyToNumber } from '@app/helper/currency-helper';
 import * as Yup from 'yup';
