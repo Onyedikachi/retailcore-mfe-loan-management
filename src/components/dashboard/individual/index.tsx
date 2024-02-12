@@ -24,7 +24,7 @@ export const IndividualLoan = () => {
    const [searchParams] = useSearchParams();
    const tab = searchParams.get('tab');
    const [activeChecker,setActiveChecker] = useState<any>()
-   const { isUserAChecker, isSuperAdmin, accessAllRecords, accessAllRequests } = usePermission();
+   const { isUserAChecker, isSuperAdmin} = usePermission();
    const [options, setOption] = useState<any>('');
    const [selectedOptions, setSelectedOption] = useState<any>('');
    const [stat, setStat] = useState<any>();
@@ -51,7 +51,7 @@ export const IndividualLoan = () => {
 
 
    // const checkerOption = options?.includes('Sent');
-   const { getLoanProducts, dataCount } = useIndividualLoanDashboardContext();
+   const { getLoanProducts} = useIndividualLoanDashboardContext();
 
    // useRequest({
    //    onMount: (makeRequest) => {
@@ -65,30 +65,6 @@ export const IndividualLoan = () => {
       onSuccess: (response) =>
          getLoanProducts(response.data.data.loan, response.data.data.statistics, tab as string),
    });
-
-   //    useEffect(() => {
-   //       const transformedArray = queryByStatus?.map((item) => item.toUpperCase().replace(/-/g, '_'));
-   //       if (queryByStatus?.[0] === 'All') getLoans(API_PATH.IndividualLoan, {
-   //             showSuccess: false,
-   //             query: {
-   //                initiator: convertToUppercase(options),
-   //                Count:600,
-   //             },
-   //          });
-
-   //          setTimeout(() => {
-   //             getLoans(API_PATH.IndividualLoan, {
-   //                showSuccess: false,
-   //                query: {
-   //                   Count: 700,
-   //                   initiator: convertToUppercase(options),
-   //                   status: JSON.stringify(transformedArray),
-   //                },
-   //             });
-   //          }, 4000);
-   //       }
-
-   // , [queryByStatus, options]);
 
    useEffect(()=>{
       setTimeout(() => {
@@ -189,7 +165,7 @@ export const convertToUppercase = (sentence?: string): string => {
 };
 
 export const filterOptionsRequest = (isChecker: any, isSuperAdmin: any) => {
-   if (isChecker! && !isSuperAdmin!) {
+   if (isChecker && !isSuperAdmin!) {
       return ['Sent to me', 'Sent system-wide'];
    } else if (isChecker! && isSuperAdmin!) {
       return ['Initiated by me', 'Initiated system-wide', 'Sent to me', 'Sent system-wide'];
@@ -207,19 +183,3 @@ export const filterOptionsRecords = (isChecker: any, isSuperAdmin: any) => {
       return ['Created by me', 'Created system-wide'];
    }
 };
-
-
-
-// export const filterOptionsRequest = (isChecker: any, isSuperAdmin: any, callback: any) => {
-//    setTimeout(() => {
-//      let result;
-//      if (isChecker && !isSuperAdmin) {
-//        result = ['Sent to me', 'Sent system-wide'];
-//      } else if (isChecker && isSuperAdmin) {
-//        result = ['Initiated by me', 'Initiated system-wide', 'Sent to me', 'Sent system-wide'];
-//      } else {
-//        result = ['Initiated by me', 'Initiated system-wide'];
-//      }
-//      callback(result); // Invoke the callback with the result
-//    }, 500);
-//  };
