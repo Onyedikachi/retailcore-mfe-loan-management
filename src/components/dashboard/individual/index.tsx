@@ -23,35 +23,34 @@ export const IndividualLoan = () => {
    const [queryByStatus, setQueryByStatus] = useState<string[]>();
    const [searchParams] = useSearchParams();
    const tab = searchParams.get('tab');
-   const [activeChecker,setActiveChecker] = useState<any>()
-   const { isUserAChecker, isSuperAdmin} = usePermission();
+   const [activeChecker, setActiveChecker] = useState<any>();
+   const { isUserAChecker, isSuperAdmin } = usePermission();
    const [options, setOption] = useState<any>('');
    const [selectedOptions, setSelectedOption] = useState<any>('');
    const [stat, setStat] = useState<any>();
-   const [allValue, setAllValue] = useState(false);
+   const [allValue, ] = useState(false);
 
    const [, fetchAllProductStat] = useRequest({
       onSuccess: (response) => {
-          setStat(response.data?.data?.statistics);
+         setStat(response.data?.data?.statistics);
       },
    });
- 
+
    const fetchProductActivities = () => {
-     fetchAllProductStat(API_PATH.LoanStat, {
+      fetchAllProductStat(API_PATH.LoanStat, {
          showSuccess: false,
          query: {
             all: allValue,
          },
-      });   
+      });
    };
-   
+
    useEffect(() => {
       fetchProductActivities();
-    }, [allValue]);
-
+   }, [allValue]);
 
    // const checkerOption = options?.includes('Sent');
-   const { getLoanProducts} = useIndividualLoanDashboardContext();
+   const { getLoanProducts } = useIndividualLoanDashboardContext();
 
    // useRequest({
    //    onMount: (makeRequest) => {
@@ -66,71 +65,58 @@ export const IndividualLoan = () => {
          getLoanProducts(response.data.data.loan, response.data.data.statistics, tab as string),
    });
 
-   useEffect(()=>{
+   useEffect(() => {
       setTimeout(() => {
-         let setSTRING = individualLoanFilterOptions(tab!, isUserAChecker, isSuperAdmin)[0]
-         setOption(setSTRING)
-            }, 1400)
-   },[options])
+         const setSTRING = individualLoanFilterOptions(tab!, isUserAChecker, isSuperAdmin)[0];
+         setOption(setSTRING);
+      }, 1400);
+   }, [options]);
 
    useEffect(() => {
-      
       setTimeout(() => {
          setActiveChecker(isUserAChecker);
-         
-       }, 1000);
+      }, 1000);
 
-      const fetchData =  () => {
+      const fetchData = () => {
          const transformedArray = queryByStatus?.map((item) => item.toUpperCase().replace(/-/g, '_'));
 
          if (transformedArray?.[0] === 'ALL') {
-         getLoans(API_PATH.IndividualLoan, {
+            getLoans(API_PATH.IndividualLoan, {
                showSuccess: false,
                query: {
                   initiator: convertToUppercase(options),
                   Count: 600,
                },
             });
-         }else{
+         } else {
             getLoans(API_PATH.IndividualLoan, {
                showSuccess: false,
                query: {
                   Count: 709,
-                  initiator: selectedOptions ? convertToUppercase(selectedOptions) : convertToUppercase(options),
+                  initiator: selectedOptions
+                     ? convertToUppercase(selectedOptions)
+                     : convertToUppercase(options),
                   status: JSON.stringify(transformedArray),
                },
             });
          }
-
-        
       };
       fetchData();
-     
+   }, [queryByStatus, options, activeChecker, selectedOptions]);
 
-
-
-   
-   }, [queryByStatus, options, activeChecker,selectedOptions]);
- 
    return (
       <StyledContentWrapper>
          <Filters
             defaultTabKey={tab!}
             tabKey={tab!}
             onTabClick={(tab) => {}}
-            onStatusClick={(label) => 
-               setQueryByStatus([label])
-              }
+            onStatusClick={(label) => setQueryByStatus([label])}
             statusOptions={tabCardOptions(stat, isUserAChecker && !isSuperAdmin)[tab!]}
             // statusOptions={tabCardOptions(dataCount, isUserAChecker && !isSuperAdmin)[tab!]}
             tabOptions={tabOptions}
-            onFilterOptionSelected={(event: SelectChangeEvent<any>) => 
-               {
-                  console.log(event.target.value,"label")
-                  setSelectedOption(event.target.value)}
-
-               }
-              
+            onFilterOptionSelected={(event: SelectChangeEvent<any>) => {
+               setSelectedOption(event.target.value);
+            }}
             // eslint-disable-next-line max-len
             filterOptions={
                tab === 'records'

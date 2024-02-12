@@ -1,5 +1,3 @@
-import { ContactlessOutlined } from "@mui/icons-material";
-
 export const loanTableQuery = (
    searchTextLoan?: string,
    queryByProductNameLoan?: string[] | undefined,
