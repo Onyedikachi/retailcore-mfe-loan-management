@@ -65,7 +65,9 @@ export const interestRateFinder = (
    for (const rateConfig of pricingConfig.intRateConfigBand) {
       const { minPrincipalValue, maxPrincipalValue, minInterestRate, maxInterestRate } = rateConfig;
 
-      if (principal >= minPrincipalValue && principal <= maxPrincipalValue) {
+      if (!maxPrincipalValue && !minPrincipalValue) {
+         return { minInterestRate, maxInterestRate };
+      } else if (principal >= minPrincipalValue && principal <= maxPrincipalValue) {
          return { minInterestRate, maxInterestRate };
       }
    }
