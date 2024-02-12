@@ -5,11 +5,17 @@ import { Box } from '@mui/material';
 import { useFormikContext } from 'formik';
 import { TenureControl } from '@app/components/forms/TenureControl';
 import { useFormikHelper } from '@app/hooks/useFormikHelper';
+import { useBookLoanContext } from '@app/providers/book-loan';
+import { useState } from 'react';
+import { getChargeTaxPenalty } from '@app/constants/book-loan';
 
 export const LoanManagementSettingsField = () => {
    const { InputFieldNames, TooltipText } = FormMeta;
    const { getFieldProps } = useFormikContext();
    const { resetFieldState } = useFormikHelper();
+   const { selectedProduct } = useBookLoanContext();
+
+   const chargeTaxPen = getChargeTaxPenalty(selectedProduct);
 
    return (
       <Box>
@@ -57,22 +63,26 @@ export const LoanManagementSettingsField = () => {
                </FormControlWrapper>
             </Box>
          )}
-         <FormControlWrapper
-            name={InputFieldNames.ENABLE_GRACE_PERIOD}
-            label="Enable Grace Period"
-            layout="horizontal"
-            tooltipText={TooltipText[InputFieldNames.ENABLE_GRACE_PERIOD]}
-         >
-            <FormControlBase
-               sx={{ ml: 7 }}
-               control="switch"
+
+         {chargeTaxPen && (
+            <FormControlWrapper
                name={InputFieldNames.ENABLE_GRACE_PERIOD}
-               onChange={() => {
-                  resetFieldState(InputFieldNames.GRACE_PERIOD);
-                  resetFieldState(InputFieldNames.GRACE_PERIOD_VALUE);
-               }}
-            />
-         </FormControlWrapper>
+               label="Enable Grace Period"
+               layout="horizontal"
+               tooltipText={TooltipText[InputFieldNames.ENABLE_GRACE_PERIOD]}
+            >
+               <FormControlBase
+                  sx={{ ml: 7 }}
+                  control="switch"
+                  name={InputFieldNames.ENABLE_GRACE_PERIOD}
+                  onChange={() => {
+                     resetFieldState(InputFieldNames.GRACE_PERIOD);
+                     resetFieldState(InputFieldNames.GRACE_PERIOD_VALUE);
+                  }}
+               />
+            </FormControlWrapper>
+         )}
+
          {getFieldProps(InputFieldNames.ENABLE_GRACE_PERIOD)?.value && (
             <Box pl={3} pr={5}>
                <TenureControl

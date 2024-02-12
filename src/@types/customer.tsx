@@ -28,7 +28,7 @@ export interface CustomerData {
    riskScore?: number;
 }
 
-interface CustomerProfile {
+export interface CustomerProfile {
    customerProfileId: string;
    customerId: string;
    customerNumber: string;
@@ -81,7 +81,7 @@ interface CustomerProfile {
    [key: string]: unknown;
 }
 
-interface CustomerProduct {
+export interface CustomerProduct {
    customerProductId: string;
    customerId: string;
    productId: string;
@@ -123,7 +123,7 @@ interface GLClass {
    is_configured: boolean;
 }
 
-interface AccountBalance {
+export interface AccountBalance {
    customerAccountBalanceId: string;
    customerId: string;
    productId: string;
@@ -140,7 +140,7 @@ interface AccountBalance {
    ledgerId: string;
 }
 
-interface CustomerRequest {
+export interface CustomerRequest {
    requestId: string;
    customerId: string;
    requestTitle: string;

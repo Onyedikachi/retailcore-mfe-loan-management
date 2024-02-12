@@ -70,6 +70,7 @@ export const initialValues = (data?: FacilityDetailsFormValues) => ({
    [InputFieldNames.EQUITY_CONTRIB]: data?.[InputFieldNames.EQUITY_CONTRIB] ?? '',
    ...otherInitialValues(data),
 });
+
 const otherInitialValues = (data?: FacilityDetailsFormValues) => ({
    [InputFieldNames.ENABLE_MORATORIUM_PERIOD]: data?.[InputFieldNames.ENABLE_MORATORIUM_PERIOD] ?? false,
    [InputFieldNames.MORATORIUM_PERIOD]: data?.[InputFieldNames.MORATORIUM_PERIOD] ?? '',
@@ -299,7 +300,7 @@ const colateralAndEquityContrib = (selectedProduct?: LoanProductData) => {
             ),
          })
       ),
-      // .required('Add at least one collateral asset.'),
+
       [InputFieldNames.EQUITY_CONTRIB]: Yup.string()
          .test(InputFieldNames.EQUITY_CONTRIB, 'Field is required', function (value) {
             return eligibility?.requireEquityContrib ? !!Number(value) : true;
