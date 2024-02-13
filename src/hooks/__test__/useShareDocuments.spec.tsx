@@ -1,9 +1,9 @@
-import useShareDocument from '../useShareDocuments'; 
+import useShareDocument from '../useShareDocuments';
 
 // Mock external dependencies
 jest.mock('html2canvas', () => ({
    __esModule: true,
-   default: async (element) => {
+   default: async (element: any) => {
       // Mock the behavior of html2canvas
       // const canvas = document.createElement('canvas')
       // canvas.toBlob = (callback, mimeType) => {
@@ -40,6 +40,24 @@ describe('useShareDocument', () => {
       global.navigator.share = undefined as any;
 
       const { handleShare } = useShareDocument('document', shareableAreaRef);
+
+      const alertMock = jest.spyOn(global, 'alert').mockImplementation(() => {});
+
+      await handleShare();
+
+      expect(alertMock).toHaveBeenCalledTimes(0);
+   });
+
+   it('should display an error message when the navigator.share API is not available', async () => {
+      const shareableAreaRef = { current: document.createElement('div') };
+
+      global.navigator.share = undefined as any;
+
+      const { handleShare } = useShareDocument(
+         'document',
+         shareableAreaRef,
+         document.getElementById('div') as HTMLElement
+      );
 
       const alertMock = jest.spyOn(global, 'alert').mockImplementation(() => {});
 

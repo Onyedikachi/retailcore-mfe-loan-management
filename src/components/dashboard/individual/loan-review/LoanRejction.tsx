@@ -35,9 +35,9 @@ export const LoanRejection: React.FC<{ handleSubmit?: () => void }> = ({ handleS
          ...values,
       };
 
-      submitForm(`${API_PATH.IndividualLoan}/${loanProduct?.id}/restructure/action`, {
+      submitForm(`${API_PATH.IndividualLoan}/${loanProduct?.id}/action`, {
          body: { ...filteredValues },
-         method: 'POST',
+         method: 'PUT',
       });
       handleSubmit?.();
    };
