@@ -28,11 +28,30 @@ export const MakerLoanTable = () => {
    const navigate = useNavigate();
    const { loanProducts, getLoanProducts } = useIndividualLoanDashboardContext();
    const permission = usePermission();
+   const [stat, setStat] = useState<any>();
 
+   const [, fetchAllProductStat] = useRequest({
+      onSuccess: (response) => {
+         setStat(response.data?.data?.productName);
+      },
+   });
+
+   const fetchProductActivities = () => {
+      fetchAllProductStat(API_PATH.LoanStat, {
+         showSuccess: false,
+         query: {
+            all: false,
+         },
+      });
+   };
+
+   useEffect(() => {
+      fetchProductActivities();
+   }, []);
    const loanTableHeader: TableHeaderProps = useMemo(
       () =>
          headerData(
-            loanProducts,
+            stat,
             (loanProduct) => setMakerLoanTableQueryByProductName(loanProduct),
             (loanStatus) => setMakerLoanTableQueryByStatus(loanStatus),
             (startDate, endDate) => handleDateQuery(startDate, endDate, setMakerLoanTableQueryByDate),
@@ -82,7 +101,6 @@ export const MakerLoanTable = () => {
          false
       );
       const urlSearchParams = new URLSearchParams(queryParams).toString();
-
       const url = `${API_PATH.IndividualLoan}?${urlSearchParams}`;
       getLoans(url, { showSuccess: false, showLoader: true });
    }, [

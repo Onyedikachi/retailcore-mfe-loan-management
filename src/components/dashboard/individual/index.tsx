@@ -36,6 +36,7 @@ export const IndividualLoan = () => {
       },
    });
 
+
    const fetchProductActivities = () => {
       fetchAllProductStat(API_PATH.LoanStat, {
          showSuccess: false,
@@ -79,7 +80,6 @@ export const IndividualLoan = () => {
 
       const fetchData = () => {
          const transformedArray = queryByStatus?.map((item) => item.toUpperCase().replace(/-/g, '_'));
-
          if (transformedArray?.[0] === 'ALL') {
             getLoans(API_PATH.IndividualLoan, {
                showSuccess: false,
