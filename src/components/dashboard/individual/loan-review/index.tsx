@@ -116,6 +116,7 @@ export const LoanReview = () => {
             setShowResponseDialog={setShowResponseDialog}
             showRejectDialog={showRejectDialog}
             setShowRejectDialog={setShowRejectDialog}
+            loanProduct={loanProduct}
          />
       </Grid>
    );
