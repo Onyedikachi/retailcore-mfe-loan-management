@@ -34,10 +34,31 @@ export const LoanTable = ({ checker }: MyComponentProps) => {
    const navigate = useNavigate();
    const { loanProducts, getLoanProducts } = useIndividualLoanDashboardContext();
    const permission = usePermission();
+   const [stat, setStat] = useState<any>();
+
+   const [, fetchAllProductStat] = useRequest({
+      onSuccess: (response) => {
+         setStat(response.data?.data?.productName);
+      },
+   });
+
+   const fetchProductActivities = () => {
+      fetchAllProductStat(API_PATH.LoanStat, {
+         showSuccess: false,
+         query: {
+            all: false,
+         },
+      });
+   };
+
+   useEffect(() => {
+      fetchProductActivities();
+   }, []);
+
    const loanTableHeader: TableHeaderProps = useMemo(
       () =>
          headerData(
-            loanProducts,
+           stat,
             (loanProduct) => setQueryByProductName(loanProduct),
             (loanStatus) => setQueryByStatus(loanStatus),
             (startDate, endDate) => handleDateQuery(startDate, endDate, setQueryByDate),

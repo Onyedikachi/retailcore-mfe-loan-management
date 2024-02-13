@@ -11,7 +11,7 @@ export const useShareDocument = (fileName: string, shareableAreaRef: any, htmlEl
             });
          }
       } catch (err) {
-         console.log(err, 'err');
+         console.log(err);
       }
    };
 
@@ -21,7 +21,7 @@ export const useShareDocument = (fileName: string, shareableAreaRef: any, htmlEl
 
          canvas.toBlob(shareCallback, 'image/png');
       } catch (error) {
-         console.log(error, 'err');
+         console.log(error);
       }
    };
 

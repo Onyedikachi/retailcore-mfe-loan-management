@@ -15,13 +15,13 @@ export const tableQuery = (
    if (searchText) {
       queryParams.Search = searchText;
       queryParams.Count = 560;
-      
    }
+   
    if (queryByProductName && queryByProductName.length > 0) {
       queryParams.LoanProduct = JSON.stringify(queryByProductName);
-      queryParams.Count = 540;
-      
+      queryParams.Count = 540; 
    }
+
    if (queryByStatus && queryByStatus.length > 0) {
       queryParams.status = JSON.stringify(
          queryByStatus.map((status) => {

@@ -6,7 +6,7 @@ import { tabCardOptions } from '@app/constants/dashboard';
 
 
 export const headerData = (
-   loanProducts: BookedLoanData[] | undefined,
+   loanProducts: any,
    filterLoanProduct: (selectedOptions: string[]) => void,
    filterStatus: (selectedOptions: string[]) => void,
    filterDate: (startDate?: Date | undefined, endDate?: Date | undefined, staticRange?: string) => void,
@@ -14,15 +14,17 @@ export const headerData = (
 ): TableHeaderProps => {
    
    const statusOptions = tabCardOptions()[tab]?.map((option) => option?.label);
-   const uniqueProductNames = new Set();
-   loanProducts?.forEach((loan) => {
-      if (loan?.product && loan?.product?.name) {
- uniqueProductNames.add(loan.product.name);
-
-      }
+   
+   const productCategoriesNames = new Set();
+   loanProducts?.map((product:any) => {
+      productCategoriesNames.add(product);
    });
-   const productName = Array.from(uniqueProductNames);
-   const tabProductName = ['All',...productName];
+   const productCategoryName = Array.from(productCategoriesNames);
+   
+   const productCategoryOptions = [
+      'All',
+      ...productCategoryName.map((category) => (category)),
+   ];
    
    return {
       data: [
@@ -33,7 +35,7 @@ export const headerData = (
             element: 'LOAN PRODUCT',
             rightIcon: (
                <FilterMenu
-                  options={(tabProductName as string[]) ?? []}
+                  options={(productCategoryOptions) ?? []}
                   onFilterChange={(value) => filterLoanProduct(value as string[])}
                />
             ),
