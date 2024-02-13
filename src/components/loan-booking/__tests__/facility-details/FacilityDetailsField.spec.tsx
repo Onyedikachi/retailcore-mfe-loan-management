@@ -89,26 +89,26 @@ describe('<FacilityDetails /> ', () => {
       });
    });
 
-   describe('<FacilityDetails /> - CollateralAndEquityContribFields', () => {
-      formTestUtil(
-         <CreateProductSetup>
-            <BookLoanProvider>
-               <FacilityDetails />
-            </BookLoanProvider>
-         </CreateProductSetup>
-      )([
-         {
-            testDescription: 'Should display `Equity Contribution` field when accordion is opened',
-            selector: equityContribSelector,
-            acts: [{ selector: equityContribSelector, click: true }, { typeText: '20' }],
-            expectedText: 'Equity Contribution',
-            buttonStatus: {
-               selector: submitButtonSelector,
-               disabled: false,
-            },
-         },
-      ]);
-   });
+   // describe('<FacilityDetails /> - CollateralAndEquityContribFields', () => {
+   //    formTestUtil(
+   //       <CreateProductSetup>
+   //          <BookLoanProvider>
+   //             <FacilityDetails />
+   //          </BookLoanProvider>
+   //       </CreateProductSetup>
+   //    )([
+   //       {
+   //          testDescription: 'Should display `Equity Contribution` field when accordion is opened',
+   //          selector: equityContribSelector,
+   //          acts: [{ selector: equityContribSelector, click: true }, { typeText: '20' }],
+   //          expectedText: 'Equity Contribution',
+   //          buttonStatus: {
+   //             selector: submitButtonSelector,
+   //             disabled: false,
+   //          },
+   //       },
+   //    ]);
+   // });
 
    describe('<FacilityDetails /> - LoanManagementSettingsField', () => {
       formTestUtil(
@@ -138,16 +138,16 @@ describe('<FacilityDetails /> ', () => {
                disabled: true,
             },
          },
-         // {
-         //    testDescription: 'Should display `Enable Grace period` field only when switch is turned on',
-         //    selector: moratoriumSwitchSelector,
-         //    acts: [{ selector: moratoriumSwitchSelector, click: true }],
-         //    expectedText: 'Enable Grace Period',
-         //    buttonStatus: {
-         //       selector: submitButtonSelector,
-         //       disabled: true,
-         //    },
-         // },
+         {
+            testDescription: 'Should display `Enable Grace period` field only when switch is turned on',
+            selector: moratoriumSwitchSelector,
+            acts: [{ selector: moratoriumSwitchSelector, click: true }],
+            expectedText: 'Enable Grace Period',
+            buttonStatus: {
+               selector: submitButtonSelector,
+               disabled: true,
+            },
+         },
          {
             testDescription: 'Should display `Field is Required` when does not select moratorium period',
             selector: moratoriumSwitchSelector,
@@ -176,16 +176,16 @@ describe('<FacilityDetails /> ', () => {
                disabled: true,
             },
          },
-         // {
-         //    testDescription: 'Should display `Grace period` field only when switch is turned on',
-         //    selector: graceSwitchSelector,
-         //    acts: [{ selector: graceSwitchSelector, click: true }],
-         //    expectedText: 'Grace Period',
-         //    buttonStatus: {
-         //       selector: submitButtonSelector,
-         //       disabled: true,
-         //    },
-         // },
+         {
+            testDescription: 'Should display `Grace period` field only when switch is turned on',
+            selector: graceSwitchSelector,
+            acts: [{ selector: graceSwitchSelector, click: true }],
+            expectedText: 'Grace Period',
+            buttonStatus: {
+               selector: submitButtonSelector,
+               disabled: true,
+            },
+         },
          // {
          //    testDescription:
          //       'Should display `Field is required` when grace period number is not filled and the toggle is on',

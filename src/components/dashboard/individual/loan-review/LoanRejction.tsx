@@ -12,8 +12,9 @@ import { useIndividualLoanDashboardContext } from '@app/providers/individual-loa
 import { useRequest } from 'react-http-query';
 import { API_PATH, IndividualLoanPath } from '@app/constants';
 import { useNavigate } from 'react-router-dom';
-
-export const LoanRejection: React.FC<{ handleSubmit?: () => void }> = ({ handleSubmit }) => {
+export const LoanRejection: React.FC<{ loanProduct: any; handleSubmit?: () => void }> = ({
+   handleSubmit,
+}) => {
    const { initialValues, validationSchema, Fields } = FormMeta;
    const { loanProduct } = useIndividualLoanDashboardContext();
    const isAvailable = false;
@@ -27,17 +28,20 @@ export const LoanRejection: React.FC<{ handleSubmit?: () => void }> = ({ handleS
          }
       },
    });
+   const productType = loanProduct?.product?.type;
    const onSubmit = (values: FormMeta.FormValues) => {
       // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
       const { routeTo, ...filteredValues } = {
-         action: 'Rejected',
+         action: 'Reject',
          reRouteTo: loanProduct?.createdById,
          ...values,
+         ...(productType == 'Creation' && { status: productType }),
       };
 
       submitForm(`${API_PATH.IndividualLoan}/${loanProduct?.id}/action`, {
          body: { ...filteredValues },
          method: 'PUT',
+         showError: true,
       });
       handleSubmit?.();
    };

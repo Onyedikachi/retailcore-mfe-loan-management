@@ -18,6 +18,7 @@ interface DialogStates {
    showRejectDialog: boolean;
    setShowRejectDialog: React.Dispatch<React.SetStateAction<boolean>>;
    id: string;
+   loanProduct?: any;
 }
 export const LoanReviewDialogs: React.FC<DialogStates> = ({
    showCancelDialog,
@@ -29,6 +30,7 @@ export const LoanReviewDialogs: React.FC<DialogStates> = ({
    showRejectDialog,
    setShowRejectDialog,
    id,
+   loanProduct,
 }) => {
    const [statusValue, setStatusValue] = useState<number>();
    const [titleValue, setTitleValue] = useState('');
@@ -89,7 +91,7 @@ export const LoanReviewDialogs: React.FC<DialogStates> = ({
             handleClose={() => setShowRejectDialog(false)}
             title={'REJECTION'}
          >
-            <LoanRejection handleSubmit={() => setShowRejectDialog(false)} />
+            <LoanRejection loanProduct={loanProduct} handleSubmit={() => setShowRejectDialog(false)} />
          </Dialog>
       </>
    );
