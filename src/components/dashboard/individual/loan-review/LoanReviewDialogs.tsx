@@ -52,7 +52,7 @@ export const LoanReviewDialogs: React.FC<DialogStates> = ({
    });
    const handleApprovalConfirm = () => {
       setShowApprovalDialog(false);
-      submitForm(`${API_PATH.IndividualLoan}/${id}/restructure/action`, { body: { action: 'APPROVED' }, method: 'POST', showError: false, showSuccess: true });
+      submitForm(`${API_PATH.IndividualLoan}/${id}/action`, { body: { action: 'APPROVED' }, method: 'PUT', showError: false, showSuccess: true });
    };
 
    const handleResponseNext = () => {
