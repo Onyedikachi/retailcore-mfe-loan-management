@@ -7,6 +7,7 @@ import { SelectInput } from '../select/Select'; // Update the path as needed
 describe('SelectInput component', () => {
    const options = ['Option 1', 'Option 2', 'Option 3'];
    const placeholder = 'Select an option';
+   
    test('renders the placeholder when no value is selected', () => {
       render(
          <Formik initialValues={{ test: '' }} onSubmit={() => {}}>
