@@ -11,6 +11,7 @@ const FormContainer: React.FC<{ children: ReactNode; minHeight?: string }> = ({ 
             m: 1,
             borderRadius: '8px',
          }}
+         data-testid="form-container"
       >
          {children}
       </Box>
