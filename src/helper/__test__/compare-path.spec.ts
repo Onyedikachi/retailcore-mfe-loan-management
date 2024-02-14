@@ -16,4 +16,34 @@ describe('comparePaths', () => {
          expect(result).toEqual(expected);
       });
    });
+
+   test('returns true for identical paths', () => {
+      const base = '/home';
+      const compare = '/home';
+      expect(comparePaths(base, compare)).toBe(true);
+   });
+
+   test('returns true for paths with trailing slashes', () => {
+      const base = '/home/';
+      const compare = '/home';
+      expect(comparePaths(base, compare)).toBe(true);
+   });
+
+   test('returns false for different paths', () => {
+      const base = '/home';
+      const compare = '/about';
+      expect(comparePaths(base, compare)).toBe(false);
+   });
+
+   test('returns false for paths with different trailing slashes', () => {
+      const base = '/home/';
+      const compare = '/home/about/';
+      expect(comparePaths(base, compare)).toBe(false);
+   });
+
+   test('returns true for empty paths', () => {
+      const base = '';
+      const compare = '';
+      expect(comparePaths(base, compare)).toBe(true);
+   });
 });
