@@ -14,7 +14,7 @@ export const DisbursementSettingsFields = () => {
    const { InputFieldNames, TooltipText, disbursementMethods, disbursementAccounts } = FormMeta;
    const { getFieldProps } = useFormikContext<FormMeta.TransactionSettingsFormValues>();
    const { GET_INDIVIDUAL_ACCOUNTS } = CUSTOMER_MANAGEMENT_PATH;
-   const { accountNumbers, getCustomersData , getSelectedCustomer} = useBookLoanContext();
+   const { accountNumbers, getCustomersData } = useBookLoanContext();
    const [searchInput, setSearchInput] = useState('');
    const { resetFieldState } = useFormikHelper();
 
@@ -90,7 +90,7 @@ export const DisbursementSettingsFields = () => {
                   name={InputFieldNames.OTHER_ACCOUNT_NO}
                   noOptionsText="No match"
                   options={accountNumbers ?? []}
-                  onInputChange={(value) => getSelectedCustomer((value as AccountNumber)?.customerId)}
+                  onInputChange={(value) => (value as AccountNumber)?.customerId}
                   filterOptions={(option, { inputValue }) => {
                      setSearchInput(inputValue?.toLowerCase());
                      return (accountNumbers as AutocompleteOptions[]) ?? [];
