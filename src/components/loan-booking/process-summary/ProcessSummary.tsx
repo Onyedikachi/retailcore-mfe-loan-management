@@ -51,19 +51,21 @@ export const ProcessSummary = () => {
          }},[LoanProduct]);
    const [, fetchLedger] = useRequest({
          onSuccess: async (response) => {
+            const foundArray = response?.data?.data?.find((item: { accountNumber: any; }) => 
+            item?.accountNumber === backendData?.acctNo);
             await submitForm(API_PATH.IndividualLoan, {
                body: {
                   ...backendData,
                   isDraft: false,
                   IsUserSuperAdmin: sessionStorage.getItem('superAdmin') === 'true' ? true : false,
-                  Disbursementaccountledgerid: response.data.data[0].ledgerId,
+                  Disbursementaccountledgerid: foundArray?.ledgerId,
                   ...(id && { id: id, oldLoanRecords: LoanProduct }),
                   customerCategory: 'individual',
                },
                showSuccess: false,
                method: id ? 'PUT' : 'POST',
             });
-         }},[LoanProduct]);
+         }},[LoanProduct,]);
 
    const handleSubmit = () => {
       fetchLedger(`${CUSTOMER_MANAGEMENT_PATH.GET_CUSTOMER_LEDGER}/${backendData.customerId}`, {
