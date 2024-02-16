@@ -38,20 +38,25 @@ export const ProcessSummary = () => {
       resetBookLoanData,
       selectedCustomerId,
       LoanProduct,
+      accountNumbers,
    } = useBookLoanContext();
    const navigate = useNavigate();
    const [searchParams] = useSearchParams();
 
    const id = searchParams.get('id');
+   const otherSelectedAcct = accountNumbers?.find((item) => item.products.some(
+      (product: { accountNumber: any }) => product.accountNumber === backendData?.otherAcctNo
+          ))?.products.find((product: { accountNumber: any }) => 
+              product.accountNumber === backendData?.otherAcctNo);
    const [, submitForm] = useRequest({
-      onSuccess: (response) => {
+         onSuccess: (response) => {
             setStatusValue(response?.data?.loanDisbursementResponse?.responseStatusCode);
             setTitleValue(response?.data?.loanDisbursementResponse?.responseMessage);
             setShowResponseDialog(true);
          }},[LoanProduct]);
    const [, fetchLedger] = useRequest({
          onSuccess: async (response) => {
-            const foundArray = response?.data?.data?.find((item: { accountNumber: any; }) => 
+            const foundArray = response?.data?.data?.find((item: { accountNumber: any; }) =>
             item?.accountNumber === backendData?.acctNo);
             await submitForm(API_PATH.IndividualLoan, {
                body: {
@@ -61,6 +66,7 @@ export const ProcessSummary = () => {
                   Disbursementaccountledgerid: foundArray?.ledgerId,
                   ...(id && { id: id, oldLoanRecords: LoanProduct }),
                   customerCategory: 'individual',
+                  OtherAcctLedgerId: otherSelectedAcct?.ledgerId,
                },
                showSuccess: false,
                method: id ? 'PUT' : 'POST',

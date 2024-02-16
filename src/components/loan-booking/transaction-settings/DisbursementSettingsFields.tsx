@@ -22,11 +22,11 @@ export const DisbursementSettingsFields = () => {
       onSuccess: (response) => getCustomersData(response?.data?.data?.accounts),
    });
    useEffect(() => {
-         fetchCustomers(GET_INDIVIDUAL_ACCOUNTS, {
-            showSuccess: false,
-            showLoader: !accountNumbers,
-            query: { size: 20, search: searchInput },
-         });
+      fetchCustomers(GET_INDIVIDUAL_ACCOUNTS, {
+         showSuccess: false,
+         showLoader: !accountNumbers,
+         query: { size: 20, search: searchInput },
+      });
    }, [searchInput]);
 
    return (
@@ -72,6 +72,7 @@ export const DisbursementSettingsFields = () => {
             <FormControlBase
                control="select"
                name={InputFieldNames.DISBURSEMENT_ACCOUNT}
+               onChange={() => resetFieldState(InputFieldNames.OTHER_ACCOUNT_NO)}
                placeholder="Select"
                options={disbursementAccounts}
             />
