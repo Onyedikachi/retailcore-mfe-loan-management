@@ -9,7 +9,7 @@ import { useRequest, useRequestData } from 'react-http-query';
 import { BookedLoanData, LoanProductData } from '@app/@types/loan-product';
 
 type BookLoanSteps = 'customerInformation' | 'facilityDetails' | 'transactionSettings';
-export type AccountNumber = { label: string; subtitle: string; customerId: string };
+export type AccountNumber = { label: string; subtitle: string; customerId: string; products?: any };
 export interface LoanProduct {
    id: string;
    name: string;
@@ -120,11 +120,13 @@ export const BookLoanProvider = ({ children }: BookLoanProviderProps) => {
       const customerAccountInfoArray = customersData
          ?.filter((customer) => customer?.customerType === 'Individual')
          .flatMap((customerData: CustomerData) => {
-            const profile = customerData.customer_profiles[0];
+            const profile = customerData.customer_profiles[0]; 
+            const products = customerData.customer_products;
             return customerData.customer_products.map((accountBalance) => ({
                label: accountBalance.accountNumber,
                subtitle: `${profile?.firstName} ${profile?.otherNames ?? ''} ${profile?.surname}`,
                customerId: customerData.customerId,
+               products: products,
             }));
          });
       setAccountNumbers(customerAccountInfoArray);
