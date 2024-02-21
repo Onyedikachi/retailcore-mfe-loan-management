@@ -41,7 +41,7 @@ export const LoanActionRequest: React.FC<{ action: string; id: string; handleSub
             isUserSuperAdmin: isSuperAdmin,
             isNotificationEnabled: values.notify ?? undefined,
          },
-         method: 'POST',
+         method: 'PUT',
       });
       handleSubmit?.();
    };
