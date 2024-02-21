@@ -11,7 +11,7 @@ export const API_PATH = {
 
 const RETAIL_CORE_V1 = `${RETAIL_CORE_BASE_URL ?? ''}${API_V1}`;
 export const RETAIL_CORE_API_PATH = {
-   GET_CURRENCY: `${RETAIL_CORE_V1}/currency`,
+   GET_CURRENCY: `${RETAIL_CORE_V1}/branches/currencies`,
 };
 
 const RETAIL_AUTH_V1 = `${RETAIL_AUTH_BASE_URL ?? ''}${API_V1}`;

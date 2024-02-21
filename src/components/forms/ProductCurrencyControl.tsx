@@ -35,7 +35,7 @@ export const ProductCurrencyControl = ({
             name={name ?? CommonFormFieldNames.PRODUCT_CURRENCY}
             placeholder={placeholder ?? 'Select a product currency'}
             {...otherProps}
-            options={value?.results.map((currency) => currency.abbreviation) ?? []}
+            options={value?.data?.map((currency) => currency.abbreviation) ?? []}
          />
       </FormControlWrapper>
    );
