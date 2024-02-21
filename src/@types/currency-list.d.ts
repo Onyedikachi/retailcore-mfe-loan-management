@@ -27,7 +27,7 @@ export interface Currency {
 }
 
 export interface CurrencyListResponse {
-   results: Array<Currency>;
+   data: Array<Currency>;
    total: number;
    total_pages: number;
 }

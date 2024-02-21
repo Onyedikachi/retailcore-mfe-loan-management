@@ -48,5 +48,5 @@ export const percentageInputFormatter = (inputValue: string) => {
 };
 
 export const getDefaultCurrency = (currencies?: CurrencyListResponse) => {
-   return currencies?.results.find(({ is_default }) => is_default);
+   return currencies?.data?.find(({ is_default }) => is_default);
 };
