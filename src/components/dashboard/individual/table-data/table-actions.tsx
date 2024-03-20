@@ -9,6 +9,7 @@ export const tableQuery = (
    queryByProductName: string[] | undefined,
    queryByStatus: string[] | undefined,
    queryByDate: string[] | undefined,
+   queryByReviewer: string[] | undefined,
    checker?: boolean
 ) => {
    const queryParams: { [key: string]: any } = {};
@@ -16,26 +17,27 @@ export const tableQuery = (
       queryParams.Search = searchText;
       queryParams.Count = 560;
    }
-   
+
    if (queryByProductName && queryByProductName.length > 0) {
       queryParams.LoanProduct = JSON.stringify(queryByProductName);
-      queryParams.Count = 540; 
+      queryParams.Count = 540;
    }
 
    if (queryByStatus && queryByStatus.length > 0) {
       queryParams.status = JSON.stringify(
          queryByStatus.map((status) => {
-            let stat = checker && status == 'Pending' ? 'In-Review' : status;
+            const stat = checker && status == 'Pending' ? 'In-Review' : status;
             return stat.toUpperCase().replace(/-/g, '_');
          })
       );
-      
+   }
+   if (queryByReviewer && queryByReviewer.length > 0) {
+      queryParams.reviewer = JSON.stringify(queryByReviewer.map((reviewer) => reviewer.replace(' ', '')));
    }
    if (queryByDate && queryByDate.length === 2) {
       queryParams.StartDate = queryByDate[0];
       queryParams.EndDate = queryByDate[1];
       queryParams.Count = 510;
-     
    }
    if (Object.keys(queryParams).length === 0) {
       queryParams.Initiator = checker ? 'SENTTOME' : 'INITIATEDBYME';

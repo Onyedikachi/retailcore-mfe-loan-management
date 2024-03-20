@@ -7,11 +7,19 @@ describe('menuFromStatus', () => {
       const queryByProductName = ['product name'];
       const queryByStatus = ['status'];
       const queryByDate = ['date'];
-      const queryParams = tableQuery(searchText, queryByProductName, queryByStatus, queryByDate);
+      const queryByReviewer = ['Admin'];
+      const queryParams = tableQuery(
+         searchText,
+         queryByProductName,
+         queryByStatus,
+         queryByDate,
+         queryByReviewer
+      );
       expect(queryParams).toEqual({
          LoanProduct: '["product name"]',
          Search: 'search',
          status: '["STATUS"]',
+         reviewer: '["ADMIN"]',
          Count: 540,
          // Initiator: 'INITIATEDBYME',
       });
@@ -21,8 +29,15 @@ describe('menuFromStatus', () => {
       const searchText = 'find';
       const queryByProductName = ['General Loan'];
       const queryByStatus = ['ACTIVE'];
+      const queryByReviewer = ['Admin'];
       const queryByDate = ['date'];
-      const queryParams = tableQuery(searchText, queryByProductName, queryByStatus, queryByDate);
+      const queryParams = tableQuery(
+         searchText,
+         queryByProductName,
+         queryByStatus,
+         queryByDate,
+         queryByReviewer
+      );
       expect(queryParams).toEqual({
          LoanProduct: '["General Loan"]',
          Search: 'find',
@@ -36,11 +51,19 @@ describe('tableQuery function', () => {
    test('returns correct query parameters', () => {
       const searchText = 'loan';
       const queryByProductName = ['Product A', 'Product B'];
+      const queryByReviewer = ['Admin'];
       const queryByStatus = ['Pending', 'Approved'];
       const queryByDate = ['2022-01-01', '2022-12-31'];
       const checker = true;
 
-      const result = tableQuery(searchText, queryByProductName, queryByStatus, queryByDate, checker);
+      const result = tableQuery(
+         searchText,
+         queryByProductName,
+         queryByStatus,
+         queryByDate,
+         queryByReviewer,
+         checker
+      );
 
       // expect(result).toHaveValue({
       //
