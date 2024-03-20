@@ -15,11 +15,12 @@ describe('menuFromStatus', () => {
          queryByDate,
          queryByReviewer
       );
+
       expect(queryParams).toEqual({
          LoanProduct: '["product name"]',
          Search: 'search',
          status: '["STATUS"]',
-         reviewer: '["ADMIN"]',
+         reviewer: '["Admin"]',
          Count: 540,
          // Initiator: 'INITIATEDBYME',
       });
@@ -42,6 +43,7 @@ describe('menuFromStatus', () => {
          LoanProduct: '["General Loan"]',
          Search: 'find',
          status: '["ACTIVE"]',
+         reviewer: '["Admin"]',
          Count: 540,
          // Initiator: 'INITIATEDBYME',
       });

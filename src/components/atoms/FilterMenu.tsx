@@ -8,6 +8,7 @@ import BlockIcon from '@mui/icons-material/Block';
 import { WriteOff } from '@app/components/icons/WriteOff';
 import { Modify } from '@app/components/icons/Modify';
 import { Delete } from '@app/components/icons/Delete';
+import useDebounce from '@app/hooks/useDebounce';
 
 interface FilterMenuProps {
    options: any[];
@@ -18,15 +19,14 @@ interface FilterMenuProps {
 }
 
 function FilterMenu({ options, onFilterChange, checkbox = true, filterIcon, icon }: FilterMenuProps) {
-
-  const  defaultOptions: any[] = [] ;
+   const defaultOptions: any[] = [];
    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
    const [selectedOptions, setSelectedOptions] = useState<string[]>(defaultOptions ?? []);
-
+   const { debouncedValue, setDebouncedValue } = useDebounce(2000);
 
    useEffect(() => {
-      !checkbox && onFilterChange(selectedOptions);
-   }, [selectedOptions]);
+      onFilterChange(selectedOptions);
+   }, [debouncedValue]);
 
    const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
       setAnchorEl(event.currentTarget);
@@ -41,9 +41,9 @@ function FilterMenu({ options, onFilterChange, checkbox = true, filterIcon, icon
 
    const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
       const { value: option, checked } = event.target;
-      const allOptions = options?.filter(item => item.toLowerCase() !== 'all')
+      const allOptions = options?.filter((item) => item.toLowerCase() !== 'all');
       if (checked) {
-         if (option.toLowerCase().includes('all')) setSelectedOptions([...allOptions]) ;
+         if (option.toLowerCase().includes('all')) setSelectedOptions([...allOptions]);
          else setSelectedOptions((prevSelected) => [...prevSelected, option]);
       } else {
          const keys = options.map((option) => (typeof option === 'string' ? option : option.key));
@@ -59,6 +59,8 @@ function FilterMenu({ options, onFilterChange, checkbox = true, filterIcon, icon
             });
          }
       }
+
+      setDebouncedValue(selectedOptions);
    };
 
    return (
