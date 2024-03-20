@@ -1,4 +1,3 @@
 #!/bin/sh
 . "$(dirname -- "$0")/_/husky.sh"
-
-yarn exec pretty-quick --staged && yarn exec concurrently yarn:test yarn:pre-commit
+npx pretty-quick --staged && npx concurrently yarn:test yarn:pre-commit
