@@ -47,6 +47,11 @@ export const ActivityLog: React.FC<ActivityLogProps> = ({ logs, title = 'ACTIVIT
       { pending: true, subtitle: 'Verify and Submit request for processing', title: 'Pending Activity' },
    ];
 
+   // Sort logs by date in chronological order
+   const sortedLogs = (logs ?? data)
+      .slice()
+      .sort((a, b) => new Date(a.date!).getTime() - new Date(b.date!).getTime());
+
    return (
       <Box sx={{ px: '12px' }}>
          <Typography variant="h5" mb={0.5}>
@@ -55,7 +60,7 @@ export const ActivityLog: React.FC<ActivityLogProps> = ({ logs, title = 'ACTIVIT
          <Divider />
          {!logs && <Typography sx={{ my: 2, fontSize: 12, fontWeight: 400 }}>No activities found</Typography>}
          <Box sx={{ marginTop: '23px' }}>
-            {(logs ?? data)?.map(({ pending, title, subtitle, date }, index) => (
+            {sortedLogs.map(({ pending, title, subtitle, date }, index) => (
                <Box key={title}>
                   <Stack direction="row" alignItems="center" columnGap="12px">
                      <Box>
@@ -71,7 +76,7 @@ export const ActivityLog: React.FC<ActivityLogProps> = ({ logs, title = 'ACTIVIT
                         {date && <Typography variant="caption">{dateFormatter(date)} </Typography>}
                      </Box>
                   </Stack>
-                  {(logs ?? data).length - 1 !== index && <VerticalRule pending={pending} />}
+                  {sortedLogs.length - 1 !== index && <VerticalRule pending={pending} />}
                </Box>
             ))}
          </Box>
