@@ -53,7 +53,7 @@ export const MakerLoanTable = () => {
    const loanTableHeader: TableHeaderProps = useMemo(
       () =>
          headerData(
-            stats,
+            loanProducts,
             (loanProduct) => setMakerLoanTableQueryByProductName(loanProduct),
             (loanProduct) => setMakerLoanTableQueryByProductInitiator(loanProduct),
             (loanStatus) => setMakerLoanTableQueryByStatus(loanStatus),

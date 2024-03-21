@@ -37,6 +37,7 @@ export const bodyData = (
       ),
       loanAmount: `${loan?.product?.currency ?? ''} ${formatCurrency(loan!.principal)}`,
       loanProduct: loan?.product?.name ?? '-',
+      loanInitiator: loan?.product.createdBy ?? '-',
       status: getStatus ? <StyledChip sx={{ ...statusColors(getStatus) }} label={getStatus} /> : '-',
       updatedOn: format(new Date(loan?.lastModifiedDate ?? loan!.dateCreated), 'd MMM yyyy, hh:mm a'),
       filter: (

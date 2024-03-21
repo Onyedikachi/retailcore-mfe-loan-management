@@ -5,7 +5,7 @@ import { TableHeaderProps } from '@app/components/table';
 import { tabCardOptions } from '@app/constants/dashboard';
 
 export const headerData = (
-   loanProducts: any,
+   loanProducts: BookedLoanData[] | undefined,
    filterLoanProduct: (selectedOptions: string[]) => void,
    filterLoanInitiator: (selectedOptions: string[]) => void,
    filterStatus: (selectedOptions: string[]) => void,
@@ -17,10 +17,10 @@ export const headerData = (
    const productCategoriesNames = new Set();
    const uniqueProductInitiators = new Set();
 
-   loanProducts?.map((product: any) => {
-      productCategoriesNames.add(product);
+   loanProducts?.map((product) => {
+      productCategoriesNames.add(product?.product?.name);
       if (product?.product && product?.product?.createdBy) {
-         uniqueProductInitiators.add(product.product.createdBy);
+         uniqueProductInitiators.add(product?.product?.createdBy);
       }
    });
 

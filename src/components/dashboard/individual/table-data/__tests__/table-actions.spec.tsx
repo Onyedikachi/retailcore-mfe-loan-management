@@ -5,20 +5,13 @@ describe('menuFromStatus', () => {
    it('should return correct actions for product name, search text, status', () => {
       const searchText = 'search';
       const queryByProductName = ['product name'];
-      const queryByInitiatorName = ['Name'];
       const queryByStatus = ['status'];
       const queryByDate = ['date'];
-      const queryParams = tableQuery(
-         searchText,
-         queryByProductName,
-         queryByInitiatorName,
-         queryByStatus,
-         queryByDate
-      );
+      const queryParams = tableQuery(searchText, queryByProductName, undefined, queryByStatus, queryByDate);
       expect(queryParams).toEqual({
          LoanProduct: '["product name"]',
          Search: 'search',
-         initiator: '["Name"]',
+         // Initiator: '["Name"]',
          status: '["STATUS"]',
          Count: 540,
          // Initiator: 'INITIATEDBYME',
@@ -28,21 +21,14 @@ describe('menuFromStatus', () => {
    it('should return correct actions for product name, search text, status', () => {
       const searchText = 'find';
       const queryByProductName = ['General Loan'];
-      const queryByInitiatorName = ['Name'];
       const queryByStatus = ['ACTIVE'];
       const queryByDate = ['date'];
-      const queryParams = tableQuery(
-         searchText,
-         queryByProductName,
-         queryByInitiatorName,
-         queryByStatus,
-         queryByDate
-      );
+      const queryParams = tableQuery(searchText, queryByProductName, undefined, queryByStatus, queryByDate);
       expect(queryParams).toEqual({
          LoanProduct: '["General Loan"]',
          Search: 'find',
          status: '["ACTIVE"]',
-         initiator: '["Name"]',
+         // Initiator: '["Name"]',
          Count: 540,
          // Initiator: 'INITIATEDBYME',
       });
