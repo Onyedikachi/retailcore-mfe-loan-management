@@ -5,12 +5,20 @@ describe('menuFromStatus', () => {
    it('should return correct actions for product name, search text, status', () => {
       const searchText = 'search';
       const queryByProductName = ['product name'];
+      const queryByInitiatorName = ['Name'];
       const queryByStatus = ['status'];
       const queryByDate = ['date'];
-      const queryParams = tableQuery(searchText, queryByProductName, queryByStatus, queryByDate);
+      const queryParams = tableQuery(
+         searchText,
+         queryByProductName,
+         queryByInitiatorName,
+         queryByStatus,
+         queryByDate
+      );
       expect(queryParams).toEqual({
          LoanProduct: '["product name"]',
          Search: 'search',
+         initiator: '["Name"]',
          status: '["STATUS"]',
          Count: 540,
          // Initiator: 'INITIATEDBYME',
@@ -20,13 +28,21 @@ describe('menuFromStatus', () => {
    it('should return correct actions for product name, search text, status', () => {
       const searchText = 'find';
       const queryByProductName = ['General Loan'];
+      const queryByInitiatorName = ['Name'];
       const queryByStatus = ['ACTIVE'];
       const queryByDate = ['date'];
-      const queryParams = tableQuery(searchText, queryByProductName, queryByStatus, queryByDate);
+      const queryParams = tableQuery(
+         searchText,
+         queryByProductName,
+         queryByInitiatorName,
+         queryByStatus,
+         queryByDate
+      );
       expect(queryParams).toEqual({
          LoanProduct: '["General Loan"]',
          Search: 'find',
          status: '["ACTIVE"]',
+         initiator: '["Name"]',
          Count: 540,
          // Initiator: 'INITIATEDBYME',
       });
@@ -36,11 +52,19 @@ describe('tableQuery function', () => {
    test('returns correct query parameters', () => {
       const searchText = 'loan';
       const queryByProductName = ['Product A', 'Product B'];
+      const queryByInitiatorName = ['Initiator Name'];
       const queryByStatus = ['Pending', 'Approved'];
       const queryByDate = ['2022-01-01', '2022-12-31'];
       const checker = true;
 
-      const result = tableQuery(searchText, queryByProductName, queryByStatus, queryByDate, checker);
+      const result = tableQuery(
+         searchText,
+         queryByProductName,
+         queryByInitiatorName,
+         queryByStatus,
+         queryByDate,
+         checker
+      );
 
       // expect(result).toHaveValue({
       //

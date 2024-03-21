@@ -7,6 +7,7 @@ import { NavigateFunction } from 'react-router-dom';
 export const tableQuery = (
    searchText: string,
    queryByProductName: string[] | undefined,
+   queryByProductInitiator: string[] | undefined,
    queryByStatus: string[] | undefined,
    queryByDate: string[] | undefined,
    checker?: boolean
@@ -16,26 +17,29 @@ export const tableQuery = (
       queryParams.Search = searchText;
       queryParams.Count = 560;
    }
-   
+
    if (queryByProductName && queryByProductName.length > 0) {
       queryParams.LoanProduct = JSON.stringify(queryByProductName);
-      queryParams.Count = 540; 
+      queryParams.Count = 540;
+   }
+
+   if (queryByProductInitiator && queryByProductInitiator.length > 0) {
+      queryParams.InitiatorName = JSON.stringify(queryByProductInitiator);
+      queryParams.count = 540;
    }
 
    if (queryByStatus && queryByStatus.length > 0) {
       queryParams.status = JSON.stringify(
          queryByStatus.map((status) => {
-            let stat = checker && status == 'Pending' ? 'In-Review' : status;
+            const stat = checker && status == 'Pending' ? 'In-Review' : status;
             return stat.toUpperCase().replace(/-/g, '_');
          })
       );
-      
    }
    if (queryByDate && queryByDate.length === 2) {
       queryParams.StartDate = queryByDate[0];
       queryParams.EndDate = queryByDate[1];
       queryParams.Count = 510;
-     
    }
    if (Object.keys(queryParams).length === 0) {
       queryParams.Initiator = checker ? 'SENTTOME' : 'INITIATEDBYME';

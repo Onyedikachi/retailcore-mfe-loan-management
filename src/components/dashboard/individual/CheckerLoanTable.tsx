@@ -58,7 +58,7 @@ export const CheckerLoanTable = () => {
    });
 
    useEffect(() => {
-      const queryParams = tableQuery(searchText, undefined, queryByStatus, queryByDate, true);
+      const queryParams = tableQuery(searchText, undefined, undefined, queryByStatus, queryByDate, true);
       const urlSearchParams = new URLSearchParams(queryParams).toString();
       const url = `${API_PATH.IndividualLoan}?${urlSearchParams}`;
       getLoans(url, { showSuccess: false });

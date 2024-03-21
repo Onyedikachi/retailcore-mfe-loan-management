@@ -21,6 +21,8 @@ export const MakerLoanTable = () => {
    const [makerLoanTableSearchText, setMakerLoanTableSearchText] = useState('');
    const [makerLoanTableQueryByProductName, setMakerLoanTableQueryByProductName] = useState<string[]>();
    const [makerLoanTableQueryByStatus, setMakerLoanTableQueryByStatus] = useState<string[]>();
+   const [makerLoanTableQueryByProductInitiator, setMakerLoanTableQueryByProductInitiator] =
+      useState<string[]>();
    const [makerLoanTableQueryByDate, setMakerLoanTableQueryByDate] = useState<string[]>();
    const [makerLoanTableOpenLoanAction, setMakerLoanTableOpenLoanAction] = useState(false);
    const [makerLoanTableOpenDeleteAction, setMakerLoanTableOpenDeleteAction] = useState(false);
@@ -53,6 +55,7 @@ export const MakerLoanTable = () => {
          headerData(
             stats,
             (loanProduct) => setMakerLoanTableQueryByProductName(loanProduct),
+            (loanProduct) => setMakerLoanTableQueryByProductInitiator(loanProduct),
             (loanStatus) => setMakerLoanTableQueryByStatus(loanStatus),
             (startDate, endDate) => handleDateQuery(startDate, endDate, setMakerLoanTableQueryByDate),
             makerLoanTableTab!
@@ -96,6 +99,7 @@ export const MakerLoanTable = () => {
       const queryParams = tableQuery(
          makerLoanTableSearchText,
          makerLoanTableQueryByProductName,
+         makerLoanTableQueryByProductInitiator,
          makerLoanTableQueryByStatus,
          makerLoanTableQueryByDate,
          false
@@ -108,6 +112,7 @@ export const MakerLoanTable = () => {
       makerLoanTableQueryByProductName,
       makerLoanTableQueryByStatus,
       makerLoanTableQueryByDate,
+      makerLoanTableQueryByProductInitiator,
    ]);
 
    return (
