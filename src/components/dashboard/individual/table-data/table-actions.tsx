@@ -32,7 +32,7 @@ export const tableQuery = (
       );
    }
    if (queryByReviewer && queryByReviewer.length > 0) {
-      queryParams.reviewer = JSON.stringify(queryByReviewer.map((reviewer) => reviewer.replace(' ', '')));
+      queryParams.reviewer = JSON.stringify(queryByReviewer.map((reviewer) => reviewer));
    }
    if (queryByDate && queryByDate.length === 2) {
       queryParams.StartDate = queryByDate[0];
