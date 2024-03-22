@@ -26,6 +26,7 @@ export const LoanTable = ({ checker }: MyComponentProps) => {
    const [action, setAction] = useState('');
    const [searchText, setSearchText] = useState('');
    const [queryByProductName, setQueryByProductName] = useState<string[]>();
+   const [queryByProductInitiator, setQueryByProductInitiator] = useState<string[]>();
    const [queryByStatus, setQueryByStatus] = useState<string[]>();
    const [queryByDate, setQueryByDate] = useState<string[]>();
    const [openLoanAction, setOpenLoanAction] = useState(false);
@@ -58,8 +59,9 @@ export const LoanTable = ({ checker }: MyComponentProps) => {
    const loanTableHeader: TableHeaderProps = useMemo(
       () =>
          headerData(
-           stat,
+            stat,
             (loanProduct) => setQueryByProductName(loanProduct),
+            (loanProduct) => setQueryByProductInitiator(loanProduct),
             (loanStatus) => setQueryByStatus(loanStatus),
             (startDate, endDate) => handleDateQuery(startDate, endDate, setQueryByDate),
             tab!
@@ -67,23 +69,18 @@ export const LoanTable = ({ checker }: MyComponentProps) => {
       [tab, loanProducts]
    );
 
-   setTimeout(() => {
-     
-    }, 2000);
-
    const loanTableBody = useMemo(() => {
-
       const allowedStatus = ['Nonperforming', 'Performing', 'Closed'];
 
       return (
          loanProducts?.filter((item) => {
             const transformedStatus = transformText(item.status);
             return (
-              transformText(item.requestStatus) === 'Approved' &&
-              transformedStatus !== '' &&
-              allowedStatus.includes(transformedStatus)
+               transformText(item.requestStatus) === 'Approved' &&
+               transformedStatus !== '' &&
+               allowedStatus.includes(transformedStatus)
             );
-          }) ?? []
+         }) ?? []
       )?.map((item) => {
          return bodyData(
             item,
@@ -103,11 +100,18 @@ export const LoanTable = ({ checker }: MyComponentProps) => {
    });
 
    useEffect(() => {
-      const queryParams = loanTableQuery(searchText, queryByProductName, queryByStatus, queryByDate, checker);
+      const queryParams = loanTableQuery(
+         searchText,
+         queryByProductName,
+         queryByProductInitiator,
+         queryByStatus,
+         queryByDate,
+         checker
+      );
       const urlSearchParams = new URLSearchParams(queryParams).toString();
       const url = `${API_PATH.IndividualLoan}?${urlSearchParams}`;
       getLoans(url, { showSuccess: false });
-   }, [searchText, queryByProductName, queryByStatus, queryByDate,checker]);
+   }, [searchText, queryByProductName, queryByStatus, queryByDate, queryByProductInitiator, checker]);
 
    return (
       <Box sx={{ p: 2, pt: 3, bgcolor: 'white', borderRadius: 2, border: '1px solid #E5E9EB' }}>
