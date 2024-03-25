@@ -31,6 +31,7 @@ export const NestedDropdown: React.FC = () => {
    return (
       <Box alignItems="center" gap={5} display="flex">
          <Typography variant="h2">Loan Management</Typography>
+
          {checkPermission([Permissions.BOOK_LOAN]) && (
             <Button
                sx={{ paddingY: 0.7 }}
