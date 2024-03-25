@@ -20,12 +20,14 @@ describe('headerData', () => {
       ];
 
       const mockFilterLoanProduct = jest.fn();
+      const mockFilterLoanInitiator = jest.fn();
       const mockFilterStatus = jest.fn();
       const mockFilterDate = jest.fn();
       render(
          <>
             {headerData(
                mockLoanProducts,
+               mockFilterLoanInitiator,
                mockFilterLoanProduct,
                mockFilterStatus,
                mockFilterDate,
