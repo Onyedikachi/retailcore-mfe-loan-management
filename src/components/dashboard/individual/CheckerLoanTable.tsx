@@ -19,6 +19,7 @@ export const CheckerLoanTable = () => {
    const tab = searchParams.get('tab');
    const [searchText, setSearchText] = useState('');
    const [queryByStatus, setQueryByStatus] = useState<string[]>();
+   const [queryByReviewer, setQueryByReviewer] = useState<string[]>();
    const [queryByDate, setQueryByDate] = useState<string[]>();
    const { isUserAChecker } = usePermission();
 
@@ -30,7 +31,7 @@ export const CheckerLoanTable = () => {
          headerData(
             loanProducts,
             (type) => {},
-            (reviewer) => {},
+            (reviewer) => setQueryByReviewer(reviewer),
             (loanStatus) => setQueryByStatus(loanStatus),
             (startDate, endDate) => handleDateQuery(startDate, endDate, setQueryByDate),
             isUserAChecker ?? false,
@@ -57,12 +58,22 @@ export const CheckerLoanTable = () => {
       onSuccess: (response) => getLoanProducts(response.data.data.loan, response.data.data.statistics),
    });
 
-   useEffect(() => {
-      const queryParams = tableQuery(searchText, undefined, undefined, queryByStatus, queryByDate, true);
+   const filter = () => {
+      const queryParams = tableQuery(
+         searchText,
+         undefined,
+         queryByStatus,
+         queryByDate,
+         queryByReviewer,
+         undefined,
+         true
+      );
       const urlSearchParams = new URLSearchParams(queryParams).toString();
       const url = `${API_PATH.IndividualLoan}?${urlSearchParams}`;
       getLoans(url, { showSuccess: false });
-   }, [searchText, queryByStatus, queryByDate]);
+   };
+
+   useEffect(() => filter(), [searchText, queryByStatus, queryByDate, queryByReviewer]);
 
    return (
       <Box sx={{ p: 2, pt: 3, bgcolor: 'white', borderRadius: 2, border: '1px solid #E5E9EB' }}>

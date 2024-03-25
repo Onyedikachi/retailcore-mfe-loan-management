@@ -10,6 +10,7 @@ export const tableQuery = (
    queryByProductInitiator: string[] | undefined,
    queryByStatus: string[] | undefined,
    queryByDate: string[] | undefined,
+   queryByReviewer: string[] | undefined,
    checker?: boolean
 ) => {
    const queryParams: { [key: string]: any } = {};
@@ -35,6 +36,9 @@ export const tableQuery = (
             return stat.toUpperCase().replace(/-/g, '_');
          })
       );
+   }
+   if (queryByReviewer && queryByReviewer.length > 0) {
+      queryParams.reviewer = JSON.stringify(queryByReviewer.map((reviewer) => reviewer));
    }
    if (queryByDate && queryByDate.length === 2) {
       queryParams.StartDate = queryByDate[0];

@@ -102,6 +102,7 @@ export const MakerLoanTable = () => {
          makerLoanTableQueryByProductInitiator,
          makerLoanTableQueryByStatus,
          makerLoanTableQueryByDate,
+         undefined,
          false
       );
       const urlSearchParams = new URLSearchParams(queryParams).toString();
