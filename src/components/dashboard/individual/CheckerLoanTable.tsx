@@ -65,6 +65,7 @@ export const CheckerLoanTable = () => {
          queryByStatus,
          queryByDate,
          queryByReviewer,
+         undefined,
          true
       );
       const urlSearchParams = new URLSearchParams(queryParams).toString();

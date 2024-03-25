@@ -7,6 +7,7 @@ import { NavigateFunction } from 'react-router-dom';
 export const tableQuery = (
    searchText: string,
    queryByProductName: string[] | undefined,
+   queryByProductInitiator: string[] | undefined,
    queryByStatus: string[] | undefined,
    queryByDate: string[] | undefined,
    queryByReviewer: string[] | undefined,
@@ -21,6 +22,11 @@ export const tableQuery = (
    if (queryByProductName && queryByProductName.length > 0) {
       queryParams.LoanProduct = JSON.stringify(queryByProductName);
       queryParams.Count = 540;
+   }
+
+   if (queryByProductInitiator && queryByProductInitiator.length > 0) {
+      queryParams.InitiatorName = JSON.stringify(queryByProductInitiator);
+      queryParams.count = 540;
    }
 
    if (queryByStatus && queryByStatus.length > 0) {

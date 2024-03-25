@@ -13,12 +13,14 @@ describe('menuFromStatus', () => {
          queryByProductName,
          queryByStatus,
          queryByDate,
-         queryByReviewer
+         queryByReviewer,
+         undefined
       );
 
       expect(queryParams).toEqual({
          LoanProduct: '["product name"]',
          Search: 'search',
+         // Initiator: '["Name"]',
          status: '["STATUS"]',
          reviewer: '["Admin"]',
          Count: 540,
@@ -32,6 +34,7 @@ describe('menuFromStatus', () => {
       const queryByStatus = ['ACTIVE'];
       const queryByReviewer = ['Admin'];
       const queryByDate = ['date'];
+<<<<<<< HEAD
       const queryParams = tableQuery(
          searchText,
          queryByProductName,
@@ -39,11 +42,18 @@ describe('menuFromStatus', () => {
          queryByDate,
          queryByReviewer
       );
+=======
+      const queryParams = tableQuery(searchText, queryByProductName, undefined, queryByStatus, queryByDate);
+>>>>>>> d3c3ee61665843624bb8937a5e14aeb96473b2b2
       expect(queryParams).toEqual({
          LoanProduct: '["General Loan"]',
          Search: 'find',
          status: '["ACTIVE"]',
+<<<<<<< HEAD
          reviewer: '["Admin"]',
+=======
+         // Initiator: '["Name"]',
+>>>>>>> d3c3ee61665843624bb8937a5e14aeb96473b2b2
          Count: 540,
          // Initiator: 'INITIATEDBYME',
       });
@@ -53,7 +63,11 @@ describe('tableQuery function', () => {
    test('returns correct query parameters', () => {
       const searchText = 'loan';
       const queryByProductName = ['Product A', 'Product B'];
+<<<<<<< HEAD
       const queryByReviewer = ['Admin'];
+=======
+      const queryByInitiatorName = ['Initiator Name'];
+>>>>>>> d3c3ee61665843624bb8937a5e14aeb96473b2b2
       const queryByStatus = ['Pending', 'Approved'];
       const queryByDate = ['2022-01-01', '2022-12-31'];
       const checker = true;
@@ -61,9 +75,15 @@ describe('tableQuery function', () => {
       const result = tableQuery(
          searchText,
          queryByProductName,
+<<<<<<< HEAD
          queryByStatus,
          queryByDate,
          queryByReviewer,
+=======
+         queryByInitiatorName,
+         queryByStatus,
+         queryByDate,
+>>>>>>> d3c3ee61665843624bb8937a5e14aeb96473b2b2
          checker
       );
 
