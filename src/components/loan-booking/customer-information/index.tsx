@@ -48,9 +48,12 @@ export const CustomerInformation: React.FC = () => {
    const handleSubmit = () => {
       setShowAlertDialog(false);
       if (id) {
-         submitForm(`${API_PATH.IndividualLoan}`, { body: { ...backendData, id: id ,customerCategory: 'individual'}, method: 'PUT' });
+         submitForm(`${API_PATH.IndividualLoan}`, {
+            body: { ...backendData, id: id, customerCategory: 'individual' },
+            method: 'PUT',
+         });
       } else {
-         submitForm(API_PATH.IndividualLoan, { body: {...backendData, customerCategory: 'individual',} });
+         submitForm(API_PATH.IndividualLoan, { body: { ...backendData, customerCategory: 'individual' } });
       }
    };
 
@@ -64,11 +67,12 @@ export const CustomerInformation: React.FC = () => {
             });
          },
          onSuccess: (response) => {
-            getCustomersData(response?.data?.data.accounts);
+            getCustomersData(response?.data?.data);
          },
       },
       [searchInput]
    );
+
    return (
       <FormContainer>
          <Formik
