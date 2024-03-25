@@ -18,15 +18,13 @@ interface FilterMenuProps {
 }
 
 function FilterMenu({ options, onFilterChange, checkbox = true, filterIcon, icon }: FilterMenuProps) {
-
-  const  defaultOptions: any[] = [] ;
    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-   const [selectedOptions, setSelectedOptions] = useState<string[]>(defaultOptions ?? []);
-
+   const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
 
    useEffect(() => {
-      !checkbox && onFilterChange(selectedOptions);
-   }, [selectedOptions]);
+      // Apply the filter immediately after the state is updated
+      onFilterChange(selectedOptions);
+   }, [selectedOptions, onFilterChange]);
 
    const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
       setAnchorEl(event.currentTarget);
@@ -34,31 +32,23 @@ function FilterMenu({ options, onFilterChange, checkbox = true, filterIcon, icon
 
    const handleMenuClose = () => {
       setAnchorEl(null);
-      if (JSON.stringify(defaultOptions) !== JSON.stringify(selectedOptions)) {
-         onFilterChange(selectedOptions);
-      }
    };
 
    const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
       const { value: option, checked } = event.target;
-      const allOptions = options?.filter(item => item.toLowerCase() !== 'all')
-      if (checked) {
-         if (option.toLowerCase().includes('all')) setSelectedOptions([...allOptions]) ;
-         else setSelectedOptions((prevSelected) => [...prevSelected, option]);
-      } else {
-         const keys = options.map((option) => (typeof option === 'string' ? option : option.key));
-         if (!selectedOptions.length) {
-            setSelectedOptions(keys.filter((key) => key !== option && !key.toLowerCase().includes('all')));
+      setSelectedOptions((prevSelected) => {
+         if (checked) {
+            if (option.toLowerCase().includes('all')) return [];
+            else return [...prevSelected, option];
          } else {
-            setSelectedOptions((prevSelected) => {
-               if (Array.isArray(prevSelected)) {
-                  return prevSelected.filter((selected) => selected !== option);
-               } else {
-                  return [];
-               }
-            });
+            const keys = options.map((opt) => (typeof opt === 'string' ? opt : opt.key));
+            if (!prevSelected.length) {
+               return keys.filter((key) => key !== option && !key.toLowerCase().includes('all'));
+            } else {
+               return prevSelected.filter((selected) => selected !== option);
+            }
          }
-      }
+      });
    };
 
    return (

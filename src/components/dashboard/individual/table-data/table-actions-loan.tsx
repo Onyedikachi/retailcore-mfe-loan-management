@@ -1,11 +1,11 @@
 export const loanTableQuery = (
    searchTextLoan?: string,
    queryByProductNameLoan?: string[] | undefined,
+   queryByProductInitiator?: string[] | undefined,
    queryByStatusLoan?: string[] | undefined,
    queryByDateLoan?: string[] | undefined,
    checkerLoan?: boolean
 ) => {
-
    const queryParams: { [key: string]: any } = {};
    if (searchTextLoan) {
       queryParams.Search = searchTextLoan;
@@ -13,6 +13,10 @@ export const loanTableQuery = (
    }
    if (queryByProductNameLoan && queryByProductNameLoan.length > 0) {
       queryParams.LoanProduct = JSON.stringify(queryByProductNameLoan);
+      queryParams.Count = 630;
+   }
+   if (queryByProductInitiator && queryByProductInitiator.length > 0) {
+      queryParams.initiator = JSON.stringify(queryByProductInitiator);
       queryParams.Count = 630;
    }
    if (queryByStatusLoan && queryByStatusLoan.length > 0) {
@@ -33,5 +37,4 @@ export const loanTableQuery = (
       queryParams.Initiator = !checkerLoan ? 'CREATEDBYME' : 'APPROVEDBYME';
    }
    return queryParams;
-   
 };

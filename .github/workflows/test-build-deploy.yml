@@ -40,7 +40,7 @@ jobs:
       USE_VARIANT_BUILDTIME_ARGS: false # toggle to use buildtime variables for variants
       VARIANT_DOCKERFILE_NAME: "" # name of the variant dockerfile
       VARIANT_CONTAINER_NAME: "" # provide a name for the container variant if building one
-      CUSTOM_BUILD_SCRIPT: |
+      MFE_CUSTOM_BUILD_SCRIPT: |
         yarn --ignore-scripts build:webpack
       MFE: true
     secrets:
