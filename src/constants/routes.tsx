@@ -117,6 +117,7 @@ export const RoutePaths = {
          Permissions.AUTHORIZE_LIQUIDATION_WRITE_OFF_REQUESTS,
          Permissions.LIQUIDATE_LOAN,
          Permissions.WRITE_OFF_LOAN,
+         Permissions.VIEW_ALL_BOOKED_LOANS,
       ],
    },
    LoanPerformance: {
