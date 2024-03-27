@@ -60,7 +60,7 @@ interface FiltersProps {
 export const Filters = (props: FiltersProps) => {
    const [activeStatus, setActiveStatus] = useState('All');
    const [searchParams] = useSearchParams();
-   const [defaultInitiator, setDefaultInitiator] = useState<any>('Joshua');
+   const [defaultInitiator, setDefaultInitiator] = useState('');
    const navigate = useNavigate();
    const { accessAllRecords } = usePermission();
    const defaultKey = accessAllRecords ? props.tabOptions[0]?.key : props.tabOptions[1]?.key;
@@ -91,6 +91,13 @@ export const Filters = (props: FiltersProps) => {
          props?.onStatusClick(key);
       }
    };
+
+   const defaultValue = props?.filterOptions?.at(0);
+
+   useEffect(() => {
+      if (defaultValue) setDefaultInitiator(defaultValue);
+   }, [defaultValue]);
+
    return (
       <FilterWrapper direction="row">
          <Stack direction="row" gap={3} flex={1}>
@@ -149,6 +156,7 @@ export const Filters = (props: FiltersProps) => {
                   size="small"
                   name="filter"
                   value={defaultInitiator}
+                  defaultValue={false}
                   options={props?.filterOptions}
                   onChange={(event: SelectChangeEvent<any>) => {
                      setDefaultInitiator(event.target.value);

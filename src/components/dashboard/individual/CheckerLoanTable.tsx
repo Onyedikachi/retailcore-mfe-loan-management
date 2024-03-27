@@ -22,7 +22,6 @@ export const CheckerLoanTable = () => {
    const [queryByReviewer, setQueryByReviewer] = useState<string[]>();
    const [queryByDate, setQueryByDate] = useState<string[]>();
    const { isUserAChecker } = usePermission();
-
    const navigate = useNavigate();
    const { loanProducts, getLoanProducts } = useIndividualLoanDashboardContext();
 

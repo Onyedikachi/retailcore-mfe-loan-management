@@ -45,11 +45,11 @@ export const usePermission = (): PermissionHelperProps => {
    const checkPermission = (permissions: string[]) =>
       permissions?.some((role) => userPermissions?.includes(role));
 
-
    const checker = [
       Permissions.AUTHORIZE_BOOKING_RESTRUCTURING_REQUESTS,
       Permissions.AUTHORIZE_LIQUIDATION_WRITE_OFF_REQUESTS,
       Permissions.VIEW_ALL_LOAN_REQUESTS,
+      Permissions.AUTHORIZE_CREDIT_PRODUCT_CREATION_OR_MODIFICATION_OR_RE_AND_DE_ACTIVATION_REQUESTS,
    ];
    const allRecords = [Permissions.VIEW_ALL_LOAN_RECORDS];
    const allRequest = [Permissions.VIEW_ALL_LOAN_REQUESTS];
