@@ -62,6 +62,14 @@ function FilterMenu({ options, onFilterChange, checkbox = true, filterIcon, icon
       setDebouncedValue(selectedOptions);
    };
 
+   useEffect(() => {
+      const allOptionsChecked = options?.slice(1)?.every((option) => selectedOptions?.includes(option));
+
+      if (allOptionsChecked) {
+         setCheckedOptions([...checkedOptions, 'All']);
+      }
+   }, [selectedOptions]);
+
    return (
       <div>
          <IconButton onClick={handleMenuOpen}>
