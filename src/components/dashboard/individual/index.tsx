@@ -28,14 +28,13 @@ export const IndividualLoan = () => {
    const [options, setOption] = useState<any>('');
    const [selectedOptions, setSelectedOption] = useState<any>('');
    const [stat, setStat] = useState<any>();
-   const [allValue, ] = useState(false);
+   const [allValue] = useState(false);
 
    const [, fetchAllProductStat] = useRequest({
       onSuccess: (response) => {
          setStat(response.data?.data?.statistics);
       },
    });
-
 
    const fetchProductActivities = () => {
       fetchAllProductStat(API_PATH.LoanStat, {
@@ -120,8 +119,8 @@ export const IndividualLoan = () => {
             // eslint-disable-next-line max-len
             filterOptions={
                tab === 'records'
-                  ? filterOptionsRecords(isUserAChecker, isSuperAdmin)
-                  : filterOptionsRequest(isUserAChecker, isSuperAdmin)
+                  ? filterOptionsRecords(Boolean(isUserAChecker), Boolean(isSuperAdmin))
+                  : filterOptionsRequest(Boolean(isUserAChecker), Boolean(isSuperAdmin))
             }
          />
          {tab === 'records' ? (
@@ -150,17 +149,17 @@ export const convertToUppercase = (sentence?: string): string => {
    return result;
 };
 
-export const filterOptionsRequest = (isChecker: any, isSuperAdmin: any) => {
-   if (isChecker && !isSuperAdmin!) {
+export const filterOptionsRequest = (isChecker: boolean, isSuperAdmin: boolean) => {
+   if (isChecker && !isSuperAdmin) {
       return ['Sent to me', 'Sent system-wide'];
-   } else if (isChecker! && isSuperAdmin!) {
+   } else if (isChecker && isSuperAdmin) {
       return ['Initiated by me', 'Initiated system-wide', 'Sent to me', 'Sent system-wide'];
    } else {
       return ['Initiated by me', 'Initiated system-wide'];
    }
 };
 
-export const filterOptionsRecords = (isChecker: any, isSuperAdmin: any) => {
+export const filterOptionsRecords = (isChecker: boolean, isSuperAdmin: boolean) => {
    if (isChecker && !isSuperAdmin) {
       return ['Approved by me', 'Approved system-wide'];
    } else if (isChecker && isSuperAdmin) {

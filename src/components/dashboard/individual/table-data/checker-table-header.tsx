@@ -13,8 +13,7 @@ export const headerData = (
    isUserAChecker: boolean,
    tab: string
 ): TableHeaderProps => {
-   const statusOptions = tabCardOptions(undefined, isUserAChecker)
-      [tab]?.map((option) => option.label);
+   const statusOptions = tabCardOptions(undefined, isUserAChecker)[tab]?.map((option) => option.label);
 
    const uniqueReviewer = new Set();
    loanProducts?.forEach((loan) => {

@@ -8,6 +8,7 @@ import BlockIcon from '@mui/icons-material/Block';
 import { WriteOff } from '@app/components/icons/WriteOff';
 import { Modify } from '@app/components/icons/Modify';
 import { Delete } from '@app/components/icons/Delete';
+import useDebounce from '@app/hooks/useDebounce';
 
 interface FilterMenuProps {
    options: any[];
@@ -18,13 +19,14 @@ interface FilterMenuProps {
 }
 
 function FilterMenu({ options, onFilterChange, checkbox = true, filterIcon, icon }: FilterMenuProps) {
+   const defaultOptions: any[] = [];
    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-   const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
+   const [selectedOptions, setSelectedOptions] = useState<string[]>(defaultOptions ?? []);
+   const { debouncedValue, setDebouncedValue } = useDebounce(2000);
 
    useEffect(() => {
-      // Apply the filter immediately after the state is updated
       onFilterChange(selectedOptions);
-   }, [selectedOptions, onFilterChange]);
+   }, [debouncedValue]);
 
    const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
       setAnchorEl(event.currentTarget);
@@ -36,19 +38,31 @@ function FilterMenu({ options, onFilterChange, checkbox = true, filterIcon, icon
 
    const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
       const { value: option, checked } = event.target;
-      setSelectedOptions((prevSelected) => {
-         if (checked) {
-            if (option.toLowerCase().includes('all')) return [];
-            else return [...prevSelected, option];
-         } else {
-            const keys = options.map((opt) => (typeof opt === 'string' ? opt : opt.key));
-            if (!prevSelected.length) {
-               return keys.filter((key) => key !== option && !key.toLowerCase().includes('all'));
-            } else {
-               return prevSelected.filter((selected) => selected !== option);
-            }
+      const allOptions = options?.filter((item) => item.toLowerCase() !== 'all');
+      if (checked) {
+         if (option.toLowerCase().includes('all')) setSelectedOptions([...allOptions]);
+         else setSelectedOptions((prevSelected) => [...prevSelected, option]);
+      } else {
+         const keys = options.map((option) => (typeof option === 'string' ? option : option.key));
+         if (!selectedOptions.length) {
+            setSelectedOptions(keys.filter((key) => key !== option && !key.toLowerCase().includes('all')));
+            setSelectedOptions((prevSelected) => {
+               if (checked) {
+                  if (option.toLowerCase().includes('all')) return [];
+                  else return [...prevSelected, option];
+               } else {
+                  const keys = options.map((opt) => (typeof opt === 'string' ? opt : opt.key));
+                  if (!prevSelected.length) {
+                     return keys.filter((key) => key !== option && !key.toLowerCase().includes('all'));
+                  } else {
+                     return prevSelected.filter((selected) => selected !== option);
+                  }
+               }
+            });
          }
-      });
+      }
+
+      setDebouncedValue(selectedOptions);
    };
 
    return (
