@@ -1,6 +1,6 @@
 import * as FormMeta from '@app/utils/validators/book-a-loan/customer-info';
 import FormContainer from '../../forms/FormContainer';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Box } from '@mui/material';
 import { Button } from '@app/components/atoms';
 import { Form, Formik } from 'formik';
@@ -60,11 +60,13 @@ export const CustomerInformation: React.FC = () => {
    useRequest(
       {
          onMount: (makeRequest) => {
-            makeRequest(GET_INDIVIDUAL_ACCOUNTS, {
-               showSuccess: false,
-               showLoader: !accountNumbers,
-               query: { size: 20, search: searchInput },
-            });
+            if (searchInput.length > 0) {
+               makeRequest(GET_INDIVIDUAL_ACCOUNTS, {
+                  showSuccess: false,
+                  showLoader: !accountNumbers,
+                  query: { size: 20, search: searchInput },
+               });
+            }
          },
          onSuccess: (response) => {
             getCustomersData(response?.data?.data);
