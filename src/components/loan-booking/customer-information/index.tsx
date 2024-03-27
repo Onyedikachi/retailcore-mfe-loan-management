@@ -1,6 +1,6 @@
 import * as FormMeta from '@app/utils/validators/book-a-loan/customer-info';
 import FormContainer from '../../forms/FormContainer';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Box } from '@mui/material';
 import { Button } from '@app/components/atoms';
 import { Form, Formik } from 'formik';
