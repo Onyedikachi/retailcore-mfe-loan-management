@@ -60,11 +60,13 @@ export const CustomerInformation: React.FC = () => {
    useRequest(
       {
          onMount: (makeRequest) => {
-            makeRequest(GET_INDIVIDUAL_ACCOUNTS, {
-               showSuccess: false,
-               showLoader: !accountNumbers,
-               query: { size: 20, search: searchInput },
-            });
+            if (searchInput.length > 0) {
+               makeRequest(GET_INDIVIDUAL_ACCOUNTS, {
+                  showSuccess: false,
+                  showLoader: !accountNumbers,
+                  query: { size: 20, search: searchInput },
+               });
+            }
          },
          onSuccess: (response) => {
             getCustomersData(response?.data?.data);
