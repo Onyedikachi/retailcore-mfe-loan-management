@@ -50,6 +50,7 @@ export const MakerLoanTable = () => {
    useEffect(() => {
       fetchProductActivity();
    }, []);
+
    const loanTableHeader: TableHeaderProps = useMemo(
       () =>
          headerData(

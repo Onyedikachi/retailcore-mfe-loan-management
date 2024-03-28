@@ -26,7 +26,7 @@ function FilterMenu({ options, onFilterChange, checkbox = true, filterIcon, icon
 
    useEffect(() => {
       onFilterChange(selectedOptions);
-   }, [debouncedValue]);
+   }, [debouncedValue, onFilterChange]);
 
    const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
       setAnchorEl(event.currentTarget);
@@ -98,6 +98,7 @@ function FilterMenu({ options, onFilterChange, checkbox = true, filterIcon, icon
                      sx={{ py: 0, height: '30px', fontSize: 14 }}
                      onClick={() => {
                         setSelectedOptions(option);
+                        setDebouncedValue(option);
                         handleMenuClose();
                      }}
                   >

@@ -95,8 +95,8 @@ export const LoanReview = () => {
                      />
                   ) : (
                      <ViewActionButtons
-                     fileName="Loan Details"
-                     htmlElement={document.getElementById('loan-details')}
+                        fileName="Loan Details"
+                        htmlElement={document.getElementById('loan-details')}
                      />
                   )}
                </PaddedContainer>
