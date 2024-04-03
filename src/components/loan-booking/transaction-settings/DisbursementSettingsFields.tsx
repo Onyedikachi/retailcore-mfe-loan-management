@@ -21,12 +21,15 @@ export const DisbursementSettingsFields = () => {
    const [, fetchCustomers] = useRequest({
       onSuccess: (response) => getCustomersData(response?.data?.data?.accounts),
    });
+
    useEffect(() => {
-      fetchCustomers(GET_INDIVIDUAL_ACCOUNTS, {
-         showSuccess: false,
-         showLoader: !accountNumbers,
-         query: { size: 20, search: searchInput },
-      });
+      if (searchInput.length > 0) {
+         fetchCustomers(GET_INDIVIDUAL_ACCOUNTS, {
+            showSuccess: false,
+            showLoader: !accountNumbers,
+            query: { size: 20, search: searchInput },
+         });
+      }
    }, [searchInput]);
 
    return (

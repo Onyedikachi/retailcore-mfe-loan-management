@@ -47,9 +47,12 @@ export const FacilityDetails: React.FC = () => {
    const handleSubmit = () => {
       setShowAlertDialog(false);
       if (id) {
-         submitForm(`${API_PATH.IndividualLoan}`, { body: { ...backendData, id: id, customerCategory: 'individual', }, method: 'PUT' });
+         submitForm(`${API_PATH.IndividualLoan}`, {
+            body: { ...backendData, id: id, customerCategory: 'individual' },
+            method: 'PUT',
+         });
       } else {
-         submitForm(API_PATH.IndividualLoan, { body: {...backendData, customerCategory: 'individual',} });
+         submitForm(API_PATH.IndividualLoan, { body: { ...backendData, customerCategory: 'individual' } });
       }
    };
 

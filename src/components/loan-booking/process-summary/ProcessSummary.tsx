@@ -44,20 +44,31 @@ export const ProcessSummary = () => {
    const [searchParams] = useSearchParams();
 
    const id = searchParams.get('id');
-   const otherSelectedAcct = accountNumbers?.find((item) => item.products.some(
-      (product: { accountNumber: any }) => product.accountNumber === backendData?.otherAcctNo
-          ))?.products.find((product: { accountNumber: any }) => 
-              product.accountNumber === backendData?.otherAcctNo);
-   const [, submitForm] = useRequest({
+   const otherSelectedAcct = accountNumbers
+      ?.find((item) =>
+         item.products.some(
+            (product: { accountNumber: any }) => product.accountNumber === backendData?.otherAcctNo
+         )
+      )
+      ?.products.find(
+         (product: { accountNumber: any }) => product.accountNumber === backendData?.otherAcctNo
+      );
+   const [, submitForm] = useRequest(
+      {
          onSuccess: (response) => {
             setStatusValue(response?.data?.loanDisbursementResponse?.responseStatusCode);
             setTitleValue(response?.data?.loanDisbursementResponse?.responseMessage);
             setShowResponseDialog(true);
-         }},[LoanProduct]);
-   const [, fetchLedger] = useRequest({
+         },
+      },
+      [LoanProduct]
+   );
+   const [, fetchLedger] = useRequest(
+      {
          onSuccess: async (response) => {
-            const foundArray = response?.data?.data?.find((item: { accountNumber: any; }) =>
-            item?.accountNumber === backendData?.acctNo);
+            const foundArray = response?.data?.data?.find(
+               (item: { accountNumber: any }) => item?.accountNumber === backendData?.acctNo
+            );
             await submitForm(API_PATH.IndividualLoan, {
                body: {
                   ...backendData,
@@ -71,7 +82,10 @@ export const ProcessSummary = () => {
                showSuccess: false,
                method: id ? 'PUT' : 'POST',
             });
-         }},[LoanProduct,]);
+         },
+      },
+      [LoanProduct]
+   );
 
    const handleSubmit = () => {
       fetchLedger(`${CUSTOMER_MANAGEMENT_PATH.GET_CUSTOMER_LEDGER}/${backendData.customerId}`, {
